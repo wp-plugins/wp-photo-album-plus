@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 6.1.12
+* Version 6.1.14
 *
 */
 
@@ -641,7 +641,7 @@ global $wppa_supported_audio_extensions;
 									</td>
 									<?php if ( $is_sub_depot ) { ?>
 										<td>
-											<input type="checkbox" id="del-after-a" name="del-after-a" checked="checked" /><b>&nbsp;&nbsp;<?php _e( 'Remove from depot after successful import, or if the album already exits.', 'wppa' ); ?></b>
+											<input type="checkbox" id="del-after-a" name="del-after-a" checked="checked" /><b>&nbsp;&nbsp;<?php _e( 'Remove from depot after successful import, or if the album already exists.', 'wppa' ); ?></b>
 										</td>
 									<?php } ?>
 								</tr>

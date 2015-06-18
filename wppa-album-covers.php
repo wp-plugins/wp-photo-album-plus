@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for album covers
-* Version 6.1.0
+* Version 6.1.14
 *
 */
 
@@ -687,7 +687,7 @@ global $wpdb;
 					' data-audiohtml="' . esc_attr( wppa_get_audio_body( $id ) ) . '"' .
 					' data-videonatwidth="'.wppa_get_videox( $id ).'"' .
 					' data-videonatheight="'.wppa_get_videoy( $id ).'"' .
-					' rel="' . wppa_opt( 'wppa_lightbox_name' ) . '[alw-' . wppa( 'mocc' ) . '-' . $albumid . ']"' .
+					' ' . wppa( 'rel' ) . '="' . wppa_opt( 'wppa_lightbox_name' ) . '[alw-' . wppa( 'mocc' ) . '-' . $albumid . ']"' .
 					' title="' . $title . '"' .
 					' >';
 				
@@ -749,7 +749,7 @@ global $wpdb;
 		// A video?
 		if ( wppa_is_video( $image['id'] ) ) {
 			$wppa['out'] .= wppa_nltab() . 
-				'<video preload="metadata" ' . wppa_get_imgalt( $image['id'] ) . ' class="image wppa-img" width="' . $imgwidth . '" height="' . 
+				'<video preload="metadata" class="image wppa-img" width="' . $imgwidth . '" height="' . 
 				$imgheight . '" style="' . __wcs( 'wppa-img' ) . $imgattr . '" ' . $events . ' >' . 
 				wppa_get_video_body( $image['id'] ) . '</video>';
 		}
@@ -837,7 +837,7 @@ global $wpdb;
 							'<video preload="metadata" class="image wppa-img" id="i-' . $image['id'] . '-' . 
 							$wppa['mocc'] . '" title="' . wppa_zoom_in( $image['id'] ) . '" width="' . 
 							$imgwidth . '" height="' . $imgheight . '" style="' . __wcs( 'wppa-img' ) . 
-							$imgattr . $imgattr_a['cursor'] . '" ' . $events . ' ' . wppa_get_imgalt( $image['id'] ) . '>' . 
+							$imgattr . $imgattr_a['cursor'] . '" ' . $events . '>' . 
 							wppa_get_video_body( $image['id'] ) . '</video>';
 					}
 					else {
@@ -857,7 +857,7 @@ global $wpdb;
 				$wppa['out'] .= '<a ' . $href . 'target="' . $photolink['target'] . 
 					'" title="' . $photolink['title'] . '" onclick="' . $photolink['onclick'] . '" >';
 				if ( wppa_is_video( $image['id'] ) ) {
-					$wppa['out'] .= '<video preload="metadata" ' . wppa_get_imgalt( $image['id'] ) .
+					$wppa['out'] .= '<video preload="metadata" ' .
 						' class="image wppa-img" width="' . $imgwidth . '" height="' . $imgheight . 
 						'" style="' . __wcs( 'wppa-img' ) . $imgattr . '" ' . $events . ' >' . 
 						wppa_get_video_body( $image['id'] ) . '</video>';

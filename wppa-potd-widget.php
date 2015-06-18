@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the widget
-* Version 6.1.3
+* Version 6.1.14
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -65,7 +65,7 @@ class PhotoOfTheDay extends WP_Widget {
 												' data-audiohtml="' . esc_attr( wppa_get_audio_body( $id ) ) . '"'.
 												' data-videonatwidth="'.wppa_get_videox( $id ).'"' .
 												' data-videonatheight="'.wppa_get_videoy( $id ).'"' .
-												' rel="' . wppa_opt( 'wppa_lightbox_name' ) . '"' : '';
+												' ' . wppa( 'rel' ) . '="' . wppa_opt( 'wppa_lightbox_name' ) . '"' : '';
 			if ( $link ) {
 				if ( $link['is_lightbox'] ) {
 					$cursor = ' cursor:url('.wppa_get_imgdir().wppa_opt('wppa_magnifier').'),pointer;';

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 6.1.12
+* Version 6.1.14
 *
 *
 */
@@ -1204,7 +1204,7 @@ global $wppa;
 	
 	<div id="wppa-create-'.$t.$alb.'-'.$wppa['mocc'].'" class="wppa-file-'.$t.$wppa['mocc'].'" style="width:'.$width.'px;text-align:center;display:none;" >
 		<form id="wppa-creform-'.$alb.'-'.$wppa['mocc'].'" action="'.$returnurl.'" method="post" >'.
-		wp_nonce_field( 'wppa-album-check' , 'wppa-nonce', false, false ).'
+		wppa_nonce_field( 'wppa-album-check' , 'wppa-nonce', false, false, $alb ).'
 		<input type="hidden" name="wppa-album-parent" value="'.$alb.'" />
 		<input type="hidden" name="wppa-fe-create" value="yes" />';
 		// Name
@@ -1342,7 +1342,7 @@ static $seqno;
 	</a>
 	<div id="wppa-file-'.$t.$alb.'-'.$wppa['mocc'].'" class="wppa-file-'.$t.$wppa['mocc'].'" style="width:'.$width.'px;text-align:center;display:none" >
 		<form id="wppa-uplform-'.$alb.'-'.$wppa['mocc'].'" action="'.$returnurl.'" method="post" enctype="multipart/form-data">
-			'.wp_nonce_field( 'wppa-check' , 'wppa-nonce', false, false );		
+			'.wppa_nonce_field( 'wppa-check' , 'wppa-nonce', false, false, $alb );		
 			if ( ! $alb ) {	// No album given: select one
 				$wppa['out'] .= '
 			<select id="wppa-upload-album-'.$wppa['mocc'].'-'.$seqno.'" name="wppa-upload-album" style="float:left; max-width: '.$width.'px;" onchange="jQuery( \'#wppa-sel-'.$alb.'-'.$wppa['mocc'].'\' ).trigger( \'onchange\' )" >
@@ -1357,11 +1357,11 @@ static $seqno;
 
 			if ( wppa_switch( 'upload_one_only' ) && ! current_user_can( 'administrator' ) ) {
 				$wppa['out'] .= '
-			<input type="file" capture="camera" class="wppa-user-file" style="width: auto; max-width: '.$width.'; margin: 6px 0; float:left; '.__wcs( 'wppa-box-text' ).'" id="wppa-user-upload-'.$alb.'-'.$wppa['mocc'].'" name="wppa-user-upload-'.$alb.'-'.$wppa['mocc'].'[]" onchange="jQuery( \'#wppa-user-submit-'.$alb.'-'.$wppa['mocc'].'\' ).css( \'display\', \'block\' )" />';
+			<input type="file" accept="image/*" capture class="wppa-user-file" style="width: auto; max-width: '.$width.'; margin: 6px 0; float:left; '.__wcs( 'wppa-box-text' ).'" id="wppa-user-upload-'.$alb.'-'.$wppa['mocc'].'" name="wppa-user-upload-'.$alb.'-'.$wppa['mocc'].'[]" onchange="jQuery( \'#wppa-user-submit-'.$alb.'-'.$wppa['mocc'].'\' ).css( \'display\', \'block\' )" />';
 			}
 			else {
 				$wppa['out'] .= '
-			<input type="file" capture="camera" multiple="multiple" class="wppa-user-file" style="width: auto; max-width: '.$width.'; margin: 6px 0; float:left; '.__wcs( 'wppa-box-text' ).'" id="wppa-user-upload-'.$alb.'-'.$wppa['mocc'].'" name="wppa-user-upload-'.$alb.'-'.$wppa['mocc'].'[]" onchange="jQuery( \'#wppa-user-submit-'.$alb.'-'.$wppa['mocc'].'\' ).css( \'display\', \'block\' )" />';
+			<input type="file" accept="image/*" capture multiple="multiple" class="wppa-user-file" style="width: auto; max-width: '.$width.'; margin: 6px 0; float:left; '.__wcs( 'wppa-box-text' ).'" id="wppa-user-upload-'.$alb.'-'.$wppa['mocc'].'" name="wppa-user-upload-'.$alb.'-'.$wppa['mocc'].'[]" onchange="jQuery( \'#wppa-user-submit-'.$alb.'-'.$wppa['mocc'].'\' ).css( \'display\', \'block\' )" />';
 			}
 			
 			$onclick = $alb ? '' : ' onclick="if ( document.getElementById( \'wppa-upload-album-'.$wppa['mocc'].'-'.$seqno.'\' ).value == 0 ) {alert( \''.esc_js( __a( 'Please select an album and try again' ) ).'\' );return false;}"';
@@ -1396,8 +1396,8 @@ static $seqno;
 			
 			// Copyright notice
 			if ( wppa_switch( 'copyright_on' ) ) $wppa['out'] .= '
-			<div id="wppa-copyright-'.$wppa['mocc'].'" style="clear:both;" >
-				'.__( wppa_opt( 'wppa_copyright_notice' ) ).'
+			<div style="clear:both;" >
+				'.__( wppa_opt( 'copyright_notice' ) ).'
 			</div>';
 			
 			// Watermark
@@ -1506,14 +1506,14 @@ static $seqno;
 						wppa_out( "\n".'<select id="wppa-sel-'.$alb.'-'.$wppa['mocc'].'-'.$i.'" style="float:left; margin-right: 4px;" name="wppa-user-tags-'.$i.'[]" '.( wppa_switch( 'wppa_up_tagselbox_multi_'.$i ) ? 'multiple' : '' ).' onchange="'.$onc.'" >' );
 						if ( wppa_opt( 'up_tagselbox_content_'.$i ) ) {	// List of tags supplied
 							$tags = explode( ',', wppa_opt( 'up_tagselbox_content_'.$i ) );
-							wppa_out( '<option value="" ></option>' );
+							wppa_out( '<option value="" >&nbsp;</option>' );
 							if ( is_array( $tags ) ) foreach ( $tags as $tag ) {
 								wppa_out( '<option class="wppa-sel-'.$alb.'-'.$wppa['mocc'].'" value="'.$tag.'">'.$tag.'</option>' );
 							}							
 						}
 						else {											// All existing tags
 							$tags = wppa_get_taglist();
-							wppa_out( '<option value="" ></option>' );
+							wppa_out( '<option value="" >&nbsp;</option>' );
 							if ( is_array( $tags ) ) foreach ( $tags as $tag ) {
 								wppa_out( '<option class="wppa-sel-'.$alb.'-'.$wppa['mocc'].'" value="'.$tag['tag'].'">'.$tag['tag'].'</option>' );
 							}							
@@ -1712,7 +1712,7 @@ global $wppa_first_comment_html;
 						$txtwidth = floor( wppa_get_container_width() * 0.7 ).'px';
 						$result .= '<td class="wppa-box-text wppa-td" style="width:70%; word-wrap:break-word; border-width: 0 0 0 0;'.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >'.
 										'<p class="wppa-comment-textarea wppa-comment-textarea-'.$wppa['mocc'].'" style="margin:0; background-color:transparent; width:'.$txtwidth.'; max-height:90px; overflow:auto; word-wrap:break-word;'.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >'.
-											html_entity_decode( esc_js( stripslashes( convert_smilies( $comment['comment'] ) ) ) );
+											html_entity_decode( esc_js( stripslashes( wppa_convert_smilies( $comment['comment'] ) ) ) );
 										
 											if ( $comment['status'] != 'approved' && ( current_user_can( 'wppa_moderate' ) || current_user_can( 'wppa_comments' ) ) ) {
 												if ( $wppa['no_esc'] ) $result .= wppa_moderate_links( 'comment', $id, $comment['id'] );
@@ -1774,7 +1774,7 @@ global $wppa_first_comment_html;
 	if ( $comment_allowed ) {
 		$result .= '<div id="wppa-comform-wrap-'.$wppa['mocc'].'" style="display:none;" >';
 			$result .= '<form id="wppa-commentform-'.$wppa['mocc'].'" class="wppa-comment-form" action="'.$returnurl.'" method="post" style="" onsubmit="return wppaValidateComment( '.$wppa['mocc'].' )">';
-				$result .= wp_nonce_field( 'wppa-nonce-'.wppa('mocc') , 'wppa-nonce-'.wppa('mocc'), false, false );
+				$result .= wp_nonce_field( 'wppa-nonce-'.wppa('mocc') , 'wppa-nonce-'.wppa('mocc'), false, false );//, $alb );
 				if ( $album ) $result .= '<input type="hidden" name="wppa-album" value="'.$album.'" />';
 				if ( $cover ) $result .= '<input type="hidden" name="wppa-cover" value="'.$cover.'" />';
 				if ( $slide ) $result .= '<input type="hidden" name="wppa-slide" value="'.$slide.'" />';
@@ -1869,16 +1869,16 @@ global $wpsmiliestrans;
 			}
 		}
 	}
-	
+
 	// Make the html
 	$result = '';
 	if ( is_array( $wppa_smilies ) ) {
 		foreach ( array_keys( $wppa_smilies ) as $key ) {
 			$onclick 	= esc_attr( 'wppaInsertAtCursor( document.getElementById( "' . $elm_id . '" ), " ' . $wppa_smilies[$key] . ' " )' );
 			$title 		= trim( $wppa_smilies[$key], ':' );
-			$result 	.= 	'<a onclick="'.$onclick.'" title="'.$title.'" >' . 
-								convert_smilies( $wppa_smilies[$key] ) . 
-							'</a>';
+			$result 	.= 	'<a onclick="'.$onclick.'" title="'.$title.'" >';
+			$result 	.= 		wppa_convert_smilies( $wppa_smilies[$key] );
+			$result 	.= 	'</a>';
 		}
 	}
 	else {

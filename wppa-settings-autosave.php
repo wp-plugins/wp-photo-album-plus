@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 6.1.12
+* Version 6.1.14
 *
 */
 
@@ -2355,7 +2355,7 @@ global $wppa_tags;
 							
 							$name = __('Overlay show legenda', 'wppa');
 							$desc = __('Show "Press f for fullsize" etc. on lightbox.', 'wppa');
-							$help = '';
+							$help = esc_js(__('Independant of this setting, it will not show up on mobile devices.', 'wppa'));
 							$slug = 'wppa_ovl_show_legenda';
 							$html = wppa_checkbox($slug);
 							$clas = '';

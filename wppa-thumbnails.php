@@ -5,7 +5,7 @@
 * Various funcions to display a thumbnail image
 * Contains all possible frontend thumbnail types
 *
-* Version 6.1.12
+* Version 6.1.14
 * 
 */
 
@@ -225,8 +225,18 @@ global $wpdb;
 				
 				// No video
 				else {
-					$result .= '<img onclick="'.$onclick.'" id="i-'.$id.'-'.wppa( 'mocc' ).'" src="'.$imgurl.'" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' />';
-				}
+					$result .= 	'<img' .
+									' onclick="' . $onclick . '"' .
+									' id="i-' . $id . '-'.wppa( 'mocc' ) . '"' .
+									' src="' . $imgurl . '"' .
+									' ' . $imgalt .
+									( $title ? ' title="' . $title . '"' : '' ) .
+									' width="' . $imgwidth . '"' .
+									' height="' . $imgheight . '"' .
+									' style="' . $imgstyle . ' cursor:pointer;"' .
+									' ' . $events .
+								' />';
+				} 
 				
 				// Close the a img ajax
 				$result .= '</a>';
@@ -257,7 +267,15 @@ global $wpdb;
 							));
 				}
 				else {
-					$result .= '<img id="i-'.$id.'-'.wppa( 'mocc' ).'" src="'.$imgurl.'" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' />';
+					$result .= 	'<img' .
+									' id="i-' . $id . '-' . wppa( 'mocc' ) . '"' .
+									' src="' . $imgurl . '" ' . $imgalt . 
+									( $title ? ' title="' . $title . '"' : '' ) .
+									' width="' . $imgwidth . '"' .
+									' height="' . $imgheight . '"' .
+									' style="' . $imgstyle . ' cursor:pointer;"' .
+									' ' . $events .
+								' />';
 				}
 				
 				// Close the img non ajax
@@ -275,8 +293,8 @@ global $wpdb;
 						' data-audiohtml="' . esc_attr( wppa_get_audio_body( $id ) ) . '"' .
 						' data-videonatwidth="'.wppa_get_videox( $id ) . '"' .
 						' data-videonatheight="'.wppa_get_videoy( $id ) . '"' .
-						' rel="'.wppa_opt( 'lightbox_name' ).'[occ'.wppa( 'mocc' ).']"' .
-						' title="'.$title.'" ' .
+						' ' . wppa( 'rel' ) . '="'.wppa_opt( 'lightbox_name' ).'[occ'.wppa( 'mocc' ).']"' .
+						( $title ? ' title="'.$title.'" ' : '' ) .
 						' class="thumb-img" id="x-'.$id.'-'.wppa( 'mocc' ).'">';
 			if ( $is_video ) { 
 				$result .= wppa_get_video_html( array(
@@ -298,7 +316,17 @@ global $wpdb;
 						));
 			}
 			else {
-				$result .= '<img id="i-'.$id.'-'.wppa( 'mocc' ).'" src="'.$imgurl.'" '.$imgalt.' title="'.wppa_zoom_in( $id ).'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.$cursor.'" '.$events.' />';
+				$title = wppa_zoom_in( $id );
+				$result .= 	'<img' .
+								' id="i-' . $id . '-' . wppa( 'mocc' ) . '"' .
+								' src="' . $imgurl . '"' . 
+								' ' . $imgalt . 
+								( $title ? ' title="' . $title . '"' : '' ) .
+								' width="' . $imgwidth . '"' .
+								' height="' . $imgheight . '"' .
+								' style="' . $imgstyle . $cursor . '"' .
+								' ' . $events .
+							' />';
 			}
 			
 			// Close the a img
@@ -308,7 +336,6 @@ global $wpdb;
 			// The div img
 			$result .= '<div onclick="'.$link['url'].'" class="thumb-img" id="x-'.$id.'-'.wppa( 'mocc' ).'">';
 			if ( $is_video ) { 
-//				$result .= '<video preload="metadata" id="i-'.$id.'-'.wppa( 'mocc' ).'" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
 				$result .= wppa_get_video_html( array(
 						'id'			=> $id,
 						'width'			=> $imgwidth,
@@ -328,7 +355,16 @@ global $wpdb;
 						));
 			}
 			else {
-				$result .= wppa_nltab().'<img id="i-'.$id.'-'.wppa( 'mocc' ).'" src="'.$imgurl.'" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' />';
+				$result .= 	'<img' .
+								' id="i-' . $id . '-' . wppa( 'mocc' ) . '"' .
+								' src="' . $imgurl . '"' . 
+								' ' . $imgalt .
+								( $title ? ' title="' . $title . '"' : '' ) .
+								' width="' . $imgwidth . '"' .
+								' height="' . $imgheight . '"' .
+								' style="' . $imgstyle . ' cursor:pointer;"' .
+								' ' . $events .
+							' />';
 			}
 			$result .= '</div>';
 			$result .= '<script type="text/javascript">';
@@ -342,7 +378,6 @@ global $wpdb;
 		if ( wppa_switch( 'use_thumb_popup' ) ) {
 			$result .= '<div id="x-'.$id.'-'.wppa( 'mocc' ).'">';
 				if ( $is_video ) { 
-//					$result .= '<video preload="metadata" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.'" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
 					$result .= wppa_get_video_html( array(
 							'id'			=> $id,
 							'width'			=> $imgwidth,
@@ -362,13 +397,20 @@ global $wpdb;
 							));
 				}
 				else {
-					$result .= '<img src="'.$imgurl.'" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.'" '.$events.' />';
+					$result .= 	'<img' .
+									' src="' . $imgurl . '"' .
+									' ' . $imgalt .
+									( $title ? ' title="' . $title . '"' : '' ) .
+									' width="' . $imgwidth . '"' .
+									' height="' . $imgheight . '"' .
+									' style="' . $imgstyle . '"' .
+									' ' . $events . 
+								' />';
 				}
 			$result .= '</div>';
 		}
 		else {
 			if ( $is_video ) {
-//				$result .= '<video preload="metadata" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.'" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
 				$result .= wppa_get_video_html( array(
 						'id'			=> $id,
 						'width'			=> $imgwidth,
@@ -388,7 +430,14 @@ global $wpdb;
 						));
 			}
 			else {
-				$result .= '<img src="'.$imgurl.'" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.'" '.$events.' />';
+				$result .= 	'<img' .
+								' src="' . $imgurl . '"' .
+								' ' . $imgalt .
+								( $title ? ' title="' . $title . '"' : '' ) .
+								' width="' . $imgwidth . '"' . 
+								' height="' . $imgheight . '"' .
+								' style="' . $imgstyle . '"' .
+								' ' . $events . ' />';
 			}
 		}
 	}
@@ -409,64 +458,136 @@ global $wpdb;
 */
 	// Comten alt display?
 	if ( $com_alt ) {
-		$result .= '<div class="wppa-com-alt wppa-com-alt-'.wppa( 'mocc' ).'" style="height:'.$imgheight.'px; overflow:auto; margin: 0 0 8px 10px; border:1px solid '.wppa_opt( 'bcolor_alt' ).';" >';
+		$result .= 	'<div' .
+						' class="wppa-com-alt wppa-com-alt-' . wppa( 'mocc' ) . '"' .
+						' style="' .
+							'height:' . $imgheight . 'px;' .
+							'overflow:auto;' .
+							'margin: 0 0 8px 10px;' .
+							'border:1px solid ' . wppa_opt( 'bcolor_alt' ) . ';' .
+							'"' .
+					' >';
+					
 			$comments = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_COMMENTS."` WHERE `photo` = %s AND `status` = 'approved' ORDER BY `timestamp` DESC", $id ), ARRAY_A );
 			$first = true;
 			if ( $comments ) foreach ( $comments as $com ) {
-				$result .= '<h6 style="font-size:10px;line-height:12px;font-weight:bold;padding:'.( $first ? '0' : '6px' ).' 0 0 6px;margin:0;float:left;">'.$com['user'].' '.__a( 'wrote' ).
-								' '.wppa_get_time_since( $com['timestamp'] ).':</h6>'.
-								'<p style="font-size:10px;line-height:12px;padding:0 0 0 6px;text-align:left;margin:0; clear:left;">'.html_entity_decode( convert_smilies( stripslashes( $com['comment'] ) ) ).'</p>';
-								$first = false;
+				$result .= 	'<h6' .
+								' style="' .
+									'font-size:10px;' .
+									'line-height:12px;' .
+									'font-weight:bold;' .
+									'padding:'.( $first ? '0' : '6px' ).' 0 0 6px;' .
+									'margin:0;float:left;'. 
+									'"'.
+								'>' .
+									$com['user'] . ' ' . __a( 'wrote' ) . ' ' . wppa_get_time_since( $com['timestamp'] ) . ':' .
+							'</h6>'.
+							'<p' .
+								' style="' .
+									'font-size:10px;' .
+									'line-height:12px;' .
+									'padding:0 0 0 6px;' .
+									'text-align:left;' .
+									'margin:0;' .
+									'clear:left;' .
+									'"' .
+								'>' .
+									html_entity_decode( convert_smilies( stripslashes( $com['comment'] ) ) ) .
+							'</p>';
+							$first = false;
 			}
 		$result .= '</div>';
 	}
-	if ( ! $com_alt ) {	
+	
+	// NOT comalt
+	else {	
 	
 		// Open the subtext container
 		$margtop = wppa_switch( 'align_thumbtext' ) ? '' : 'margin-top:'.-$imgmarginbottom.'px;';
 		$subtextcontheight = $frameheight - max( $imgwidth,$imgheight );
 		if ( ! wppa_switch( 'align_thumbtext' ) ) $subtextcontheight += $imgmarginbottom;
-		$result.='<div style="height: '.$subtextcontheight.'px; width:'.$framewidth.'px; position:absolute; '.$margtop.' overflow:hidden;" ><!-- subtext container -->';// width:
+		$result.=	'<div' .
+						' style="' .
+							'height:'.$subtextcontheight.'px;' .
+							'width:'.$framewidth.'px;' .
+							'position:absolute;' .
+							$margtop .
+							'overflow:hidden;' .
+						'" ><!-- subtext container -->';
 		
 		// Single button voting system	
 		if ( wppa_opt( 'rating_max' ) == '1' && wppa_switch( 'vote_thumb' ) ) {
 			$mylast  = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM `'.WPPA_RATING.'` WHERE `photo` = %s AND `user` = %s ORDER BY `id` DESC LIMIT 1', $id, wppa_get_user() ), ARRAY_A ); 
 			$buttext = $mylast ? __( wppa_opt( 'voted_button_text' ) ) : __( wppa_opt( 'vote_button_text' ) );
-			$result .= '<input id="wppa-vote-button-'.wppa( 'mocc' ).'-'.$id.'" class="wppa-vote-button-thumb" style="margin:0;" type="button" onclick="wppaVoteThumb( '.wppa( 'mocc' ).', '.$id.' )" value="'.$buttext.'" />';
+			$result .= 	'<input' .
+							' id="wppa-vote-button-' . wppa( 'mocc' ) . '-' . $id . '"' .
+							' class="wppa-vote-button-thumb"' .
+							' style="margin:0;"' .
+							' type="button"' .
+							' onclick="wppaVoteThumb( ' . wppa( 'mocc' ) . ', ' . $id . ' )"' .
+							' value="'.$buttext.'"' .
+						' />';
 		}
 
 		// Name
 		if ( wppa_switch( 'thumb_text_name' ) || wppa_switch( 'thumb_text_owner' ) ) {
-			$result .= '<div class="wppa-thumb-text" style="'.__wcs( 'wppa-thumb-text' ).'" >';
-				$result .= wppa_get_photo_name( $id, wppa_switch( 'thumb_text_owner' ), false, false, wppa_switch( 'thumb_text_name' ) );
-			$result .= '</div>';
+			$result .= 	'<div' .
+							' class="wppa-thumb-text"' .
+							' style="'.__wcs( 'wppa-thumb-text' ).'"' .
+							' >' .
+							wppa_get_photo_name( $id, wppa_switch( 'thumb_text_owner' ), false, false, wppa_switch( 'thumb_text_name' ) ) .
+						'</div>';
 		}
 		
 		// searching, link to album
 		if ( wppa( 'src' ) || wppa( 'supersearch' ) || ( ( wppa( 'is_comten') || wppa( 'is_topten' ) || wppa( 'is_lasten' ) || wppa( 'is_featen') ) && wppa( 'start_album' ) != $thumb['album'] ) ) {
-			$result .= '<div class="wppa-thumb-text" style="'.__wcs( 'wppa-thumb-text' ).'" ><a href="'.wppa_get_album_url( $thumb['album'] ).'"><span class="wppa-tnpar" >(</span>'.stripslashes( __( wppa_get_album_name( $thumb['album'] ) ) ).'<span class="wppa-tnpar" >)</span></a></div>';
+			$result .= 	'<div' .
+							' class="wppa-thumb-text"' .
+							' style="' . __wcs( 'wppa-thumb-text' ) . '"' .
+							' >' .
+							'<a' .
+								' href="' . wppa_get_album_url( $thumb['album'] ) . '"' .
+								' >' .
+								'<span class="wppa-tnpar" >(</span>' .
+									stripslashes( __( wppa_get_album_name( $thumb['album'] ) ) ) .
+								'<span class="wppa-tnpar" >)</span>' .
+							'</a>' .
+						'</div>';
 		}
 
 		// Share
 		if ( wppa_switch( 'share_on_thumbs' ) ) {
-			$result .= '<div class="wppa-thumb-text" style="'.__wcs( 'wppa-thumb-text' ).'" >';
-				$result .= wppa_get_share_html( $id, 'thumb' );
-			$result .= '</div>';
+			$result .= 	'<div' .
+							' class="wppa-thumb-text"' .
+							' style="' . __wcs( 'wppa-thumb-text' ) . '"' .
+							' >' .
+							wppa_get_share_html( $id, 'thumb' ) .
+						'</div>';
 		}
 		
 		// Edit link
 		if ( ! wppa_is_user_blacklisted() ) {
 			if ( ( wppa_user_is( 'administrator' ) ) || ( wppa_get_user() == wppa_get_photo_owner( $id ) && wppa_switch( 'upload_edit' ) ) ) {
-				$result .= '<div class="wppa-thumb-text" style="'.__wcs( 'wppa-thumb-text' ).'" >
-						<a href="javascript:void();" style="color:red;" onclick="'.esc_attr( 'if ( confirm( "'.__a( 'Are you sure you want to remove this photo?' ).'" ) ) wppaAjaxRemovePhoto( '.wppa( 'mocc' ).', '.$id.', false ); return false;' ).'">
-							'.__a( 'Delete' ).'
-						</a>&nbsp;
-						<a href="javascript:void();" style="color:green;" onclick="wppaEditPhoto( '.wppa( 'mocc' ).', '.$id.' ); return false;" >
-							'.__a( 'Edit' ).'
-						</a>
-					</div>';
+				$result .= 	'<div' .
+								' class="wppa-thumb-text"' .
+								' style="' . __wcs( 'wppa-thumb-text' ) . '"' .
+								' >' .
+								'<a' .
+									' style="color:red;"' .
+									' onclick="'.esc_attr( 'if ( confirm( "'.__a( 'Are you sure you want to remove this photo?' ).'" ) ) wppaAjaxRemovePhoto( '.wppa( 'mocc' ).', '.$id.', false ); return false;' ).'"' .
+									' >' .
+										__a( 'Delete' ) .
+								'</a>' .
+									'&nbsp;' .
+								'<a' .
+									' style="color:green;"' .
+									' onclick="wppaEditPhoto( '.wppa( 'mocc' ).', '.$id.' ); return false;"' .
+									' >' . __a( 'Edit' ) .
+								'</a>' .
+							'</div>';
 			}
 		}
+		
 		// Description
 		if ( wppa_switch( 'thumb_text_desc' ) || $thumb['status'] == 'pending' || $thumb['status'] == 'scheduled' ) {
 			$desc = '';
@@ -474,21 +595,35 @@ global $wpdb;
 				$desc .= wppa_moderate_links( 'thumb', $id );
 			}
 			$desc .= wppa_get_photo_desc( $id, wppa_switch( 'allow_foreign_shortcodes_thumbs' ) );
-			$result .= '<div class="wppa-thumb-text" style="'.__wcs( 'wppa-thumb-text' ).'" >'.$desc.'</div>';
+			$result .= 	'<div' .
+							' class="wppa-thumb-text"' .
+							' style="'.__wcs( 'wppa-thumb-text' ).'"' .
+							' >' . $desc .
+						'</div>';
 		}
+		
 		// Rating
 		if ( wppa_switch( 'thumb_text_rating' ) ) {
 			$rating = wppa_get_rating_by_id( $id );
 			if ( $rating && wppa_switch( 'show_rating_count' ) ) $rating .= ' ( '.wppa_get_rating_count_by_id( $id ).' )';
-			$result .= '<div class="wppa-thumb-text" style="'.__wcs( 'wppa-thumb-text' ).'" >'.$rating.'</div>';
+			$result .= 	'<div' .
+							' class="wppa-thumb-text"' .
+							' style="'.__wcs( 'wppa-thumb-text' ).'"' .
+							' >' . $rating . 
+						'</div>';
 		}
+		
 		// Viewcount
 		if ( wppa_switch( 'thumb_text_viewcount' ) ) {
-			$result .= '<div class="wppa-thumb-text" style="clear:both;'.__wcs( 'wppa-thumb-text' ).'" >'.__a( 'Views:' ).' '.$thumb['views'].'</div>';
+			$result .= 	'<div' .
+							' class="wppa-thumb-text"' .
+							' style="clear:both;'.__wcs( 'wppa-thumb-text' ).'"' .
+							' >' . __a( 'Views:' ) . ' ' . $thumb['views'] .
+						'</div>';
 		}
 
 		// Close the subtext container
-		$result.='</div><!-- subtext container -->';	
+		$result .= 	'</div><!-- subtext container -->';	
 
 	} // if ! $com_alt	
 	
@@ -539,7 +674,7 @@ global $thlinkmsggiven;
 		$thlinkmsggiven = true;
 	}
 
-	$mcr = wppa_opt('wppa_thumbtype') == 'ascovers-mcr' ? 'mcr-' : '';
+	$mcr = wppa_opt( 'thumbtype' ) == 'ascovers-mcr' ? 'mcr-' : '';
 
 	$photo_left = wppa_switch( 'thumbphoto_left' );
 	$class_asym = 'wppa-asym-text-frame-'.$mcr.wppa( 'mocc' );
@@ -562,32 +697,56 @@ global $thlinkmsggiven;
 	}
 	wppa_step_covercount( 'thumb' );
 	
-	$result .= "\n".'<div id="thumb-'.$id.'-'.wppa( 'mocc' ).'" class="thumb wppa-box wppa-cover-box wppa-cover-box-'.$mcr.wppa( 'mocc' ).' wppa-'.$wppa_alt.'" style="'.$style.'" >';
+	$result .= 	"\n" .  '<div' .
+							' id="thumb-' . $id . '-' . wppa( 'mocc' ) . '"' .
+							' class="thumb wppa-box wppa-cover-box wppa-cover-box-' . $mcr.wppa( 'mocc' ) . ' wppa-' . $wppa_alt . '"' .
+							' style="' . $style . '"' .
+							' >';
 
 		if ( $photo_left ) {
 			$result .= wppa_the_thumbascoverphoto( $id, $src, $photo_left, $link, $imgattr_a, $events );
 		}
 		
 		$textframestyle = wppa_get_text_frame_style( $photo_left, 'thumb' );
-		$result .= '<div id="thumbtext_frame_'.$id.'_'.wppa( 'mocc' ).'" class="wppa-text-frame-'.wppa( 'mocc' ).' wppa-text-frame thumbtext-frame '.$class_asym.'" '.$textframestyle.'>';
-			$result .= '<h2 class="wppa-title" style="clear:none;">';
-				if ( $link['is_lightbox'] ) {
-					$result .= wppa_get_photo_name( $id );
-				}
-				else {
-					$result .= '<a href="'.$href.'" target="'.$target.'" title="'.$title.'" style="'.__wcs( 'wppa-title' ).'" >'.wppa_get_photo_name( $id ).'</a>';
-				}
-			$result .= '</h2>';
+		
+		$result .=  '<div' .
+						' id="thumbtext_frame_' . $id . '_' . wppa( 'mocc' ) . '"' .
+						' class="wppa-text-frame-' . wppa( 'mocc' ) . ' wppa-text-frame thumbtext-frame ' . $class_asym . '"' .
+						' ' . $textframestyle .
+						' >' .
+						'<h2' .
+							' class="wppa-title"' .
+							' style="clear:none;"' .
+							' >';
+							if ( $link['is_lightbox'] ) {
+								$result .= wppa_get_photo_name( $id );
+							}
+							else {
+								$result .= 	'<a' .
+												' href="' . $href . '"' .
+												' target="' . $target . '"' .
+												' title="' . $title . '"' .
+												' style="' . __wcs( 'wppa-title' ) . '"' .
+												' >' . wppa_get_photo_name( $id ) . 
+											'</a>';
+							}
+			$result .= 	'</h2>';
+			
 			$desc =  wppa_get_photo_desc( $id );
 			if ( in_array( $thumb['status'], array( 'pending', 'scheduled' ) ) ) $desc .= wppa_moderate_links( 'thumb', $id );
-			$result .= '<p class="wppa-box-text wppa-black" style="'.__wcs( 'wppa-box-text' ).__wcs( 'wppa-black' ).'" >'.$desc.'</p>';
-		$result .= '</div>';
+			
+			$result .= 	'<p' .
+							' class="wppa-box-text wppa-black"' .
+							' style="' . __wcs( 'wppa-box-text' ) . __wcs( 'wppa-black' ) . 
+							'" >' . $desc .
+						'</p>';
+		$result .= 	'</div>';
 		
-		if ( !$photo_left ) {
+		if ( ! $photo_left ) {
 			$result .= wppa_the_thumbascoverphoto( $id, $src, $photo_left, $link, $imgattr_a, $events );
 		}
 		
-	$result .= '</div><!-- thumb-'.$id.'-'.wppa( 'mocc' ).' -->';
+	$result .= 	'</div><!-- thumb-' . $id . '-' . wppa( 'mocc' ) . ' -->';
 	if ( $wppa_alt == 'even' ) $wppa_alt = 'alt'; else $wppa_alt = 'even';
 	
 	wppa_out( $result );
@@ -604,91 +763,138 @@ function wppa_the_thumbascoverphoto( $id, $src, $photo_left, $link, $imgattr_a, 
 	$imgheight 	= $imgattr_a['height'];
 	$frmwidth 	= $imgwidth + '10';	// + 2 * 1 border + 2 * 4 padding
 		
-	if ( $src != '' ) {
+	if ( ! $src ) {
+		return '';
+	}
 	
-	if ( wppa( 'in_widget' ) ) $photoframestyle = 'style="text-align:center;"';
-	else $photoframestyle = $photo_left ? 'style="float:left; margin-right:5px;width:'.$frmwidth.'px;"' : 'style="float:right; margin-left:5px;width:'.$frmwidth.'px;"';
-		$result .= '<div id="thumbphoto_frame_'.$id.'_'.wppa( 'mocc' ).'" class="thumbphoto-frame" '.$photoframestyle.'>';
-		if ( $link['is_lightbox'] ) {
-			$href = wppa_get_hires_url( $id );
-			$cursor = ' cursor:url( ' .wppa_get_imgdir() . wppa_opt( 'magnifier' ) . ' ),pointer;';
-			$result .= '<a href="'.$href.'" rel="'.wppa_opt( 'lightbox_name' ).'[occ'.wppa( 'mocc' ).']" title="'.$title.'">';
-				if ( wppa_is_video( $id ) ) {
-					$result .= wppa_get_video_html( array (
-								'id'			=> $id,
-								'width'			=> $imgwidth,
-								'height' 		=> $imgheight,
-								'controls' 		=> false,
-						//		'margin_top' 	=> '0',
-						//		'margin_bottom' => '0',
-								'tagid' 		=> 'i-'.$id.'-'.wppa( 'mocc' ),
-						//		'cursor' 		=> '',
-								'events' 		=> $events,
-								'title' 		=> $title,
-								'preload' 		=> 'metadata',
-						//		'onclick' 		=> '',
-								'lb' 			=> false,
-								'class' 		=> 'image wppa-img',
-								'style' 		=> __wcs( 'wppa-img' ).$imgattr.$cursor		//$imgstyle
-							) );
-				}
-				else {
-					$result .= '<img src="'.$src.'" ' . wppa_get_imgalt( $id ) . ' class="image wppa-img" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.__wcs( 'wppa-img' ).$imgattr.$cursor.'" '.$events.' />';
-				}
-			$result .= '</a>';
-		}
-		elseif ( $link['is_url'] ) {
-			$result .= '<a href="'.$href.'" title="'.$title.'">';
-				if ( wppa_is_video( $id ) ) {
-					$result .= wppa_get_video_html( array (
-								'id'			=> $id,
-								'width'			=> $imgwidth,
-								'height' 		=> $imgheight,
-								'controls' 		=> false,
-						//		'margin_top' 	=> '0',
-						//		'margin_bottom' => '0',
-								'tagid' 		=> 'i-'.$id.'-'.wppa( 'mocc' ),
-						//		'cursor' 		=> '',
-								'events' 		=> $events,
-								'title' 		=> $title,
-								'preload' 		=> 'metadata',
-						//		'onclick' 		=> '',
-								'lb' 			=> false,
-								'class' 		=> 'image wppa-img',
-								'style' 		=> __wcs( 'wppa-img' ).$imgattr		//$imgstyle
-							) );
-				}
-				else {
-					$result .= '<img src="'.$src.'" ' . wppa_get_imgalt( $id ) . ' class="image wppa-img" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.__wcs( 'wppa-img' ).$imgattr.'" '.$events.' />';
-				}
-			$result .= '</a>';
-		}
-		else {
+	if ( wppa( 'in_widget' ) ) {
+		$photoframestyle = 'style="text-align:center;"';
+	}
+	else { 
+		$photoframestyle = $photo_left ? 'style="float:left; margin-right:5px;width:'.$frmwidth.'px;"' : 'style="float:right; margin-left:5px;width:'.$frmwidth.'px;"';
+	}
+	
+	$result .= 	'<div'.
+					' id="thumbphoto_frame_' . $id . '_' . wppa( 'mocc' ) . '"' .
+					' class="thumbphoto-frame"' .
+					' ' . $photoframestyle .
+					'>';
+					
+	if ( $link['is_lightbox'] ) {
+		$href = wppa_get_hires_url( $id );
+		$cursor = ' cursor:url( ' .wppa_get_imgdir() . wppa_opt( 'magnifier' ) . ' ),pointer;';
+		
+		$result .= 	'<a' .
+						' href="' . $href . '"' .
+						' ' . wppa( 'rel' ) . '="' . wppa_opt( 'lightbox_name' ). '[occ' . wppa( 'mocc' ) . ']"' .
+						( $title ? ' title="' . $title . '"' : '' ) .
+						' >';
+						
 			if ( wppa_is_video( $id ) ) {
-					$result .= wppa_get_video_html( array (
-								'id'			=> $id,
-								'width'			=> $imgwidth,
-								'height' 		=> $imgheight,
-								'controls' 		=> false,
-						//		'margin_top' 	=> '0',
-						//		'margin_bottom' => '0',
-								'tagid' 		=> 'i-'.$id.'-'.wppa( 'mocc' ),
-						//		'cursor' 		=> '',
-								'events' 		=> $events,
-								'title' 		=> $title,
-								'preload' 		=> 'metadata',
-								'onclick' 		=> $href,
-								'lb' 			=> false,
-								'class' 		=> 'image wppa-img',
-								'style' 		=> __wcs( 'wppa-img' ).$imgattr		//$imgstyle
-							) );
+				$result .= wppa_get_video_html( array (
+							'id'			=> $id,
+							'width'			=> $imgwidth,
+							'height' 		=> $imgheight,
+							'controls' 		=> false,
+					//		'margin_top' 	=> '0',
+					//		'margin_bottom' => '0',
+							'tagid' 		=> 'i-'.$id.'-'.wppa( 'mocc' ),
+					//		'cursor' 		=> '',
+							'events' 		=> $events,
+							'title' 		=> $title,
+							'preload' 		=> 'metadata',
+					//		'onclick' 		=> '',
+							'lb' 			=> false,
+							'class' 		=> 'image wppa-img',
+							'style' 		=> __wcs( 'wppa-img' ).$imgattr.$cursor		//$imgstyle
+						) );
 			}
 			else {
-				$result .= '<img src="'.$src.'" ' . wppa_get_imgalt( $id ) . ' class="image wppa-img" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.__wcs( 'wppa-img' ).$imgattr.'" '.$events.' onclick="'.$href.'" />';
+				$result .= 	'<img' .
+								' src="' . $src . '"' .
+								' ' . wppa_get_imgalt( $id ) . 
+								' class="image wppa-img"' .
+								' width="' . $imgwidth . '"' .
+								' height="' . $imgheight . '"' .
+								' style="' . __wcs( 'wppa-img' ) . $imgattr . $cursor . '"' .
+								' ' . $events .
+							' />';
 			}
-		}
-		$result .= '</div>';
+		$result .= '</a>';
 	}
+	elseif ( $link['is_url'] ) {
+	
+		$result .= 	'<a' .
+						' href="' . $href . '"' .
+						( $title ? ' title="' . $title . '"' : '' ) .
+						' >';
+						
+			if ( wppa_is_video( $id ) ) {
+				$result .= wppa_get_video_html( array (
+							'id'			=> $id,
+							'width'			=> $imgwidth,
+							'height' 		=> $imgheight,
+							'controls' 		=> false,
+					//		'margin_top' 	=> '0',
+					//		'margin_bottom' => '0',
+							'tagid' 		=> 'i-'.$id.'-'.wppa( 'mocc' ),
+					//		'cursor' 		=> '',
+							'events' 		=> $events,
+							'title' 		=> $title,
+							'preload' 		=> 'metadata',
+					//		'onclick' 		=> '',
+							'lb' 			=> false,
+							'class' 		=> 'image wppa-img',
+							'style' 		=> __wcs( 'wppa-img' ).$imgattr		//$imgstyle
+						) );
+			}
+			else {
+				$result .= 	'<img' .
+								' src="' . $src . '"' .
+								' ' . wppa_get_imgalt( $id ) . 
+								' class="image wppa-img"' .
+								' width="' . $imgwidth . '"' .
+								' height="' . $imgheight . '"' .
+								' style="' . __wcs( 'wppa-img' ) . $imgattr . '"' .
+								' ' . $events .
+								' />';
+			}
+		$result .= 	'</a>';
+	}
+	else {
+		if ( wppa_is_video( $id ) ) {
+				$result .= wppa_get_video_html( array (
+							'id'			=> $id,
+							'width'			=> $imgwidth,
+							'height' 		=> $imgheight,
+							'controls' 		=> false,
+					//		'margin_top' 	=> '0',
+					//		'margin_bottom' => '0',
+							'tagid' 		=> 'i-'.$id.'-'.wppa( 'mocc' ),
+					//		'cursor' 		=> '',
+							'events' 		=> $events,
+							'title' 		=> $title,
+							'preload' 		=> 'metadata',
+							'onclick' 		=> $href,
+							'lb' 			=> false,
+							'class' 		=> 'image wppa-img',
+							'style' 		=> __wcs( 'wppa-img' ).$imgattr		//$imgstyle
+						) );
+		}
+		else {
+			$result .= 	'<img' .
+							' src="' . $src . '"' .
+							' ' . wppa_get_imgalt( $id ) . 
+							' class="image wppa-img"' .
+							' width="' . $imgwidth . '"' .
+							' height="' . $imgheight . '"' .
+							' style="' . __wcs( 'wppa-img' ) . $imgattr . '"' .
+							' ' . $events .
+							' onclick="' . $href . '"' .
+							' />';
+		}
+	}
+	$result .= '</div>';
 	
 	return $result;
 }
@@ -723,8 +929,19 @@ global $wpdb;
 	$imgsrc 		= wppa_fix_poster_ext( wppa_get_thumb_path( $id ), $id ); 
 	
 	if ( ! wppa_is_video( $id ) && ! is_file( $imgsrc ) ) {
-		$result .= '<div class="" style="; color:red;" >Missing thumbnail image #'.$id.'</div>';
-		return;
+		$result .= 	'<div' .
+						' class=""' .
+						' style="' .
+							'font-size:10px;' .
+							'color:red;' .
+							'width:' . wppa_opt( 'thumbsize' ) . 'px;' .
+							'position:static;' .
+							'float:left;' .
+							'"' .
+						' >' .
+						sprintf( __a( 'Missing thumbnail image #%s' ), $id ) .
+					'</div>';
+		return $result;
 	}
 
 	$alt 				= $album['alt_thumbsize'] == 'yes' ? '_alt' : '';
@@ -790,7 +1007,14 @@ global $wpdb;
 	if ( is_feed() ) {
 		$imgattr_a = wppa_get_imgstyle_a( $id, $imgsrc, '100', '4', 'thumb' );
 		$style = $imgattr_a['style'];
-		$result .= wppa_nltab().'<a href="'.get_permalink().'"><img src="'.$imgurl.'" '.$imgalt.' title="'.$title.'" style="'.$style.'" /></a>';
+		$result .= '<a href="' . get_permalink() . '">' .
+						'<img' .
+							' src="' . $imgurl . '"' .
+							' ' . $imgalt .
+							( $title ? ' title="' . $title . '"' : '' ) .
+							' style="'.$style.'"' .
+						' />' .
+					'</a>';
 		return;
 	}
 
@@ -803,7 +1027,17 @@ global $wpdb;
 	else $link = wppa_get_imglnk_a( 'thumb', $id ); // voor parent uplr
 
 	// Open the thumbframe
-	$result .= "\n".'<div id="thumbnail_frame_masonry_'.$id.'_'.wppa( 'mocc' ).'" style="'.$frame_h.'position:static; float:left; font-size:12px; line-height:8px; overflow:hidden;" >';
+	$result .= '
+				<div' .
+					' id="thumbnail_frame_masonry_' . $id . '_' . wppa( 'mocc' ) . '"' .
+					' style="' .
+						$frame_h .
+						'position:static;' .
+						'float:left;' .
+						'font-size:12px;' .
+						'line-height:8px;' .
+						'overflow:hidden;' .
+					'" >';
 
 	// The medals	
 	$result .= wppa_get_medal_html_a( array( 'id' => $id, 'size' => 'M', 'where' => 'top' ) );
@@ -852,7 +1086,15 @@ global $wpdb;
 							));
 				}
 				else {
-					$result .= '<img  onclick="'.$onclick.'" id="i-'.$id.'-'.wppa( 'mocc' ).'" src="'.$imgurl.'" '.$imgalt.' title="'.$title.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' />';
+					$result .= 	'<img' .
+									' onclick="' . $onclick . '"' .
+									' id="i-' . $id . '-' . wppa( 'mocc' ) . '"' .
+									' src="' . $imgurl . '"' .
+									' ' . $imgalt .
+									( $title ? ' title="' . $title . '"' : '' ) . 
+									' style="' . $imgstyle . ' cursor:pointer;"' .
+									' ' . $events . 
+								' />';
 				}
 				$result .= '</a>';
 			}
@@ -881,13 +1123,21 @@ global $wpdb;
 							));
 				}
 				else {
-					$result .= '<img  id="i-'.$id.'-'.wppa( 'mocc' ).'" src="'.$imgurl.'" '.$imgalt.' title="'.$title.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' />';
+					$result .= 	'<img' .
+									' id="i-' . $id . '-' . wppa( 'mocc' ) . '"' .
+									' src="' . $imgurl . '"' .
+									' ' . $imgalt .
+									( $title ? ' title="' . $title . '"' : '' ) .
+									' style="' . $imgstyle . 'cursor:pointer;"' .
+									' ' . $events .
+								' />';
 				}
 				$result .= '</a>';
 			}
 		}
 		elseif ( $link['is_lightbox'] ) {	// link is lightbox
 			$title 		= wppa_get_lbtitle( 'thumb', $id );
+			
 			// The a img
 			$result .= '<a href="'.$link['url'].'"' . 
 						' target="'.$link['target'].'"' .
@@ -895,22 +1145,22 @@ global $wpdb;
 						' data-audiohtml="'.esc_attr( wppa_get_audio_body( $id ) ).'"' .
 						' data-videonatwidth="'.wppa_get_videox( $id ).'"' .
 						' data-videonatheight="'.wppa_get_videoy( $id ).'"' .
-						' rel="'.wppa_opt( 'lightbox_name' ).'[occ'.wppa( 'mocc' ).']"' .
+						' ' . wppa( 'rel' ) . '="'.wppa_opt( 'lightbox_name' ).'[occ'.wppa( 'mocc' ).']"' .
 						' title="'.$title.'" class="thumb-img"' .
 						' id="x-'.$id.'-'.wppa( 'mocc' ).'">';
+						
+			// Video?
 			if ( $is_video ) { 
-//				$result .= '<video preload="metadata" id="i-'.$id.'-'.wppa( 'mocc' ).'" '.$imgalt.' title="'.wppa_zoom_in( $id ).'" style="'.$imgstyle.$cursor.'" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
+				$title = wppa_zoom_in( $id );
 				$result .= wppa_get_video_html( array(
 						'id'			=> $id,
-				//		'width'			=> $imgwidth,
-				//		'height' 		=> $imgheight,
 						'controls' 		=> false,
 						'margin_top' 	=> '0',
 						'margin_bottom' => '0',
 						'tagid' 		=> 'i-'.$id.'-'.wppa( 'mocc' ),
 						'cursor' 		=> $cursor,
 						'events' 		=> $events,
-						'title' 		=> wppa_zoom_in( $id ),
+						'title' 		=> $title,
 						'preload' 		=> 'metadata',
 						'onclick' 		=> '',
 						'lb' 			=> false,
@@ -919,16 +1169,29 @@ global $wpdb;
 						'use_thumb' 	=> true
 						));
 			}
+			
+			// Image
 			else {
-				$result .= '<img id="i-'.$id.'-'.wppa( 'mocc' ).'" src="'.$imgurl.'" '.$imgalt.' title="'.wppa_zoom_in( $id ).'" style="'.$imgstyle.$cursor.'" '.$events.' />';
+				$result .= 	'<img' .
+								' id="i-' . $id . '-' . wppa( 'mocc' ) . '"' .
+								' src="' . $imgurl . '"' .
+								' ' . $imgalt . 
+								( $title ? ' title="' . $title . '"' : '' ) .
+								' style="' . $imgstyle . $cursor . '"' .
+								' ' . $events . 
+							' />';
 			}
 			$result .= '</a>';
 		}
-		else {	// is onclick
+		
+		// is onclick
+		else {	
+		
 			// The div img
 			$result .= '<div onclick="'.$link['url'].'" class="thumb-img" id="x-'.$id.'-'.wppa( 'mocc' ).'">';
+			
+			// Video?
 			if ( $is_video ) { 
-//				$result .= '<video preload="metadata" id="i-'.$id.'-'.wppa( 'mocc' ).'" '.$imgalt.' title="'.$title.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
 				$result .= wppa_get_video_html( array(
 						'id'			=> $id,
 				//		'width'			=> $imgwidth,
@@ -948,9 +1211,19 @@ global $wpdb;
 						'use_thumb' 	=> true
 						));
 			}
+			
+			// Image
 			else {
-				$result .= '<img id="i-'.$id.'-'.wppa( 'mocc' ).'" src="'.$imgurl.'" '.$imgalt.' title="'.$title.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' />';
+				$result .= 	'<img' .
+								' id="i-' . $id . '-' . wppa( 'mocc' ) . '"' .
+								' src="' . $imgurl . '"' .
+								' ' . $imgalt . 
+								( $title ? ' title="' . $title . '"' : '' ) . 
+								' style="' . $imgstyle . 'cursor:pointer;"' .
+								' ' . $events . 
+							' />';
 			}
+			
 			$result .= '</div>';
 			$result .= '<script type="text/javascript">';
 			$result .= '/* <![CDATA[ */';
@@ -984,7 +1257,15 @@ global $wpdb;
 							));
 				}
 				else {
-					$result .= '<img src="'.$imgurl.'" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.'" '.$events.' />';
+					$result .= 	'<img' .
+									' src="' . $imgurl . '"' .
+									' ' . $imgalt .
+									( $title ? ' title="' . $title . '"' : '' ) . 
+									' width="' . $imgwidth . '"' .
+									' height="' . $imgheight . '"' .
+									' style="' . $imgstyle . '"' .
+									' ' . $events .
+								' />';
 				}
 			$result .= '</div>';
 		}
@@ -1011,7 +1292,14 @@ global $wpdb;
 						));			
 			}
 			else {
-				$result .= '<img src="'.$imgurl.'" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.'" '.$events.' />';
+				$result .= 	'<img' .
+								' src="' . $imgurl . '"' .
+								' ' . $imgalt .
+								( $title ? ' title="' . $title . '"' : '' ) .
+								' width="' . $imgwidth . '"' .
+								' height="' . $imgheight . '"' .
+								' style="' . $imgstyle . '" ' . $events .
+							' />';
 			}
 		}
 	}
@@ -1144,7 +1432,16 @@ function wppa_get_the_widget_thumb( $type, $image, $album, $display, $link, $tit
 						) );
 					}
 					else {
-						$result .= '<img id="i-' . $id . '-' . wppa( 'mocc' ) . '" title="' . $title . '" src="' . $imgurl . '" width="' . $imgstyle_a['width'] . '" height="' . $imgstyle_a['height'] . '" style="' . $imgstyle_a['style'] . ' cursor:pointer;" ' . $imgevents . ' ' . wppa_get_imgalt( $id ) . ' />';
+						$result .= 	'<img' .
+										' id="i-' . $id . '-' . wppa( 'mocc' ) . '"' .
+										( $title ? ' title="' . $title . '"' : '' ) .
+										' src="' . $imgurl . '"' .
+										' width="' . $imgstyle_a['width'] . '"' .
+										' height="' . $imgstyle_a['height'] . '"' .
+										' style="' . $imgstyle_a['style'] . ' cursor:pointer;"' .
+										' ' . $imgevents . 
+										' ' . wppa_get_imgalt( $id ) . 
+										' />';
 					}
 				}
 				else {
@@ -1153,17 +1450,20 @@ function wppa_get_the_widget_thumb( $type, $image, $album, $display, $link, $tit
 			$result .= "\n\t" . '</a>';
 		}
 		elseif ( $link['is_lightbox'] ) {
-			$title = wppa_get_lbtitle( 'thumb', $id );
+			$title 		= wppa_get_lbtitle( 'thumb', $id );
+			$videohtml 	= esc_attr( $videobody );
+			$audiohtml 	= esc_attr( $audiobody );
 			$result .= "\n\t" . '<a href="' . $link['url'] . '"' .
-						' data-videohtml="' . esc_attr( $videobody ) . '"' .
-						' data-audiohtml="' . esc_attr( $audiobody ) . '"' .
-						' data-videonatwidth="'.wppa_get_videox( $id ).'"' .
-						' data-videonatheight="'.wppa_get_videoy( $id ).'"' .
-						' rel="' . wppa_opt( 'lightbox_name' ) . '[' . $type . '-' . $album . '-' . wppa( 'mocc' ) . ']"' .
-						' title="' . $title . '"' .
+						( $videohtml ? ' data-videohtml="' . $videohtml . '"' .
+							' data-videonatwidth="'.wppa_get_videox( $id ).'"' .
+							' data-videonatheight="'.wppa_get_videoy( $id ).'"' : '' ) .
+						( $audiohtml ? ' data-audiohtml="' . $audiohtml . '"' : '' ) .
+						' '. wppa( 'rel' ) . '="' . wppa_opt( 'lightbox_name' ) . '[' . $type . '-' . $album . '-' . wppa( 'mocc' ) . ']"' .
+						( $title ? ' title="' . $title . '"' : '' ) .
 						' target="' . $link['target'] . '" >';
 				$result .= "\n\t\t";
 				if ( $display == 'thumbs' ) {
+					$title = wppa_zoom_in( $id );
 					if ( $is_video ) {
 						$result .= wppa_get_video_html( array(
 							'id'			=> $id,
@@ -1175,11 +1475,20 @@ function wppa_get_the_widget_thumb( $type, $image, $album, $display, $link, $tit
 							'tagid' 		=> 'i-' . $id . '-' . wppa( 'mocc' ),
 							'cursor' 		=> $imgstyle_a['cursor'],
 							'events' 		=> $imgevents,
-							'title' 		=> wppa_zoom_in( $id ),
+							'title' 		=> $title
 						) );
 					}
 					else {
-						$result .= '<img id="i-' . $id . '-' . wppa( 'mocc' ) . '" title="' . wppa_zoom_in( $id ) . '" src="' . $imgurl . '" width="' . $imgstyle_a['width'] . '" height="' . $imgstyle_a['height'] . '" style="' . $imgstyle_a['style'] . $imgstyle_a['cursor'] . '" ' . $imgevents . ' ' . wppa_get_imgalt( $id ) . ' />';
+						$result .= 	'<img' .
+										' id="i-' . $id . '-' . wppa( 'mocc' ) . '"' .
+										( $title ? ' title="' . $title . '"' : '' ) .
+										' src="' . $imgurl . '"' .
+										' width="' . $imgstyle_a['width'] . '"' .
+										' height="' . $imgstyle_a['height'] . '"' .
+										' style="' . $imgstyle_a['style'] . $imgstyle_a['cursor'] . '"' .
+										' ' . $imgevents . 
+										' ' . wppa_get_imgalt( $id ) . 
+										' />';
 					}
 				}
 				else {
@@ -1206,11 +1515,25 @@ function wppa_get_the_widget_thumb( $type, $image, $album, $display, $link, $tit
 						) );
 				}
 				else {
-					$result .= '<img id="i-' . $id . '-' . wppa( 'mocc' ) . '" title="' . $title . '" src="' . $imgurl . '" width="' . $imgstyle_a['width'] . '" height="' . $imgstyle_a['height'] . '" style="' . $imgstyle_a['style'] . ' cursor:pointer;" ' . $imgevents . ' onclick="' . $link['url'] . '" ' . wppa_get_imgalt( $id ) . ' />';
+					$result .= 	'<img' .
+									' id="i-' . $id . '-' . wppa( 'mocc' ) . '"' .
+									( $title ? ' title="' . $title . '"' : '' ) .
+									' src="' . $imgurl . '"' .
+									' width="' . $imgstyle_a['width'] . '"' .
+									' height="' . $imgstyle_a['height'] . '"' .
+									' style="' . $imgstyle_a['style'] . ' cursor:pointer;"' .
+									' ' . $imgevents . 
+									' onclick="' . $link['url'] . '"' .
+									' ' . wppa_get_imgalt( $id ) . 
+									' />';
 				}
 			}
 			else {
-				$result .= '<a href="" style="cursor:pointer;" onclick="' . $link['url'] . '">' . $name . '</a>';
+				$result .= 	'<a' .
+								' style="cursor:pointer;"' .
+								' onclick="' . $link['url'] . '"' .
+								' >' . $name . 
+							'</a>';
 
 			}	
 		}
@@ -1233,7 +1556,16 @@ function wppa_get_the_widget_thumb( $type, $image, $album, $display, $link, $tit
 					) );
 			}
 			else {
-				$result .= '<img id="i-' . $id . '-' . wppa( 'mocc' ) . '" title="' . $title . '" src="' . $imgurl . '" width="' . $imgstyle_a['width'] . '" height="' . $imgstyle_a['height'] . '" style="' . $imgstyle_a['style'] . '" ' . $imgevents . ' ' . wppa_get_imgalt( $id ) . ' />';
+				$result .= 	'<img' .
+								' id="i-' . $id . '-' . wppa( 'mocc' ) . '"' .
+								( $title ? ' title="' . $title . '"' : '' ) .
+								' src="' . $imgurl . '"' .
+								' width="' . $imgstyle_a['width'] . '"' .
+								' height="' . $imgstyle_a['height'] . '"' .
+								' style="' . $imgstyle_a['style'] . '"' .
+								' ' . $imgevents . 
+								' ' . wppa_get_imgalt( $id ) . 
+								' />';
 			}
 		}
 		else {
@@ -1295,25 +1627,41 @@ global $thumb;
 		if ( $do_for_feed ) {
 			$style_a = wppa_get_imgstyle_a( $thumb['id'], $src, '100', '4', 'thumb' );
 			$style = $style_a['style'];
-			$result .= '<a href="'.get_permalink().'"><img src="'.$url.'" ' . $imgalt . ' title="'.$thumbname.'" style="'.$style.'" /></a>';
+			$result .= 	'<a href="'.get_permalink().'">' .
+							'<img' .
+								' src="'.$url.'"' .
+								' ' . $imgalt . 
+								' title="'.$thumbname.'"' .
+								' style="'.$style.'"' .
+							' />' .
+						'</a>';
 		}
 	} else {
-		// If !$do_for_feed: pre-or post-ambule. To avoid dup id change it in that case
+	
+		// If ! $do_for_feed: pre-or post-ambule. To avoid dup id change it in that case
 		$tmp = $do_for_feed ? 'film' : 'pre';
 		$style = $glue ? 'style="'.wppa_get_thumb_frame_style( $glue, 'film' ).'"' : '';
-		$result .= '<div id="'.$tmp.'_wppatnf_'.$thumb['id'].'_'.wppa( 'mocc' ).'" class="thumbnail-frame" '.$style.' >';
+		$result .= 	'<div' .
+						' id="'.$tmp.'_wppatnf_'.$thumb['id'].'_'.wppa( 'mocc' ).'"' .
+						' class="thumbnail-frame"' .
+						' ' . $style .
+						' >';
 		
 		if ( $psourl ) {	// True only when pso activated and data present
-			$result .= '<a '.$psourl.'>';	// $psourl contains url, target and title
+			$result .= '<a '. $psourl . '>';	// $psourl contains url, target and title
 		}
 		elseif ( wppa_opt( 'film_linktype' ) == 'lightbox' && $tmp == 'film' ) {
-			$result .= '<a href="'.$furl.'"' .
-						' data-videohtml="'.esc_attr( wppa_get_video_body( $thumb['id'] ) ).'"' .
-						' data-audiohtml="'.esc_attr( wppa_get_audio_body( $thumb['id'] ) ).'"' .
-						' data-videonatwidth="'.wppa_get_videox( $thumb['id'] ).'"' .
-						' data-videonatheight="'.wppa_get_videoy( $thumb['id'] ).'"' .
-						' rel="'.wppa_opt( 'lightbox_name' ).'[occ'.wppa( 'mocc' ).']"' .
-						' title="'.wppa_get_lbtitle( 'slide', $thumb['id'] ).'" >';
+			$title 		= wppa_get_lbtitle( 'slide', $thumb['id'] );
+			$videohtml 	= esc_attr( wppa_get_video_body( $thumb['id'] ) );
+			$audiohtml 	= esc_attr( wppa_get_audio_body( $thumb['id'] ) );
+			$result .= 	'<a href="' . $furl . '"' .
+							( $videohtml ? ' data-videohtml="' . $videohtml . '"' .
+							' data-videonatwidth="' . wppa_get_videox( $thumb['id'] ) . '"' .
+							' data-videonatheight="' . wppa_get_videoy( $thumb['id'] ) . '"' : '' ) .
+							( $audiohtml ? ' data-audiohtml="' . $audiohtml . '"' : '' ) .
+							' ' . wppa( 'rel' ) . '="' . wppa_opt( 'lightbox_name' ) . '[occ'.wppa( 'mocc' ) . ']"' .
+							( $title ? ' title="' . $title . '"' : '' ) .
+							' >';
 		}
 		
 			if ( $tmp == 'pre' && wppa_opt( 'film_linktype' ) == 'lightbox' ) $cursor = 'cursor:default;';
@@ -1332,9 +1680,17 @@ global $thumb;
 														 );
 				}
 				else {
-					$result .= '<img id="wppa-'.$tmp.'-'.$idx.'-'.wppa( 'mocc' ).'" class="wppa-'.$tmp.'-'.wppa( 'mocc' ).'" src="'.$url.'" ' . $imgalt . ' style="'.$imgstyle.$cursor.'" '.$events.' data-title="'.( $psourl ? esc_attr($thumb['linktitle']) : '').'" />';
+					$result .=  '<img' .
+									' id="wppa-' . $tmp . '-' . $idx . '-' . wppa( 'mocc' ) . '"' .
+									' class="wppa-'.$tmp.'-'.wppa( 'mocc' ).'"' .
+									' src="' . $url . '"' .
+									' ' . $imgalt . 
+									' style="' . $imgstyle . $cursor . '"' .
+									' ' . $events . 
+									' data-title="' . ( $psourl ? esc_attr( $thumb['linktitle'] ) : '' ) . '"' .
+									' />';
 				}
-			if ( $tmp == 'film' && ! $com_alt && ! wppa_cdn() && ! wppa_switch( 'lazy_or_htmlcomp' ) ) $result.='-->';
+			if ( $tmp == 'film' && ! $com_alt && ! wppa_cdn() && ! wppa_switch( 'lazy_or_htmlcomp' ) ) $result .= '-->';
 			
 		if ( $psourl ) {	// True only when pso activated and data present
 			$result .= '</a>';	// $psourl contains url, target and title
@@ -1438,16 +1794,42 @@ function wppa_get_medal_html_a( $args ) {
 	$result .= '<div style="position:relative;top:'.$ctop.'px;z-index:10;">';
 	
 	// The medal
-	if ( $medal ) $result .= '<img src="'.WPPA_URL.'/images/medal_'.$medal.'_'.$color.'.png" title="'.$title.'" alt="'.$title.'" style="'.$sstyle.'top:4px;position:absolute; border:none; margin:0; padding:0; box-shadow:none; height:'.$size.'px; top:'.$top.'px;" />';
-//	if ( $thumb['status'] == 'silver' ) $result .= '<img src="'.WPPA_URL.'/images/medal_silver_'.$color.'.png" title="'.esc_attr(__a('Silver medal')).'" alt="'.__a('Silver').'" style="'.$sstyle.'top:4px;position:absolute; border:none; margin:0; padding:0; box-shadow:none; height:'.$size.'px; top:'.$top.'px;" />';
-//	if ( $thumb['status'] == 'gold' ) 	$result .= '<img src="'.WPPA_URL.'/images/medal_gold_'.$color.'.png" title="'.esc_attr(__a('Gold medal')).'" alt="'.__a('Gold').'" style="'.$sstyle.'top:4px;position:absolute; border:none; margin:0; padding:0; box-shadow:none; height:'.$size.'px; top:'.$top.'px;" />';
+	if ( $medal ) $result .= 	'<img' .
+									' src="' . WPPA_URL . '/images/medal_' . $medal . '_' . $color .'.png"' .
+									' title="' . $title . '"' .
+									' alt="' . $title . '"' .
+									' style="' . $sstyle . 
+										'top:4px;' .
+										'position:absolute;' .
+										'border:none;' .
+										'margin:0;' .
+										'padding:0;' .
+										'box-shadow:none;' .
+										'height:'  .$size . 'px;' .
+										'top:' . $top . 'px;' .
+										'"' .
+								' />';
 
 	// The new indicator
 	if ( ! $medal ) {
 		$lstyle = $sstyle;
 	}
 	if ( $new ) {
-		$result .= '<img src="'.WPPA_URL.'/images/new.png" title="'.esc_attr( __a('New') ).'" alt="'.esc_attr( __a('New') ).'" class="wppa-thumbnew" style="'.$lstyle.'top:'.$ntop.'px;position:absolute; border:none; margin:0; padding:0; box-shadow:none; height:'.$nsize.'px;" />';
+		$result .= 	'<img' .
+						' src="' . WPPA_URL . '/images/new.png"' .
+						' title="' . esc_attr( __a('New') ) . '"' .
+						' alt="' . esc_attr( __a('New') ) . '"' .
+						' class="wppa-thumbnew"' .
+						' style="' . $lstyle . 
+							'top:' . $ntop . 'px;' .
+							'position:absolute;' .
+							'border:none;' .
+							'margin:0;' .
+							'padding:0;' .
+							'box-shadow:none;' .
+							'height:' . $nsize . 'px;' .
+							'"'. 
+					' />';
 	}
 	
 	// Close container

@@ -3,7 +3,7 @@
 // Conatins lightbox modules
 // Dependancies: wppa.js and default wp jQuery library
 // 
-var wppaLightboxVersion = '6.1.12';
+var wppaLightboxVersion = '6.1.14';
 
 // Initial initialization
 jQuery( document ).ready(function( e ) {
@@ -138,12 +138,25 @@ wppaConsoleLog( 'wppaOvlShow arg='+arg );
 		else {
 			wppaOvlTitle = wppaRepairScriptTags( arg.title );
 		}
-		wppaOvlVideoHtml 			= decodeURI( jQuery( arg ).attr( 'data-videohtml' ) );
-		wppaOvlAudioHtml 			= decodeURI( jQuery( arg ).attr( 'data-audiohtml' ) );
-		wppaOvlVideoNaturalWidth 	= jQuery( arg ).attr( 'data-videonatwidth' );
-		wppaOvlVideoNaturalHeight 	= jQuery( arg ).attr( 'data-videonatheight' );
-		var rel = arg.rel;
+		wppaOvlVideoHtml 			= jQuery( arg ).attr( 'data-videohtml' ) ? decodeURI( jQuery( arg ).attr( 'data-videohtml' ) ) : '';
+		wppaOvlAudioHtml 			= jQuery( arg ).attr( 'data-audiohtml' ) ? decodeURI( jQuery( arg ).attr( 'data-audiohtml' ) ) : '';
+
+		wppaOvlVideoNaturalWidth 	= jQuery( arg ).attr( 'data-videonatwidth' ) ? jQuery( arg ).attr( 'data-videonatwidth' ) : '';
+		wppaOvlVideoNaturalHeight 	= jQuery( arg ).attr( 'data-videonatheight' ) ? jQuery( arg ).attr( 'data-videonatheight' ) : '';
+		
+		var rel;
+		if ( arg.rel ) {
+			rel = arg.rel;
+		}
+		else if ( jQuery( arg ).attr( 'data-rel' ) ) {
+			rel = jQuery( arg ).attr( 'data-rel' );
+		}
+		else {
+			rel = false;
+		}
+		
 		var temp = rel.split( '[' );
+		
 		if ( temp[1] ) {	// We are in a set
 			wppaOvlUrls 				= [];
 			wppaOvlTitles 				= [];
@@ -160,8 +173,17 @@ wppaConsoleLog( 'wppaOvlShow arg='+arg );
 			// Save the set
 			for ( i=0;i<anchors.length;i++ ) {
 				anchor = anchors[i];
-				if ( anchor.rel ) {
-					temp = anchor.rel.split( "[" );
+//				if ( anchor.rel ) {
+//					temp = anchor.rel.split( "[" );
+//				}
+//				else 
+				if ( jQuery( anchor ).attr( 'data-rel' ) ) {
+					temp = jQuery( anchor ).attr( 'data-rel').split( "[" );
+				}
+				else {
+					temp = false;
+				}
+				if ( temp.length > 1 ) {
 					if ( temp[0] == 'wppa' && temp[1] == setname ) {	// Same set
 						wppaOvlUrls[j] = anchor.href;
 						if ( jQuery( anchor ).attr( 'data-lbtitle' ) ) {
@@ -170,10 +192,11 @@ wppaConsoleLog( 'wppaOvlShow arg='+arg );
 						else {
 							wppaOvlTitles[j] = wppaRepairScriptTags( anchor.title );
 						}
-						wppaOvlVideoHtmls[j] 			= decodeURI( jQuery( anchor ).attr( 'data-videohtml' ) );
-						wppaOvlAudioHtmls[j] 			= decodeURI( jQuery( anchor ).attr( 'data-audiohtml' ) );
-						wppaOvlVideoNaturalWidths[j] 	= jQuery( anchor ).attr( 'data-videonatwidth' );	
-						wppaOvlVideoNaturalHeights[j] 	= jQuery( anchor ).attr( 'data-videonatheight' );
+						wppaOvlVideoHtmls[j] 			= jQuery( anchor ).attr( 'data-videohtml' ) ? decodeURI( jQuery( anchor ).attr( 'data-videohtml' ) ) : '';
+						wppaOvlAudioHtmls[j] 			= jQuery( anchor ).attr( 'data-audiohtml' ) ? decodeURI( jQuery( anchor ).attr( 'data-audiohtml' ) ) : '';
+
+						wppaOvlVideoNaturalWidths[j] 	= jQuery( anchor ).attr( 'data-videonatwidth' ) ? jQuery( anchor ).attr( 'data-videonatwidth' ) : '';	
+						wppaOvlVideoNaturalHeights[j] 	= jQuery( anchor ).attr( 'data-videonatheight' ) ? jQuery( anchor ).attr( 'data-videonatheight' ) : '';
 						if ( anchor.href == wppaOvlUrl ) wppaOvlIdx = j;	// Current index
 						j++;
 					}
@@ -194,8 +217,8 @@ wppaConsoleLog( 'wppaOvlShow arg='+arg );
 
 	_bumpViewCount( wppaPhotoId );
 	
-	var wppaIsVideo = typeof( wppaOvlVideoHtml ) != 'undefined' && wppaOvlVideoHtml != '' && wppaOvlVideoHtml != 'undefined';
-	var wppaHasAudio = wppaOvlAudioHtml != '';
+	var wppaIsVideo 	= wppaOvlVideoHtml != '';
+	var wppaHasAudio 	= wppaOvlAudioHtml != '';
 
 	// Fullsize?
 	if ( wppaOvlMode != 'normal' ) {
@@ -247,7 +270,7 @@ wppaConsoleLog( 'wppaOvlShow arg='+arg );
 							' id="wppa-overlay-audio"' +
 							' class="wppa-overlay-audio"' +
 							' preload="metadata"' +
-							( ( wppaOvlAudioStart && ! wppaOvlAudioPlaying ) ? ' autoplay' : '' ) +
+							( ( wppaOvlAudioStart ) ? ' autoplay' : '' ) +
 							' onpause="wppaOvlAudioPlaying = false;"' +
 							' onplay="wppaOvlAudioPlaying = true;"' +
 							' style="' +
@@ -863,14 +886,24 @@ wppaConsoleLog( 'wppaInitOverlay' );
 	var anchors = jQuery( 'a' );
 	var anchor;
 	var i;
-	
+	var temp = '';
+
 	wppaOvlFsPhotoId = 0; // Reset ovl fullscreen photo id
 	wppaPhotoId = 0;
 		
 	for( i=0;i<anchors.length;i++ ) {
 		anchor = anchors[i];
-		if ( anchor.rel ) {
-			temp = anchor.rel.split( "[" );
+//		if ( anchor.rel ) {
+//			temp = anchor.rel.split( "[" );
+//		}
+//		else 
+		if ( jQuery( anchor ).attr( 'data-rel' ) ) {
+			temp = jQuery( anchor ).attr( 'data-rel' ).split( "[" );
+		}
+		else { 
+			temp = false;
+		}
+		if ( temp.length > 1 ) {
 			if ( temp[0] == 'wppa' ) {
 				wppaWppaOverlayActivated = true;	// found one
 				jQuery( anchor ).click(function( event ) {
@@ -888,8 +921,8 @@ wppaConsoleLog( 'wppaInitOverlay' );
 
 // This module is intented to be used in any onclick definition that opens or closes a part of the photo description.
 // this will automaticly adjust the picturesize so that the full description will be visible.
-// Example: <a href="javascript://" onclick="myproc()" >Show Details</a>
-// Change to: <a href="javascript://" onclick="myproc(); wppaOvlResize()" >Show Details</a>
+// Example: <a onclick="myproc()" >Show Details</a>
+// Change to: <a onclick="myproc(); wppaOvlResize()" >Show Details</a>
 // Isn't it simple?
 function wppaOvlResize() {
 wppaConsoleLog( 'wppaOvlResize' );

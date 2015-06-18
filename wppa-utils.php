@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 6.1.12
+* Version 6.1.14
 * 
 */
  
@@ -2517,5 +2517,77 @@ function wppa_explode_csv( $txt ) {
 function wppa_sanitize_text( $txt ) {
 	$result = sanitize_text_field( $txt );
 	$result = str_replace( array(chr(0), chr(1), chr(2), chr(3),chr(4), chr(5), chr(6), chr(7) ), '', $result );
+	return $result;
+}
+
+function wppa_is_mobile() {
+	$result = false;
+	$detect = new wppa_mobile_detect();
+	if ( $detect->isMobile() ) {
+		$result = true;
+	}
+	return $result;
+}
+
+// Like wp_nonce_field
+// To prevent duplicate id's, we externally add an id number ( e.g. album ) and internally the mocc number.
+function wppa_nonce_field( $action = -1, $name = "_wpnonce", $referer = true , $echo = true, $wppa_id = '0' ) {
+
+	$name = esc_attr( $name );
+	$nonce_field = 	'<input' .
+						' type="hidden"' .
+						' id="' . $name . '-' . $wppa_id . '-' . wppa( 'mocc' ) . '"' .
+						' name="' . $name . '"' .
+						' value="' . wp_create_nonce( $action ) . '"' .
+						' />';
+
+	if ( $referer ) {
+		$nonce_field .= wp_referer_field( false );
+	}
+
+	if ( $echo ) {
+		echo $nonce_field;
+	}
+
+	return $nonce_field;
+}
+
+// Like convert_smilies, but directe rendered to <img> tag to avoid performance bottleneck for emoji's when ajax on firefox
+function wppa_convert_smilies( $text ) {
+static $smilies;
+
+	// Initialize
+	if ( ! is_array( $smilies ) ) {
+		$smilies = array(	";-)" 		=> '<img class="emoji" draggable="false" alt="??" src="http://s.w.org/images/core/emoji/72x72/1f609.png" />',
+							":|" 		=> '<img class="emoji" draggable="false" alt="??" src="http://s.w.org/images/core/emoji/72x72/1f610.png" />',
+							":x" 		=> '<img class="emoji" draggable="false" alt="??" src="http://s.w.org/images/core/emoji/72x72/1f621.png" />',
+							":twisted:" => '<img class="emoji" draggable="false" alt="??" src="http://s.w.org/images/core/emoji/72x72/1f608.png" />',
+							":shock:" 	=> '<img class="emoji" draggable="false" alt="??" src="http://s.w.org/images/core/emoji/72x72/1f62f.png" />',
+							":razz:" 	=> '<img class="emoji" draggable="false" alt="??" src="http://s.w.org/images/core/emoji/72x72/1f61b.png" />',
+							":oops:" 	=> '<img class="emoji" draggable="false" alt="??" src="http://s.w.org/images/core/emoji/72x72/1f633.png" />',
+							":o" 		=> '<img class="emoji" draggable="false" alt="??" src="http://s.w.org/images/core/emoji/72x72/1f62e.png" />',
+							":lol:" 	=> '<img class="emoji" draggable="false" alt="??" src="http://s.w.org/images/core/emoji/72x72/1f606.png" />',
+							":idea:" 	=> '<img class="emoji" draggable="false" alt="??" src="http://s.w.org/images/core/emoji/72x72/1f4a1.png" />',
+							":grin:" 	=> '<img class="emoji" draggable="false" alt="??" src="http://s.w.org/images/core/emoji/72x72/1f600.png" />',
+							":evil:" 	=> '<img class="emoji" draggable="false" alt="??" src="http://s.w.org/images/core/emoji/72x72/1f47f.png" />',
+							":cry:" 	=> '<img class="emoji" draggable="false" alt="??" src="http://s.w.org/images/core/emoji/72x72/1f625.png" />',
+							":cool:" 	=> '<img class="emoji" draggable="false" alt="??" src="http://s.w.org/images/core/emoji/72x72/1f60e.png" />',
+							":arrow:" 	=> '<img class="emoji" draggable="false" alt="?" src="http://s.w.org/images/core/emoji/72x72/27a1.png" />',
+							":???:" 	=> '<img class="emoji" draggable="false" alt="??" src="http://s.w.org/images/core/emoji/72x72/1f615.png" />',
+							":?:" 		=> '<img class="emoji" draggable="false" alt="?" src="http://s.w.org/images/core/emoji/72x72/2753.png" />',
+							":!:" 		=> '<img class="emoji" draggable="false" alt="?" src="http://s.w.org/images/core/emoji/72x72/2757.png" />'
+		);
+	}
+	
+	// Perform
+	$result = $text;
+	foreach ( array_keys( $smilies ) as $key ) {
+		$result = str_replace( $key, $smilies[$key], $result );
+	}
+	
+	// Convert non-emoji's
+	$result = convert_smilies( $result );
+	
+	// Done
 	return $result;
 }

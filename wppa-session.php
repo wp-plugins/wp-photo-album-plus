@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all session routines
-* Version 5.5.0
+* Version 5.1.14
 *
 * Firefox modifies data in the superglobal $_SESSION.
 * See https://bugzilla.mozilla.org/show_bug.cgi?id=991019
@@ -28,6 +28,12 @@ global $wpdb;
 global $wppa_session;
 
 	if ( is_array( $wppa_session ) ) return true; 	// To prevent dup opens
+	
+	// If the session table does not yet exist on activation
+	if ( ! wppa_table_exists( WPPA_SESSION ) ) {
+		$wppa_session['id'] = '0';
+		return false;
+	}
 
 	// Cleanup first
 	$lifetime = 3600;			// Sessions expire after one hour
@@ -78,6 +84,8 @@ function wppa_session_end() {
 global $wpdb;
 global $wppa_session;
 
+	if ( ! wppa_get_session_id() ) return false;
+	
 	$iret = $wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_SESSION."` SET `data` = %s WHERE `session` = %s", serialize( $wppa_session ), wppa_get_session_id() ) );
 	
 	if ( $iret === false ) {

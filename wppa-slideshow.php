@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 5.5.0
+* Version 6.1.14
 *
 */
 
@@ -241,10 +241,11 @@ global $wppa_opt;
 	if ( is_feed() ) return;
 	if ( $wppa['is_filmonly'] ) return;
 	
-	if ( wppa_switch('wppa_slide_swipe') ) {
-		$ontouch = 'ontouchstart="wppaTouchStart(event,\'slide_frame-'.$wppa['mocc'].'\', '.$wppa['mocc'].');"  ontouchend="wppaTouchEnd(event);" ontouchmove="wppaTouchMove(event);" ontouchcancel="wppaTouchCancel(event);"';
-	}
-	else $ontouch = '';
+//	if ( wppa_switch('wppa_slide_swipe') ) {
+//		$ontouch = 'ontouchstart="wppaTouchStart(event,\'slide_frame-'.$wppa['mocc'].'\', '.$wppa['mocc'].');"  ontouchend="wppaTouchEnd(event);" ontouchmove="wppaTouchMove(event);" ontouchcancel="wppaTouchCancel(event);"';
+//	}
+//	else 
+	$ontouch = '';
 	if ( wppa_switch('wppa_slide_pause') ) {
 		$pause = 'onmouseover="wppaSlidePause['.$wppa['mocc'].'] = \''.__a('Paused', 'wppa_theme').'\'" onmouseout="wppaSlidePause['.$wppa['mocc'].'] = false"';
 	}
@@ -413,7 +414,36 @@ global $wppa_opt;
 			$s = '<style>.FotomotoToolbarClass{font-size:'.$wppa_opt['wppa_fotomoto_fontsize'].'px !important;}</style>';
 		}
 		else $s = '';
-		$content = str_replace( 'w#fotomoto', $s.'<div id="wppa-fotomoto-container-'.$wppa['mocc'].'" class="wppa-fotomoto-container" ></div><div id="wppa-fotomoto-checkout-'.$wppa['mocc'].'" class="wppa-fotomoto-checkout FotomotoToolbarClass" style="float:right; clear:none; " ><ul class="FotomotoBar" style="list-style:none outside none;" ><li><a href="javascript:void();" onclick="FOTOMOTO.API.checkout(); return false;" >'.__('Checkout').'</a></li></ul></div><div style="clear:both;"></div>', $content );
+		$content = str_replace( 'w#fotomoto', 
+								$s . 
+								'<div' .
+									' id="wppa-fotomoto-container-'.$wppa['mocc'].'"' .
+									' class="wppa-fotomoto-container"' .
+									' >' .
+								'</div>' .
+								'<div' .
+									' id="wppa-fotomoto-checkout-'.$wppa['mocc'].'"' .
+									' class="wppa-fotomoto-checkout FotomotoToolbarClass"' .
+									' style="float:right; clear:none;"' .
+									' >' .
+									'<ul' .
+										' class="FotomotoBar"' .
+										' style="list-style:none outside none;"' .
+										' >' .
+										'<li>' .
+											'<a' .
+											' onclick="FOTOMOTO.API.checkout(); return false;"' .
+											' >' .
+												__('Checkout') .
+											'</a>' .
+										'</li>' .
+									'</ul>' .
+								'</div>' .
+								'<div' .
+									' style="clear:both;"' .
+									' >' .
+								'</div>',
+								$content );
 	}
 	else {
 		$content = str_replace( 'w#fotomoto', '', $content );
@@ -787,7 +817,7 @@ global $wppa_opt;
 		// do the numbers
 		foreach ($thumbs as $tt) :
 			$title = sprintf(__a('Photo %s of %s', 'wppa_theme'), $numid + '1', $count);
-			$wppa['out'] .= wppa_nltab('+') . '<a href="javascript://" id="wppa-numbar-'.$wppa['mocc'].'-'.$numid.'" title="'.$title.'" ' . ($numid == 0 ? ' class="wppa-numbar-current" ' : '') . ' style="' . ($numid == 0 ? $style_active : $style) . '" onclick="wppaGotoKeepState('.$wppa['mocc'].',' . $numid . ');return false;">';
+			$wppa['out'] .= wppa_nltab('+') . '<a id="wppa-numbar-'.$wppa['mocc'].'-'.$numid.'" title="'.$title.'" ' . ($numid == 0 ? ' class="wppa-numbar-current" ' : '') . ' style="' . ($numid == 0 ? $style_active : $style) . '" onclick="wppaGotoKeepState('.$wppa['mocc'].',' . $numid . ');return false;">';
 			$wppa['out'] .= $count > $high ? wppa_nltab() . '.' : wppa_nltab() . $numid + 1;
 			$wppa['out'] .= wppa_nltab('-') . '</a>';
 			$numid++;

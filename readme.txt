@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, video, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, myCRED, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto, CMTooltipGlossary
-Version: 6.1.12
+Version: 6.1.14
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -188,6 +188,30 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 6.1.14 =
+
+= Bug Fixes =
+
+* On servers where the function readdir() not properly workes, the import page never showed up. Fixed.
+* Many minor fixes for w3c validation.
+
+= Other Changes =
+
+* For browsers that display empty tooltip boxes: there are no longer empty title attributes generated.
+* wppa lightbox now uses data-rel="wppa" to meet w3c standards.
+* Table II-G19: Overlay show legenda. Regardless of this setting, it will not show up on mobile devices, 
+but the keyboard handler will be installed to facillitate tablet/laptop converable devices.
+* There is a serious performance problem with the new smilies: emoji. 
+Especially on firefox and using ajax On one of my testsites a slideshow with 15 slides and comments enabled and the smiley picker displayed 
+used to take 4 seconds to load. Now it takes up to a minute; the browser even does not respond for over 50 seconds.
+As a work around for this, i coded my own convert_smilies() function: wppa_convert_smilies(), located in wppa_utils.php, 
+just for the creation of the html for the smileypicker and the smilies in the comments on phtos. 
+It still uses the emoji images, but by direct coding and not through a character code.
+
+= 6.1.13 =
+
+* Intermediate test version, not released.
 
 = 6.1.12 =
 

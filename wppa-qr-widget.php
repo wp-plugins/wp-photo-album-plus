@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display qr code
-* Version 6.1.3
+* Version 6.1.14
 */
 
 
@@ -31,10 +31,14 @@ class wppaQRWidget extends WP_Widget {
 
 		extract( $args );
         
- 		$title = apply_filters('widget_title', empty( $instance['title'] ) ? __a( 'QR Widget' ) : $instance['title']);
-
+ 		$title 			= apply_filters('widget_title', empty( $instance['title'] ) ? __a( 'QR Widget' ) : $instance['title']);
+		$qrsrc 			= 'http://api.qrserver.com/v1/create-qr-code/' .
+							'?data=' . site_url() .
+							'&amp;size='.$wppa_opt['wppa_qr_size'].'x'.$wppa_opt['wppa_qr_size'] .
+							'&amp;color='.trim($wppa_opt['wppa_qr_color'], '#') .
+							'&amp;bgcolor='.trim($wppa_opt['wppa_qr_bgcolor']);
 		$widget_content = '
-		<div style="text-align:center;" ><img id="wppa-qr-img" src="" alt="'.__a('QR code').'" /></div>
+		<div style="text-align:center;" ><img id="wppa-qr-img" src="' . $qrsrc . '" title="" alt="' . __a('QR code') . '" /></div>
 		<div style="clear:both" ></div>';
 		
 		$widget_content .= '

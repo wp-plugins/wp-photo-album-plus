@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 6.1.12
+* version 6.1.14
 *
 */
 
@@ -433,16 +433,13 @@ function wppa_walktree( $relroot, $source, $allowwppa = false, $subdirsonly = fa
 		echo( '<option value="'.$relroot.'"'.$sel.'>'.$display.'</option>' );
 	}
 	
-	if ( $handle = opendir( WPPA_ABSPATH.$relroot ) ) {
-		while ( false !== ( $file = readdir( $handle ) ) ) {
-			if ( $file != "." && $file != ".." && ( $file != "wppa" || $allowwppa ) && ( $file != "thumbs" || $allowthumbs ) ) {
-				$newroot = $relroot.'/'.$file;
-				if ( is_dir( WPPA_ABSPATH.$newroot ) ) {	
-					wppa_walktree( $newroot, $source, $allowwppa, false, $allowthumbs );
-				}
-			}
+	$dirs = glob( WPPA_ABSPATH . $relroot . '/*', GLOB_ONLYDIR );
+	if ( $dirs ) foreach( $dirs as $path ) {
+		$dir = basename( $path );
+		if ( $dir != "." && $dir != ".." && ( $dir != "wppa" || $allowwppa ) && ( $dir != "thumbs" || $allowthumbs ) ) {
+			$newroot = $relroot . '/' . $dir;
+			wppa_walktree( $newroot, $source, $allowwppa, false, $allowthumbs );
 		}
-		closedir( $handle );
 	}
 }
 

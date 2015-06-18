@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 6.1.12
+* version 6.1.14
 * 
 */
 
@@ -131,7 +131,9 @@ global $wppa_defaults;
 			'shortcode_content' 		=> '',
 			'is_remote' 				=> false,
 			'is_supersearch' 			=> false,
-			'supersearch' 				=> ''
+			'supersearch' 				=> '',
+			'is_mobile' 				=> wppa_is_mobile(),
+			'rel' 						=> get_option( 'wppa_lightbox_name' ) == 'wppa' ? 'data-rel' : 'rel'
 		 );
 	}
 	
@@ -676,9 +678,9 @@ global $current_user;
 		if ( is_user_logged_in() ) {
 			get_currentuserinfo();
 			$user = $current_user->user_login;
-			$albs = $wpdb->get_results( $wpdb->prepare( "SELECT `id` FROM `".WPPA_ALBUMS."` WHERE `owner` = %s", $user ) );
+			$any_albs = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `owner` = %s", $user ) );
 			wppa_dbg_q( 'Q211' );
-			if ( $albs ) return true;
+			if ( $any_albs ) return true;
 			else return false;	// No albums for user accessable
 		}
 	}
@@ -1207,6 +1209,7 @@ global $wpdb;
 
 	$tables = $wpdb->get_results( "SHOW TABLES FROM `".DB_NAME."`", ARRAY_A );
 	wppa_dbg_q( 'Q213' );
+	
 	// Some sqls do not show tables, benefit of the doubt: assume table exists
 	if ( empty( $tables ) ) return true;
 	

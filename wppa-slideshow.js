@@ -3,12 +3,12 @@
 // Contains slideshow modules
 // Dependancies: wppa.js and default wp jQuery library
 // 
-var wppaJsSlideshowVersion = '6.1.9';
+var wppaJsSlideshowVersion = '6.1.14';
 
 // This is an entrypoint to load the slide data
 function wppaStoreSlideInfo( 
 							mocc, 		// The occurrance of a wppa invocation 
-										// ( php: $wppa['maseter_occur'] )
+										// ( php: $wppa['master_occur'] )
 							id, 		// The index in the slide array
 							url, 		// The url to the fs image file
 							size, 
@@ -948,7 +948,7 @@ var result = '';
 
 	if ( _wppaCurIdx[mocc] < 0 ) return '';
 	
-	if ( wppaIsMini[mocc] || _wppaIsVideo[mocc][_wppaCurIdx[mocc]] != '' ) {
+	if ( wppaIsMini[mocc] || _wppaIsVideo[mocc][_wppaCurIdx[mocc]] ) {
 		result = _wppaFullNames[mocc][_wppaCurIdx[mocc]];
 	}
 	else switch ( wppaArtMonkyLink ) {
@@ -981,7 +981,7 @@ var result = '';
 
 function wppaMakeTheSlideHtml( mocc, bgfg, idx ) {
 
-	var imgVideo = ( _wppaIsVideo[mocc][idx] != '' ) ? 'video' : 'img';
+	var imgVideo = ( _wppaIsVideo[mocc][idx] ) ? 'video' : 'img';
 	var theHtml;
 	var url;
 	var theTitle = 'title';
@@ -1020,7 +1020,7 @@ function wppaMakeTheSlideHtml( mocc, bgfg, idx ) {
 			if ( wppaLightBox[mocc] == 'wppa' ) {
 				while ( i<idx ) {
 					// Make sure fullsize
-					if ( wppaOvlHires && _wppaIsVideo[mocc][i] == '' ) {
+					if ( wppaOvlHires && _wppaIsVideo[mocc][i] ) {
 						url = _wppaHiresUrl[mocc][i];
 					}
 					else {
@@ -1028,34 +1028,37 @@ function wppaMakeTheSlideHtml( mocc, bgfg, idx ) {
 					}
 
 					html += '<a href="'+url+'"' +
-							' data-videonatwidth="'+_wppaVideoNatWidth[mocc][i]+'"' +
-							' data-videonatheight="'+_wppaVideoNatHeight[mocc][i]+'"' +
-							' data-videohtml="'+encodeURI( _wppaVideoHtml[mocc][i] )+'"' +
-							' data-audiohtml="'+encodeURI( _wppaAudioHtml[mocc][i] )+'"' +
+							( ( _wppaIsVideo[mocc][i] ) ? 
+								' data-videonatwidth="'+_wppaVideoNatWidth[mocc][i]+'"' +
+								' data-videonatheight="'+_wppaVideoNatHeight[mocc][i]+'"' +
+								' data-videohtml="'+encodeURI( _wppaVideoHtml[mocc][i] )+'"' : '' ) +
+							( ( _wppaAudioHtml[mocc][i] != '' ) ? 
+								' data-audiohtml="'+encodeURI( _wppaAudioHtml[mocc][i] )+'"' : '' ) +
 							' '+theTitle+'="'+_wppaLbTitle[mocc][i]+'"' +
-							' rel="'+wppaLightBox[mocc]+set+'"></a>';
+							' '+wppaRel+'="'+wppaLightBox[mocc]+set+'"></a>';
 					i++;
 				}
 			}
 			
 			// Current slide
-			if ( wppaOvlHires && _wppaIsVideo[mocc][idx] == '' ) {
+			if ( wppaOvlHires && _wppaIsVideo[mocc][idx] ) {
 				url = _wppaHiresUrl[mocc][idx];
 			}
 			else {
 				url = wppaMakeFullsizeUrl( _wppaUrl[mocc][idx] );
-//alert( 'Sorry, opajaap is testing '+_wppaUrl[mocc][idx] );
 			}
 
 			html += '<a href="'+url+'"' +
 					' onclick="wppaStopAudio();"' +
 					' target="'+_wppaLinkTarget[mocc][idx]+'"' +
-					' data-videonatwidth="'+_wppaVideoNatWidth[mocc][idx]+'"' +
-					' data-videonatheight="'+_wppaVideoNatHeight[mocc][idx]+'"' +
-					' data-videohtml="'+encodeURI( _wppaVideoHtml[mocc][idx] )+'"' +
-					' data-audiohtml="'+encodeURI( _wppaAudioHtml[mocc][idx] )+'"' +
+					( ( _wppaIsVideo[mocc][i] ) ? 
+						' data-videonatwidth="'+_wppaVideoNatWidth[mocc][idx]+'"' +
+						' data-videonatheight="'+_wppaVideoNatHeight[mocc][idx]+'"' +
+						' data-videohtml="'+encodeURI( _wppaVideoHtml[mocc][idx] )+'"' : '' ) +
+					( ( _wppaAudioHtml[mocc][i] != '' ) ? 
+						' data-audiohtml="'+encodeURI( _wppaAudioHtml[mocc][idx] )+'"' : '' ) +
 					' '+theTitle+'="'+_wppaLbTitle[mocc][idx]+'"' +
-					' rel="'+wppaLightBox[mocc]+set+'">'+
+					' '+wppaRel+'="'+wppaLightBox[mocc]+set+'">'+
 						'<'+imgVideo+mmEvents+' title="'+_wppaLinkTitle[mocc][idx]+'" id="theimg'+bgfg+'-'+mocc+'" '+_wppaSlides[mocc][idx]+
 					'</a>';
 					
@@ -1063,19 +1066,21 @@ function wppaMakeTheSlideHtml( mocc, bgfg, idx ) {
 			if ( wppaLightBox[mocc] == 'wppa' ) {
 				i = idx + 1;
 				while ( i<_wppaUrl[mocc].length ) {
-					if ( wppaOvlHires && _wppaIsVideo[mocc][i] == '' ) {
+					if ( wppaOvlHires && _wppaIsVideo[mocc][i] ) {
 						url = _wppaHiresUrl[mocc][i];
 					}
 					else {
 						url = wppaMakeFullsizeUrl( _wppaUrl[mocc][i] );
 					}
 					html += '<a href="'+url+'"' +
-							' data-videonatwidth="'+_wppaVideoNatWidth[mocc][i]+'"' +
-							' data-videonatheight="'+_wppaVideoNatHeight[mocc][i]+'"' +
-							' data-videohtml="'+encodeURI( _wppaVideoHtml[mocc][i] )+'"' +
-							' data-audiohtml="'+encodeURI( _wppaAudioHtml[mocc][i] )+'"' +
+							( ( _wppaIsVideo[mocc][i] ) ? 
+								' data-videonatwidth="'+_wppaVideoNatWidth[mocc][i]+'"' +
+								' data-videonatheight="'+_wppaVideoNatHeight[mocc][i]+'"' +
+								' data-videohtml="'+encodeURI( _wppaVideoHtml[mocc][i] )+'"' : '' ) +
+							( ( _wppaAudioHtml[mocc][i] != '' ) ? 
+								' data-audiohtml="'+encodeURI( _wppaAudioHtml[mocc][i] )+'"' : '' ) +
 							' '+theTitle+'="'+_wppaLbTitle[mocc][i]+'"' +
-							' rel="'+wppaLightBox[mocc]+set+'"></a>';
+							' '+wppaRel+'="'+wppaLightBox[mocc]+set+'"></a>';
 					i++;
 				}
 			}

@@ -2,7 +2,7 @@
 //
 // conatins common vars and functions
 // 
-var wppaJsVersion = '6.1.12';
+var wppaJsVersion = '6.1.14';
 
 // Important notice:
 // All external vars that may be given a value in wppa-non-admin.php must be declared here and not in other front-end js files!!
@@ -140,6 +140,7 @@ var wppaBackgroundColorImage = '';
 var wppaPopupLinkType = '';
 var wppaPopupOnclick = [];
 var wppaThumbTargetBlank = false;
+var wppaRel = 'rel';
 
 // 'Internal' variables ( private )
 var _wppaId = [];

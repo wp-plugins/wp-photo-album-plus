@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 6.1.12
+* Version 6.1.14
 * 
 */
 
@@ -308,7 +308,7 @@ global $wppa_session;
 		echo '
 <!-- start WPPA+ Footer data -->
 	<div id="wppa-overlay-bg" style="text-align:center; display:none; position:fixed; top:0; left:0; z-index:100090; width:100%; height:2048px; background-color:'.wppa_opt( 'wppa_ovl_bgcolor' ).';" onclick="wppaOvlOnclick(event)" >';
-	if ( wppa_switch( 'ovl_show_legenda' ) ) {
+	if ( wppa_switch( 'ovl_show_legenda' ) && ! wppa( 'is_mobile' ) ) {
 		echo '
 		<div id="wppa-ovl-legenda-1" onmouseover="jQuery(this).css(\'visibility\',\'visible\');" onmouseout="jQuery(this).css(\'visibility\',\'hidden\');" style="position:absolute; left:0; top:0; background-color:'.wppa_opt( 'wppa_ovl_theme' ).';color:'.$txtcol.'; visibility:visible;" >
 			'.__a( 'Press f for fullscreen.' ).'
@@ -316,9 +316,7 @@ global $wppa_session;
 	}
 	echo '
 	</div>
-	<div id="wppa-overlay-ic" style="position:fixed; top:0; padding-top:10px; z-index:100095; opacity:1; box-shadow:none;"
-		ontouchstart="wppaTouchStart(event, \'wppa-overlay-ic\', -1);"  ontouchend="wppaTouchEnd(event);" 
-		ontouchmove="wppaTouchMove(event);" ontouchcancel="wppaTouchCancel(event);" >
+	<div id="wppa-overlay-ic" style="position:fixed; top:0; padding-top:10px; z-index:100095; opacity:1; box-shadow:none;" >
 	</div>
 	<img id="wppa-overlay-sp" alt="spinner" style="position:fixed; top:200px; left:200px; z-index:100100; opacity:1; visibility:hidden; box-shadow:none;" src="'.wppa_get_imgdir().'loading.gif" />
 	<script type="text/javascript">jQuery("#wppa-overlay-bg").css({height:window.innerHeight});
@@ -341,7 +339,7 @@ global $wppa_session;
 		wppaOvlFullLegendaSingle = "'.__a('Keys: f = next mode; escape = exit; d = dismiss this notice.').'";
 		wppaOvlVideoStart = '.( wppa_switch( 'ovl_video_start' ) ? 'true' : 'false' ).';
 		wppaOvlAudioStart = '.( wppa_switch( 'ovl_audio_start' ) ? 'true' : 'false' ).';
-		wppaOvlShowLegenda = '.( wppa_switch( 'ovl_show_legenda' ) ? 'true' : 'false' ).';
+		wppaOvlShowLegenda = '.( wppa_switch( 'ovl_show_legenda' ) && ! wppa( 'is_mobile' ) ? 'true' : 'false' ).';
 		wppaOvlShowStartStop = '.( wppa_switch( 'ovl_show_startstop' ) ? 'true' : 'false' ).';
 	</script>
 	';
@@ -643,6 +641,7 @@ global $wppa_init_js_data;
 	wppaSlideVideoStart = '.( wppa_switch( 'start_slide_video' ) ? 'true' : 'false' ).';
 	wppaSlideAudioStart = '.( wppa_switch( 'start_slide_audio' ) ? 'true' : 'false' ).';
 	wppaAudioHeight = '.wppa_get_audio_control_height().'; 
+	wppaRel = "'.( wppa_opt( 'lightbox_name' ) == 'wppa' ? 'data-rel' : 'rel' ).'";
 	';
 
 	// Open file
