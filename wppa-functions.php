@@ -4100,6 +4100,6 @@ function wppa_zoom_in( $id ) {
 			return esc_attr( stripslashes( wppa_get_photo_name( $id ) ) );
 		}
 	}
-	else return ' ';
+	else return '';
 }
 

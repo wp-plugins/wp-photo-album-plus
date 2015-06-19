@@ -692,6 +692,8 @@ Hide Camera info
 						'wppa_albdesc_on_thumbarea'			=> 'none',
 						'wppa_albname_on_thumbarea'			=> 'none',
 
+						'wppa_edit_thumb' 					=> 'yes',	// II-D17
+
 						// D Covers
 						'wppa_show_cover_text' 				=> 'yes',	// 1
 						'wppa_enable_slideshow' 			=> 'yes',	// 2
@@ -1191,6 +1193,7 @@ Hide Camera info
 						'wppa_import_preview' 			=> 'yes',
 						'wppa_audiostub_upload' 		=> '',
 						'wppa_audiostub' 				=> '',
+						
 
 
 						// B New

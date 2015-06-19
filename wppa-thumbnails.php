@@ -566,7 +566,7 @@ global $wpdb;
 		}
 		
 		// Edit link
-		if ( ! wppa_is_user_blacklisted() ) {
+		if ( wppa_switch( 'edit_thumb' ) && ! wppa_is_user_blacklisted() ) {
 			if ( ( wppa_user_is( 'administrator' ) ) || ( wppa_get_user() == wppa_get_photo_owner( $id ) && wppa_switch( 'upload_edit' ) ) ) {
 				$result .= 	'<div' .
 								' class="wppa-thumb-text"' .

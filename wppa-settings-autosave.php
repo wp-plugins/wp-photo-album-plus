@@ -2073,6 +2073,16 @@ global $wppa_tags;
 							$clas = '';
 							$tags = 'album,meta,layout';
 							wppa_setting($slug, '16', $name, $desc, $html, $help, $clas, $tags);
+							
+							$name = __('Show Edit/Delete links', 'wppa');
+							$desc = __('Show these links under default thumbnails for owner and admin.', 'wppa');
+							$help = '';
+							$slug = 'wppa_edit_thumb';
+							$html = wppa_checkbox($slug);
+							$clas = '';
+							$tags = 'thumb';
+							wppa_setting($slug, '17', $name, $desc, $html, $help, $clas, $tags);
+							
 							}
 						wppa_setting_subheader( 'E', '1', __( 'Album cover related visibility settings', 'wppa' ) );
 							{
