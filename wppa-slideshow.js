@@ -988,11 +988,6 @@ function wppaMakeTheSlideHtml( mocc, bgfg, idx ) {
 	if ( wppaLightBox[mocc] == 'wppa') theTitle = 'data-lbtitle';
 	var mmEvents = wppaLightBox[mocc] == '' ? ' onpause="wppaVideoPlaying['+mocc+'] = false;" onplay="wppaVideoPlaying['+mocc+'] = true;"' : '';
 	
-//	if ( _wppaVideoHtml[mocc][idx] != '' ) {
-//		jQuery( "#theslide"+bgfg+"-"+mocc ).html( _wppaVideoHtml[mocc][idx] );
-//		return;
-//	}
-
 	if ( _wppaLinkUrl[mocc][idx] != '' ) {	// Link explicitly given
 		if ( wppaSlideToFullpopup ) {
 			theHtml = 	'<a onclick="wppaStopAudio();'+_wppaLinkUrl[mocc][idx]+'" target="'+_wppaLinkTarget[mocc][idx]+'" title="'+_wppaLinkTitle[mocc][idx]+'">'+
@@ -1111,6 +1106,9 @@ function wppaMakeTheSlideHtml( mocc, bgfg, idx ) {
 							_wppaAudioHtml[mocc][idx] +
 					'</audio>';
 	}
+	
+	// Remove empty titles for browsers that display empty tooltip boxes
+	theHtml = theHtml.replace( /title=""/g, '' );
 	
 	jQuery( "#theslide"+bgfg+"-"+mocc ).html( theHtml );	// nieuw
 	
