@@ -294,7 +294,7 @@ global $wpdb;
 						' data-videonatwidth="'.wppa_get_videox( $id ) . '"' .
 						' data-videonatheight="'.wppa_get_videoy( $id ) . '"' .
 						' ' . wppa( 'rel' ) . '="'.wppa_opt( 'lightbox_name' ).'[occ'.wppa( 'mocc' ).']"' .
-						( $title ? ' title="'.$title.'" ' : '' ) .
+						' data-lbtitle="'.$title.'" ' .
 						' class="thumb-img" id="x-'.$id.'-'.wppa( 'mocc' ).'">';
 			if ( $is_video ) { 
 				$result .= wppa_get_video_html( array(
@@ -1135,10 +1135,12 @@ global $wpdb;
 				$result .= '</a>';
 			}
 		}
-		elseif ( $link['is_lightbox'] ) {	// link is lightbox
-			$title 		= wppa_get_lbtitle( 'thumb', $id );
+		
+		// Link is lightbox
+		elseif ( $link['is_lightbox'] ) {	
 			
 			// The a img
+			$title 		= wppa_get_lbtitle( 'thumb', $id );
 			$result .= '<a href="'.$link['url'].'"' . 
 						' target="'.$link['target'].'"' .
 						' data-videohtml="'.esc_attr( wppa_get_video_body( $id ) ).'"' .
@@ -1146,12 +1148,14 @@ global $wpdb;
 						' data-videonatwidth="'.wppa_get_videox( $id ).'"' .
 						' data-videonatheight="'.wppa_get_videoy( $id ).'"' .
 						' ' . wppa( 'rel' ) . '="'.wppa_opt( 'lightbox_name' ).'[occ'.wppa( 'mocc' ).']"' .
-						' title="'.$title.'" class="thumb-img"' .
+						' data-lbtitle="'.$title.'" class="thumb-img"' .
 						' id="x-'.$id.'-'.wppa( 'mocc' ).'">';
-						
+
+			// The image						
+			$title = wppa_zoom_in( $id );
+
 			// Video?
 			if ( $is_video ) { 
-				$title = wppa_zoom_in( $id );
 				$result .= wppa_get_video_html( array(
 						'id'			=> $id,
 						'controls' 		=> false,
