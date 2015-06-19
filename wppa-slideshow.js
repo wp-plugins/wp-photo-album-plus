@@ -1091,6 +1091,7 @@ function wppaMakeTheSlideHtml( mocc, bgfg, idx ) {
 						' id="wppa-audio-'+_wppaId[mocc][idx]+'-'+mocc+'"' +
 			//			( wppaSlideAudioStart ? ' autoplay' : '' ) +
 						' class="wppa-audio-'+mocc+' wppa-audio-'+_wppaId[mocc][idx]+'-'+mocc+'"' +
+						' data-from="wppa"' +
 						' onplay="wppaAudioPlaying['+mocc+'] = true;"' +
 						' onpause="wppaAudioPlaying['+mocc+'] = false"' +
 						' style="' +

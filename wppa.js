@@ -337,7 +337,9 @@ function wppaStopAudio() {
 	if ( items.length > 0 ) {
 		var i = 0;
 		while ( i < items.length ) {
-			items[i].pause();
+			if ( jQuery( items[i] ).attr( 'data-from' ) == 'wppa' ) {
+				items[i].pause();
+			}
 			i++;
 		}
 	}

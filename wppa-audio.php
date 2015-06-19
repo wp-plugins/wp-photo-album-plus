@@ -96,7 +96,15 @@ global $wppa;
 	if ( $mp3 || $wav || $ogg ) {
 	
 		// Assume the browser supports html5
-		$result = '<audio id="'.$tagid.'" '.$ctrl.$play.' style="'.$style.$w.$h.$t.$b.$cursor.'" '.$events.' '.$tit.$onc.' preload="'.$preload.'"'.$cls.' >';
+		$result = 	'<audio' .
+						' id="'.$tagid.'"' .
+						' data-from="wppa"' .
+						' '.$ctrl.$play.
+						' style="'.$style.$w.$h.$t.$b.$cursor.'"' .
+						' '.$events.
+						' '.$tit.$onc.
+						' preload="'.$preload.'"'.$cls.
+						' >';
 
 		$result .= wppa_get_audio_body( $id, false, $width, $height );
 

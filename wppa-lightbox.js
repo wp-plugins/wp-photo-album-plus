@@ -269,6 +269,7 @@ wppaConsoleLog( 'wppaOvlShow arg='+arg );
 				html += '<audio' + 
 							' id="wppa-overlay-audio"' +
 							' class="wppa-overlay-audio"' +
+							' data-from="wppa"' +
 							' preload="metadata"' +
 							( ( wppaOvlAudioStart ) ? ' autoplay' : '' ) +
 							' onpause="wppaOvlAudioPlaying = false;"' +
@@ -394,6 +395,7 @@ wppaConsoleLog( 'wppaOvlShow arg='+arg );
 				html += '<audio' + 
 							' id="wppa-overlay-audio"' +
 							' class="wppa-overlay-audio"' +
+							' data-from="wppa"' +
 							' preload="metadata"' +
 					//		( ( wppaOvlAudioStart && ! wppaOvlAudioPlaying ) ? ' autoplay' : '' ) +
 							' onpause="wppaOvlAudioPlaying = false;"' +
