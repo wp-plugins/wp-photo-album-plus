@@ -306,7 +306,7 @@ function wppaUpdateLightboxes() {
 	}
 	
 	// PrettyPhoto
-	if ( jQuery().prettyPhoto() ) {
+	if ( jQuery().prettyPhoto ) {
 		jQuery( "a[rel^='prettyPhoto']" ).prettyPhoto( { 
 			deeplinking: false,
 		});
