@@ -304,6 +304,13 @@ function wppaUpdateLightboxes() {
 			myLightbox.updateImageList();	
 		}
 	}
+	
+	// PrettyPhoto
+	if ( jQuery().prettyPhoto() ) {
+		jQuery( "a[rel^='prettyPhoto']" ).prettyPhoto( { 
+			deeplinking: false,
+		});
+	}
 }
 
 // Stop video of a given occurrency

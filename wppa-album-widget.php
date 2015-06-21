@@ -122,6 +122,7 @@ class AlbumWidget extends WP_Widget {
 					}
 				}
 					
+				$imgurl = wppa_fix_poster_ext( $imgurl, $image['id'] );
 
 				if ( $imgcount > wppa_opt( 'wppa_min_thumbs' ) || $skip == 'no' ) {
 			
@@ -162,15 +163,18 @@ class AlbumWidget extends WP_Widget {
 									$siz['0'] = wppa_get_photox( $thumb['id'] );
 									$siz['1'] = wppa_get_photoy( $thumb['id'] );
 								}
-								$link = wppa_get_photo_url( $thumb['id'], '', $siz['0'], $siz['1'] );
+								$link 		= wppa_fix_poster_ext( wppa_get_photo_url( $thumb['id'], '', $siz['0'], $siz['1'] ), $thumb['id'] );
+								$is_video 	= wppa_is_video( $thumb['id'] );
+								$has_audio 	= wppa_has_audio( $thumb['id'] );
+								
 								$widget_content .= "\n\t" .
 										'<a href="'.$link.'"' .
-										' data-videohtml="' . esc_attr( wppa_get_video_body( $thumb['id'] ) ) . '"' .
-										' data-audiohtml="' . esc_attr( wppa_get_audio_body( $thumb['id'] ) ) . '"' .
+										( $is_video ? ' data-videohtml="' . esc_attr( wppa_get_video_body( $thumb['id'] ) ) . '"' .
 										' data-videonatwidth="'.wppa_get_videox( $thumb['id'] ).'"' .
-										' data-videonatheight="'.wppa_get_videoy( $thumb['id'] ).'"' .
+										' data-videonatheight="'.wppa_get_videoy( $thumb['id'] ).'"' : '' ) .
+										( $has_audio ? ' data-audiohtml="' . esc_attr( wppa_get_audio_body( $thumb['id'] ) ) . '"' : '' ) .
 										' ' . wppa( 'rel' ) . '="'.wppa_opt( 'wppa_lightbox_name' ).'[alw-'.$wppa['mocc'].'-'.$album['id'].']"' .
-										' title="'.$title.'" >';
+										' data-lbtitle="'.$title.'" >';
 								if ( $thumb['id'] == $image['id'] ) {		// the cover image
 									if ( wppa_is_video( $image['id'] ) ) {
 										$widget_content .= wppa_get_video_html( array( 	'id' 			=> $image['id'], 

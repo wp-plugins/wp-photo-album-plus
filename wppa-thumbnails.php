@@ -37,6 +37,7 @@ global $wpdb;
 
 	// Get photo info
 	$is_video 		= wppa_is_video( $id );
+	$has_audio 		= wppa_has_audio( $id );
 	$com_alt 		= wppa( 'is_comten' ) && wppa_switch( 'comten_alt_display' ) && ! wppa( 'in_widget' );
 	$frameattr_a 	= wppa_get_thumb_frame_style_a();
 	$framestyle 	= $frameattr_a['style'];
@@ -289,10 +290,10 @@ global $wpdb;
 			
 			// The a img
 			$result .= '<a href="'.$link['url'].'" target="'.$link['target'] . '"' .
-						' data-videohtml="' . esc_attr( wppa_get_video_body( $id ) ) . '"' .
-						' data-audiohtml="' . esc_attr( wppa_get_audio_body( $id ) ) . '"' .
+						( $is_video ? ' data-videohtml="' . esc_attr( wppa_get_video_body( $id ) ) . '"' .
 						' data-videonatwidth="'.wppa_get_videox( $id ) . '"' .
-						' data-videonatheight="'.wppa_get_videoy( $id ) . '"' .
+						' data-videonatheight="'.wppa_get_videoy( $id ) . '"' : '' ) .
+						( $has_audio ? ' data-audiohtml="' . esc_attr( wppa_get_audio_body( $id ) ) . '"' : '' ) .
 						' ' . wppa( 'rel' ) . '="'.wppa_opt( 'lightbox_name' ).'[occ'.wppa( 'mocc' ).']"' .
 						' data-lbtitle="'.$title.'" ' .
 						' class="thumb-img" id="x-'.$id.'-'.wppa( 'mocc' ).'">';
@@ -926,6 +927,7 @@ global $wpdb;
 
 	// Get photo info
 	$is_video 		= wppa_is_video( $id );
+	$has_audio 		= wppa_has_audio( $id );
 	$imgsrc 		= wppa_fix_poster_ext( wppa_get_thumb_path( $id ), $id ); 
 	
 	if ( ! wppa_is_video( $id ) && ! is_file( $imgsrc ) ) {
@@ -1143,13 +1145,13 @@ global $wpdb;
 			$title 		= wppa_get_lbtitle( 'thumb', $id );
 			$result .= '<a href="'.$link['url'].'"' . 
 						' target="'.$link['target'].'"' .
-						' data-videohtml="'.esc_attr( wppa_get_video_body( $id ) ).'"' .
-						' data-audiohtml="'.esc_attr( wppa_get_audio_body( $id ) ).'"' .
-						' data-videonatwidth="'.wppa_get_videox( $id ).'"' .
-						' data-videonatheight="'.wppa_get_videoy( $id ).'"' .
-						' ' . wppa( 'rel' ) . '="'.wppa_opt( 'lightbox_name' ).'[occ'.wppa( 'mocc' ).']"' .
-						' data-lbtitle="'.$title.'" class="thumb-img"' .
-						' id="x-'.$id.'-'.wppa( 'mocc' ).'">';
+						( $is_video ? ' data-videohtml="' . esc_attr( wppa_get_video_body( $id ) ) . '"' .
+						' data-videonatwidth="' . wppa_get_videox( $id ) . '"' .
+						' data-videonatheight="' . wppa_get_videoy( $id ) . '"' : '' ) .
+						( $has_audio ? ' data-audiohtml="' . esc_attr( wppa_get_audio_body( $id ) ) . '"' : '' ) .
+						' ' . wppa( 'rel' ) . '="' . wppa_opt( 'lightbox_name' ) . '[occ'.wppa( 'mocc' ) . ']"' .
+						' data-lbtitle="' . $title . '" class="thumb-img"' .
+						' id="x-' . $id . '-' . wppa( 'mocc' ) . '">';
 
 			// The image						
 			$title = wppa_zoom_in( $id );
@@ -1463,7 +1465,7 @@ function wppa_get_the_widget_thumb( $type, $image, $album, $display, $link, $tit
 							' data-videonatheight="'.wppa_get_videoy( $id ).'"' : '' ) .
 						( $audiohtml ? ' data-audiohtml="' . $audiohtml . '"' : '' ) .
 						' '. wppa( 'rel' ) . '="' . wppa_opt( 'lightbox_name' ) . '[' . $type . '-' . $album . '-' . wppa( 'mocc' ) . ']"' .
-						( $title ? ' title="' . $title . '"' : '' ) .
+						( $title ? ' data-lbtitle="' . $title . '"' : '' ) .
 						' target="' . $link['target'] . '" >';
 				$result .= "\n\t\t";
 				if ( $display == 'thumbs' ) {

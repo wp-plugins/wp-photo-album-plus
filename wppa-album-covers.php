@@ -678,15 +678,17 @@ global $wpdb;
 				if ( wppa_has_audio( $id ) ) {
 					$link = wppa_fix_poster_ext( $link, $id );
 				}
+				$is_video 	= wppa_is_video( $id );
+				$has_audio 	= wppa_has_audio( $id );
 				
 				// Open the anchor tag for lightbox
 				$wppa['out'] .= "\n\t" . 
 					'<a' .
 					' href="' . $link . '"' .
-					' data-videohtml="' . esc_attr( wppa_get_video_body( $id ) ) . '"' .
-					' data-audiohtml="' . esc_attr( wppa_get_audio_body( $id ) ) . '"' .
+					( $is_video ? ' data-videohtml="' . esc_attr( wppa_get_video_body( $id ) ) . '"' .
 					' data-videonatwidth="'.wppa_get_videox( $id ).'"' .
-					' data-videonatheight="'.wppa_get_videoy( $id ).'"' .
+					' data-videonatheight="'.wppa_get_videoy( $id ).'"' : '' ) .
+					( $has_audio ? ' data-audiohtml="' . esc_attr( wppa_get_audio_body( $id ) ) . '"' : '' ) .
 					' ' . wppa( 'rel' ) . '="' . wppa_opt( 'wppa_lightbox_name' ) . '[alw-' . wppa( 'mocc' ) . '-' . $albumid . ']"' .
 					' title="' . $title . '"' .
 					' >';
@@ -822,13 +824,19 @@ global $wpdb;
 					$link = wppa_fix_poster_ext( $link, $thumb['id'] );
 				}
 
+				$is_video 	= wppa_is_video( $thumb['id'] );
+				$has_audio 	= wppa_has_audio( $thumb['id'] );
+				
 				$wppa['out'] .= 
-					'<a href="' . $link . 
-					'" data-videohtml="' . esc_attr( wppa_get_video_body( $thumb['id'] ) ) . 
-					'" data-audiohtml="' . esc_attr( wppa_get_audio_body( $thumb['id'] ) ) . 
-					'" data-videonatwidth="'.wppa_get_videox( $thumb['id'] ).'" data-videonatheight="'.wppa_get_videoy( $thumb['id'] ).'" rel="' . 
-					wppa_opt( 'wppa_lightbox_name' ) . '[alw-' . $wppa['mocc'] . '-' . 
-					$albumid . ']" title="' . $title . '" >';
+					'<a' .
+						' href="' . $link . '"' .
+						( $is_video ? ' data-videohtml="' . esc_attr( wppa_get_video_body( $thumb['id'] ) ) . '"' .
+						' data-videonatwidth="' . wppa_get_videox( $thumb['id'] ) . '"' .
+						' data-videonatheight="' . wppa_get_videoy( $thumb['id'] ) . '"' : '' ) .
+						( $has_audio ? ' data-audiohtml="' . esc_attr( wppa_get_audio_body( $thumb['id'] ) ) . '"' : '' ) .
+						' rel="' . wppa_opt( 'wppa_lightbox_name' ) . '[alw-' . $wppa['mocc'] . '-' . $albumid . ']"' .
+						( $title ? ' title="' . $title . '"' : '' ) .
+						' >';
 					
 				// the cover image
 				if ( $thumb['id'] == $image['id'] ) {		

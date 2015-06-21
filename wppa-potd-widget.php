@@ -61,11 +61,20 @@ class PhotoOfTheDay extends WP_Widget {
 			$name 		= wppa_get_photo_name( $id );
 			$page 		= in_array( wppa_opt( 'wppa_widget_linktype' ), $wppa['links_no_page'] ) ? '' : wppa_get_the_landing_page( 'wppa_widget_linkpage', __a('Photo of the day') );
 			$link 		= wppa_get_imglnk_a( 'potdwidget' , $id );
-			$lightbox 	= $link['is_lightbox'] ? ' data-videohtml="' . esc_attr( wppa_get_video_body( $id ) ) . '"'.
-												' data-audiohtml="' . esc_attr( wppa_get_audio_body( $id ) ) . '"'.
-												' data-videonatwidth="'.wppa_get_videox( $id ).'"' .
-												' data-videonatheight="'.wppa_get_videoy( $id ).'"' .
-												' ' . wppa( 'rel' ) . '="' . wppa_opt( 'wppa_lightbox_name' ) . '"' : '';
+			$is_video 	= wppa_is_video( $id );
+			$has_audio 	= wppa_has_audio( $id );
+			
+			if ( $link['is_lightbox'] ) {
+				$lightbox = ( $is_video ? ' data-videohtml="' . esc_attr( wppa_get_video_body( $id ) ) . '"' .
+							' data-videonatwidth="'.wppa_get_videox( $id ).'"' .
+							' data-videonatheight="'.wppa_get_videoy( $id ).'"' : '' ) .
+							( $has_audio ? ' data-audiohtml="' . esc_attr( wppa_get_audio_body( $id ) ) . '"' : '' ) .
+							' ' . wppa( 'rel' ) . '="' . wppa_opt( 'wppa_lightbox_name' ) . '[potd]"';
+			}
+			else {
+				$lightbox = '';
+			}
+			
 			if ( $link ) {
 				if ( $link['is_lightbox'] ) {
 					$cursor = ' cursor:url('.wppa_get_imgdir().wppa_opt('wppa_magnifier').'),pointer;';
@@ -87,14 +96,15 @@ class PhotoOfTheDay extends WP_Widget {
 			$widget_content .= wppa_get_medal_html_a( array( 'id' => $id, 'size' => 'M', 'where' => 'top' ) );
 			
 			// The link, if any
-			if ($link) $widget_content .= "\n\t".'<a href = "'.$link['url'].'" target="'.$link['target'].'" '.$lightbox.' title="'.$ltitle.'">';
+			if ($link) $widget_content .= "\n\t".'<a href = "'.$link['url'].'" target="'.$link['target'].'" '.$lightbox.' data-lbtitle="'.$ltitle.'">';
 			
 				// The image
 				if ( wppa_is_video( $id ) ) {
 					$widget_content .= "\n\t\t".wppa_get_video_html( array ( 	'id' 		=> $id,
 																				'width' 	=> wppa_opt('wppa_potd_widget_width'),
 																				'title' 	=> $title,
-																				'controls' 	=> ( wppa_opt( 'widget_linktype' ) == 'none' )
+																				'controls' 	=> ( wppa_opt( 'widget_linktype' ) == 'none' ),
+																				'cursor' 	=> $cursor
 																	));
 				}
 				else {
