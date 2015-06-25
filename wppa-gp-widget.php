@@ -6,7 +6,7 @@
 *
 * A text widget that hooks the wppa+ filter
 *
-* Version 6.1.3
+* Version 6.1.15
 */
 
 class WppaGpWidget extends WP_Widget {
@@ -30,6 +30,13 @@ class WppaGpWidget extends WP_Widget {
 		wppa_initialize_runtime();
 
 		extract($args);
+		
+		$instance = wp_parse_args( (array) $instance, array( 'title' => __('WPPA+ Text', 'wppa'), 'text' => '', 'loggedinonly' => false ) );
+
+		if ( $instance['loggedinonly'] && ! is_user_logged_in() ) {
+			return;
+		}
+		
  		$title = apply_filters('widget_title', $instance['title']);
 
 		$wppa['in_widget'] = 'gp';
@@ -62,23 +69,33 @@ class WppaGpWidget extends WP_Widget {
 		else
 			$instance['text'] = stripslashes( wp_filter_post_kses( addslashes($new_instance['text']) ) ); // wp_filter_post_kses() expects slashed
 		$instance['filter'] = isset($new_instance['filter']);
+		$instance['loggedinonly'] = isset($new_instance['loggedinonly']);
 		return $instance;
 	}
 
 	function form( $instance ) {
 
-		$instance = wp_parse_args( (array) $instance, array( 'title' => __('WPPA+ Text', 'wppa'), 'text' => '' ) );
+		$instance = wp_parse_args( (array) $instance, array( 'title' => __('WPPA+ Text', 'wppa'), 'text' => '', 'loggedinonly' => false ) );
 		$title = $instance['title'];
 		$text = format_to_edit($instance['text']);
 ?>
-		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label>
-		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" /></p>
+		<p>
+			<label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label>
+			<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" />
+		</p>
 		<p><?php _e('Enter the content just like a normal text widget. This widget will interprete [wppa] shortcodes.', 'wppa'); ?></p>
 		<p><?php echo sprintf( __( 'Don\'t forget size="%s"', 'wppa' ), wppa_opt( 'wppa_widget_width' ) ) ?></p>
 
 		<textarea class="widefat" rows="16" cols="20" id="<?php echo $this->get_field_id('text'); ?>" name="<?php echo $this->get_field_name('text'); ?>"><?php echo $text; ?></textarea>
 
-		<p><input id="<?php echo $this->get_field_id('filter'); ?>" name="<?php echo $this->get_field_name('filter'); ?>" type="checkbox" <?php checked(isset($instance['filter']) ? $instance['filter'] : 0); ?> />&nbsp;<label for="<?php echo $this->get_field_id('filter'); ?>"><?php _e('Automatically add paragraphs'); ?></label></p>
+		<p>
+			<input id="<?php echo $this->get_field_id('filter'); ?>" name="<?php echo $this->get_field_name('filter'); ?>" type="checkbox" <?php checked(isset($instance['filter']) ? $instance['filter'] : 0); ?> />&nbsp;
+			<label for="<?php echo $this->get_field_id('filter'); ?>"><?php _e('Automatically add paragraphs'); ?></label>
+		</p>
+		<p>
+			<input id="<?php echo $this->get_field_id('loggedinonly'); ?>" name="<?php echo $this->get_field_name('loggedinonly'); ?>" type="checkbox" <?php checked(isset($instance['loggedinonly']) ? $instance['loggedinonly'] : 0); ?> />&nbsp;
+			<label for="<?php echo $this->get_field_id('loggedinonly'); ?>"><?php _e('Show to logged in users only'); ?></label>
+		</p>
 <?php
 	}
 }

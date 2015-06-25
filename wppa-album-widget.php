@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail albums
-* Version 6.1.14
+* Version 6.1.15
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -174,7 +174,7 @@ class AlbumWidget extends WP_Widget {
 										' data-videonatheight="'.wppa_get_videoy( $thumb['id'] ).'"' : '' ) .
 										( $has_audio ? ' data-audiohtml="' . esc_attr( wppa_get_audio_body( $thumb['id'] ) ) . '"' : '' ) .
 										' ' . wppa( 'rel' ) . '="'.wppa_opt( 'wppa_lightbox_name' ).'[alw-'.$wppa['mocc'].'-'.$album['id'].']"' .
-										' data-lbtitle="'.$title.'" >';
+										' ' . wppa( 'lbtitle' ) . '="'.$title.'" >';
 								if ( $thumb['id'] == $image['id'] ) {		// the cover image
 									if ( wppa_is_video( $image['id'] ) ) {
 										$widget_content .= wppa_get_video_html( array( 	'id' 			=> $image['id'], 

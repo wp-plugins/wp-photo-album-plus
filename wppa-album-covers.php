@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for album covers
-* Version 6.1.14
+* Version 6.1.15
 *
 */
 
@@ -13,9 +13,9 @@ if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 // decide wich cover type and call the types function
 function wppa_album_cover( $id ) {
 global $wppa;
-global $wppa_alt;
 
-	if ( ! $wppa_alt ) $wppa_alt = 'alt';
+	// Init alt/even
+	wppa( 'alt', 'alt' );
 		
 	// Find the cover type
 	$cover_type = wppa_get_album_item( $id, 'cover_type' ) ? 
@@ -59,11 +59,12 @@ global $wppa_alt;
 // The default cover type
 function wppa_album_cover_default( $albumid, $multicolresp = false ) {
 global $wppa;
-global $wppa_alt;
 global $cover_count_key;
 global $wpdb;
 
-	$album = wppa_cache_album( $albumid );
+	// Init
+	$album 	= wppa_cache_album( $albumid );
+	$alt 	= wppa( 'alt' );
 	
 	// Multi column responsive?
 	if ( $multicolresp ) $mcr = 'mcr-'; else $mcr = '';
@@ -157,7 +158,7 @@ global $wpdb;
 		'wppa-asym-text-frame-' . $mcr . $wppa['mocc'] : 
 		'';
 	
-	$style =  __wcs( 'wppa-box' ) . __wcs( 'wppa-' . $wppa_alt );
+	$style =  __wcs( 'wppa-box' ) . __wcs( 'wppa-' . wppa( 'alt' ) );
 	if ( is_feed() ) $style .= ' padding:7px;';
 	
 	$wid = wppa_get_cover_width( 'cover' );
@@ -179,7 +180,7 @@ global $wpdb;
 	$wppa['out'] .= wppa_nltab( '+' ) . 
 		'<div id="album-' . $albumid . '-' . $wppa['mocc'] . 
 		'" class="wppa-album-cover-standard album wppa-box wppa-cover-box wppa-cover-box-' . 
-		$mcr . $wppa['mocc'] . ' wppa-' . $wppa_alt . '" style="' . $style . __wcs( 'wppa-cover-box' ) . '" >';
+		$mcr . $wppa['mocc'] . ' wppa-' . wppa( 'alt' ) . '" style="' . $style . __wcs( 'wppa-cover-box' ) . '" >';
 
 	// First The Cover photo?
 	if ( $photo_pos == 'left' || $photo_pos == 'top' ) {
@@ -240,13 +241,14 @@ global $wpdb;
 	// Close the album box
 	$wppa['out'] .= wppa_nltab( '-' ) . 
 		'</div><!-- #album-' . $albumid . '-' . $wppa['mocc'] . ' -->';
-	if ( $wppa_alt == 'even' ) $wppa_alt = 'alt'; else $wppa_alt = 'even';
+		
+	// Toggel alt/even
+	wppa_toggle_alt();
 }
 
 // Type Image Factory
 function wppa_album_cover_imagefactory( $albumid, $multicolresp = false ) {
 global $wppa;
-global $wppa_alt;
 global $cover_count_key;
 global $wpdb;
 
@@ -345,7 +347,7 @@ global $wpdb;
 		$href_content = "#";
 	}
 
-	$style =  __wcs( 'wppa-box' ) . __wcs( 'wppa-' . $wppa_alt );
+	$style =  __wcs( 'wppa-box' ) . __wcs( 'wppa-' . wppa( 'alt' ) );
 	if ( is_feed() ) $style .= ' padding:7px;';
 	
 	$wid = wppa_get_cover_width( 'cover' );
@@ -368,7 +370,7 @@ global $wpdb;
 	$wppa['out'] .= wppa_nltab( '+' ) . 
 		'<div id="album-' . $albumid . '-' . $wppa['mocc'] . 
 		'" class="wppa-album-cover-imagefactory album wppa-box wppa-cover-box wppa-cover-box-' . 
-		$mcr . $wppa['mocc'] . ' wppa-' . $wppa_alt . '" style="' . $style . __wcs( 'wppa-cover-box' ) . '" >';
+		$mcr . $wppa['mocc'] . ' wppa-' . wppa( 'alt' ) . '" style="' . $style . __wcs( 'wppa-cover-box' ) . '" >';
 
 	// First The Cover photo?
 	if ( $photo_pos == 'left' || $photo_pos == 'top' ) {
@@ -422,13 +424,14 @@ global $wpdb;
 	// Close the album box
 	$wppa['out'] .= wppa_nltab( '-' ) . 
 		'</div><!-- #album-' . $albumid . '-' . $wppa['mocc'] . ' -->';
-	if ( $wppa_alt == 'even' ) $wppa_alt = 'alt'; else $wppa_alt = 'even';
+		
+	// Toggle alt/even
+	wppa_toggle_alt();
 }
 
 // Type Long Description
 function wppa_album_cover_longdesc( $albumid, $multicolresp = false ) {
 global $wppa;
-global $wppa_alt;
 global $cover_count_key;
 global $wpdb;
 
@@ -520,7 +523,7 @@ global $wpdb;
 	
 	$photo_pos = $wppa['coverphoto_pos'];
 	
-	$style =  __wcs( 'wppa-box' ) . __wcs( 'wppa-' . $wppa_alt );
+	$style =  __wcs( 'wppa-box' ) . __wcs( 'wppa-' . wppa( 'alt' ) );
 	if ( is_feed() ) $style .= ' padding:7px;';
 	
 	$wid = wppa_get_cover_width( 'cover' );
@@ -542,7 +545,7 @@ global $wpdb;
 	$wppa['out'] .= wppa_nltab( '+' ) . 
 		'<div id="album-' . $albumid . '-' . $wppa['mocc'] . 
 		'" class="wppa-album-cover-longdesc album wppa-box wppa-cover-box wppa-cover-box-' . 
-		$mcr . $wppa['mocc'] . ' wppa-' . $wppa_alt . '" style="' . $style . __wcs( 'wppa-cover-box' ) . '" >';
+		$mcr . $wppa['mocc'] . ' wppa-' . wppa( 'alt' ) . '" style="' . $style . __wcs( 'wppa-cover-box' ) . '" >';
 
 	// First The Cover photo?
 	if ( $photo_pos == 'left' || $photo_pos == 'top' ) {
@@ -598,7 +601,9 @@ global $wpdb;
 	// Close the album box
 	$wppa['out'] .= wppa_nltab( '-' ) . 
 		'</div><!-- #album-' . $albumid . '-' . $wppa['mocc'] . ' -->';
-	if ( $wppa_alt == 'even' ) $wppa_alt = 'alt'; else $wppa_alt = 'even';
+		
+	// Toggle alt/even
+	wppa_toggle_alt();
 }
 
 // A single coverphoto
@@ -690,7 +695,7 @@ global $wpdb;
 					' data-videonatheight="'.wppa_get_videoy( $id ).'"' : '' ) .
 					( $has_audio ? ' data-audiohtml="' . esc_attr( wppa_get_audio_body( $id ) ) . '"' : '' ) .
 					' ' . wppa( 'rel' ) . '="' . wppa_opt( 'wppa_lightbox_name' ) . '[alw-' . wppa( 'mocc' ) . '-' . $albumid . ']"' .
-					' title="' . $title . '"' .
+					' ' . wppa( 'lbtitle' ) . '="' . $title . '"' .
 					' >';
 				
 				// the cover image
@@ -834,8 +839,8 @@ global $wpdb;
 						' data-videonatwidth="' . wppa_get_videox( $thumb['id'] ) . '"' .
 						' data-videonatheight="' . wppa_get_videoy( $thumb['id'] ) . '"' : '' ) .
 						( $has_audio ? ' data-audiohtml="' . esc_attr( wppa_get_audio_body( $thumb['id'] ) ) . '"' : '' ) .
-						' rel="' . wppa_opt( 'wppa_lightbox_name' ) . '[alw-' . $wppa['mocc'] . '-' . $albumid . ']"' .
-						( $title ? ' title="' . $title . '"' : '' ) .
+						' ' . wppa( 'rel' ) . '="' . wppa_opt( 'lightbox_name' ) . '[alw-' . $wppa['mocc'] . '-' . $albumid . ']"' .
+						( $title ? ' ' . wppa( 'lbtitle' ) . '="' . $title . '"' : '' ) .
 						' >';
 					
 				// the cover image

@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, video, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, myCRED, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto, CMTooltipGlossary
-Version: 6.1.14
+Version: 6.1.15
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -188,6 +188,27 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 6.1.15 =
+
+= Bug Fixes =
+
+* Fixed a bug in a security check on front-end album deletion.
+* Fixed high resolution image urls for videos / audios on slideshows.
+
+= New Features =
+
+* WPPA+ Text widget has now an extra checkbox, to set if you want the widget to be seen by logged in users only.
+* Table II-D18: Show empty thumbnail area. Check this to see the thumbnail area of empty albums for the upload link in it.
+* There are now close links in the front-end upload and album edit / create dialogs.
+
+= Other Changes =
+
+* Improved compatibility with lightbox plugin prettyPhoto. Slideshows work on it ( but still no videos or audios ).
+* There are no loger empty titles or titles with only a space on images.
+* If the WPPA+ embedded lightbox is used, the subtitles are now transferred to lightbox by data-lbtitle="..", 
+to prevent hughe tooltip boxes while hovering over the image that links to lightbox while Table II-G1 is unticked.
+If you use a non-default lightbox, make sure the liughtbox titles are empty, or Table II-G91 is ticked.
 
 = 6.1.14 =
 

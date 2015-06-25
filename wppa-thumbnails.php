@@ -5,7 +5,7 @@
 * Various funcions to display a thumbnail image
 * Contains all possible frontend thumbnail types
 *
-* Version 6.1.14
+* Version 6.1.15
 * 
 */
 
@@ -295,7 +295,7 @@ global $wpdb;
 						' data-videonatheight="'.wppa_get_videoy( $id ) . '"' : '' ) .
 						( $has_audio ? ' data-audiohtml="' . esc_attr( wppa_get_audio_body( $id ) ) . '"' : '' ) .
 						' ' . wppa( 'rel' ) . '="'.wppa_opt( 'lightbox_name' ).'[occ'.wppa( 'mocc' ).']"' .
-						' data-lbtitle="'.$title.'" ' .
+						' ' . wppa( 'lbtitle' ) . '="'.$title.'" ' .
 						' class="thumb-img" id="x-'.$id.'-'.wppa( 'mocc' ).'">';
 			if ( $is_video ) { 
 				$result .= wppa_get_video_html( array(
@@ -638,7 +638,6 @@ global $wpdb;
 
 // A thumb 'as cover'
 function wppa_thumb_ascover( $id ) {
-global $wppa_alt;
 global $cover_count_key;
 global $thlinkmsggiven;
 
@@ -680,9 +679,7 @@ global $thlinkmsggiven;
 	$photo_left = wppa_switch( 'thumbphoto_left' );
 	$class_asym = 'wppa-asym-text-frame-'.$mcr.wppa( 'mocc' );
 	
-	if ( ! $wppa_alt ) $wppa_alt = 'alt';
-	
-	$style = __wcs( 'wppa-box' ).__wcs( 'wppa-'.$wppa_alt );
+	$style = __wcs( 'wppa-box' ).__wcs( 'wppa-'.wppa( 'alt' ) );
 	if ( is_feed() ) $style .= ' padding:7px;';
 	
 	$wid = wppa_get_cover_width( 'thumb' );
@@ -700,7 +697,7 @@ global $thlinkmsggiven;
 	
 	$result .= 	"\n" .  '<div' .
 							' id="thumb-' . $id . '-' . wppa( 'mocc' ) . '"' .
-							' class="thumb wppa-box wppa-cover-box wppa-cover-box-' . $mcr.wppa( 'mocc' ) . ' wppa-' . $wppa_alt . '"' .
+							' class="thumb wppa-box wppa-cover-box wppa-cover-box-' . $mcr . wppa( 'mocc' ) . ' wppa-' . wppa( 'alt' ) . '"' .
 							' style="' . $style . '"' .
 							' >';
 
@@ -748,7 +745,9 @@ global $thlinkmsggiven;
 		}
 		
 	$result .= 	'</div><!-- thumb-' . $id . '-' . wppa( 'mocc' ) . ' -->';
-	if ( $wppa_alt == 'even' ) $wppa_alt = 'alt'; else $wppa_alt = 'even';
+	
+	// Toggle alt/even
+	wppa_toggle_alt();
 	
 	wppa_out( $result );
 }
@@ -788,7 +787,7 @@ function wppa_the_thumbascoverphoto( $id, $src, $photo_left, $link, $imgattr_a, 
 		$result .= 	'<a' .
 						' href="' . $href . '"' .
 						' ' . wppa( 'rel' ) . '="' . wppa_opt( 'lightbox_name' ). '[occ' . wppa( 'mocc' ) . ']"' .
-						( $title ? ' title="' . $title . '"' : '' ) .
+						( $title ? ' ' . wppa( 'lbtitle' ) . '="' . $title . '"' : '' ) .
 						' >';
 						
 			if ( wppa_is_video( $id ) ) {
@@ -1150,7 +1149,8 @@ global $wpdb;
 						' data-videonatheight="' . wppa_get_videoy( $id ) . '"' : '' ) .
 						( $has_audio ? ' data-audiohtml="' . esc_attr( wppa_get_audio_body( $id ) ) . '"' : '' ) .
 						' ' . wppa( 'rel' ) . '="' . wppa_opt( 'lightbox_name' ) . '[occ'.wppa( 'mocc' ) . ']"' .
-						' data-lbtitle="' . $title . '" class="thumb-img"' .
+						( $title ? ' ' . wppa( 'lbtitle' ) . '="' . $title . '"' : '' ) .
+						' class="thumb-img"' .
 						' id="x-' . $id . '-' . wppa( 'mocc' ) . '">';
 
 			// The image						
@@ -1459,13 +1459,13 @@ function wppa_get_the_widget_thumb( $type, $image, $album, $display, $link, $tit
 			$title 		= wppa_get_lbtitle( 'thumb', $id );
 			$videohtml 	= esc_attr( $videobody );
 			$audiohtml 	= esc_attr( $audiobody );
-			$result .= "\n\t" . '<a href="' . $link['url'] . '"' .
+			$result .= 	'<a href="' . $link['url'] . '"' .
 						( $videohtml ? ' data-videohtml="' . $videohtml . '"' .
 							' data-videonatwidth="'.wppa_get_videox( $id ).'"' .
 							' data-videonatheight="'.wppa_get_videoy( $id ).'"' : '' ) .
 						( $audiohtml ? ' data-audiohtml="' . $audiohtml . '"' : '' ) .
-						' '. wppa( 'rel' ) . '="' . wppa_opt( 'lightbox_name' ) . '[' . $type . '-' . $album . '-' . wppa( 'mocc' ) . ']"' .
-						( $title ? ' data-lbtitle="' . $title . '"' : '' ) .
+						' ' . wppa( 'rel' ) . '="' . wppa_opt( 'lightbox_name' ) . '[' . $type . '-' . $album . '-' . wppa( 'mocc' ) . ']"' .
+						( $title ? ' ' . wppa( 'lbtitle' ) . '="' . $title . '"' : '' ) .
 						' target="' . $link['target'] . '" >';
 				$result .= "\n\t\t";
 				if ( $display == 'thumbs' ) {
@@ -1666,7 +1666,7 @@ global $thumb;
 							' data-videonatheight="' . wppa_get_videoy( $thumb['id'] ) . '"' : '' ) .
 							( $audiohtml ? ' data-audiohtml="' . $audiohtml . '"' : '' ) .
 							' ' . wppa( 'rel' ) . '="' . wppa_opt( 'lightbox_name' ) . '[occ'.wppa( 'mocc' ) . ']"' .
-							( $title ? ' title="' . $title . '"' : '' ) .
+							( $title ? ' ' . wppa( 'lbtitle' ) . '="' . $title . '"' : '' ) .
 							' >';
 		}
 		

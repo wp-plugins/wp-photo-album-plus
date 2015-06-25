@@ -3,7 +3,7 @@
 // Conatins lightbox modules
 // Dependancies: wppa.js and default wp jQuery library
 // 
-var wppaLightboxVersion = '6.1.14';
+var wppaLightboxVersion = '6.1.15';
 
 // Initial initialization
 jQuery( document ).ready(function( e ) {
@@ -64,6 +64,7 @@ function wppaOvlKeyboardHandler( e ) {
 			var oldMode = wppaOvlMode;
 			wppaOvlStepMode();
 			var elem = document.getElementById('wppa-overlay-ic');
+			if ( ! elem ) return;
 			if ( oldMode == 'normal' ) {
 				if (elem.requestFullscreen) {
 					elem.requestFullscreen();
@@ -825,7 +826,9 @@ wppaConsoleLog( 'wppaOvlSize' );
 function wppaOvlSize2() {
 wppaConsoleLog( 'wppaOvlSize2' );
 	
-	var cw = document.getElementById( 'wppa-overlay-img' ).clientWidth;
+	var elm = document.getElementById( 'wppa-overlay-img' );
+	if ( ! elm ) return;	// quit inbetween
+	var cw = elm.clientWidth;
 	var txtwidth;
 	if ( wppaOvlRunning ) txtwidth = cw + 12;
 	else txtwidth = cw - 80;
@@ -888,35 +891,40 @@ wppaConsoleLog( 'wppaInitOverlay' );
 	var anchors = jQuery( 'a' );
 	var anchor;
 	var i;
-	var temp = '';
+	var temp = [];
 
 	wppaOvlFsPhotoId = 0; // Reset ovl fullscreen photo id
 	wppaPhotoId = 0;
 		
-	for( i=0;i<anchors.length;i++ ) {
+	for ( i = 0; i < anchors.length; i++ ) {
+		
 		anchor = anchors[i];
-//		if ( anchor.rel ) {
-//			temp = anchor.rel.split( "[" );
-//		}
-//		else 
 		if ( jQuery( anchor ).attr( 'data-rel' ) ) {
 			temp = jQuery( anchor ).attr( 'data-rel' ).split( "[" );
 		}
-		else { 
-			temp = false;
+		else if ( anchor.rel ) {
+			temp = anchor.rel.split( "[" );
 		}
-		if ( temp.length > 1 ) {
-			if ( temp[0] == 'wppa' ) {
-				wppaWppaOverlayActivated = true;	// found one
-				jQuery( anchor ).click(function( event ) {
-					wppaOvlShow( this );
-					event.preventDefault();
-				}); 
-				jQuery( anchor ).on( "touchstart", function( event ) {
-					wppaOvlShow( this );
-					event.preventDefault();
-				}); 
-			}
+		else {
+			temp[0] = '';
+		}
+
+		if ( temp[0] == 'wppa' ) {
+		
+			// found one
+			wppaWppaOverlayActivated = true;
+			
+			// Install onclick handler
+			jQuery( anchor ).click( function( event ) {
+				wppaOvlShow( this );
+				event.preventDefault();
+			}); 
+			
+			// Install ontouchstart handler
+			jQuery( anchor ).on( "touchstart", function( event ) {
+				wppaOvlShow( this );
+				// event.preventDefault();
+			}); 
 		}
 	}
 }

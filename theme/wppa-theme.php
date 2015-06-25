@@ -3,11 +3,11 @@
 * Package: wp-photo-album-plus
 *
 * display the albums/photos/slideshow in a page or post
-* Version 6.1.12
+* Version 6.1.15
 */
 function wppa_theme() {
 
-global $wppa_version; $wppa_version = '6-1-12-000';		// The version number of this file
+global $wppa_version; $wppa_version = '6-1-15-000';		// The version number of this file
 global $wppa;
 global $wppa_show_statistics;						// Can be set to true by a custom page template
 
@@ -35,8 +35,12 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 		if ( wppa_opt( 'thumbtype' ) != 'none' ) {
 			$thumbs = wppa_get_thumbs();											// Get the Thumbs
 		} else $thumbs = false;
+		
+		$wanted_empty = wppa_is_wanted_empty( $thumbs );							// See if we need to display an empty thumbnail area
+
 		$n_thumb_pages = wppa_get_npages( 'thumbs', $thumbs );						// Get the number of thumb pages
-		if ( $n_thumb_pages == '0' ) $thumbs = false;								// No pages: no thumbs. Maybe want covers only
+		if ( $n_thumb_pages == '0' && ! $wanted_empty ) $thumbs = false;			// No pages: no thumbs. Maybe want covers only
+		if ( $wanted_empty ) $n_thumb_pages = '1';
 
 		// Get total number of pages
 		if ( ! wppa_is_pagination() ) $totpag = '1';								// If both pagination is off, there is only one page
@@ -63,13 +67,15 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 			}	// If albums
 		}
 		
-		if ( $didsome && wppa_is_pagination() ) $thumbs = false;					// Pag on and didsome: force a pagebreak by faking no thumbs
-		if ( count( $thumbs ) <= wppa_get_mincount() ) $thumbs = false;				// Less than treshold value
+		if ( $didsome && wppa_is_pagination() ) $thumbs = false;						// Pag on and didsome: force a pagebreak by faking no thumbs
+		if ( count( $thumbs ) <= wppa_get_mincount() && ! $wanted_empty ) $thumbs = false;			// Less than treshold value
 		if ( wppa_switch( 'wppa_thumbs_first' ) && $curpage > $n_thumb_pages ) $thumbs = false; 	// If thumbs done, do not display an empty thumbarea
 		
 		// Process the thumbs
-		if ( $thumbs ) {	
-		
+		if ( $thumbs || $wanted_empty ) 
+		if ( ! $wanted_empty || ! wppa_switch( 'thumbs_first' ) || wppa_get_curpage() == '1' ) 
+		if ( ! $wanted_empty || wppa_switch( 'thumbs_first' ) || wppa_get_curpage() == $totpag ) {
+			
 			// Init
 			$counter_thumbs = '0';
 			
@@ -121,7 +127,7 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 
 				// Process the thumbnails
 				$col = '0';
-				foreach ( $thumbs as $tt ) { 	
+				if ( $thumbs ) foreach ( $thumbs as $tt ) { 	
 					$id = $tt['id'];
 					$counter_thumbs++;
 					if ( wppa_onpage( 'thumbs', $counter_thumbs, $relpage ) ) {
@@ -204,7 +210,7 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 				$done_count 		= 0;
 				$last 				= false;
 				$max_row_height 	= $target_row_height * 0.8; 	// Init keep track for last
-				foreach ( $thumbs as $tt ) { 
+				if ( $thumbs ) foreach ( $thumbs as $tt ) { 
 					$id = $tt['id'];
 					$counter_thumbs++;
 					if ( wppa_onpage( 'thumbs', $counter_thumbs, $relpage ) ) {
@@ -264,7 +270,7 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 				$relpage = wppa_switch( 'wppa_thumbs_first' ) ? $curpage : $curpage - $n_album_pages;
 				
 				// Process the thumbnails
-				foreach ( $thumbs as $tt ) {
+				if ( $thumbs ) foreach ( $thumbs as $tt ) {
 					$counter_thumbs++;
 					if ( wppa_onpage( 'thumbs', $counter_thumbs, $relpage ) ) {
 						$didsome = true;
@@ -309,7 +315,7 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 		}
 		
 		// Empty results?
-		if ( ! $didsome ) {
+		if ( ! $didsome && ! $wanted_empty ) {
 			if ( wppa( 'photos_only' ) ) {
 				wppa_out( wppa_errorbox( __a( 'No photos found matching your search criteria.', 'wppa_theme' ) ) );
 			}
@@ -336,4 +342,18 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 	
 	// Close container
 	wppa_container( 'close' );
+}
+
+function wppa_is_wanted_empty( $thumbs ) {
+
+	if ( ! wppa_switch( 'show_empty_thumblist' ) ) return false;							// Feature not enabled
+	if ( is_array( $thumbs ) && count( $thumbs ) > wppa_get_mincount() ) return false;		// Album is not empty
+	if ( wppa_is_virtual() ) return false; 													// wanted empty only on real albums
+	if ( wppa( 'albums_only' ) ) return false;												// Explicitly no thumbs
+	
+//	if ( wppa_switch( 'thumbs_first' ) && wppa_get_curpage() != '1' ) return false;			// Only on page 1 if thumbs first
+	
+	wppa( 'current_album', wppa( 'start_album' ) );											// Make sure upload knows the album
+	
+	return true;
 }

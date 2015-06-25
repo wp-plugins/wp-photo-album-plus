@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 6.1.14
+* Version 6.1.15
 * 
 */
  
@@ -637,7 +637,8 @@ global $wppa_opt;
 								'wppa_start_slide_video',
 								'wppa_start_slide_audio',
 								'wppa_ovl_show_startstop',
-								'wppa_ovl_show_legenda'
+								'wppa_ovl_show_legenda',
+								'wppa_lightbox_name'
 
 
 		);
@@ -2590,4 +2591,29 @@ static $smilies;
 	
 	// Done
 	return $result;
+}
+
+function wppa_toggle_alt() {
+	if ( wppa( 'alt' ) == 'alt' ) {
+		wppa( 'alt', 'even' );
+	}
+	else {
+		wppa( 'alt', 'alt' );
+	}
+}
+
+function wppa_is_virtual() {
+
+	if ( wppa( 'is_topten' ) ) return true;
+	if ( wppa( 'is_lasten' ) ) return true;
+	if ( wppa( 'is_featen' ) ) return true;
+	if ( wppa( 'is_comten' ) ) return true;
+	if ( wppa( 'is_tag' ) ) return true;
+	if ( wppa( 'is_related' ) ) return true;
+	if ( wppa( 'is_upldr' ) ) return true;
+	if ( wppa( 'is_cat' ) ) return true;
+	if ( wppa( 'is_supersearch' ) ) return true;
+	if ( wppa( 'src' ) ) return true;
+	
+	return false;
 }

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 6.1.14
+* Version 6.1.15
 *
 */
 
@@ -26,17 +26,7 @@ global $wppa_tags;
 			
 
 	// Test area
-	/*
-	$labels = $wpdb->get_results( "SELECT * FROM `".WPPA_EXIF."`  WHERE `photo` = '0'", ARRAY_A );
-	$c = 0;
-	$t = time();
-	foreach( $labels as $label ) {
-		if ( $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_EXIF."` WHERE `photo` <> '0' AND `tag` = '".$label['tag']."'" ) == '0' ) {
-			$c++;
-		}
-	}
-	echo 'There are '.$c.' unused exif labels, found in '.(time()-$t).' seconds.<br/>';
-	*/
+
 	// End test area
 
 	// Initialize
@@ -2082,6 +2072,15 @@ global $wppa_tags;
 							$clas = '';
 							$tags = 'thumb';
 							wppa_setting($slug, '17', $name, $desc, $html, $help, $clas, $tags);
+							
+							$name = __('Show empty thumbnail area', 'wppa');
+							$desc = __('Display thumbnail areas with upload link only for empty albums.', 'wppa');
+							$help = '';
+							$slug = 'wppa_show_empty_thumblist';
+							$html = wppa_checkbox($slug);
+							$clas = '';
+							$tags = 'thumb';
+							wppa_setting($slug, '18', $name, $desc, $html, $help, $clas, $tags);
 							
 							}
 						wppa_setting_subheader( 'E', '1', __( 'Album cover related visibility settings', 'wppa' ) );

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 6.1.12
+* Version 6.1.15
 * 
 */
 
@@ -691,6 +691,7 @@ Hide Camera info
 						'wppa_show_rating_count'			=> 'no',	// 7
 						'wppa_albdesc_on_thumbarea'			=> 'none',
 						'wppa_albname_on_thumbarea'			=> 'none',
+						'wppa_show_empty_thumblist' 		=> 'no',
 
 						'wppa_edit_thumb' 					=> 'yes',	// II-D17
 

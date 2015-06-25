@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the widget
-* Version 6.1.14
+* Version 6.1.15
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -69,7 +69,7 @@ class PhotoOfTheDay extends WP_Widget {
 							' data-videonatwidth="'.wppa_get_videox( $id ).'"' .
 							' data-videonatheight="'.wppa_get_videoy( $id ).'"' : '' ) .
 							( $has_audio ? ' data-audiohtml="' . esc_attr( wppa_get_audio_body( $id ) ) . '"' : '' ) .
-							' ' . wppa( 'rel' ) . '="' . wppa_opt( 'wppa_lightbox_name' ) . '[potd]"';
+							' ' . wppa( 'rel' ) . '="' . wppa_opt( 'lightbox_name' ) . '"';
 			}
 			else {
 				$lightbox = '';
@@ -96,7 +96,7 @@ class PhotoOfTheDay extends WP_Widget {
 			$widget_content .= wppa_get_medal_html_a( array( 'id' => $id, 'size' => 'M', 'where' => 'top' ) );
 			
 			// The link, if any
-			if ($link) $widget_content .= "\n\t".'<a href = "'.$link['url'].'" target="'.$link['target'].'" '.$lightbox.' data-lbtitle="'.$ltitle.'">';
+			if ($link) $widget_content .= "\n\t".'<a href = "'.$link['url'].'" target="'.$link['target'].'" '.$lightbox.' ' . wppa( 'lbtitle' ) . '="'.$ltitle.'">';
 			
 				// The image
 				if ( wppa_is_video( $id ) ) {
@@ -108,7 +108,12 @@ class PhotoOfTheDay extends WP_Widget {
 																	));
 				}
 				else {
-					$widget_content .= "\n\t\t".'<img src="'.$imgurl.'" style="width: '.wppa_opt('wppa_potd_widget_width').'px;'.$cursor.'" '.wppa_get_imgalt( $id ).' title="'.$title.'"/>';
+					$widget_content .= 	'<img' .
+											' src="'.$imgurl.'"' .
+											' style="width: '.wppa_opt('wppa_potd_widget_width').'px;'.$cursor.'"' .
+											' ' . wppa_get_imgalt( $id ) . 
+											( $title ? 'title="' . $title . '"' : '' ) .
+											'/ >';
 				}
 
 			// Close the link

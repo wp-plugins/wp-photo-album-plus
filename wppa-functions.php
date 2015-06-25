@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 6.1.14
+* Version 6.1.15
 *
 */
 
@@ -621,7 +621,7 @@ global $wppa_session;
 		}
 		else $wppa['out'] = '<span style="color:red">ERROR: Missing function wppa_theme(), check the installation of WPPA+. Remove customized wppa_theme.php</span>';
 		global $wppa_version; 
-		$expected_version = '6-1-12-000';
+		$expected_version = '6-1-15-000';
 		if ( $wppa_version != $expected_version ) {
 			wppa_dbg_msg( 'WARNING: customized wppa-theme.php is out of rev. Expected version: '.$expected_version.' found: '.$wppa_version, 'red' );	
 		}
@@ -1766,7 +1766,7 @@ static $user;
 	$ogdsc = esc_js( $ogdsc );
 
 	// Hires url
-	$hiresurl = esc_js( wppa_get_hires_url( $id ) );
+	$hiresurl = esc_js( wppa_fix_poster_ext( wppa_get_hires_url( $id ), $id ) );
 	
 	// Video html
 	$videohtml = wppa_get_video_body( $id );
@@ -2492,7 +2492,6 @@ global $wppa;
 function wppa_container( $action ) {
 global $wppa;
 global $wppa_version;			// The theme version ( wppa_theme.php )
-global $wppa_alt;
 global $wppa_microtime;
 global $wppa_microtime_cum;
 global $wppa_err_displayed;
@@ -2580,7 +2579,7 @@ global $blog_id;
 		$wppa['out'] .= wppa_nltab().wppa_nonce_field( 'wppa-check' , 'wppa-nonce', false, false );
 
 		if ( wppa_page( 'oneofone' ) ) $wppa['portrait_only'] = true;
-		$wppa_alt = 'alt';
+		wppa( 'alt', 'alt' );
 
 		// Javascript occurrence dependant stuff
 		wppa_add_js_page_data( wppa_nltab().'<script type="text/javascript">' );
@@ -3178,12 +3177,12 @@ global $wppa;
 				$videoy 	= wppa_get_videoy( $id );
 				$wppa['out'] .= '<a' .
 									' href="' . $link['url'] . '"' .
-									( $lbtitle ? ' title="' . $lbtitle . '"' : '' ) .
+									( $lbtitle ? ' ' . wppa( 'lbtitle' ) . '="' . $lbtitle . '"' : '' ) .
 									( $videohtml ? ' data-videohtml="' . $videohtml . '"' : '' ) .
 									( $audiohtml ? ' data-audiohtml="' . $audiohtml . '"' : '' ) .
 									( $videox ? ' data-videonatwidth="' . $videox . '"' : '' ) .
 									( $videoy ? ' data-videonatheight="' . $videoy . '"' : '' ) .
-									' ' . wppa( 'rel' ) . '="' . wppa_opt( 'lightbox_name' ) . '[single]"' .
+									' ' . wppa( 'rel' ) . '="' . wppa_opt( 'lightbox_name' ) . '"' .
 									( $link['target'] ? ' target="' . $link['target'] . '"' : '' ) .
 									' class="thumb-img"' .
 									' id="a-' . $id . '-' . $wppa['mocc'] . '"' .
@@ -3363,12 +3362,12 @@ global $wppa;
 				$videoy 	= wppa_get_videoy( $id );
 				$wppa['out'] .= '<a' .
 									' href="' . $link['url'] . '"' .
-									( $lbtitle ? ' title="'.$lbtitle.'"' : '' ) .
+									( $lbtitle ? ' ' . wppa( 'lbtitle' ) . '="'.$lbtitle.'"' : '' ) .
 									( $videobody ? ' data-videohtml="' . $videobody . '"' : '' ) .
 									( $audiobody ? ' data-audiohtml="' . $audiobody . '"' : '' ) .
 									( $videox ? ' data-videonatwidth="' . $videox . '"' : '' ) .
 									( $videoy ? ' data-videonatheight="' . $videoy . '"' : '' ) .
-									' ' . wppa( 'rel' ) . '="'.wppa_opt( 'lightbox_name' ).'[single]"' .
+									' ' . wppa( 'rel' ) . '="'.wppa_opt( 'lightbox_name' ).'"' .
 									( $link['target'] ? ' target="' . $link['target'] . '"' : '' ) .
 									' class="thumb-img"' .
 									' id="a-' . $id . '-' . $wppa['mocc'] . '"' .

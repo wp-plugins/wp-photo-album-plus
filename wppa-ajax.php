@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 6.1.10
+* version 6.1.15
 *
 */
 
@@ -2080,7 +2080,7 @@ global $wppa_session;
 			if ( wppa_switch( 'wppa_user_create_login' ) ) {
 				if ( ! is_user_logged_in() ) $may = false;					// Must login
 			}
-			if ( ! wppa_have_access( $alb ) ) {
+			if ( ! wppa_have_access( $album ) ) {
 				$may = false;						// No album access
 			}
 			if ( wppa_is_user_blacklisted() ) $may = false;

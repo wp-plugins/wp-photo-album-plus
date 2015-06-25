@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 6.1.14
+* version 6.1.15
 * 
 */
 
@@ -133,7 +133,9 @@ global $wppa_defaults;
 			'is_supersearch' 			=> false,
 			'supersearch' 				=> '',
 			'is_mobile' 				=> wppa_is_mobile(),
-			'rel' 						=> get_option( 'wppa_lightbox_name' ) == 'wppa' ? 'data-rel' : 'rel'
+			'rel' 						=> get_option( 'wppa_lightbox_name' ) == 'wppa' ? 'data-rel' : 'rel',
+			'lbtitle' 					=> get_option( 'wppa_lightbox_name' ) == 'wppa' ? 'data-lbtitle' : 'title',
+			'alt'						=> 'even'
 		 );
 	}
 	
