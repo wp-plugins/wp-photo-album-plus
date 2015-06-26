@@ -2261,7 +2261,7 @@ function wppa_browser_can_html5() {
 	if ( $is_ie ) {
 		$tri_pos = strpos( $_SERVER["HTTP_USER_AGENT"], 'Trident/' );
 		$tri_ver = substr( $_SERVER["HTTP_USER_AGENT"], $tri_pos+8, 3 );
-		if ( $tripos >= 6.0 ) return true; // IE 10 or later
+		if ( $tri_pos >= 6.0 ) return true; // IE 10 or later
 // echo $tri_ver;
 	}
 
