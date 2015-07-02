@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 6.1.14
+* version 6.1.16
 *
 */
 
@@ -705,15 +705,20 @@ global $allphotos;
 	else $name = __( $xname );
 	
 	// Find photo entries that apply to the supplied filename
-	$photos = $wpdb->get_results( $wpdb->prepare( 
+	$query = $wpdb->prepare( 
 			"SELECT * FROM `".WPPA_PHOTOS."` WHERE ".
+			"`filename` = %s OR ".
 			"`filename` = %s OR ".
 			"( `filename` = '' AND `name` = %s ) OR ".
 			"( `filename` = %s )", 
 			wppa_sanitize_file_name( basename( $file ) ),								// Usual
+			$name,																		// Filename is different in is_wppa_tree import
 			$name,																		// Old; pre saving filenames
 			wppa_strip_ext( wppa_sanitize_file_name( basename( $file ) ) ) . '.xxx'		// Media poster file
-		), ARRAY_A );
+		);
+	$photos = $wpdb->get_results( $query, ARRAY_A );
+	
+//	wppa_log( 'dbg', $query.' count='.($photos?count($photos):'0') );
 	
 	// If photo entries found, process them all
 	if ( $photos ) {

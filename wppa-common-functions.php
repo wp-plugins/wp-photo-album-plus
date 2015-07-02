@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 6.1.15
+* version 6.1.16
 * 
 */
 
@@ -135,7 +135,8 @@ global $wppa_defaults;
 			'is_mobile' 				=> wppa_is_mobile(),
 			'rel' 						=> get_option( 'wppa_lightbox_name' ) == 'wppa' ? 'data-rel' : 'rel',
 			'lbtitle' 					=> get_option( 'wppa_lightbox_name' ) == 'wppa' ? 'data-lbtitle' : 'title',
-			'alt'						=> 'even'
+			'alt'						=> 'even',
+			'is_wppa_tree' 				=> false,
 		 );
 	}
 	
@@ -1613,22 +1614,7 @@ global $wp_roles;
 	return $limits;
 }
 
-// See if a string is a comma seperated list of numbers, a single num returns false
-/* obsolete?
-function wppa_is_enum( $str ) {
 
-	if ( is_numeric( $str ) ) return false;
-	if ( strstr( $str, ',' ) === false ) return false;
-	
-	$temp = explode( ',', $str );
-	
-	foreach ( $temp as $t ) {
-		if ( ! is_numeric( $t ) ) return false;
-	}
-	
-	return true;
-}
-*/
 function wppa_alfa_id( $id = '0' ) {
 	return str_replace( array( '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' ), array( 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j' ), $id );
 }

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 6.1.14
+* Version 6.1.16
 *
 */
 
@@ -761,7 +761,20 @@ global $wppa_supported_audio_extensions;
 									$meta =	wppa_strip_ext( $file ).'pmf';
 									if ( in_array( $ext, $wppa_supported_photo_extensions ) ) { ?>
 										<td id="td-file-<?php echo( $idx ) ?>" >
-											<input type="checkbox" id="file-<?php echo( $idx ) ?>" name="file-<?php echo( $idx ) ?>" title="<?php echo $file ?>" class= "wppa-pho" <?php if ( $is_sub_depot ) echo( 'checked="checked"' ) ?> /><span id="name-file-<?php echo( $idx ) ?>" >&nbsp;&nbsp;<?php echo( wppa_sanitize_file_name( basename( $file ) ) ); ?>&nbsp;<?php echo( stripslashes( wppa_get_meta_name( $meta, '( ' ) ) ) ?><?php echo( stripslashes( wppa_get_meta_album( $meta, '[' ) ) ) ?></span>
+											<input type="checkbox" id="file-<?php echo( $idx ) ?>" name="file-<?php echo( $idx ) ?>" title="<?php echo $file ?>" class= "wppa-pho" <?php if ( $is_sub_depot ) echo( 'checked="checked"' ) ?> />
+											<span id="name-file-<?php echo( $idx ) ?>" >&nbsp;&nbsp;
+												<?php 
+												if ( wppa( 'is_wppa_tree' ) ) {
+													$t = explode( '/wppa/', $file );
+													echo $t[1];
+												}
+												else {
+													echo( wppa_sanitize_file_name( basename( $file ) ) ); 
+												}
+												?>&nbsp;
+												<?php echo( stripslashes( wppa_get_meta_name( $meta, '( ' ) ) ) ?>
+												<?php echo( stripslashes( wppa_get_meta_album( $meta, '[' ) ) ) ?>
+											</span>
 											<?php 
 											if ( wppa_switch( 'wppa_import_preview' ) ) {
 												if ( $wppa['is_remote'] ) { 
@@ -1093,16 +1106,15 @@ global $wppa_supported_audio_extensions;
 							xmlhttp.onreadystatechange = function() {
 								if ( xmlhttp.readyState == 4 ) {
 									if ( xmlhttp.status!=404 ) {
+										var resp = xmlhttp.responseText;
+										if ( resp.indexOf( 'Server' ) != -1 && resp.indexOf( 'Error' ) != -1 ) {
+											resp = '<span style="color:red" >Server error</span>';
+										}
+										jQuery( '#name-'+elm.id ).html( '&nbsp;&nbsp;<b>'+resp+'</b>' );
+										elm.checked = '';
 										if ( jQuery( '#del-after-p' ).attr( 'checked' ) ) {
-											elm.checked = '';
 											elm.disabled = 'disabled';
 											elm.title = '';
-											jQuery( '#name-'+elm.id ).html( '&nbsp;&nbsp;<b>'+xmlhttp.responseText+'</b>' );
-										}
-										else {
-											elm.checked = '';
-											
-											jQuery( '#name-'+elm.id ).html( '&nbsp;&nbsp;<b>'+xmlhttp.responseText+'</b>' );
 										}
 										if ( wppaImportRuns ) {
 											setTimeout( 'wppaDoAjaxImport()', 100 );
@@ -1216,21 +1228,37 @@ function wppa_get_import_files() {
 		$max_tries 		= get_option( 'wppa_import_remote_max_'.$user, '10' );
 		$setting 		= get_option( 'wppa_import_source_url_'.$user, 'http://' );
 		$pattern		= '/src=".*?"/';
-										
+		
+		// Is it a photofile in a wppa tree filestructure?
+		$old_setting = $setting;
+		$setting = wppa_expand_tree_path( $old_setting );
+		if ( is_array( @ getimagesize( $setting ) ) ) {
+			global $wppa;
+			$wppa['is_wppa_tree'] =  true;
+		}
+		
+		// Is it a photofile?
 		if ( is_array( @ getimagesize( $setting ) ) ) {	// image uri
 			$files = array( $setting );
-			$pid = wppa_strip_ext( basename( $setting ) );
+			$pid = wppa_strip_ext( basename( $old_setting ) );
 			if ( is_numeric( $pid ) ) {
 				$tries = 1;
-				$before = substr( $setting, 0, strpos( $setting, $pid) );
+				$before = substr( $old_setting, 0, strpos( $old_setting, $pid) );
 				while ( $tries < $max_tries ) {
 					$tries++;
 					$pid++;
-					$files[] = $before.$pid.'.jpg';
+					if ( wppa( 'is_wppa_tree' ) ) {
+						$files[] = $before . wppa_expand_id($pid) . '.jpg';
+					}
+					else {
+						$files[] = $before . $pid . '.jpg';
+					}
 				}
 			}
 		}
-		else {	// page url
+		
+		// is it a page url
+		else {	
 			$files = get_option( 'wppa_import_source_url_found_'.$user, false );
 			if ( $files === false ) {
 			
@@ -1577,12 +1605,18 @@ global $wppa_supported_audio_extensions;
 	foreach ( array_keys( $files ) as $file_idx ) {
 		$unsanitized_path_name = $files[$file_idx];
 		$file = $files[$file_idx];
+		wppa_is_wppa_tree( $file );	// Sets wppa( 'is_wppa_tree' )
 		if ( isset( $_POST['use-backup'] ) && is_file( $file.'_backup' ) ) {
 			$file = $file.'_backup';
 		}
 		$file = wppa_sanitize_file_name( $file );
 		if ( isset( $_POST['file-'.$idx] ) || $wppa['ajax'] ) {
-			if ( $wppa['ajax'] ) $wppa['ajax_import_files'] = basename( $file );	/* */
+			if ( wppa( 'is_wppa_tree' ) ) {
+				if ( $wppa['ajax'] ) $wppa['ajax_import_files'] = basename( wppa_compress_tree_path( $file ) );
+			}
+			else {
+				if ( $wppa['ajax'] ) $wppa['ajax_import_files'] = basename( $file );	/* */
+			}
 			$ext = strtolower( substr( strrchr( $file, "." ), 1 ) );
 			$ext = str_replace( '_backup', '', $ext );
 			if ( in_array( $ext, $wppa_supported_photo_extensions ) ) {
@@ -1650,6 +1684,12 @@ global $wppa_supported_audio_extensions;
 				
 				// Update the photo ?
 				elseif ( isset( $_POST['wppa-update'] ) ) { 
+				
+					if ( wppa( 'is_wppa_tree' ) ) {
+						$tmp = explode( '/wppa/', $file );
+						$name = str_replace( '/', '', $tmp[1] );
+					}
+
 					$iret = wppa_update_photo_files( $unsanitized_path_name, $name );
 					if ( $iret ) {
 						if ( $wppa['ajax'] ) $wppa['ajax_import_files_done'] = true;
@@ -1664,7 +1704,14 @@ global $wppa_supported_audio_extensions;
 				// Insert the photo
 				else { 
 					if ( is_numeric( $alb ) && $alb != '0' ) {
-						$id = basename( $file );
+						if ( wppa( 'is_wppa_tree' ) ) {
+							$tmp = explode( '/wppa/', $file );
+							$id = str_replace( '/', '', $tmp[1] );
+							$name = $id;
+						}
+						else {
+							$id = basename( $file );
+						}
 						if ( wppa_switch( 'wppa_void_dups' ) && wppa_file_is_in_album( $id, $alb ) ) {
 							wppa_error_message( sprintf( __( 'Photo %s already exists in album %s. (1)', 'wppa' ), $id, $alb ) );
 							$wppa['ajax_import_files_error'] = __( 'Duplicate', 'wppa' );
@@ -2343,4 +2390,37 @@ global $wpdb;
 		return false;
 	}
 	return true;
+}
+
+function wppa_is_wppa_tree( $file ) {
+
+	$temp = explode( '/wppa/', $file );
+	if ( count( $temp ) == '2' ) {
+		$temp[1] = wppa_expand_id( wppa_strip_ext( $temp[1] ) ) . '.' . wppa_get_ext( $temp[1] );
+		$newf = implode( '/wppa/', $temp );
+		wppa( 'is_wppa_tree', ( $newf != $file ) );
+	}
+	return wppa( 'is_wppa_tree' );
+}
+
+function wppa_compress_tree_path( $path ) {
+
+	$result = $path;
+	$temp = explode( '/wppa/', $path );
+	if ( count( $temp ) == '2' ) {
+		$temp[1] = str_replace( '/', '', $temp[1] );
+		$result = implode( '/wppa/', $temp );
+	}
+	return $result;
+}
+
+function wppa_expand_tree_path( $path ) {
+
+	$result = $path;
+	$temp = explode( '/wppa/', $path );
+	if ( count( $temp ) == '2' ) {
+		$temp[1] = wppa_expand_id( wppa_strip_ext( $temp[1] ) ) . '.' . wppa_get_ext( $temp[1] );
+		$result = implode( '/wppa/', $temp );
+	}
+	return $result;
 }

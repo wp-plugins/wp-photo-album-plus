@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 6.1.15
+* Version 6.1.16
 *
 *
 */
@@ -17,7 +17,7 @@ function wppa_thumb_area( $action ) {
 	$result = '';
 	$mocc 	= wppa( 'mocc' );
 	$alt 	= wppa( 'alt' );
-	
+
 	// Open thumbnail area box
 	if ( $action == 'open' ) {
 		if ( is_feed() ) {
@@ -37,50 +37,50 @@ function wppa_thumb_area( $action ) {
 								'wppa-box wppa-' . $alt .
 								'"' .
 							' style="' .
-								__wcs( 'wppa-box' ) . 
+								__wcs( 'wppa-box' ) .
 								__wcs( 'wppa-' . $alt ) .
 								'width:' . wppa_get_thumbnail_area_width() . 'px;' .
 								'"' .
 							' >';
-								
+
 			if ( wppa( 'current_album' ) ) {
 				wppa_bump_viewcount( 'album', wppa( 'current_album') );
 			}
 		}
 
-		// Toggle alt/even		
+		// Toggle alt/even
 		wppa_toggle_alt();
 	}
-	
+
 	// Cloase thumbnail area box
 	elseif ( $action == 'close' ) {
-	
+
 		// Display create subalbum and upload photo links conditionally
 		if ( 	! wppa( 'is_upldr' ) &&
 				! wppa( 'searchstring' ) &&
 				! wppa( 'supersearch' ) ) {
-			
+
 			$alb = wppa( 'current_album' );
 			wppa_user_create_html( $alb, wppa_get_container_width( 'netto' ), 'thumb' );
 			wppa_user_upload_html( $alb, wppa_get_container_width( 'netto' ), 'thumb' );
 		}
-		
+
 		// Clear both
 		$result .= '<div class="wppa-clear" style="' . __wis( 'clear:both;' ) . '" ></div>';
-		
+
 		// Close the thumbnail box
 		$result .= '</div><!-- wppa-thumb-area-' . $mocc . ' -->';
 	}
-	
+
 	// Unimplemented action
 	else {
 		$result .= '<span style="color:red;">' .
-						'Error, wppa_thumb_area() called with wrong argument: ' . 
-						$action . 
+						'Error, wppa_thumb_area() called with wrong argument: ' .
+						$action .
 						'. Possible values: \'open\' or \'close\'' .
 					'</span>';
 	}
-	
+
 	// Output result
 	wppa_out( $result );
 }
@@ -90,13 +90,13 @@ function wppa_search_box() {
 
 	// Init
 	$result = '';
-	
+
 	// No search box on feeds
 	if ( is_feed() ) return;
-	
+
 	// Open container
 	wppa_container( 'open' );
-	
+
 	// Open wrapper
 	$result .= "\n";
 	$result .= '<div' .
@@ -104,19 +104,19 @@ function wppa_search_box() {
 					' class="wppa-box wppa-search"' .
 					' style="' . __wcs( 'wppa-box' ) . __wcs( 'wppa-search' ) . '"' .
 					' >';
-					
+
 	// The search html
 	$result .= wppa_get_search_html( '', wppa( 'may_sub' ), wppa( 'may_root' ) );
-	
+
 	// Clear both
 	$result .= '<div class="wppa-clear" style="'.__wis( 'clear:both;' ).'" ></div>';
-	
+
 	// Close wrapper
 	$result .= '</div>';
-	
+
 	// Output
 	wppa_out( $result );
-	
+
 	// Close container
 	wppa_container( 'close' );
 }
@@ -125,16 +125,16 @@ function wppa_search_box() {
 function wppa_get_search_html( $label = '', $sub = false, $root = false ) {
 global $wppa_session;
 
-	$page 			= wppa_get_the_landing_page( 	'wppa_search_linkpage', 
+	$page 			= wppa_get_the_landing_page( 	'wppa_search_linkpage',
 													__a( 'Photo search results' ) );
 	$pagelink 		= wppa_dbg_url( get_page_link( $page ) );
-	$cansubsearch  	= 	$sub && 
-						isset ( $wppa_session['use_searchstring'] ) && 
+	$cansubsearch  	= 	$sub &&
+						isset ( $wppa_session['use_searchstring'] ) &&
 						$wppa_session['use_searchstring'];
-	$subboxset 		= 	isset ( $wppa_session['subbox'] ) && $wppa_session['subbox'] ? 
+	$subboxset 		= 	isset ( $wppa_session['subbox'] ) && $wppa_session['subbox'] ?
 						'checked="checked"' : '';
-	$canrootsearch 	= $root; 
-	$rootboxset 	= 	isset ( $wppa_session['rootbox'] ) && $wppa_session['rootbox'] ? 
+	$canrootsearch 	= $root;
+	$rootboxset 	= 	isset ( $wppa_session['rootbox'] ) && $wppa_session['rootbox'] ?
 						'checked="checked"' : '';
 	$value 			= $cansubsearch ? '' : wppa_test_for_search();
 	$root 			= isset( $wppa_session['search_root'] ) ? $wppa_session['search_root'] : '';
@@ -142,17 +142,17 @@ global $wppa_session;
 	$mocc 			= wppa( 'mocc' );
 
 	wppa_dbg_msg( 'Root='.$root.': '.wppa_get_album_name( $root ) );
-	
+
 	$result = '
 	<form' .
 		' id="wppa_searchform_' . $mocc . '"' .
 		' action="' . $pagelink.'"' .
 		' method="post"' .
 		' class="widget_search"' .
-		' >
-		<div>' . 
+		' >' .
+		'<div>' .
 			$label .
-			( $cansubsearch ? '<small>'.$wppa_session['display_searchstring'].'<br /></small>' : '' ) .
+			( $cansubsearch ? '<small>' . $wppa_session['display_searchstring'] . '<br /></small>' : '' ) .
 			'<input' .
 				' type="text"' .
 				' class="wppa-search-input"' .
@@ -173,18 +173,18 @@ global $wppa_session;
 				' name="wppa-searchroot"' .
 				' value="' . $root . '"' .
 				' />' .
-			( $canrootsearch ? 
+			( $canrootsearch ?
 				'<div style="' . $fontsize . '" >
 					<input type="checkbox" name="wppa-rootsearch" ' . $rootboxset . ' /> ' .
-						__a( 'Search in current section' ) . 
+						__a( 'Search in current section' ) .
 				'</div>' : '' ) .
-			( $cansubsearch ? 
+			( $cansubsearch ?
 				'<div style="' . $fontsize . '" >
 					<input type="checkbox" name="wppa-subsearch" ' . $subboxset . '/> '.
 						__a( 'Search in current results' ).
 				'</div>' : '' ) .
-		'</div>
-	</form>';
+		'</div>' .
+	'</form>';
 
 	return $result;
 }
@@ -193,9 +193,9 @@ global $wppa_session;
 function wppa_supersearch_box() {
 
 	if ( is_feed() ) return;
-	
+
 	wppa_container( 'open' );
-	
+
 	wppa_out( 	'<div' .
 					' id="wppa-search-' . wppa( 'mocc' ) . '"' .
 					' class="wppa-box wppa-search"' .
@@ -206,7 +206,7 @@ function wppa_supersearch_box() {
 					'</div>' .
 				'</div>'
 			);
-	
+
 	wppa_container( 'close' );
 }
 
@@ -229,8 +229,8 @@ global $wppa_session;
 	$ownerlist 	= $wpdb->get_results( $query, ARRAY_A );
 	$catlist 	= wppa_get_catlist();
 	$taglist 	= wppa_get_taglist();
-	$ss_data 	= 	isset( $wppa_session['supersearch'] ) ? 
-						explode( ',', $wppa_session['supersearch'] ) : 
+	$ss_data 	= 	isset( $wppa_session['supersearch'] ) ?
+						explode( ',', $wppa_session['supersearch'] ) :
 						array( '', '', '', '' );
 	if ( count( $ss_data ) < '4' ) {
 		$ss_data = array( '', '', '', '' );
@@ -247,16 +247,16 @@ global $wppa_session;
 		$ss_ptxt[$key] = str_replace( '***', '...', $ss_ptxt[$key] );
 	}
 	$ss_data['3'] = str_replace( '***', '...', $ss_data['3'] );
-	
+
 	$query 		= "SELECT `slug` FROM `".WPPA_INDEX."` WHERE `albums` <> '' ORDER BY `slug`";
 	$albumtxt 	= $wpdb->get_results( $query, ARRAY_A );
 	$query 		= "SELECT `slug` FROM `".WPPA_INDEX."` WHERE `photos` <> '' ORDER BY `slug`";
 	$phototxt 	= $wpdb->get_results( $query, ARRAY_A );
-	$iptclist 	= wppa_switch( 'wppa_save_iptc' ) ? 
-					$wpdb->get_results( "SELECT `tag`, `description` FROM `" . WPPA_IPTC . 
+	$iptclist 	= wppa_switch( 'wppa_save_iptc' ) ?
+					$wpdb->get_results( "SELECT `tag`, `description` FROM `" . WPPA_IPTC .
 							"` WHERE `photo` = '0' AND `status` <> 'hide' ", ARRAY_A ) : array();
-	$exiflist 	= wppa_switch( 'wppa_save_exif' ) ? 
-					$wpdb->get_results( "SELECT `tag`, `description` FROM `" . WPPA_EXIF . 
+	$exiflist 	= wppa_switch( 'wppa_save_exif' ) ?
+					$wpdb->get_results( "SELECT `tag`, `description` FROM `" . WPPA_EXIF .
 							"` WHERE `photo` = '0' AND `status` <> 'hide' ", ARRAY_A ) : array();
 
 	// Check for empty albums
@@ -307,7 +307,7 @@ global $wppa_session;
 			}
 		}
 	}
-	
+
 	// Remove dup photo owners
 	$last = '';
 	foreach( array_keys( $ownerlist ) as $key ) {
@@ -324,17 +324,17 @@ global $wppa_session;
 	$result =
 	'<form' .
 		' id="' . $id . '"' .
-		' action="'.$pagelink.'"' . 
+		' action="'.$pagelink.'"' .
 		' method="post"' .
-		' class="widget_search"' . 
+		' class="widget_search"' .
 		' >' .
 		'<input' .
 			' type="hidden"' .
 			' id="wppa-ss-pageurl-'.wppa('mocc').'"' .
 			' name="wppa-ss-pageurl"' .
 			' value="'.$pagelink.'"' .
-			' />';
-		
+		' />';
+
 		// album or photo
 		$id = 'wppa-ss-pa-'.wppa('mocc');
 		$result .=
@@ -342,409 +342,406 @@ global $wppa_session;
 			' id="' . $id . '"' .
 			' name="wppa-ss-pa"' .
 			' style="margin:2px;padding:0;vertical-align:top;"' .
-			' onchange="wppaSuperSearchSelect( '.wppa('mocc').' );"' .
+			' onchange="wppaSuperSearchSelect( ' . wppa('mocc') . ' );"' .
 			' size="2"' .
 			' >' .
-				'<option' .
-					' value="a" ' . 
-					( $ss_data['0'] == 'a' ? 'selected="selected" ' : '' ) . 
-					' >' .
-						__a('Albums') . 
-				'</option>' .
-				'<option' .
-					' value="p" ' . 
-					( $ss_data['0'] == 'p' ? 'selected="selected" ' : '' ) . 
-					' >' .
-						__a('Photos') .
-				'</option>' .
-		'</select>';
-		
-			// album
-			$id = 'wppa-ss-albumopt-'.wppa('mocc');
-			$result .= '
-			<select'.
-				' id="' . $id . '"' .
-				' name="wppa-ss-albumopt"' .
-				' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
-				' onchange="wppaSuperSearchSelect( '.wppa('mocc').' );"' .
-				' size="' . ( ! empty( $catlist ) ? '3' : '2' ) . '"' .
-				' >';
-					if ( ! empty( $catlist ) ) {
-						$result .=
-						'<option' .
-							' value="c"' .
-							( $ss_data['0'] == 'a' && $ss_data['1'] == 'c' ? 'selected="selected" ' : '' ) . 
-							' >' .
-								__a('Category') .
-						'</option>';
-					}
-					$result .=
-					'<option' .
-						' value="n"' .
-						( $ss_data['0'] == 'a' && $ss_data['1'] == 'n' ? 'selected="selected" ' : '' ) . 
-						' >' .
-							__a('Name') .
-					'</option>' .
-					'<option' .
-						' value="t"' .
-						( $ss_data['0'] == 'a' && $ss_data['1'] == 't' ? 'selected="selected" ' : '' ) . 
-						' >' .
-							__a('Text') .
-					'</option>' .
-			'</select>';
-			
-				// album category
-				if ( ! empty( $catlist ) ) {
-					$id = 'wppa-ss-albumcat-'.wppa('mocc');
-					$result .=
-					'<select'.
-						' id="' . $id . '"' .
-						' name="wppa-ss-albumcat"' .
-						' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
-						' onchange="wppaSuperSearchSelect( '.wppa('mocc').' );"' .
-						' size="' . ( min( count( $catlist ), '6' ) ) . '"' .
-						' multiple' .
-						' title="' . 
-						esc_attr( __a( 'CTRL+Click to add/remove option.' ) ) . "\n" . 
-						esc_attr( __a( 'Items must meet all selected options.' ) ) . 
-							'"' .
-						' >';
-						foreach ( array_keys( $catlist ) as $cat ) {
-							$sel = in_array ( $cat, $ss_cats );
-							$result .= 	
-							'<option' .
-								' value="' . $cat . '"' .
-								' class="' . $id . '"' .
-								( $sel ? ' selected="selected"' : '' ) .
-								' >' .
-									$cat .
-							'</option>';
-						}
-					$result .=
-					'</select>';
-				}
-				
-				// album name
-				$id = 'wppa-ss-albumname-'.wppa('mocc');
-				$result .=
-				'<select'.
-					' id="' . $id . '"' .
-					' name="wppa-ss-albumname"' .
-					' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
-					' onchange="wppaSuperSearchSelect( '.wppa('mocc').' );"' .
-					' size="' . ( min( count( $albums ), '6' ) ) . '"' .
-					' >';
-					foreach ( $albums as $album ) {
-						$name = stripslashes( $album['name'] );
-						$sel = ( $ss_data['3'] == $name && $ss_data['0'] == 'a' && $ss_data['1'] == 'n' );
-						$result .= 
-						'<option' .
-							' value="' . esc_attr( $name ) . '"' .
-							( $sel ? ' selected="selected"' : '' ) .
-							' >' . 
-								__( $name ) . 
-						'</option>';
-					}
-				$result .=
-				'</select>';
-				
-				// album text
-				$id = 'wppa-ss-albumtext-'.wppa('mocc');
-				$result .= '
-				<select'.
-					' id="' . $id . '"' .
-					' name="wppa-ss-albumtext"' .
-					' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
-					' onchange="wppaSuperSearchSelect( '.wppa('mocc').' );"' .
-					' size="' . ( min( count( $albumtxt ), '6' ) ) . '"' .
-					' multiple="multiple"' .
-					' title="' . 
-						esc_attr( __a( 'CTRL+Click to add/remove option.' ) ) . "\n" . 
-						esc_attr( __a( 'Items must meet all selected options.' ) ) . 
-						'"' .
-					' >';
-					foreach ( $albumtxt as $txt ) {
-						$text = $txt['slug'];
-						$sel = in_array ( $text, $ss_atxt );
-						$result .= 
-						'<option' .
-							' value="' . $text . '"' .
-							' class="' . $id . '"' .
-							( $sel ? ' selected="selected"' : '' ) .
-							' >' . 
-								$text . 
-						'</option>';
-					}
-				$result .= '
-				</select>';
-				$result .= '<!-- anm='.count($albumtxt).' -->';
-				
-			// photo
-			$n = '1' + 
-				( count( $ownerlist ) > '1' ) + 
-				( ! empty( $taglist ) ) + 
-				'1' + 
-				( wppa_switch( 'wppa_save_iptc' ) ) + 
-				( wppa_switch( 'wppa_save_exif' ) );
-			$result .= '
-			<select'.
-				' id="wppa-ss-photoopt-'.wppa('mocc').'"' .
-				' name="wppa-ss-photoopt"' .
-				' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
-				' onchange="wppaSuperSearchSelect( '.wppa('mocc').' );"' .
-				' size="' . $n . '"' .
+			'<option' .
+				' value="a" ' .
+				( $ss_data['0'] == 'a' ? 'selected="selected" ' : '' ) .
 				' >' .
-					'<option' .
-						' value="n"' .
-						( $ss_data['0'] == 'p' && $ss_data['1'] == 'n' ? 'selected="selected" ' : '' ) . 
-						' >' .
-							__a('Name') .
-					'</option>';
-					if ( count( $ownerlist ) > '1' ) {
-						$result .=
-						'<option' .
-							' value="o"' .
-							( $ss_data['0'] == 'p' && $ss_data['1'] == 'o' ? 'selected="selected" ' : '' ) . 
-							' >' .
-								__a('Owner') .
-						'</option>';
-					}
-					if ( ! empty( $taglist ) ) {
-						$result .=
-						'<option' .
-							' value="g"' .
-							( $ss_data['0'] == 'p' && $ss_data['1'] == 'g' ? 'selected="selected" ' : '' ) . 
-							' >' .
-								__a('Tag') .
-						'</option>';
-					}
+					__a('Albums') .
+			'</option>' .
+			'<option' .
+				' value="p" ' .
+				( $ss_data['0'] == 'p' ? 'selected="selected" ' : '' ) .
+				' >' .
+					__a('Photos') .
+			'</option>' .
+		'</select>';
+
+		// album
+		$id = 'wppa-ss-albumopt-' . wppa('mocc');
+		$result .=
+		'<select' .
+			' id="' . $id . '"' .
+			' name="wppa-ss-albumopt"' .
+			' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
+			' onchange="wppaSuperSearchSelect( '.wppa('mocc').' );"' .
+			' size="' . ( ! empty( $catlist ) ? '3' : '2' ) . '"' .
+			' >' .
+			( ! empty( $catlist ) ?
+				'<option' .
+					' value="c"' .
+					( $ss_data['0'] == 'a' && $ss_data['1'] == 'c' ? 'selected="selected" ' : '' ) .
+					' >' .
+						__a('Category') .
+				'</option>' : ''
+			) .
+			'<option' .
+				' value="n"' .
+				( $ss_data['0'] == 'a' && $ss_data['1'] == 'n' ? 'selected="selected" ' : '' ) .
+				' >' .
+					__a('Name') .
+			'</option>' .
+			'<option' .
+				' value="t"' .
+				( $ss_data['0'] == 'a' && $ss_data['1'] == 't' ? 'selected="selected" ' : '' ) .
+				' >' .
+					__a('Text') .
+			'</option>' .
+		'</select>';
+
+		// album category
+		if ( ! empty( $catlist ) ) {
+			$id = 'wppa-ss-albumcat-'.wppa('mocc');
+			$result .=
+			'<select'.
+				' id="' . $id . '"' .
+				' name="wppa-ss-albumcat"' .
+				' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
+				' onchange="wppaSuperSearchSelect( '.wppa('mocc').' );"' .
+				' size="' . ( min( count( $catlist ), '6' ) ) . '"' .
+				' multiple' .
+				' title="' .
+				esc_attr( __a( 'CTRL+Click to add/remove option.' ) ) . "\n" .
+				esc_attr( __a( 'Items must meet all selected options.' ) ) .
+					'"' .
+				' >';
+				foreach ( array_keys( $catlist ) as $cat ) {
+					$sel = in_array ( $cat, $ss_cats );
 					$result .=
 					'<option' .
-						' value="t"' .
-						( $ss_data['0'] == 'p' && $ss_data['1'] == 't' ? 'selected="selected" ' : '' ) . 
+						' value="' . $cat . '"' .
+						' class="' . $id . '"' .
+						( $sel ? ' selected="selected"' : '' ) .
 						' >' .
-							__a('Text') .
+							$cat .
 					'</option>';
-					if ( wppa_switch( 'wppa_save_iptc' ) ) {
-						$result .=
-						'<option' .
-							' value="i"' .
-							( $ss_data['0'] == 'p' && $ss_data['1'] == 'i' ? 'selected="selected" ' : '' ) . 
-							' >' .
-								__a('Iptc') .
-						'</option>';
-					}
-					if ( wppa_switch( 'wppa_save_exif' ) ) {
-						$result .=
-						'<option' .
-							' value="e"' .
-							( $ss_data['0'] == 'p' && $ss_data['1'] == 'e' ? 'selected="selected" ' : '' ) . 
-							' >' .
-								__a('Exif') .
-						'</option>';
-					}
+				}
 			$result .=
 			'</select>';
-			
-				// photo name
-				$id = 'wppa-ss-photoname-'.wppa('mocc');
-				$result .= '
-				<select'.
-					' id="' . $id . '"' .
-					' name="wppa-ss-photoname"' .
-					' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
-					' onchange="wppaSuperSearchSelect( '.wppa('mocc').' );"' .
-					' size="' . min( count( $photonames ), '6' ) . '"' .
-					' >';
-					foreach ( $photonames as $photo ) {
-						$name = stripslashes( $photo['name'] );
-						$sel = ( $ss_data['3'] == $name && $ss_data['0'] == 'p' && $ss_data['1'] == 'n' );
-						$result .= 
-						'<option' .
-							' value="' . esc_attr( $name ) . '"' .
-							( $sel ? ' selected="selected"' : '' ) .
-							' >' . 
-								__( $name ) . 
-						'</option>';
-					}
-				$result .= '
-				</select>';
-				$result .= '<!-- pnm='.count($photonames).' -->';
-				
-				// photo owner
-				$id = 'wppa-ss-photoowner-'.wppa('mocc');
-				$result .= '
-				<select'.
-					' id="' . $id . '"' .
-					' name="wppa-ss-photoowner"' .
-					' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
-					' onchange="wppaSuperSearchSelect( '.wppa('mocc').' );"' .
-					' size="' . ( min( count( $ownerlist ), '6' ) ) . '"' .
-					' >';
-					foreach ( $ownerlist as $photo ) {
-						$owner = $photo['owner'];
-						$sel = ( $ss_data['3'] == $owner && $ss_data['0'] == 'p' && $ss_data['1'] == 'o' );
-						$result .= 
-						'<option' .
-							' value="' . $owner . '"' .
-							( $sel ? ' selected="selected"' : '' ) .
-							' >' .
-								$owner .
-						'</option>';
-					}
-				$result .= '
-				</select>';
-				
-				// photo tag
-				$id = 'wppa-ss-phototag-'.wppa('mocc');
-				$result .= '
-				<select'.
-					' id="' . $id . '"' .
-					' name="wppa-ss-phototag"' .
-					' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
-					' onchange="wppaSuperSearchSelect( '.wppa('mocc').' );"' .
-					' size="' . ( min( count( $taglist ), '6' ) ) . '"' .
-					' multiple' .
-					' title="' . 
-						esc_attr( __a( 'CTRL+Click to add/remove option.' ) ) . "\n" . 
-						esc_attr( __a( 'Items must meet all selected options.' ) ) . 
-						'"' .
-					' >';
-					foreach ( array_keys( $taglist ) as $tag ) {
-						$sel = in_array ( $tag, $ss_tags );
-						$result .= 
-						'<option' .
-							' value="'.$tag.'"' .
-							' class="' . $id . '"' .
-							( $sel ? ' selected="selected"' : '' ) .
-							' >' .
-								$tag .
-						'</option>';
-					}
+		}
+
+		// album name
+		$id = 'wppa-ss-albumname-'.wppa('mocc');
+		$result .=
+		'<select'.
+			' id="' . $id . '"' .
+			' name="wppa-ss-albumname"' .
+			' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
+			' onchange="wppaSuperSearchSelect( '.wppa('mocc').' );"' .
+			' size="' . ( min( count( $albums ), '6' ) ) . '"' .
+			' >';
+			foreach ( $albums as $album ) {
+				$name = stripslashes( $album['name'] );
+				$sel = ( $ss_data['3'] == $name && $ss_data['0'] == 'a' && $ss_data['1'] == 'n' );
 				$result .=
-				'</select>';
-				
-				// photo text
-				$id = 'wppa-ss-phototext-'.wppa('mocc');
-				$result .= '
-				<select' .
-					' id="' . $id . '"' .
-					' name="wppa-ss-phototext"' .
-					' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
-					' onchange="wppaSuperSearchSelect( '.wppa('mocc').' );"' .
-					' size="' . ( min( count( $phototxt ), '6' ) ) . '"' .
-					' multiple="multiple"' .
-					' title="' . 
-						esc_attr( __a( 'CTRL+Click to add/remove option.' ) ) . "\n" . 
-						esc_attr( __a( 'Items must meet all selected options.' ) ) . 
-						'"' .
-					' >';
-					foreach ( $phototxt as $txt ) {
-						$text 	= $txt['slug'];
-						$sel 	= in_array ( $text, $ss_ptxt );
-						$result .= 
-						'<option' .
-							' value="' . $text . '"' .
-							' class="' . $id . '"' .
-							( $sel ? ' selected="selected"' : '' ) .
-							' >' .
-								$text .
-						'</option>';
-					}
-				$result .= 
-				'</select>';
-				$result .= '<!-- ptxt='.count($phototxt).' -->';
-				
-				// photo iptc
-				$result .= '
-				<select' .
-					' id="wppa-ss-photoiptc-'.wppa('mocc').'"' .
-					' name="wppa-ss-photoiptc"' .
-					' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
-					' onchange="wppaSuperSearchSelect( '.wppa('mocc').' );"' .
-					' size="' . min( count( $iptclist ), '6' ) . '"' .
-					' >';
-					$reftag = str_replace( 'H', '#', $ss_data['2'] );
-					foreach ( $iptclist as $item ) {
-						$tag = $item['tag'];
-						$sel = ( $reftag == $tag && $ss_data['0'] = 'p' && $ss_data['1'] == 'i' );
-						$result .= 
-						'<option' .
-							' value="' . $tag . '"' .
-							( $sel ? ' selected="selected"' : '' ) .
-							' >' . 
-								__( $item['description'] ) . 
-						'</option>';
-					}
-				$result .= 
-				'</select>';
-				
-				// Iptc items
-				$result .= '
-				<select' .
-					' id="wppa-ss-iptcopts-'.wppa('mocc').'"' .
-					' name="wppa-ss-iptcopts"' .
-					' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
-					' size="6"' .
-					' onchange="wppaSuperSearchSelect('.wppa('mocc').')"' .
-					' >
-				</select>';
+				'<option' .
+					' value="' . esc_attr( $name ) . '"' .
+					( $sel ? ' selected="selected"' : '' ) .
+					' >' .
+						__( $name ) .
+				'</option>';
+			}
+		$result .=
+		'</select>';
 
-				// photo exif
-				$result .= '
-				<select' .
-					' id="wppa-ss-photoexif-'.wppa('mocc').'"' .
-					' name="wppa-ss-photoexif"' .
-					' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
-					' onchange="wppaSuperSearchSelect( '.wppa('mocc').' );"' .
-					' size="' . min( count( $exiflist ), '6' ) . '"' .
-					' >';
-					$reftag = str_replace( 'H', '#', $ss_data['2'] );
-					foreach ( $exiflist as $item ) {
-						$tag = $item['tag'];
-						$sel = ( $reftag == $tag && $ss_data['0'] = 'p' && $ss_data['1'] == 'e' );
-						$result .= 
-						'<option' .
-							' value="' . $tag . '"' .
-							( $sel ? ' selected="selected"' : '' ) .
-							' >' . 
-								__( $item['description'] ) . 
-						'</option>';
-					}
-				$result .= 
-				'</select>';
-				
-				// Exif items
-				$result .= '
-				<select' .
-					' id="wppa-ss-exifopts-'.wppa('mocc').'"' .
-					' name="wppa-ss-exifopts"' .
-					' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
-					' size="6"' .
-					' onchange="wppaSuperSearchSelect('.wppa('mocc').')"' .
-					' >
-				</select>';
+		// album text
+		$id = 'wppa-ss-albumtext-'.wppa('mocc');
+		$result .= '
+		<select'.
+			' id="' . $id . '"' .
+			' name="wppa-ss-albumtext"' .
+			' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
+			' onchange="wppaSuperSearchSelect( '.wppa('mocc').' );"' .
+			' size="' . ( min( count( $albumtxt ), '6' ) ) . '"' .
+			' multiple="multiple"' .
+			' title="' .
+				esc_attr( __a( 'CTRL+Click to add/remove option.' ) ) . "\n" .
+				esc_attr( __a( 'Items must meet all selected options.' ) ) .
+				'"' .
+			' >';
+			foreach ( $albumtxt as $txt ) {
+				$text = $txt['slug'];
+				$sel = in_array ( $text, $ss_atxt );
+				$result .=
+				'<option' .
+					' value="' . $text . '"' .
+					' class="' . $id . '"' .
+					( $sel ? ' selected="selected"' : '' ) .
+					' >' .
+						$text .
+				'</option>';
+			}
+		$result .= '
+		</select>';
+		$result .= '<!-- anm='.count($albumtxt).' -->';
 
-				
+		// photo
+		$n = '1' +
+			( count( $ownerlist ) > '1' ) +
+			( ! empty( $taglist ) ) +
+			'1' +
+			( wppa_switch( 'wppa_save_iptc' ) ) +
+			( wppa_switch( 'wppa_save_exif' ) );
+		$result .= '
+		<select'.
+			' id="wppa-ss-photoopt-'.wppa('mocc').'"' .
+			' name="wppa-ss-photoopt"' .
+			' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
+			' onchange="wppaSuperSearchSelect( '.wppa('mocc').' );"' .
+			' size="' . $n . '"' .
+			' >' .
+				'<option' .
+					' value="n"' .
+					( $ss_data['0'] == 'p' && $ss_data['1'] == 'n' ? 'selected="selected" ' : '' ) .
+					' >' .
+						__a('Name') .
+				'</option>';
+				if ( count( $ownerlist ) > '1' ) {
+					$result .=
+					'<option' .
+						' value="o"' .
+						( $ss_data['0'] == 'p' && $ss_data['1'] == 'o' ? 'selected="selected" ' : '' ) .
+						' >' .
+							__a('Owner') .
+					'</option>';
+				}
+				if ( ! empty( $taglist ) ) {
+					$result .=
+					'<option' .
+						' value="g"' .
+						( $ss_data['0'] == 'p' && $ss_data['1'] == 'g' ? 'selected="selected" ' : '' ) .
+						' >' .
+							__a('Tag') .
+					'</option>';
+				}
+				$result .=
+				'<option' .
+					' value="t"' .
+					( $ss_data['0'] == 'p' && $ss_data['1'] == 't' ? 'selected="selected" ' : '' ) .
+					' >' .
+						__a('Text') .
+				'</option>';
+				if ( wppa_switch( 'wppa_save_iptc' ) ) {
+					$result .=
+					'<option' .
+						' value="i"' .
+						( $ss_data['0'] == 'p' && $ss_data['1'] == 'i' ? 'selected="selected" ' : '' ) .
+						' >' .
+							__a('Iptc') .
+					'</option>';
+				}
+				if ( wppa_switch( 'wppa_save_exif' ) ) {
+					$result .=
+					'<option' .
+						' value="e"' .
+						( $ss_data['0'] == 'p' && $ss_data['1'] == 'e' ? 'selected="selected" ' : '' ) .
+						' >' .
+							__a('Exif') .
+					'</option>';
+				}
+		$result .=
+		'</select>';
+
+		// photo name
+		$id = 'wppa-ss-photoname-'.wppa('mocc');
+		$result .= '
+		<select'.
+			' id="' . $id . '"' .
+			' name="wppa-ss-photoname"' .
+			' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
+			' onchange="wppaSuperSearchSelect( '.wppa('mocc').' );"' .
+			' size="' . min( count( $photonames ), '6' ) . '"' .
+			' >';
+			foreach ( $photonames as $photo ) {
+				$name = stripslashes( $photo['name'] );
+				$sel = ( $ss_data['3'] == $name && $ss_data['0'] == 'p' && $ss_data['1'] == 'n' );
+				$result .=
+				'<option' .
+					' value="' . esc_attr( $name ) . '"' .
+					( $sel ? ' selected="selected"' : '' ) .
+					' >' .
+						__( $name ) .
+				'</option>';
+			}
+		$result .= '
+		</select>';
+		$result .= '<!-- pnm='.count($photonames).' -->';
+
+		// photo owner
+		$id = 'wppa-ss-photoowner-'.wppa('mocc');
+		$result .= '
+		<select'.
+			' id="' . $id . '"' .
+			' name="wppa-ss-photoowner"' .
+			' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
+			' onchange="wppaSuperSearchSelect( '.wppa('mocc').' );"' .
+			' size="' . ( min( count( $ownerlist ), '6' ) ) . '"' .
+			' >';
+			foreach ( $ownerlist as $photo ) {
+				$owner = $photo['owner'];
+				$sel = ( $ss_data['3'] == $owner && $ss_data['0'] == 'p' && $ss_data['1'] == 'o' );
+				$result .=
+				'<option' .
+					' value="' . $owner . '"' .
+					( $sel ? ' selected="selected"' : '' ) .
+					' >' .
+						$owner .
+				'</option>';
+			}
+		$result .= '
+		</select>';
+
+		// photo tag
+		$id = 'wppa-ss-phototag-'.wppa('mocc');
+		$result .= '
+		<select'.
+			' id="' . $id . '"' .
+			' name="wppa-ss-phototag"' .
+			' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
+			' onchange="wppaSuperSearchSelect( '.wppa('mocc').' );"' .
+			' size="' . ( min( count( $taglist ), '6' ) ) . '"' .
+			' multiple' .
+			' title="' .
+				esc_attr( __a( 'CTRL+Click to add/remove option.' ) ) . "\n" .
+				esc_attr( __a( 'Items must meet all selected options.' ) ) .
+				'"' .
+			' >';
+			foreach ( array_keys( $taglist ) as $tag ) {
+				$sel = in_array ( $tag, $ss_tags );
+				$result .=
+				'<option' .
+					' value="'.$tag.'"' .
+					' class="' . $id . '"' .
+					( $sel ? ' selected="selected"' : '' ) .
+					' >' .
+						$tag .
+				'</option>';
+			}
+		$result .=
+		'</select>';
+
+		// photo text
+		$id = 'wppa-ss-phototext-'.wppa('mocc');
+		$result .= '
+		<select' .
+			' id="' . $id . '"' .
+			' name="wppa-ss-phototext"' .
+			' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
+			' onchange="wppaSuperSearchSelect( '.wppa('mocc').' );"' .
+			' size="' . ( min( count( $phototxt ), '6' ) ) . '"' .
+			' multiple="multiple"' .
+			' title="' .
+				esc_attr( __a( 'CTRL+Click to add/remove option.' ) ) . "\n" .
+				esc_attr( __a( 'Items must meet all selected options.' ) ) .
+				'"' .
+			' >';
+			foreach ( $phototxt as $txt ) {
+				$text 	= $txt['slug'];
+				$sel 	= in_array ( $text, $ss_ptxt );
+				$result .=
+				'<option' .
+					' value="' . $text . '"' .
+					' class="' . $id . '"' .
+					( $sel ? ' selected="selected"' : '' ) .
+					' >' .
+						$text .
+				'</option>';
+			}
+		$result .=
+		'</select>';
+		$result .= '<!-- ptxt='.count($phototxt).' -->';
+
+		// photo iptc
+		$result .= '
+		<select' .
+			' id="wppa-ss-photoiptc-'.wppa('mocc').'"' .
+			' name="wppa-ss-photoiptc"' .
+			' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
+			' onchange="wppaSuperSearchSelect( '.wppa('mocc').' );"' .
+			' size="' . min( count( $iptclist ), '6' ) . '"' .
+			' >';
+			$reftag = str_replace( 'H', '#', $ss_data['2'] );
+			foreach ( $iptclist as $item ) {
+				$tag = $item['tag'];
+				$sel = ( $reftag == $tag && $ss_data['0'] = 'p' && $ss_data['1'] == 'i' );
+				$result .=
+				'<option' .
+					' value="' . $tag . '"' .
+					( $sel ? ' selected="selected"' : '' ) .
+					' >' .
+						__( $item['description'] ) .
+				'</option>';
+			}
+		$result .=
+		'</select>';
+
+		// Iptc items
+		$result .= '
+		<select' .
+			' id="wppa-ss-iptcopts-'.wppa('mocc').'"' .
+			' name="wppa-ss-iptcopts"' .
+			' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
+			' size="6"' .
+			' onchange="wppaSuperSearchSelect('.wppa('mocc').')"' .
+			' >
+		</select>';
+
+		// photo exif
+		$result .= '
+		<select' .
+			' id="wppa-ss-photoexif-'.wppa('mocc').'"' .
+			' name="wppa-ss-photoexif"' .
+			' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
+			' onchange="wppaSuperSearchSelect( '.wppa('mocc').' );"' .
+			' size="' . min( count( $exiflist ), '6' ) . '"' .
+			' >';
+			$reftag = str_replace( 'H', '#', $ss_data['2'] );
+			foreach ( $exiflist as $item ) {
+				$tag = $item['tag'];
+				$sel = ( $reftag == $tag && $ss_data['0'] = 'p' && $ss_data['1'] == 'e' );
+				$result .=
+				'<option' .
+					' value="' . $tag . '"' .
+					( $sel ? ' selected="selected"' : '' ) .
+					' >' .
+						__( $item['description'] ) .
+				'</option>';
+			}
+		$result .=
+		'</select>';
+
+		// Exif items
+		$result .= '
+		<select' .
+			' id="wppa-ss-exifopts-'.wppa('mocc').'"' .
+			' name="wppa-ss-exifopts"' .
+			' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
+			' size="6"' .
+			' onchange="wppaSuperSearchSelect('.wppa('mocc').')"' .
+			' >
+		</select>';
+
 		// The spinner
 		$result .= '
 		<img' .
 			' id="wppa-ss-spinner-'.wppa('mocc').'"' .
 			' src="' . wppa_get_imgdir() . '/wpspin.gif' . '"' .
 			' style="margin:0 4px;display:none;"' .
-			' />';
-		
+		' />';
+
 		// The button
 		$result .= '
 		<input' .
-			' type="button"' . 
+			' type="button"' .
 			' id="wppa-ss-button-' . wppa('mocc') . '"' .
 			' value="' . __a('Submit') . '"' .
 			' style="vertical-align:top;margin:2px;"' .
 			' onclick="wppaSuperSearchSelect(' . wppa('mocc') .' , true)"' .
 			' ontouchstart="wppaSuperSearchSelect(' . wppa('mocc') .' , true)"' .
-			' />';
-			
+		' />';
+
 	$result .= '
 	</form>
 	<script type="text/javascript" >
@@ -758,20 +755,21 @@ global $wppa_session;
 function wppa_superview_box( $album_root = '0', $sort = true ) {
 
 	if ( is_feed() ) return;
-	
+
 	wppa_container( 'open' );
-	
-	wppa_out( 	'<div' .
-					' id="wppa-superview-' . wppa( 'mocc' ) . '"' .
-					' class="wppa-box wppa-superview"' .
-					' style="' . __wcs( 'wppa-box' ) . __wcs( 'wppa-superview' ) . '"' .
-					' >' .
-					wppa_get_superview_html( $album_root, $sort ) .
-					'<div class="wppa-clear" style="'.__wis( 'clear:both;' ).'" >' .
-					'</div>' .
-				'</div>' 
-			);
-				
+
+	wppa_out(
+		'<div' .
+			' id="wppa-superview-' . wppa( 'mocc' ) . '"' .
+			' class="wppa-box wppa-superview"' .
+			' style="' . __wcs( 'wppa-box' ) . __wcs( 'wppa-superview' ) . '"' .
+			' >' .
+			wppa_get_superview_html( $album_root, $sort ) .
+			'<div class="wppa-clear" style="'.__wis( 'clear:both;' ).'" >' .
+			'</div>' .
+		'</div>'
+	);
+
 	wppa_container( 'close' );
 }
 
@@ -789,19 +787,19 @@ global $wppa_session;
 	}
 
 	$checked = 'checked="checked"';
-			
+
 	$result = '
 	<div>
 		<form action="' . $url . '" method = "get">
 			<label>' . __( 'Album:', 'wppa' ) . '</label><br />
 			<select name="wppa-album">' .
-				wppa_album_select_a( array( 	'selected' 			=> $wppa_session['superalbum'], 
-												'addpleaseselect' 	=> true, 
-												'root' 				=> $album_root, 
-												'content' 			=> true,
-												'sort'				=> $sort,
-												'path' 				=> ( ! wppa( 'in_widget' ) )
-												 ) ) . 
+				wppa_album_select_a( array( 'selected' 			=> $wppa_session['superalbum'],
+											'addpleaseselect' 	=> true,
+											'root' 				=> $album_root,
+											'content' 			=> true,
+											'sort'				=> $sort,
+											'path' 				=> ( ! wppa( 'in_widget' ) ),
+											 ) ) .
 			'</select><br />
 			<input' .
 				' type="radio"' .
@@ -814,7 +812,7 @@ global $wppa_session;
 			<input' .
 				' type="radio"' .
 				' name="wppa-slide"' .
-				' value="1" ' . 
+				' value="1" ' .
 				( $wppa_session['superview'] == 'slide' ? $checked : '' ) .
 				' >' .
 				__( 'Slideshow', 'wppa' ) .
@@ -825,7 +823,7 @@ global $wppa_session;
 		</form>
 	</div>
 	';
-	
+
 	return $result;
 }
 
@@ -835,24 +833,24 @@ function wppa_tagcloud_box( $seltags = '', $minsize = '8', $maxsize = '24' ) {
 	if ( is_feed() ) return;
 
 	wppa_container( 'open' );
-	
-	wppa_out(	'<div' .
-					' id="wppa-tagcloud-' . wppa( 'mocc' ) . '"' .
-					' class="wppa-box wppa-tagcloud"' .
-					' style="'.__wcs( 'wppa-box' ).__wcs( 'wppa-tagcloud' ).'"' .
-					' >' .
-					wppa_get_tagcloud_html( $seltags, $minsize, $maxsize ) .
-					'<div class="wppa-clear" style="'.__wis( 'clear:both;' ).'" >' .
-					'</div>' .
-				'</div>'
-			);
-			
+
+	wppa_out(
+		'<div' .
+			' id="wppa-tagcloud-' . wppa( 'mocc' ) . '"' .
+			' class="wppa-box wppa-tagcloud"' .
+			' style="'.__wcs( 'wppa-box' ).__wcs( 'wppa-tagcloud' ).'"' .
+			' >' .
+			wppa_get_tagcloud_html( $seltags, $minsize, $maxsize ) .
+			'<div class="wppa-clear" style="'.__wis( 'clear:both;' ).'" >' .
+			'</div>' .
+		'</div>'
+	);
+
 	wppa_container( 'close' );
 }
 
 // Get html for tagcloud
 function wppa_get_tagcloud_html( $seltags = '', $minsize = '8', $maxsize = '24' ) {
-global $wppa;
 
 	$page = wppa_get_the_landing_page( 'wppa_tagcloud_linkpage', __a( 'Tagged photos' ) );
 
@@ -894,7 +892,7 @@ global $wppa;
 			}
 		}
 	}
-	
+
 	return $result;
 }
 
@@ -902,30 +900,30 @@ global $wppa;
 function wppa_multitag_box( $nperline = '2', $seltags = '' ) {
 
 	if ( is_feed() ) return;
-	
+
 	wppa_container( 'open' );
-	
-	wppa_out( 	'<div' .
-					' id="wppa-multitag-' . wppa( 'mocc' ) . '"' .
-					' class="wppa-box wppa-multitag"' .
-					' style="' . __wcs( 'wppa-box' ) . __wcs( 'wppa-multitag' ) . '"' .
-					' >' .
-					wppa_get_multitag_html( $nperline, $seltags ) .
-					'<div class="wppa-clear" style="'.__wis( 'clear:both;' ).'" >' .
-					'</div>' .
-				'</div>' 
-			);
-			
+
+	wppa_out(
+		'<div' .
+			' id="wppa-multitag-' . wppa( 'mocc' ) . '"' .
+			' class="wppa-box wppa-multitag"' .
+			' style="' . __wcs( 'wppa-box' ) . __wcs( 'wppa-multitag' ) . '"' .
+			' >' .
+			wppa_get_multitag_html( $nperline, $seltags ) .
+			'<div class="wppa-clear" style="' . __wis( 'clear:both;' ) . '" >' .
+			'</div>' .
+		'</div>'
+	);
+
 	wppa_container( 'close' );
 }
 
 // The html for multitag widget
 function wppa_get_multitag_html( $nperline = '2', $seltags = '' ) {
-global $wppa;
 
 	$or_only = wppa_switch( 'tags_or_only' );
 	$page = wppa_get_the_landing_page( 'wppa_multitag_linkpage', __a( 'Multi Tagged photos' ) );
-	
+
 	$result 	= '';
 	if ( wppa_opt( 'wppa_multitag_linkpage' ) ) {
 		$hr = wppa_get_permalink( $page );
@@ -940,13 +938,13 @@ global $wppa;
 		return __a( 'Please select a multitag landing page in Table VI-C4b' );
 	}
 	$tags = wppa_get_taglist();
-	
+
 	$result .= '
 	<script type="text/javascript">
 	function wppaProcessMultiTagRequest() {
 	var any = false;
 	var url="'.$hr.'&wppa-tag=";';
-	
+
 	if ( $or_only ) {
 		$result .= '
 		var andor = "or";';
@@ -954,14 +952,14 @@ global $wppa;
 	else {
 	$result .= '
 		var andor = "and";
-			if ( document.getElementById( "andoror-'.$wppa['mocc'].'" ).checked ) andor = "or";
+			if ( document.getElementById( "andoror-'.wppa( 'mocc' ).'" ).checked ) andor = "or";
 		var sep;';
 	}
-	
+
 	$result .= '
 	if ( andor == "and" ) sep = ","; else sep = ";";
 	';
-	
+
 	$selarr = $seltags ? explode( ',', $seltags ) : array();
 	if ( $tags ) foreach ( $tags as $tag ) {
 		if ( ! $seltags || in_array( $tag['tag'], $selarr ) ) {
@@ -971,14 +969,14 @@ global $wppa;
 				any = true;
 			}';
 		}
-	}	
-	
+	}
+
 	$result .= '
 	if ( any ) document.location = url;
 	else alert ( "'.__a( 'Please check the tag(s) that the photos must have' ).'" );
 	}</script>
 	';
-	
+
 	$qtag = wppa_get_get( 'tag' );
 	$andor = $or_only ? 'or' : 'and'; // default
 	if ( strpos( $qtag, ',' ) ) {
@@ -991,7 +989,7 @@ global $wppa;
 	else $querystringtags = wppa_get_get( 'tag' );
 
 	if ( $tags ) {
-	
+
 		if ( ! $or_only ) {
 			$result .= 	'<table class="wppa-multitag-table">' .
 							'<tr>' .
@@ -1022,11 +1020,11 @@ global $wppa;
 		}
 
 		$count 		= '0';
-		$checked 	= '';		
+		$checked 	= '';
 		$tropen 	= false;
-		
+
 		$result 	.= '<table class="wppa-multitag-table">';
-		
+
 		foreach ( $tags as $tag ) {
 			if ( ! $seltags || in_array( $tag['tag'], $selarr ) ) {
 				if ( $count % $nperline == '0' ) {
@@ -1042,7 +1040,7 @@ global $wppa;
 								'<input' .
 									' type="checkbox"' .
 									' id="wppa-'.str_replace( ' ', '_', $tag['tag'] ).'"' .
-									' ' . $checked . 
+									' ' . $checked .
 								' />' .
 								'&nbsp;' . str_replace( ' ', '&nbsp;', $tag['tag'] ) .
 							'</td>';
@@ -1053,7 +1051,7 @@ global $wppa;
 				}
 			}
 		}
-		
+
 		if ( $tropen ) {
 			while ( $count % $nperline != '0' ) {
 				$result .= '<td></td>';
@@ -1068,19 +1066,18 @@ global $wppa;
 						' value="' . __a( 'Find!' ) . '"' .
 					' />';
 	}
-	
+
 	return $result;
 }
 
 // Make html for sharebox
 function wppa_get_share_html( $id, $key = '', $js = true ) {
-global $wppa;
 global $wppa_locale;
 
 	$do_it = false;
-	if ( ! $wppa['is_slideonly'] || $key == 'lightbox' ) {
-		if ( wppa_switch( 'share_on' ) && ! $wppa['in_widget'] ) $do_it = true;
-		if ( wppa_switch( 'share_on_widget' ) && $wppa['in_widget'] ) $do_it = true;
+	if ( ! wppa( 'is_slideonly' ) || $key == 'lightbox' ) {
+		if ( wppa_switch( 'share_on' ) && ! wppa( 'in_widget' ) ) $do_it = true;
+		if ( wppa_switch( 'share_on_widget' ) && wppa( 'in_widget' ) ) $do_it = true;
 		if ( wppa_switch( 'share_on_lightbox' ) ) $do_it = true;
 	}
 	if ( ! $do_it ) return '';
@@ -1088,10 +1085,10 @@ global $wppa_locale;
 	// The share url
 	$share_url = wppa_get_image_page_url_by_id( $id, wppa_switch( 'share_single_image' ) );
 	$share_url = str_replace( '&amp;', '&', $share_url );
-	
+
 	// The share title
 	$photo_name = wppa_get_photo_name( $id );
-	
+
 	// The share description
 	$photo_desc = wppa_html( wppa_get_photo_desc( $id ) );
 	$photo_desc = strip_shortcodes( wppa_strip_tags( $photo_desc, 'all' ) );
@@ -1099,21 +1096,21 @@ global $wppa_locale;
 	// The default description
 	$site = str_replace( '&amp;', __a( 'and' ), get_bloginfo( 'name' ) );
 	$see_on_site = sprintf( __a( 'See this image on %s' ), $site );
-	
-	// The share image. Must be the fullsize image for facebook. 
+
+	// The share image. Must be the fullsize image for facebook.
 	// If you take the thumbnail, facebook takes a different image at random.
 	$share_img = wppa_get_photo_url( $id );
 
 	// The icon size
-	if ( ( $wppa['in_widget'] && $key != 'lightbox' ) || $key == 'thumb' ) {
+	if ( ( wppa( 'in_widget' ) && $key != 'lightbox' ) || $key == 'thumb' ) {
 		$s = '16';
 	}
 	else {
 		$s = wppa_opt( 'wppa_share_size' );
 	}
-	
+
 	// qr code
-	if ( wppa_switch( 'share_qr' ) && $key != 'thumb' ) {	
+	if ( wppa_switch( 'share_qr' ) && $key != 'thumb' ) {
 		$src 	= 	'http://api.qrserver.com/v1/create-qr-code/' .
 						'?data=' . urlencode( $share_url ) .
 						'&size=80x80' .
@@ -1126,24 +1123,24 @@ global $wppa_locale;
 							' alt="' . __a('QR code') . '"' .
 						' />' .
 					'</div>';
-	}	
+	}
 	else {
 		$qr = '';
 	}
-	
+
 	// twitter share button
-	if ( wppa_switch( 'share_twitter' ) ) {	
+	if ( wppa_switch( 'share_twitter' ) ) {
 		$tweet = urlencode( $see_on_site ) . ': ';
 		$tweet_len = strlen( $tweet ) + '1';
-		
+
 		$tweet .= urlencode( $share_url );
-		
+
 		// find first '/' after 'http( s )://' rest doesnt count for twitter chars
-		$url_len = strpos( $share_url, '/', 8 ) + 1;	
+		$url_len = strpos( $share_url, '/', 8 ) + 1;
 		$tweet_len += ( $url_len > 1 ) ? $url_len : strlen( $share_url );
-		
+
 		$rest_len = 140 - $tweet_len;
-		
+
 		if ( wppa_switch( 'show_full_name' ) ) {
 			if ( $rest_len > strlen( $photo_name ) ) {
 				$tweet .= ' ' . urlencode( $photo_name );
@@ -1156,7 +1153,7 @@ global $wppa_locale;
 				$rest_len -= '5';
 			}
 		}
-		
+
 		if ( $photo_desc ) {
 			if ( $rest_len > strlen( $photo_desc ) ) {
 				$tweet .= ': ' . urlencode( $photo_desc );
@@ -1165,7 +1162,7 @@ global $wppa_locale;
 				$tweet .= ': '. urlencode( substr( $photo_desc, 0, $rest_len ) ) . '...';
 			}
 		}
-		
+
 		$tw = 	'<div style="float:left; padding:2px;" >' .
 					'<a' .
 						' title="' . sprintf( __a( 'Tweet %s on Twitter' ), esc_attr( $photo_name ) ) . '"' .
@@ -1204,7 +1201,7 @@ global $wppa_locale;
 	else {
 		$go = '';
 	}
-	
+
 	// Pinterest
 	$desc = urlencode( $see_on_site ).': '.urlencode( $photo_desc );
 	if ( strlen( $desc ) > 500 ) $desc = substr( $desc, 0, 495 ).'...';
@@ -1213,7 +1210,7 @@ global $wppa_locale;
 					'<a' .
 						' title="' . sprintf( __a( 'Share %s on Pinterest' ), esc_attr( $photo_name ) ) . '"' .
 						' href="http://pinterest.com/pin/create/button/?url=' . urlencode( $share_url ) .
-							'&media=' . urlencode( str_replace( '/thumbs/', '/', $share_img ) ) . 
+							'&media=' . urlencode( str_replace( '/thumbs/', '/', $share_img ) ) .
 							'&description=' . $desc .
 							'"' .
 						' target="_blank"' .
@@ -1229,7 +1226,7 @@ global $wppa_locale;
 	else {
 		$pi = '';
 	}
-	
+
 	// LinkedIn
 	if ( wppa_switch( 'share_linkedin' ) && $key != 'thumb' && $key != 'lightbox' ) {
 		$li = 	'<script' .
@@ -1251,7 +1248,7 @@ global $wppa_locale;
 	else {
 		$li = '';
 	}
-	
+
 	// Facebook
 	$fb = '';
 	$need_fb_init = false;
@@ -1267,9 +1264,9 @@ global $wppa_locale;
 	else {
 		$lbs = '';
 	}
-	
+
 	// Share
-	if ( wppa_switch( 'share_facebook' ) && ! wppa_switch( 'facebook_like' ) ) { 
+	if ( wppa_switch( 'share_facebook' ) && ! wppa_switch( 'facebook_like' ) ) {
 		if ( $small ) {
 			$fb .= 	'<div' .
 						' class="fb-share-button"' .
@@ -1295,7 +1292,7 @@ global $wppa_locale;
 		}
 		$need_fb_init = true;
 	}
-	
+
 	// Like
 	if ( wppa_switch( 'facebook_like' ) && ! wppa_switch( 'share_facebook' ) ) {
 		if ( $small ) {
@@ -1351,17 +1348,17 @@ global $wppa_locale;
 	}
 
 	// Comments
-	if ( wppa_switch( 'facebook_comments' ) && ! $wppa['in_widget'] && $key != 'thumb' && $key != 'lightbox' ) {
-		$width = $wppa['auto_colwidth'] ? '100%' : wppa_get_container_width( true );
+	if ( wppa_switch( 'facebook_comments' ) && ! wppa( 'in_widget' ) && $key != 'thumb' && $key != 'lightbox' ) {
+		$width = wppa( 'auto_colwidth' ) ? '100%' : wppa_get_container_width( true );
 		if ( wppa_switch( 'facebook_comments' ) ) {
 			$fb .= 	'<div style="color:blue;clear:both" >' .
-						__a( 'Comment on Facebook:' ) . 
+						__a( 'Comment on Facebook:' ) .
 					'</div>';
 			$fb .= 	'<div class="fb-comments" data-href="'.$share_url.'" data-width='.$width.'></div>';
 			$need_fb_init = true;
 		}
 	}
-	
+
 	// Need init?
 	if ( $need_fb_init ) {
 		if ( $js && $key != 'thumb' ) {
@@ -1381,12 +1378,12 @@ function wppa_upload_box() {
 
 	// Init
 	$alb = wppa( 'start_album' );
-	
+
 	// Feature enabled?
 	if ( ! wppa_switch( 'user_upload_on' ) ) {
-		return;	
+		return;
 	}
-	
+
 	// Must login ?
 	if ( wppa_switch( 'user_upload_login' ) ) {
 		if ( ! is_user_logged_in() ) return;
@@ -1394,34 +1391,34 @@ function wppa_upload_box() {
 
 	// Have i access?
 	if ( $alb ) {
-	
+
 		// Access to this album ?
 		if ( ! wppa_have_access( $alb ) ) return;
 	}
 	else {
-	
+
 		// Access to any album ?
 		if ( ! wppa_have_access( '0' ) ) return;
 	}
-	
+
 	// Open container
 	wppa_container( 'open' );
-	
+
 	// Open div
 	wppa_out( 	'<div' .
 					' id="wppa-upload-box-' . wppa( 'mocc' ) . '"' .
 					' class="wppa-box wppa-upload"' .
 					' style="'.__wcs( 'wppa-box' ).__wcs( 'wppa-upload' ).'"' .
-					' >' 
+					' >'
 			);
 
 		// Do the dirty work
 		wppa_user_create_html( $alb, wppa_get_container_width( 'netto' ), 'uploadbox' );
 		wppa_user_upload_html( $alb, wppa_get_container_width( 'netto' ), 'uploadbox' );
-	
+
 	// Clear
 	wppa_out( '<div style="clear:both;"></div></div>' );
-	
+
 	// Close container
 	wppa_container( 'close' );
 }
@@ -1433,36 +1430,37 @@ function wppa_user_destroy_html( $alb, $width, $where, $rsp ) {
 	if ( ! wppa_switch( 'user_destroy_on' ) ) {
 		return;
 	}
-	
+
 	// Must login ?
 	if ( wppa_switch( 'user_create_login' ) ) {
 		if ( ! is_user_logged_in() ) return;
 	}
-	
+
 	// Album access ?
 	if ( ! wppa_have_access( $alb ) ) {
 		return;
 	}
-	
+
 	// Been naughty ?
 	if ( wppa_is_user_blacklisted() ) {
 		return;
 	}
 
 	// Make the html
-	wppa_out( 	'<div style="clear:both">' .
-					'<a' .
-						' style="float:left; cursor:pointer;"' .
-						' onclick="' .
-							'jQuery(this).html(\'' . __a('Working...') . '\');' .
-							'wppaAjaxDestroyAlbum(' . $alb . ',\'' . wp_create_nonce( 'wppa_nonce_' . $alb ) . '\');' .
-							'jQuery(this).html(\'' . __a('Delete album') . '\');' .
-							'"' .
-						' >' . 
-						__a('Delete album') . 
-					'</a>' .
-				'</div>' 
-			);
+	wppa_out(
+		'<div style="clear:both">' .
+			'<a' .
+				' style="float:left; cursor:pointer;"' .
+				' onclick="' .
+					'jQuery(this).html(\'' . __a('Working...') . '\');' .
+					'wppaAjaxDestroyAlbum(' . $alb . ',\'' . wp_create_nonce( 'wppa_nonce_' . $alb ) . '\');' .
+					'jQuery(this).html(\'' . __a('Delete album') . '\');' .
+					'"' .
+				' >' .
+				__a('Delete album') .
+			'</a>' .
+		'</div>'
+	);
 
 }
 
@@ -1477,9 +1475,9 @@ function wppa_user_create_html( $alb, $width, $where = '', $mcr = false ) {
 	}
 
 	// Feature enabled ?
-	if ( ! wppa_switch( 'user_create_on' ) ) return;			
+	if ( ! wppa_switch( 'user_create_on' ) ) return;
 
-/*	
+/*
 	if ( wppa_switch( 'user_create_login' ) ) {
 		if ( ! is_user_logged_in() ) return;					// Must login
 	}
@@ -1518,11 +1516,11 @@ function wppa_user_create_html( $alb, $width, $where = '', $mcr = false ) {
 	}
 	if ( wppa( 'page' ) ) $returnurl .= '&amp;wppa-page=' . wppa( 'page' );
 	$returnurl = trim( $returnurl, '?' );
-	
+
 	$returnurl = wppa_trim_wppa_( $returnurl );
-	
+
 	$t = $mcr ? 'mcr-' : '';
-	
+
 	// The links
 	wppa_out(
 		'<div style="clear:both"></div>' .
@@ -1539,7 +1537,7 @@ function wppa_user_create_html( $alb, $width, $where = '', $mcr = false ) {
 				'_wppaDoAutocol( ' . $mocc . ' )'.													// Trigger autocol
 				'"' .
 			' style="float:left; cursor:pointer;"' .
-			'> ' . 
+			'> ' .
 			__a( 'Create Album' ) .
 		'</a>' .
 		'<a' .
@@ -1555,13 +1553,13 @@ function wppa_user_create_html( $alb, $width, $where = '', $mcr = false ) {
 				'_wppaDoAutocol( ' . $mocc . ' )'.													// Trigger autocol
 				'"' .
 			' style="float:right; cursor:pointer;display:none;"' .
-			' >' . 
-			__a( 'Close' ) .
-		'</a>' 
+			' >' .
+			__a( wppa_opt( 'close_text' ) ) .
+		'</a>'
 	);
-	
+
 	// The create form
-	wppa_out( 
+	wppa_out(
 		'<div' .
 			' id="wppa-create-'.$t.$alb.'-'.$mocc.'"' .
 			' class="wppa-file-'.$t.$mocc.'"' .
@@ -1643,20 +1641,20 @@ static $seqno;
 	// Init
 	$mocc 	= wppa( 'mocc');
 	$occur 	= wppa( 'occur' );
-	
-	// Using seqno to distinguish from different places within one occurrence because 
+
+	// Using seqno to distinguish from different places within one occurrence because
 	// the album no is not known when there is a selection box.
 	if ( $seqno ) $seqno++;
 	else $seqno = '1';
 
 	// Feature enabled?
 	if ( ! wppa_switch( 'user_upload_on' ) ) return;
-	
+
 	// Login required?
 	if ( wppa_switch( 'user_upload_login' ) ) {
 		if ( ! is_user_logged_in() ) return;
 	}
-	
+
 	// I should have access to this album ( $alb > 0 ).
 	if ( $alb > '0' ) {
 		$album_owner = wppa_get_album_item( $alb, 'owner' );
@@ -1676,9 +1674,9 @@ static $seqno;
 						'</span>'
 					);
 		}
-		return;	
+		return;
 	}
-	
+
 	// Find max files for the album
 	$allow_alb = wppa_allow_uploads( $alb );
 	if ( ! $allow_alb ) {
@@ -1690,14 +1688,14 @@ static $seqno;
 						'</span>'
 					);
 		}
-		return;	
+		return;
 	}
-	
+
 	if ( wppa_is_user_blacklisted() ) return;
 
 	// Find max files for the system
 	$allow_sys = ini_get( 'max_file_uploads' );
-	
+
 	// THE max
 	if ( $allow_me == '-1' ) $allow_me = $allow_sys;
 	if ( $allow_alb == '-1' ) $allow_alb = $allow_sys;
@@ -1708,7 +1706,7 @@ static $seqno;
 
 	// Ajax upload?
 	$ajax_upload = wppa_switch( 'ajax_upload' ) && wppa_browser_can_html5();
-	
+
 	// Create the return url
 	if ( $ajax_upload ) {
 		$returnurl = wppa_switch( 'ajax_non_admin' ) ? WPPA_URL.'/wppa-ajax-front.php' : admin_url('admin-ajax.php');
@@ -1732,7 +1730,7 @@ static $seqno;
 
 	// Make the HTML
 	$t = $mcr ? 'mcr-' : '';
-	wppa_out( 
+	wppa_out(
 		'<div style="clear:both"></div>' .
 		'<a' .
 			' id="wppa-up-'.$alb.'-'.$mocc.'"' .
@@ -1764,7 +1762,7 @@ static $seqno;
 				'"' .
 			' style="float:right; cursor:pointer;display:none;' .
 			'" >' .
-			__a( 'Close' ) .
+			__a( wppa_opt( 'close_text' ) ) .
 		'</a>' .
 		'<div' .
 			' id="wppa-file-'.$t.$alb.'-'.$mocc.'"' .
@@ -1779,9 +1777,9 @@ static $seqno;
 				' >' .
 				wppa_nonce_field( 'wppa-check' , 'wppa-nonce', false, false, $alb )
 	);
-	
-	// If no album given: select one		
-	if ( ! $alb ) {	
+
+	// If no album given: select one
+	if ( ! $alb ) {
 		wppa_out(
 			'<select' .
 				' id="wppa-upload-album-'.$mocc.'-'.$seqno.'"' .
@@ -1789,19 +1787,19 @@ static $seqno;
 				' style="float:left; max-width: '.$width.'px;"' .
 				' onchange="jQuery( \'#wppa-sel-'.$alb.'-'.$mocc.'\' ).trigger( \'onchange\' )"' .
 				' >' .
-				wppa_album_select_a( array ( 	'addpleaseselect' 	=> true, 
-												'checkowner' 		=> true, 
-												'checkupload' 		=> true, 
-												'path' 				=> wppa_switch( 'hier_albsel' ) 
+				wppa_album_select_a( array ( 	'addpleaseselect' 	=> true,
+												'checkowner' 		=> true,
+												'checkupload' 		=> true,
+												'path' 				=> wppa_switch( 'hier_albsel' )
 									) ) .
 			'</select>' .
 			'<br />'
 		);
 	}
-	
+
 	// Album given
 	else {
-		wppa_out( 	
+		wppa_out(
 			'<input' .
 				' type="hidden"' .
 				' id="wppa-upload-album-'.$mocc.'-'.$seqno.'"' .
@@ -1813,7 +1811,7 @@ static $seqno;
 
 	// One only ?
 	if ( wppa_switch( 'upload_one_only' ) && ! current_user_can( 'administrator' ) ) {
-		wppa_out(	
+		wppa_out(
 			'<input' .
 				' type="file"' .
 				' accept="image/*"' .
@@ -1832,7 +1830,7 @@ static $seqno;
 			' />'
 		);
 	}
-	
+
 	// Multiple
 	else {
 		wppa_out(
@@ -1855,7 +1853,7 @@ static $seqno;
 			' />'
 		);
 	}
-	
+
 	// Onclick submit verify album is known
 	if ( $alb ) {
 		$onclick = 	' onclick="if ( document.getElementById( \'wppa-upload-album-'.$mocc.'-'.$seqno.'\' ).value == 0 )' .
@@ -1869,7 +1867,7 @@ static $seqno;
 	wppa_out(
 		'<input' .
 			' type="submit"' .
-			' id="wppa-user-submit-' . $alb . '-' . $mocc . '"' . 
+			' id="wppa-user-submit-' . $alb . '-' . $mocc . '"' .
 			$onclick .
 			' style="display:none; margin: 6px 0; float:right; '.__wcs( 'wppa-box-text' ).'"' .
 			' class="wppa-user-submit"' .
@@ -1892,11 +1890,11 @@ static $seqno;
 			'<div id="message-'.$alb.'-'.$mocc.'" class="wppa-message" ></div>'
 		);
 	}
-	
+
 	// Explanation
 	if ( ! wppa_switch( 'upload_one_only' ) && ! current_user_can( 'administrator' ) ) {
 		if ( $max ) {
-			wppa_out( 
+			wppa_out(
 				'<span style="font-size:10px;" >' .
 					sprintf( __a( 'You may upload up to %s photos at once if your browser supports HTML-5 multiple file upload' ), $max ) .
 				'</span>'
@@ -1912,7 +1910,7 @@ static $seqno;
 			}
 		}
 	}
-			
+
 	// Copyright notice
 	if ( wppa_switch( 'copyright_on' ) ) {
 		wppa_out(
@@ -1921,9 +1919,9 @@ static $seqno;
 			'</div>'
 		);
 	}
-			
+
 	// Watermark
-	if ( wppa_switch( 'watermark_on' ) && ( wppa_switch( 'watermark_user' ) ) ) { 
+	if ( wppa_switch( 'watermark_on' ) && ( wppa_switch( 'watermark_user' ) ) ) {
 		wppa_out(
 			'<table' .
 				' class="wppa-watermark wppa-box-text"' .
@@ -1956,8 +1954,8 @@ static $seqno;
 						'<td' .
 							' class="wppa-box-text wppa-td"' .
 							' style="width: '.$width.';'.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'"' .
-							' >' . 
-							__a( 'Position:' ) . 
+							' >' .
+							__a( 'Position:' ) .
 						'</td>' .
 						( $small ? '</tr><tr>' : '' ) .
 						'<td' .
@@ -1977,7 +1975,7 @@ static $seqno;
 			'</table>'
 		);
 	}
-			
+
 	// Name
 	if ( wppa_switch( 'wppa_name_user' ) ) {
 		switch ( wppa_opt( 'wppa_newphoto_name_method' ) ) {
@@ -1985,7 +1983,8 @@ static $seqno;
 				$expl = '';
 				break;
 			case '2#005':
-				$expl = __a( 'If you leave this blank, iptc tag 005 (Graphic name) will be used as photoname if available, else the original filename will be used as photo name.' );
+				$expl =
+				__a( 'If you leave this blank, iptc tag 005 (Graphic name) will be used as photoname if available, else the original filename will be used as photo name.' );
 				break;
 			case '2#120':
 				$expl = __a( 'If you leave this blank, iptc tag 120 (Caption) will be used as photoname if available, else the original filename will be used as photo name.' );
@@ -1993,7 +1992,7 @@ static $seqno;
 			default:
 				$expl = __a( 'If you leave this blank, the original filename will be used as photo name.' );
 		}
-		wppa_out( 
+		wppa_out(
 			'<div class="wppa-box-text wppa-td" style="clear:both; float:left; text-align:left; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >' .
 				__a( 'Enter photo name.' ).'&nbsp;<span style="font-size:10px;" >'.$expl.'</span>' .
 			'</div>' .
@@ -2005,7 +2004,7 @@ static $seqno;
 			' />'
 		);
 	}
-		
+
 	// Description user fillable ?
 	if ( wppa_switch( 'wppa_desc_user' ) ) {
 		$desc = wppa_switch( 'apply_newphoto_desc_user' ) ? stripslashes( wppa_opt( 'wppa_newphoto_description' ) ) : '';
@@ -2019,29 +2018,29 @@ static $seqno;
 			'<textarea' .
 				' class="wppa-user-textarea wppa-box-text wppa-file-'.$t.$mocc.'"' .
 				' style="height:120px; width:'.( $width-6 ).'px; '.__wcs( 'wppa-box-text' ).'"' .
-				' name="wppa-user-desc"' . 
+				' name="wppa-user-desc"' .
 				' >' .
 				$desc .
 			'</textarea>'
 		);
 	}
-	
+
 	// Predefined desc ?
 	elseif ( wppa_switch( 'apply_newphoto_desc_user' ) ) {
-		wppa_out( 
+		wppa_out(
 			'<input' .
 				' type="hidden"' .
 				' value="' . esc_attr( wppa_opt( 'wppa_newphoto_description' ) ) . '"' .
 				' name="wppa-user-desc"' .
-			' />' 
+			' />'
 		);
 	}
-		
+
 	// Custom fields
 	if ( wppa_switch( 'fe_custom_fields' ) ) {
 		for ( $i = '0'; $i < '10' ; $i++ ) {
 			if ( wppa_opt( 'custom_caption_'.$i ) ) {
-				wppa_out( 
+				wppa_out(
 					'<div' .
 						' class="wppa-box-text wppa-td"' .
 						' style="clear:both; float:left; text-align:left; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'"' .
@@ -2059,49 +2058,63 @@ static $seqno;
 			}
 		}
 	}
-		
+
 	// Tags
 	if ( wppa_switch( 'fe_upload_tags' ) ) {
-	
+
 		// Prepare onclick action
 		$onc = 'wppaPrevTags(\'wppa-sel-'.$alb.'-'.$mocc.'\', \'wppa-inp-'.$alb.'-'.$mocc.'\', \'wppa-upload-album-'.$mocc.'-'.$seqno.'\', \'wppa-prev-'.$alb.'-'.$mocc.'\')';
-		
+
 		// Open the tag enter area
 		wppa_out( "\n".'<div class="wppa-box-text wppa-td" style="clear:both; float:left; text-align:left; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >' );
-		
+
 			// Selection boxes 1..3
 			for ( $i = '1'; $i < '4'; $i++ ) {
 				if ( wppa_switch( 'up_tagselbox_on_'.$i ) ) {
 					wppa_out( "\n".'<div style="float:left; margin-right:4px;" >' );
 					wppa_out( '<small>'.__( wppa_opt( 'up_tagselbox_title_'.$i ) ).'</small><br />' );
-					wppa_out( "\n".'<select id="wppa-sel-'.$alb.'-'.$mocc.'-'.$i.'" style="float:left; margin-right: 4px;" name="wppa-user-tags-'.$i.'[]" '.( wppa_switch( 'wppa_up_tagselbox_multi_'.$i ) ? 'multiple' : '' ).' onchange="'.$onc.'" >' );
+					wppa_out( "\n".
+						'<select' .
+							' id="wppa-sel-'.$alb.'-'.$mocc.'-'.$i.'"' .
+							' style="float:left; margin-right: 4px;"' .
+							' name="wppa-user-tags-'.$i.'[]"' .
+							( wppa_switch( 'wppa_up_tagselbox_multi_'.$i ) ? ' multiple' : '' ) .
+							' onchange="'.$onc.'"' .
+							' >' );
 					if ( wppa_opt( 'up_tagselbox_content_'.$i ) ) {	// List of tags supplied
 						$tags = explode( ',', wppa_opt( 'up_tagselbox_content_'.$i ) );
 						wppa_out( '<option value="" >&nbsp;</option>' );
 						if ( is_array( $tags ) ) foreach ( $tags as $tag ) {
 							wppa_out( '<option class="wppa-sel-'.$alb.'-'.$mocc.'" value="'.$tag.'">'.$tag.'</option>' );
-						}							
+						}
 					}
 					else {											// All existing tags
 						$tags = wppa_get_taglist();
 						wppa_out( '<option value="" >&nbsp;</option>' );
 						if ( is_array( $tags ) ) foreach ( $tags as $tag ) {
 							wppa_out( '<option class="wppa-sel-'.$alb.'-'.$mocc.'" value="'.$tag['tag'].'">'.$tag['tag'].'</option>' );
-						}							
+						}
 					}
 					wppa_out( "\n".'</select>' );
 					wppa_out( '</div>' );
 				}
 			}
-			
+
 			// New tags
 			if ( wppa_switch( 'wppa_up_tag_input_on' ) ) {
 				wppa_out( '<div style="float:left; margin-right:4px;" >' );
 				wppa_out( '<small>'.__( wppa_opt( 'up_tag_input_title' ) ).'</small><br />' );
-				wppa_out( '<input id="wppa-inp-'.$alb.'-'.$mocc.'" type="text" class="wppa-box-text " style="padding:0; width:150px; '.__wcs( 'wppa-box-text' ).'" name="wppa-new-tags" onchange="'.$onc.'" />' );
+				wppa_out( 	'<input' .
+								' id="wppa-inp-'.$alb.'-'.$mocc.'"' .
+								' type="text"' .
+								' class="wppa-box-text"' .
+								' style="padding:0; width:150px; '.__wcs( 'wppa-box-text' ).'"' .
+								' name="wppa-new-tags"' .
+								' onchange="'.$onc.'"' .
+								' />' );
 				wppa_out( '</div>' );
 			}
-					
+
 			// Preview area
 			if ( wppa_switch( 'wppa_up_tag_preview' ) ) {
 				wppa_out( '<div style="margin:0; clear:both;" >'.__a('Preview tags:').' <small id="wppa-prev-'.$alb.'-'.$mocc.'"></small></div>' );
@@ -2111,16 +2124,16 @@ static $seqno;
 		// Close tag enter area
 		wppa_out( '</div>' );
 	}
-		
+
 	// Done
 	wppa_out( '</form></div>' );
-	
+
 	// Ajax upload script
 	if ( $ajax_upload ) {
-		wppa_out( 
+		wppa_out(
 			'<script>' .
 				'jQuery(document).ready(function() {
-	 
+
 					var options = {
 						beforeSend: function() {
 							jQuery("#progress-'.$alb.'-'.$mocc.'").show();
@@ -2150,7 +2163,7 @@ static $seqno;
 							jQuery("#message-'.$alb.'-'.$mocc.'").html( \'<span style="color: red;" >'.__a( 'ERROR: unable to upload files.' ).'</span>\' );
 						}
 					};
-	 
+
 					jQuery("#wppa-uplform-'.$alb.'-'.$mocc.'").ajaxForm(options);
 				});
 			</script>'
@@ -2160,7 +2173,6 @@ static $seqno;
 
 // Frontend edit album info
 function wppa_user_albumedit_html( $alb, $width, $where = '', $mcr = false ) {
-global $wppa;
 
 	$album = wppa_cache_album( $alb );
 
@@ -2168,86 +2180,105 @@ global $wppa;
 	if ( ! $alb ) return;										// No album given
 	if ( ! wppa_have_access( $alb ) ) return;					// No rights
 	if ( $album['owner'] == '--- public ---' && ! current_user_can( 'wppa_admin' ) ) return;	// Public albums are not publicly editable
-	
+
 	$t = $mcr ? 'mcr-' : '';
-	
+
 	// Create the return url
 	$returnurl = wppa_get_permalink();
 	if ( $where == 'cover' ) {
-		$returnurl .= 'wppa-album='.$alb.'&amp;wppa-cover=1&amp;wppa-occur='.$wppa['occur'];
+		$returnurl .= 'wppa-album=' . $alb . '&amp;wppa-cover=1&amp;wppa-occur=' . wppa( 'occur' );
 	}
 	elseif ( $where == 'thumb' ) {
-		$returnurl .= 'wppa-album='.$alb.'&amp;wppa-cover=0&amp;wppa-occur='.$wppa['occur'];
+		$returnurl .= 'wppa-album=' . $alb . '&amp;wppa-cover=0&amp;wppa-occur=' . wppa( 'occur' );
 	}
 	elseif ( $where == 'widget' || $where == 'uploadbox' ) {
 	}
-	if ( $wppa['page'] ) $returnurl .= '&amp;wppa-page='.$wppa['page'];
+	if ( wppa( 'page' ) ) $returnurl .= '&amp;wppa-page=' . wppa( 'page' );
 	$returnurl = trim( $returnurl, '?' );
 
-		
+
 	$result = '
 	<div style="clear:both;"></div>
-	<a id="wppa-ea-'.$alb.'-'.$wppa['mocc'].'" class="wppa-aedit-'.$where.'" onclick="'.
-									'jQuery( \'#wppa-fe-div-'.$alb.'-'.$wppa['mocc'].'\' ).css( \'display\',\'block\' );'.		// Open the Edit form
-									'jQuery( \'#wppa-ea-'.$alb.'-'.$wppa['mocc'].'\' ).css( \'display\',\'none\' );'.			// Hide the Edit link
-									'jQuery( \'#wppa-cr-'.$alb.'-'.$wppa['mocc'].'\' ).css( \'display\',\'none\' );'.			// Hide the Create libk
-									'jQuery( \'#wppa-up-'.$alb.'-'.$wppa['mocc'].'\' ).css( \'display\',\'none\' );'.			// Hide the upload link
-									'jQuery( \'#wppa-cats-' . $alb . '-' . $wppa['mocc'] . '\' ).css( \'display\',\'none\' );'.	// Hide catogory
-									'jQuery( \'#_wppa-ea-'.$alb.'-'.$wppa['mocc'].'\' ).css( \'display\',\'block\' );'. 		// Show backlink
-									'_wppaDoAutocol( ' . $wppa['mocc'] . ' )' .													// Trigger autocol
-									'" style="float:left; cursor:pointer;">									
+	<a id="wppa-ea-'.$alb.'-'.wppa( 'mocc' ).'" class="wppa-aedit-'.$where.'" onclick="'.
+									'jQuery( \'#wppa-fe-div-'.$alb.'-'.wppa( 'mocc' ).'\' ).css( \'display\',\'block\' );'.		// Open the Edit form
+									'jQuery( \'#wppa-ea-'.$alb.'-'.wppa( 'mocc' ).'\' ).css( \'display\',\'none\' );'.			// Hide the Edit link
+									'jQuery( \'#wppa-cr-'.$alb.'-'.wppa( 'mocc' ).'\' ).css( \'display\',\'none\' );'.			// Hide the Create libk
+									'jQuery( \'#wppa-up-'.$alb.'-'.wppa( 'mocc' ).'\' ).css( \'display\',\'none\' );'.			// Hide the upload link
+									'jQuery( \'#wppa-cats-' . $alb . '-' . wppa( 'mocc' ) . '\' ).css( \'display\',\'none\' );'.	// Hide catogory
+									'jQuery( \'#_wppa-ea-'.$alb.'-'.wppa( 'mocc' ).'\' ).css( \'display\',\'block\' );'. 		// Show backlink
+									'_wppaDoAutocol( ' . wppa( 'mocc' ) . ' )' .													// Trigger autocol
+									'" style="float:left; cursor:pointer;">
 		'.__a( 'Edit albuminfo' ).'
 	</a>
-	<a id="_wppa-ea-'.$alb.'-'.$wppa['mocc'].'" class="wppa-aedit-'.$where.'" onclick="'.
-									'jQuery( \'#wppa-fe-div-'.$alb.'-'.$wppa['mocc'].'\' ).css( \'display\',\'none\' );'.		// Hide the Edit form
-									'jQuery( \'#wppa-cr-'.$alb.'-'.$wppa['mocc'].'\' ).css( \'display\',\'block\' );'.			// Show the Create link
-									'jQuery( \'#wppa-up-'.$alb.'-'.$wppa['mocc'].'\' ).css( \'display\',\'block\' );'.			// Show the Upload link
-									'jQuery( \'#wppa-ea-'.$alb.'-'.$wppa['mocc'].'\' ).css( \'display\',\'block\' );'.			// Show the Edit link
-									'jQuery( \'#wppa-cats-' . $alb . '-' . $wppa['mocc'] . '\' ).css( \'display\',\'block\' );'.	// Show catogory
-									'jQuery( \'#_wppa-ea-'.$alb.'-'.$wppa['mocc'].'\' ).css( \'display\',\'none\' );'. 			// Hide backlink
-									'_wppaDoAutocol( ' . $wppa['mocc'] . ' )'.													// Trigger autocol
+	<a id="_wppa-ea-'.$alb.'-'.wppa( 'mocc' ).'" class="wppa-aedit-'.$where.'" onclick="'.
+									'jQuery( \'#wppa-fe-div-'.$alb.'-'.wppa( 'mocc' ).'\' ).css( \'display\',\'none\' );'.		// Hide the Edit form
+									'jQuery( \'#wppa-cr-'.$alb.'-'.wppa( 'mocc' ).'\' ).css( \'display\',\'block\' );'.			// Show the Create link
+									'jQuery( \'#wppa-up-'.$alb.'-'.wppa( 'mocc' ).'\' ).css( \'display\',\'block\' );'.			// Show the Upload link
+									'jQuery( \'#wppa-ea-'.$alb.'-'.wppa( 'mocc' ).'\' ).css( \'display\',\'block\' );'.			// Show the Edit link
+									'jQuery( \'#wppa-cats-' . $alb . '-' . wppa( 'mocc' ) . '\' ).css( \'display\',\'block\' );'.	// Show catogory
+									'jQuery( \'#_wppa-ea-'.$alb.'-'.wppa( 'mocc' ).'\' ).css( \'display\',\'none\' );'. 			// Hide backlink
+									'_wppaDoAutocol( ' . wppa( 'mocc' ) . ' )'.													// Trigger autocol
 									'" style="float:right; cursor:pointer;display:none;">
-		'.__a( 'Close' ).'
-	</a>
-	<div id="wppa-fe-div-'.$alb.'-'.$wppa['mocc'].'" style="display:none;" >
+		' . __a( wppa_opt( 'close_text' ) ) .
+	'</a>
+	<div id="wppa-fe-div-'.$alb.'-'.wppa( 'mocc' ).'" style="display:none;" >
 		<form action="'.$returnurl.'" method="post">
-			<input type="hidden" name="wppa-albumeditnonce" id="album-nonce-'.$wppa['mocc'].'-'.$alb.'" value="'.wp_create_nonce( 'wppa_nonce_'.$alb ).'" />
-			<input type="hidden" name="wppa-albumeditid" id="wppaalbum-id-'.$wppa['mocc'].'-'.$alb.'" value="'.$alb.'" />
+			<input type="hidden" name="wppa-albumeditnonce" id="album-nonce-'.wppa( 'mocc' ).'-'.$alb.'" value="'.wp_create_nonce( 'wppa_nonce_'.$alb ).'" />
+			<input type="hidden" name="wppa-albumeditid" id="wppaalbum-id-'.wppa( 'mocc' ).'-'.$alb.'" value="'.$alb.'" />
 			<div class="wppa-box-text wppa-td" style="clear:both; float:left; text-align:left; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >'.
 				__a( 'Enter album name.' ).'&nbsp;<span style="font-size:10px;" >'.__a( 'Don\'t leave this blank!' ).'</span>
 			</div>
-			<input name="wppa-albumeditname" id="wppaalbum-name-'.$wppa['mocc'].'-'.$alb.'" class="wppa-box-text wppa-file-'.$t.$wppa['mocc'].'" value="'.esc_attr( stripslashes( $album['name'] ) ).'" style="padding:0; width:'.( $width-6 ).'px; '.__wcs( 'wppa-box-text' ).'" />
+			<input' .
+				' name="wppa-albumeditname"' .
+				' id="wppaalbum-name-'.wppa( 'mocc' ).'-'.$alb.'"' .
+				' class="wppa-box-text wppa-file-'.$t.wppa( 'mocc' ).'"' .
+				' value="'.esc_attr( stripslashes( $album['name'] ) ).'"' .
+				' style="padding:0; width:'.( $width-6 ).'px; '.__wcs( 'wppa-box-text' ).'"' .
+				' />
 			<div class="wppa-box-text wppa-td" style="clear:both; float:left; text-align:left; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >'.
 				__a( 'Album description:' ).'
 			</div>
-			<textarea name="wppa-albumeditdesc" id="wppaalbum-desc-'.$wppa['mocc'].'-'.$alb.'" class="wppa-user-textarea wppa-box-text wppa-file-'.$t.$wppa['mocc'].'" style="padding:0;height:120px; width:'.( $width-6 ).'px; '.__wcs( 'wppa-box-text' ).'" >'.esc_textarea( stripslashes( $album['description'] ) ).'</textarea>
-			<input type="submit" name="wppa-albumeditsubmit" class="wppa-user-submit" style="margin: 6px 0; float:right; '.__wcs( 'wppa-box-text' ).'" value="'.__a( 'Update album' ).'" />
+			<textarea' .
+				' name="wppa-albumeditdesc"' .
+				' id="wppaalbum-desc-'.wppa( 'mocc' ).'-'.$alb.'"' .
+				' class="wppa-user-textarea wppa-box-text wppa-file-'.$t.wppa( 'mocc' ).'"' .
+				' style="padding:0;height:120px; width:'.( $width-6 ).'px; '.__wcs( 'wppa-box-text' ).'"' .
+				' >' .
+				esc_textarea( stripslashes( $album['description'] ) ) .
+			'</textarea>' .
+			'<input' .
+				' type="submit"' .
+				' name="wppa-albumeditsubmit"' .
+				' class="wppa-user-submit"' .
+				' style="margin: 6px 0; float:right; '.__wcs( 'wppa-box-text' ).'"' .
+				' value="'.__a( 'Update album' ).'"' .
+			' />
 		</form>
 	</div>';
-	$wppa['out'] .= $result;
+	wppa_out( $result );
 }
 
 // Build the html for the comment box
 function wppa_comment_html( $id, $comment_allowed ) {
 global $wpdb;
-global $wppa;
 global $current_user;
 global $wppa_first_comment_html;
 
 	$result = '';
-	if ( $wppa['in_widget'] ) return $result;		// NOT in a widget
-	
+	if ( wppa( 'in_widget' ) ) return $result;		// NOT in a widget
+
 	// Find out who we are either logged in or not
 	$vis = is_user_logged_in() ? $vis = 'display:none; ' : '';
-	if ( !$wppa_first_comment_html ) {
+	if ( ! $wppa_first_comment_html ) {
 		$wppa_first_comment_html = true;
+
 		// Find user
-		if ( wppa_get_post( 'comname' ) ) $wppa['comment_user'] = wppa_get_post( 'comname' );
-		if ( wppa_get_post( 'comemail' ) ) $wppa['comment_email'] = wppa_get_post( 'comemail' );
+		if ( wppa_get_post( 'comname' ) ) wppa( 'comment_user', wppa_get_post( 'comname' ) );
+		if ( wppa_get_post( 'comemail' ) ) wppa( 'comment_email', wppa_get_post( 'comemail' ) );
 		elseif ( is_user_logged_in() ) {
 			get_currentuserinfo();
-			$wppa['comment_user'] = $current_user->display_name; //user_login;
-			$wppa['comment_email'] = $current_user->user_email;
+			wppa( 'comment_user', $current_user->display_name ); //user_login;
+			wppa( 'comment_email', $current_user->user_email );
 		}
 	}
 
@@ -2260,17 +2291,49 @@ global $wppa_first_comment_html;
 	$color = 'darkgrey';
 	if ( wppa_opt( 'wppa_fontcolor_box' ) ) $color = wppa_opt( 'wppa_fontcolor_box' );
 	if ( $comments ) {
-		$result .= '<div id="wppa-comtable-wrap-'.$wppa['mocc'].'" style="display:none;" >';
-			$result .= '<table id="wppacommentstable-'.$wppa['mocc'].'" class="wppa-comment-form" style="margin:0; "><tbody>';
+		$result .= '
+			<div' .
+			' id="wppa-comtable-wrap-'.wppa( 'mocc' ).'"' .
+			' style="display:none;"' .
+			'>' .
+			'<table' .
+				' id="wppacommentstable-' . wppa( 'mocc' ) . '"' .
+				' class="wppa-comment-form"' .
+				' style="margin:0; "' .
+				'>' .
+				'<tbody>';
+
 			foreach( $comments as $comment ) {
+
 				// Show a comment either when it is approved, or it is pending and mine or i am a moderator
-				if ( $comment['status'] == 'approved' || current_user_can( 'wppa_moderate' ) || current_user_can( 'wppa_comments' ) || ( ( $comment['status'] == 'pending' || $comment['status'] == 'spam' ) && $comment['user'] == $wppa['comment_user'] ) ) {
+				if ( $comment['status'] == 'approved' ||
+					current_user_can( 'wppa_moderate' ) ||
+					current_user_can( 'wppa_comments' ) ||
+						( ( $comment['status'] == 'pending' || $comment['status'] == 'spam' ) &&
+							$comment['user'] == wppa( 'comment_user' )
+						)
+					) {
 					$n_comments++;
-					$result .= '<tr class="wppa-comment-'.$comment['id'].'" valign="top" style="border-bottom:0 none; border-top:0 none; border-left: 0 none; border-right: 0 none; " >';
-						$result .= '<td valign="top" class="wppa-box-text wppa-td" style="vertical-align:top; width:30%; border-width: 0 0 0 0; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >';
-							$result .= $comment['user'].' '.__a( 'wrote:' );
-							$result .= '<br /><span style="font-size:9px; ">'.wppa_get_time_since( $comment['timestamp'] ).'</span>';
+					$result .= 	'
+					<tr' .
+						' class="wppa-comment-'.$comment['id'].'"' .
+						' valign="top"' .
+						' style="border-bottom:0 none; border-top:0 none; border-left: 0 none; border-right: 0 none; "' .
+						' >' .
+						'<td' .
+							' valign="top"' .
+							' class="wppa-box-text wppa-td"' .
+							' style="vertical-align:top; width:30%; border-width: 0 0 0 0; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'"' .
+							' >' .
+							$comment['user'] . ' ' . __a( 'wrote:' ) .
+							'<br />' .
+							'<span style="font-size:9px; ">' .
+								wppa_get_time_since( $comment['timestamp'] ) .
+							'</span>';
+
+							// Avatar ?
 							if ( wppa_opt( 'wppa_comment_gravatar' ) != 'none' ) {
+
 								// Find the default
 								if ( wppa_opt( 'wppa_comment_gravatar' ) != 'url' ) {
 									$default = wppa_opt( 'wppa_comment_gravatar' );
@@ -2278,58 +2341,100 @@ global $wppa_first_comment_html;
 								else {
 									$default = wppa_opt( 'wppa_comment_gravatar_url' );
 								}
+
 								// Find the avatar
 								$avt = '';
 								$usr = get_user_by( 'login', $comment['user'] );
 								if ( $usr ) {	// Local Avatar ?
 									$avt = str_replace( "'", "\"", get_avatar( $usr->ID, wppa_opt( 'wppa_gravatar_size' ), $default ) );
 								}
-								if ( $avt == '' ) {	// Global avatars off, try myself
-									$avt = '<img class="wppa-box-text wppa-td" src="http://www.gravatar.com/avatar/'.md5( strtolower( trim( $comment['email'] ) ) ).'.jpg?d='.urlencode( $default ).'&s='.wppa_opt( 'wppa_gravatar_size' ).'" alt="'.__a('Avatar').'" />';
+
+								// Global avatars off ? try myself
+								if ( $avt == '' ) {
+									$avt = 	'
+										<img' .
+											' class="wppa-box-text wppa-td"' .
+											' src="http://www.gravatar.com/avatar/' .
+													md5( strtolower( trim( $comment['email'] ) ) ) .
+													'.jpg?d='.urlencode( $default ) . '&s=' . wppa_opt( 'wppa_gravatar_size' ) . '"' .
+											' alt="' . __a('Avatar') . '"' .
+										' />';
 								}
+
 								// Compose the html
-								$result .= '<div class="com_avatar">'.$avt.'</div>';
+								$result .= '
+									<div class="com_avatar">' .
+										$avt .
+									'</div>';
 							}
-						$result .= '</td>';
+						$result .=
+						'</td>';
+
 						$txtwidth = floor( wppa_get_container_width() * 0.7 ).'px';
-						$result .= '<td class="wppa-box-text wppa-td" style="width:70%; word-wrap:break-word; border-width: 0 0 0 0;'.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >'.
-										'<p class="wppa-comment-textarea wppa-comment-textarea-'.$wppa['mocc'].'" style="margin:0; background-color:transparent; width:'.$txtwidth.'; max-height:90px; overflow:auto; word-wrap:break-word;'.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >'.
-											html_entity_decode( esc_js( stripslashes( wppa_convert_smilies( $comment['comment'] ) ) ) );
-										
-											if ( $comment['status'] != 'approved' && ( current_user_can( 'wppa_moderate' ) || current_user_can( 'wppa_comments' ) ) ) {
-												if ( $wppa['no_esc'] ) $result .= wppa_moderate_links( 'comment', $id, $comment['id'] );
-												else $result .= wppa_html( esc_js( wppa_moderate_links( 'comment', $id, $comment['id'] ) ) );
-											}
-											elseif ( $comment['status'] == 'pending' && $comment['user'] == $wppa['comment_user'] ) {
-												$result .= '<br /><span style="color:red; font-size:9px;" >'.__a( 'Awaiting moderation' ).'</span>';
-											}
-											elseif ( $comment['status'] == 'spam' && $comment['user'] == $wppa['comment_user'] ) {
-												$result .= '<br /><span style="color:red; font-size:9px;" >'.__a( 'Marked as spam' ).'</span>';
-											}
-											
-											
-											$result .= '</p>';
-						$result .= '</td>';
-					$result .= '</tr>';
-					$result .= '<tr class="wppa-comment-'.$comment['id'].'"><td colspan="2" style="padding:0"><hr style="background-color:'.$color.'; margin:0;" /></td></tr>';
+						$result .=
+						'<td' .
+							' class="wppa-box-text wppa-td"' .
+							' style="width:70%; word-wrap:break-word; border-width: 0 0 0 0;'.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'"' .
+							' >'.
+							'<p' .
+								' class="wppa-comment-textarea wppa-comment-textarea-'.wppa( 'mocc' ).'"' .
+								' style="' .
+									'margin:0;' .
+									'background-color:transparent;' .
+									'width:' . $txtwidth . ';' .
+									'max-height:90px;' .
+									'overflow:auto;' .
+									'word-wrap:break-word;' .
+									__wcs( 'wppa-box-text' ) .
+									__wcs( 'wppa-td' ) .
+									'"' .
+								' >'.
+								html_entity_decode( esc_js( stripslashes( wppa_convert_smilies( $comment['comment'] ) ) ) );
+
+								if ( $comment['status'] != 'approved' && ( current_user_can( 'wppa_moderate' ) || current_user_can( 'wppa_comments' ) ) ) {
+									if ( wppa( 'no_esc' ) ) {
+										$result .= wppa_moderate_links( 'comment', $id, $comment['id'] );
+									}
+									else {
+										$result .= wppa_html( esc_js( wppa_moderate_links( 'comment', $id, $comment['id'] ) ) );
+									}
+								}
+								elseif ( $comment['status'] == 'pending' && $comment['user'] == wppa( 'comment_user' ) ) {
+									$result .= '<br /><span style="color:red; font-size:9px;" >'.__a( 'Awaiting moderation' ).'</span>';
+								}
+								elseif ( $comment['status'] == 'spam' && $comment['user'] == wppa( 'comment_user' ) ) {
+									$result .= '<br /><span style="color:red; font-size:9px;" >'.__a( 'Marked as spam' ).'</span>';
+								}
+
+							$result .=
+							'</p>' .
+						'</td>' .
+					'</tr>' .
+					'<tr class="wppa-comment-' . $comment['id'] . '">' .
+						'<td colspan="2" style="padding:0">' .
+							'<hr style="background-color:' . $color . '; margin:0;" />' .
+						'</td>' .
+					'</tr>';
 				}
 			}
-			$result .= '</tbody></table>';
-		$result .= '</div>';
+			$result .=
+				'</tbody>' .
+			'</table>' .
+		'</div>';
 	}
-	
+
 	// See if we are currently in the process of adding/editing this comment
-	$is_current = ( $id == $wppa['comment_photo'] && $wppa['comment_id'] );
+	$is_current = ( $id == wppa( 'comment_photo' ) && wppa( 'comment_id' ) );
 	// $debugtext=' ( id='.$id.', comment_photo='.$wppa['comment_photo'].', comment_id='.$wppa['comment_id'].' )';
 	if ( $is_current ) {
-		$txt = $wppa['comment_text'];
+		$txt = wppa( 'comment_text' );
 		$btn = __a( 'Edit!' );
 	}
 	else {
 		$txt = '';
 		$btn = __a( 'Send!' );
 	}
-	
+
 	// Prepare the callback url
 	$returnurl = wppa_get_permalink();
 
@@ -2349,68 +2454,117 @@ global $wppa_first_comment_html;
 	if ( $comten ) $returnurl .= 'wppa-comten='.$comten.'&';
 	$tag = wppa_get_get( 'tag' );
 	if ( $tag ) $returnurl .= 'wppa-tag='.$tag.'&';
-	
+
 	$returnurl .= 'wppa-photo='.$id;
-	
+
 	// The comment form
 	if ( $comment_allowed ) {
-		$result .= '<div id="wppa-comform-wrap-'.$wppa['mocc'].'" style="display:none;" >';
-			$result .= '<form id="wppa-commentform-'.$wppa['mocc'].'" class="wppa-comment-form" action="'.$returnurl.'" method="post" style="" onsubmit="return wppaValidateComment( '.$wppa['mocc'].' )">';
-				$result .= wp_nonce_field( 'wppa-nonce-'.wppa('mocc') , 'wppa-nonce-'.wppa('mocc'), false, false );//, $alb );
-				if ( $album ) $result .= '<input type="hidden" name="wppa-album" value="'.$album.'" />';
-				if ( $cover ) $result .= '<input type="hidden" name="wppa-cover" value="'.$cover.'" />';
-				if ( $slide ) $result .= '<input type="hidden" name="wppa-slide" value="'.$slide.'" />';
-				$result .= '<input type="hidden" name="wppa-returnurl" id="wppa-returnurl-'.wppa( 'mocc' ).'" value="'.$returnurl.'" />';
-				if ( $is_current ) $result .= '<input type="hidden" id="wppa-comment-edit-'.$wppa['mocc'].'" name="wppa-comment-edit" value="'.$wppa['comment_id'].'" />';
-				$result .= '<input type="hidden" name="wppa-occur" value="'.$wppa['occur'].'" />';
+		$result .=
+			'<div' .
+				' id="wppa-comform-wrap-' . wppa( 'mocc' ) . '"' .
+				' style="display:none;"' .
+				' >' .
+				'<form' .
+					' id="wppa-commentform-' . wppa( 'mocc' ) . '"' .
+					' class="wppa-comment-form"' .
+					' action="' . $returnurl . '"' .
+					' method="post"' .
+					' onsubmit="return wppaValidateComment( ' . wppa( 'mocc' ) . ' )"' .
+					' >' .
+					wp_nonce_field( 'wppa-nonce-' . wppa( 'mocc' ) , 'wppa-nonce-' . wppa( 'mocc' ), false, false ) .
+					( $album ? '<input type="hidden" name="wppa-album" value="' . $album . '" />' : '' ) .
+					( $cover ? '<input type="hidden" name="wppa-cover" value="' . $cover . '" />' : '' ) .
+					( $slide ? '<input type="hidden" name="wppa-slide" value="' . $slide . '" />' : '' ) .
+					'<input' .
+						' type="hidden"' .
+						' name="wppa-returnurl"' .
+						' id="wppa-returnurl-' . wppa( 'mocc' ) . '"' .
+						' value="' . $returnurl . '"' .
+					' />' .
+					( $is_current ? '<input' .
+										' type="hidden"' .
+										' id="wppa-comment-edit-' . wppa( 'mocc' ) . '"' .
+										' name="wppa-comment-edit"' .
+										' value="' . wppa( 'comment_id' ) . '"' .
+									' />' : '' ) .
+					'<input type="hidden" name="wppa-occur" value="'.wppa( 'occur' ).'" />' .
 
-				$result .= '<table id="wppacommenttable-'.$wppa['mocc'].'" style="margin:0;">';
-					$result .= '<tbody>';
-						$result .= '<tr valign="top" style="'.$vis.'">';
-							$result .= '<td class="wppa-box-text wppa-td" style="width:30%; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >'.__a( 'Your name:' ).'</td>';
-							$result .= '<td class="wppa-box-text wppa-td" style="width:70%; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" ><input type="text" name="wppa-comname" id="wppa-comname-'.$wppa['mocc'].'" style="width:100%; " value="'.$wppa['comment_user'].'" /></td>';
-						$result .= '</tr>';
-						if ( wppa_switch( 'comment_email_required' ) ) {
-							$result .= '<tr valign="top" style="'.$vis.'">';
-								$result .= '<td class="wppa-box-text wppa-td" style="width:30%; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >'.__a( 'Your email:' ).'</td>';
-								$result .= '<td class="wppa-box-text wppa-td" style="width:70%; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" ><input type="text" name="wppa-comemail" id="wppa-comemail-'.$wppa['mocc'].'" style="width:100%; " value="'.$wppa['comment_email'].'" /></td>';
-							$result .= '</tr>';
-						}
-						$result .= '<tr valign="top" style="vertical-align:top;">';	
-							$result .= '<td valign="top" class="wppa-box-text wppa-td" style="vertical-align:top; width:30%; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >'.__a( 'Your comment:' ).'<br />'.$wppa['comment_user'].'<br />';
-							if ( wppa_switch( 'comment_captcha' ) ) {
-								$wid = '20%';
-								if ( wppa_opt( 'wppa_fontsize_box' ) ) $wid = ( wppa_opt( 'wppa_fontsize_box' ) * 1.5 ).'px';
-								$captkey = $id;
-								if ( $is_current ) $captkey = $wpdb->get_var( $wpdb->prepare( 'SELECT `timestamp` FROM `'.WPPA_COMMENTS.'` WHERE `id` = %s', $wppa['comment_id'] ) );
-								wppa_dbg_q( 'Q-Com-ts' );								
-								$result .= wppa_make_captcha( $captkey ).'<input type="text" id="wppa-captcha-'.$wppa['mocc'].'" name="wppa-captcha" style="width:'.$wid.'; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" />&nbsp;';
-							}
-// orig							$result .= '<input type="submit" name="commentbtn" value="'.$btn.'" style="margin:0;" /></td>';
-							$result .= '<input type="button" name="commentbtn" onclick="wppaAjaxComment( '.$wppa['mocc'].', '.$id.' )" value="'.$btn.'" style="margin:0 4px 0 0;" />';
-							$result .= '<img id="wppa-comment-spin-'.$wppa['mocc'].'" src="'.wppa_get_imgdir().'wpspin.gif" style="display:none;" />';
-							$result .= '</td>';
-							$result .= '<td valign="top" class="wppa-box-text wppa-td" style="vertical-align:top; width:70%; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >';
-/*							if ( wppa_switch( 'use_wp_editor' ) ) {
-								$quicktags_settings = array( 'buttons' => 'strong,em,link,block,ins,ul,ol,li,code,close' );
-								ob_start();
-								wp_editor( stripslashes( $txt ), 'wppacomment'.wppa_alfa_id( $id ), array( 'wpautop' => false, 'media_buttons' => false, 'textarea_rows' => '6', 'tinymce' => false, 'quicktags' => $quicktags_settings ) );
-								$editor = ob_get_clean();
-								$result .= str_replace( "'", '"', $editor );
-							}
-							else {
-/**/
-								if ( wppa_switch( 'comment_smiley_picker' ) ) $result .= wppa_get_smiley_picker_html( 'wppa-comment-'.$wppa['mocc'] );
-								$result .= '<textarea name="wppa-comment" id="wppa-comment-'.$wppa['mocc'].'" style="height:60px; width:100%; ">'.esc_textarea( stripslashes( $txt ) ).'</textarea>';
-/*							}
-/* */
-							$result .= '</td>';
-						$result .= '</tr>';
-					$result .= '</tbody>';
-				$result .= '</table>';
-			$result .= '</form>';
-			// $result.=$debugtext;
-		$result .= '</div>';
+					'<table id="wppacommenttable-'.wppa( 'mocc' ).'" style="margin:0;">' .
+						'<tbody>' .
+							'<tr valign="top" style="' . $vis . '">' .
+								'<td class="wppa-box-text wppa-td" style="width:30%; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >' .
+									__a( 'Your name:' ) .
+								'</td>' .
+								'<td class="wppa-box-text wppa-td" style="width:70%; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >' .
+									'<input' .
+										' type="text"' .
+										' name="wppa-comname"' .
+										' id="wppa-comname-' . wppa( 'mocc' ) . '"' .
+										' style="width:100%; " value="' . wppa( 'comment_user' ) . '"' .
+									' />' .
+								'</td>' .
+							'</tr>';
+
+				if ( wppa_switch( 'comment_email_required' ) ) {
+				$result .= 	'<tr valign="top" style="'.$vis.'">' .
+								'<td class="wppa-box-text wppa-td" style="width:30%; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >' .
+									__a( 'Your email:' ) .
+								'</td>' .
+								'<td class="wppa-box-text wppa-td" style="width:70%; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >' .
+									'<input' .
+										' type="text"' .
+										' name="wppa-comemail"' .
+										' id="wppa-comemail-' . wppa( 'mocc' ) . '"' .
+										' style="width:100%;"' .
+										' value="' . wppa( 'comment_email' ) . '"' .
+									' />' .
+								'</td>' .
+							'</tr>';
+				}
+
+				$result .= 	'<tr valign="top" style="vertical-align:top;">' .
+								'<td valign="top" class="wppa-box-text wppa-td" style="vertical-align:top; width:30%; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >' .
+									__a( 'Your comment:' ) . '<br />' . wppa( 'comment_user' ) . '<br />';
+					if ( wppa_switch( 'comment_captcha' ) ) {
+						$wid = '20%';
+						if ( wppa_opt( 'wppa_fontsize_box' ) ) $wid = ( wppa_opt( 'wppa_fontsize_box' ) * 1.5 ).'px';
+						$captkey = $id;
+						if ( $is_current ) $captkey = $wpdb->get_var( $wpdb->prepare( 'SELECT `timestamp` FROM `'.WPPA_COMMENTS.'` WHERE `id` = %s', wppa( 'comment_id' ) ) );
+						wppa_dbg_q( 'Q-Com-ts' );
+						$result .=
+									wppa_make_captcha( $captkey ) .
+									'<input' .
+										' type="text"' .
+										' id="wppa-captcha-' . wppa( 'mocc' ) . '"' .
+										' name="wppa-captcha"' .
+										' style="width:' . $wid . ';' . __wcs( 'wppa-box-text' ) . __wcs( 'wppa-td' ) . '"' .
+									' />&nbsp;';
+					}
+
+				$result .=
+								'<input type="button" name="commentbtn" onclick="wppaAjaxComment( '.wppa( 'mocc' ).', '.$id.' )" value="'.$btn.'" style="margin:0 4px 0 0;" />' .
+								'<img id="wppa-comment-spin-'.wppa( 'mocc' ).'" src="'.wppa_get_imgdir().'wpspin.gif" style="display:none;" />' .
+							'</td>' .
+							'<td valign="top" class="wppa-box-text wppa-td" style="vertical-align:top; width:70%; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >';
+
+				if ( wppa_switch( 'comment_smiley_picker' ) ) {
+					$result .= wppa_get_smiley_picker_html( 'wppa-comment-'.wppa( 'mocc' ) );
+				}
+
+					$result .=
+									'<textarea' .
+										' name="wppa-comment"' .
+										' id="wppa-comment-' . wppa( 'mocc' ) . '"' .
+										' style="height:60px; width:100%; "' .
+										'>' .
+										esc_textarea( stripslashes( $txt ) ) .
+									'</textarea>' .
+								'</td>' .
+							'</tr>' .
+						'</tbody>' .
+					'</table>' .
+				'</form>' .
+			'</div>';
 	}
 	else {
 		if ( wppa_switch( 'login_links' ) ) {
@@ -2420,10 +2574,14 @@ global $wppa_first_comment_html;
 			$result .= __a( 'You must login to enter a comment' );
 		}
 	}
-	
-	$result .= '<div id="wppa-comfooter-wrap-'.$wppa['mocc'].'" style="display:block;" >';
-		$result .= '<table id="wppacommentfooter-'.$wppa['mocc'].'" class="wppa-comment-form" style="margin:0;">';
-			$result .= '<tbody><tr style="text-align:center; "><td style="text-align:center; cursor:pointer;'.__wcs( 'wppa-box-text' ).'" ><a onclick="wppaOpenComments( '.$wppa['mocc'].', -1 ); return false;">'; // wppaStartStop( '.$wppa['mocc'].', -1 ); return false;">';
+
+	$result .=
+			'<div id="wppa-comfooter-wrap-'.wppa( 'mocc' ).'" style="display:block;" >' .
+				'<table id="wppacommentfooter-'.wppa( 'mocc' ).'" class="wppa-comment-form" style="margin:0;">' .
+					'<tbody>' .
+						'<tr style="text-align:center;">' .
+							'<td style="text-align:center; cursor:pointer;'.__wcs( 'wppa-box-text' ).'" >' .
+								'<a onclick="wppaOpenComments( '.wppa( 'mocc' ).', -1 ); return false;" >';
 			if ( $n_comments ) {
 				$result .= sprintf( __a( '%d comments' ), $n_comments );
 			}
@@ -2432,8 +2590,14 @@ global $wppa_first_comment_html;
 					$result .= __a( 'Leave a comment' );
 				}
 			}
-		$result .= '</a></td></tr></tbody></table>';
-	$result .= '</div><div style="clear:both"></div>';
+		$result .=
+								'</a>' .
+							'</td>' .
+						'</tr>' .
+					'</tbody>' .
+				'</table>' .
+			'</div>' .
+			'<div style="clear:both"></div>';
 
 	return $result;
 }
@@ -2466,19 +2630,18 @@ global $wpsmiliestrans;
 	else {
 		$result .= __a('Smilies are not available');
 	}
-	
+
 	return $result;
-} 
+}
 
 // IPTC box
 function wppa_iptc_html( $photo ) {
-global $wppa;
 global $wpdb;
 global $wppaiptcdefaults;
 global $wppaiptclabels;
 
 	// Get the default ( one time only )
-	if ( ! $wppa['iptc'] ) {
+	if ( ! wppa( 'iptc' ) ) {
 		$tmp = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_IPTC."` WHERE `photo` = %s ORDER BY `tag`", '0' ), "ARRAY_A" );
 		wppa_dbg_q( 'Q-iptc0' );
 		if ( ! $tmp ) return '';	// Nothing defined
@@ -2488,7 +2651,7 @@ global $wppaiptclabels;
 			$wppaiptcdefaults[$t['tag']] = $t['status'];
 			$wppaiptclabels[$t['tag']] = $t['description'];
 		}
-		$wppa['iptc'] = true;
+		wppa( 'iptc', true );
 	}
 
 	$count = 0;
@@ -2497,26 +2660,43 @@ global $wppaiptclabels;
 	$iptcdata = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_IPTC."` WHERE `photo` = %s ORDER BY `tag`", $photo ), "ARRAY_A" );
 	wppa_dbg_q( 'Q-iptc' );
 	if ( $iptcdata ) {
+
 		// Open the container content
-		$result = '<div id="iptccontent-'.$wppa['mocc'].'" >';
+		$result = '<div id="iptccontent-'.wppa( 'mocc' ).'" >';
+
 		// Open or closed?
 		$d1 = wppa_switch( 'show_iptc_open' ) ? 'display:none;' : 'display:inline;';
 		$d2 = wppa_switch( 'show_iptc_open' ) ? 'display:inline;' : 'display:none;';
+
 		// Process data
-		$onclick = esc_attr( "wppaStopShow( ".$wppa['mocc']." ); jQuery( '.wppa-iptc-table-".$wppa['mocc']."' ).css( 'display', '' ); jQuery( '.-wppa-iptc-table-".$wppa['mocc']."' ).css( 'display', 'none' )" );
-		$result .= '<a class="-wppa-iptc-table-'.$wppa['mocc'].'" onclick="'.$onclick.'" style="cursor:pointer;'.$d1.'" >'.__a( 'Show IPTC data' ).'</a>';
+		$onclick = 	'wppaStopShow( ' . wppa( 'mocc' ) . ' );' .
+					'jQuery( \'.wppa-iptc-table-' . wppa( 'mocc' ) . '\' ).css( \'display\', \'\' );' .
+					'jQuery( \'.-wppa-iptc-table-' . wppa( 'mocc' ). '\' ).css( \'display\', \'none\' );';
 
-		$onclick = esc_attr( "jQuery( '.wppa-iptc-table-".$wppa['mocc']."' ).css( 'display', 'none' ); jQuery( '.-wppa-iptc-table-".$wppa['mocc']."' ).css( 'display', '' )" );
-		$result .= '<a class="wppa-iptc-table-'.$wppa['mocc'].'" onclick="'.$onclick.'" style="cursor:pointer;'.$d2.'" >'.__a( 'Hide IPTC data' ).'</a>';
+		$result .= '<a class="-wppa-iptc-table-'.wppa( 'mocc' ).'" onclick="'.esc_attr($onclick).'" style="cursor:pointer;'.$d1.'" >'.__a( 'Show IPTC data' ).'</a>';
 
-		$result .= '<div style="clear:both;" ></div><table class="wppa-iptc-table-'.$wppa['mocc'].' wppa-detail" style="border:0 none; margin:0;'.$d2.'" ><tbody>';
+		$onclick = 	'jQuery( \'.wppa-iptc-table-' . wppa( 'mocc' ) . '\' ).css( \'display\', \'none\' );' .
+					'jQuery( \'.-wppa-iptc-table-' . wppa( 'mocc' ) . '\' ).css( \'display\', \'\' );';
+
+		$result .= '<a class="wppa-iptc-table-'.wppa( 'mocc' ).'" onclick="'.esc_attr($onclick).'" style="cursor:pointer;'.$d2.'" >'.__a( 'Hide IPTC data' ).'</a>';
+
+		$result .=
+				'<div style="clear:both;" ></div>' .
+					'<table class="wppa-iptc-table-'.wppa( 'mocc' ).' wppa-detail" style="border:0 none; margin:0;'.$d2.'" >' .
+						'<tbody>';
 		$oldtag = '';
 		foreach ( $iptcdata as $iptcline ) {
 			if ( ! isset( $wppaiptcdefaults[$iptcline['tag']] ) ) continue;
-			if ( $iptcline['status'] == 'hide' ) continue;														// Photo status is hide
-			if ( $iptcline['status'] == 'default' && $wppaiptcdefaults[$iptcline['tag']] == 'hide' ) continue;	// P s is default and default is hide
-			if ( $iptcline['status'] == 'default' && $wppaiptcdefaults[$iptcline['tag']] == 'option' && ! trim( $iptcline['description'], "\x00..\x1F " ) ) continue;	// P s is default and default is optional and field is empty
-			
+
+			// Photo status is hide ?
+			if ( $iptcline['status'] == 'hide' ) continue;
+
+			// P s is default and default is hide?
+			if ( $iptcline['status'] == 'default' && $wppaiptcdefaults[$iptcline['tag']] == 'hide' ) continue;
+
+			// P s is default and default is optional and field is empty ?
+			if ( $iptcline['status'] == 'default' && $wppaiptcdefaults[$iptcline['tag']] == 'option' && ! trim( $iptcline['description'], "\x00..\x1F " ) ) continue;
+
 			$count++;
 			$newtag = $iptcline['tag'];
 			if ( $newtag != $oldtag && $oldtag != '' ) $result .= '</td></tr>';	// Close previous line
@@ -2524,18 +2704,20 @@ global $wppaiptclabels;
 				$result .= '; ';							// next item with same tag
 			}
 			else {
-				$result .= '<tr style="border-bottom:0 none; border-top:0 none; border-left: 0 none; border-right: 0 none; "><td class="wppa-iptc-label wppa-box-text wppa-td" style="'.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >';						// Open new line
+				$result .= 	'<tr style="border-bottom:0 none; border-top:0 none; border-left: 0 none; border-right: 0 none; ">' .
+								'<td class="wppa-iptc-label wppa-box-text wppa-td" style="'.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >';
 				$result .= esc_js( __( $wppaiptclabels[$newtag] ) );
-				$result .= '</td><td class="wppa-iptc-value wppa-box-text wppa-td" style="'.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >';
+				$result .= 		'</td>' .
+								'<td class="wppa-iptc-value wppa-box-text wppa-td" style="'.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >';
 			}
-			$result .= esc_js( trim( __( $iptcline['description'] ) ) );
+			$result .= esc_js( wppa_sanitize_text( __( $iptcline['description'] ) ) );
 			$oldtag = $newtag;
-		}	
+		}
 		if ( $oldtag != '' ) $result .= '</td></tr>';	// Close last line
 		$result .= '</tbody></table></div>';
 	}
 	if ( ! $count ) {
-		$result = '<div id="iptccontent-'.$wppa['mocc'].'" >'.__a( 'No IPTC data' ).'</div>';
+		$result = '<div id="iptccontent-'.wppa( 'mocc' ).'" >'.__a( 'No IPTC data' ).'</div>';
 	}
 
 	return ( $result );
@@ -2543,13 +2725,12 @@ global $wppaiptclabels;
 
 // EXIF box
 function wppa_exif_html( $photo ) {
-global $wppa;
 global $wpdb;
 global $wppaexifdefaults;
 global $wppaexiflabels;
 
 	// Get the default ( one time only )
-	if ( ! $wppa['exif'] ) {
+	if ( ! wppa( 'exif' ) ) {
 		$tmp = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_EXIF."` WHERE `photo` = %s ORDER BY `tag`", '0' ), "ARRAY_A" );
 		wppa_dbg_q( 'Q-exif0' );
 		if ( ! $tmp ) return '';	// Nothing defined
@@ -2559,7 +2740,7 @@ global $wppaexiflabels;
 			$wppaexifdefaults[$t['tag']] = $t['status'];
 			$wppaexiflabels[$t['tag']] = $t['description'];
 		}
-		$wppa['exif'] = true;
+		wppa( 'exif', true );
 	}
 
 	$count = 0;
@@ -2569,25 +2750,42 @@ global $wppaexiflabels;
 	wppa_dbg_q( 'Q-exif' );
 	if ( $exifdata ) {
 		// Open the container content
-		$result = '<div id="exifcontent-'.$wppa['mocc'].'" >';
+		$result = '<div id="exifcontent-'.wppa( 'mocc' ).'" >';
 		// Open or closed?
 		$d1 = wppa_switch( 'show_exif_open' ) ? 'display:none;' : 'display:inline;';
 		$d2 = wppa_switch( 'show_exif_open' ) ? 'display:inline;' : 'display:none;';
 		// Process data
-		$onclick = esc_attr( "wppaStopShow( ".$wppa['mocc']." ); jQuery( '.wppa-exif-table-".$wppa['mocc']."' ).css( 'display', '' ); jQuery( '.-wppa-exif-table-".$wppa['mocc']."' ).css( 'display', 'none' )" );
-		$result .= '<a class="-wppa-exif-table-'.$wppa['mocc'].'" onclick="'.$onclick.'" style="cursor:pointer;'.$d1.'" >'.__a( 'Show EXIF data' ).'</a>';
+		$onclick = 	'wppaStopShow( ' . wppa( 'mocc' ) . ' );' .
+					'jQuery( \'.wppa-exif-table-' . wppa( 'mocc' ) . '\' ).css( \'display\', \'\' );' .
+					'jQuery( \'.-wppa-exif-table-' . wppa( 'mocc' ) . '\' ).css( \'display\', \'none\' );';
 
-		$onclick = esc_attr( "jQuery( '.wppa-exif-table-".$wppa['mocc']."' ).css( 'display', 'none' ); jQuery( '.-wppa-exif-table-".$wppa['mocc']."' ).css( 'display', '' )" );
-		$result .= '<a class="wppa-exif-table-'.$wppa['mocc'].'" onclick="'.$onclick.'" style="cursor:pointer;'.$d2.'" >'.__a( 'Hide EXIF data' ).'</a>';
+		$result .= 	'<a' .
+						' class="-wppa-exif-table-'.wppa( 'mocc' ).'"' .
+						' onclick="'.esc_attr($onclick).'"' .
+						' style="cursor:pointer;'.$d1.'"' .
+						' >' .
+						__a( 'Show EXIF data' ) .
+					'</a>';
 
-		$result .= '<div style="clear:both;" ></div><table class="wppa-exif-table-'.$wppa['mocc'].' wppa-detail" style="'.$d2.' border:0 none; margin:0;" ><tbody>';
+		$onclick = 	'jQuery( \'.wppa-exif-table-' . wppa( 'mocc' ) . '\' ).css( \'display\', \'none\' );' .
+					'jQuery( \'.-wppa-exif-table-' . wppa( 'mocc' ) . '\' ).css( \'display\', \'\' )';
+
+		$result .= '<a class="wppa-exif-table-'.wppa( 'mocc' ).'" onclick="'.esc_attr($onclick).'" style="cursor:pointer;'.$d2.'" >'.__a( 'Hide EXIF data' ).'</a>';
+
+		$result .= '<div style="clear:both;" ></div><table class="wppa-exif-table-'.wppa( 'mocc' ).' wppa-detail" style="'.$d2.' border:0 none; margin:0;" ><tbody>';
 		$oldtag = '';
 		foreach ( $exifdata as $exifline ) {
 			if ( ! isset( $wppaexifdefaults[$exifline['tag']] ) ) continue;
 			$exifline['description'] = trim( $exifline['description'], "\x00..\x1F " );
-			if ( $exifline['status'] == 'hide' ) continue;														// Photo status is hide
-			if ( $exifline['status'] == 'default' && $wppaexifdefaults[$exifline['tag']] == 'hide' ) continue;	// P s is default and default is hide
-			if ( $exifline['status'] == 'default' && $wppaexifdefaults[$exifline['tag']] == 'option' && ! $exifline['description'] ) continue; // P s is default and default is optional and field is empty
+
+			// Photo status is hide ?
+			if ( $exifline['status'] == 'hide' ) continue;
+
+			// P s is default and default is hide
+			if ( $exifline['status'] == 'default' && $wppaexifdefaults[$exifline['tag']] == 'hide' ) continue;
+
+			// P s is default and default is optional and field is empty
+			if ( $exifline['status'] == 'default' && $wppaexifdefaults[$exifline['tag']] == 'option' && ! $exifline['description'] ) continue;
 
 			$count++;
 			$newtag = $exifline['tag'];
@@ -2596,78 +2794,97 @@ global $wppaexiflabels;
 				$result .= '; ';							// next item with same tag
 			}
 			else {
-				$result .= '<tr style="border-bottom:0 none; border-top:0 none; border-left: 0 none; border-right: 0 none; "><td class="wppa-exif-label wppa-box-text wppa-td" style="'.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >';						// Open new line
+				$result .= 	'<tr style="border-bottom:0 none; border-top:0 none; border-left: 0 none; border-right: 0 none;" >' .
+							'<td class="wppa-exif-label wppa-box-text wppa-td" style="'.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >';
 				$result .= esc_js( __( $wppaexiflabels[$newtag] ) );
 				$result .= '</td><td class="wppa-exif-value wppa-box-text wppa-td" style="'.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >';
 			}
-			$result .= esc_js( trim( __( wppa_format_exif( $exifline['tag'], $exifline['description'] ) ) ) );
+			$result .= esc_js( wppa_sanitize_text( __( wppa_format_exif( $exifline['tag'], $exifline['description'] ) ) ) );
 			$oldtag = $newtag;
-		}	
+		}
 		if ( $oldtag != '' ) $result .= '</td></tr>';	// Close last line
 		$result .= '</tbody></table></div>';
 	}
 	if ( ! $count ) {
-		$result = '<div id="exifcontent-'.$wppa['mocc'].'" >'.__a( 'No EXIF data' ).'</div>';
+		$result = '<div id="exifcontent-'.wppa( 'mocc' ).'" >'.__a( 'No EXIF data' ).'</div>';
 	}
-	
+
 	return ( $result );
 }
 
 // Display the album name ( on a thumbnail display ) either on top or at the bottom of the thumbnail area
 function wppa_album_name( $key ) {
-global $wppa;
-global $wpdb;
 
-	if ( $wppa['is_upldr'] ) return;
-	if ( $wppa['is_comten'] ) return;
-	if ( $wppa['is_lasten'] ) return;
-	if ( $wppa['is_featen'] ) return;
-	if ( $wppa['supersearch'] ) return;
-	if ( $wppa['searchstring'] ) return;
-	if ( $wppa['is_tag'] ) return;
-	if ( strlen( $wppa['start_album'] ) > '0' && ! wppa_is_int( $wppa['start_album'] ) ) return; // Album enumeration
-	
+	// Virtual albums have no name
+	if ( wppa_is_virtual() ) return;
+
+	// Album enumerations have no name
+	if ( strlen( wppa( 'start_album' ) ) > '0' && ! wppa_is_int( wppa( 'start_album' ) ) ) return;
+
 	$result = '';
-	if ( wppa_opt( 'wppa_albname_on_thumbarea' ) == $key && $wppa['current_album'] ) {
-		$name = wppa_get_album_name( $wppa['current_album'] );
+	if ( wppa_opt( 'wppa_albname_on_thumbarea' ) == $key && wppa( 'current_album' ) ) {
+		$name = wppa_get_album_name( wppa( 'current_album' ) );
 		if ( $key == 'top' ) {
-			$result .= '<h3 id="wppa-albname-'.$wppa['mocc'].'" class="wppa-box-text wppa-black" style="padding-right:6px; margin:0; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-black' ).'" >'.$name.'</h3><div style="clear:both" ></div>';
+			$result .= 	'<h3' .
+							' id="wppa-albname-' . wppa( 'mocc' ) . '"' .
+							' class="wppa-box-text wppa-black"' .
+							' style="padding-right:6px; margin:0; ' . __wcs( 'wppa-box-text' ) . __wcs( 'wppa-black' ) . '"' .
+							' >' .
+							$name .
+						'</h3>' .
+						'<div style="clear:both" ></div>';
 		}
 		if ( $key == 'bottom' ) {
-			$result .= '<h3 id="wppa-albname-b-'.$wppa['mocc'].'" class="wppa-box-text wppa-black" style="clear:both; padding-right:6px; margin:0; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-black' ).'" >'.$name.'</h3>';
+			$result .= 	'<h3' .
+							' id="wppa-albname-b-' . wppa( 'mocc' ) . '"' .
+							' class="wppa-box-text wppa-black"' .
+							' style="clear:both; padding-right:6px; margin:0; ' . __wcs( 'wppa-box-text' ) . __wcs( 'wppa-black' ) . '"' .
+							' >' .
+							$name .
+						'</h3>';
 		}
 	}
-	$wppa['out'] .= $result;
+
+	wppa_out( $result );
 }
 
 // Display the album description ( on a thumbnail display ) either on top or at the bottom of the thumbnail area
 function wppa_album_desc( $key ) {
-global $wppa;
-global $wpdb;
 
-	if ( $wppa['is_upldr'] ) return;
-	if ( $wppa['is_comten'] ) return;
-	if ( $wppa['is_lasten'] ) return;
-	if ( $wppa['is_featen'] ) return;
-	if ( $wppa['supersearch'] ) return;
-	if ( $wppa['searchstring'] ) return;
-	if ( $wppa['is_tag'] ) return;
-	if ( strlen( $wppa['start_album'] ) > '0' && ! wppa_is_int( $wppa['start_album'] ) ) return; // Album enumeration
-	
+	// Virtual albums have no name
+	if ( wppa_is_virtual() ) return;
+
+	// Album enumerations have no name
+	if ( strlen( wppa( 'start_album' ) ) > '0' && ! wppa_is_int( wppa( 'start_album' ) ) ) return;
+
 	$result = '';
-	if ( wppa_opt( 'wppa_albdesc_on_thumbarea' ) == $key && $wppa['current_album'] ) {
-		$desc = wppa_get_album_desc( $wppa['current_album'] );
+	if ( wppa_opt( 'wppa_albdesc_on_thumbarea' ) == $key && wppa( 'current_album' ) ) {
+		$desc = wppa_get_album_desc( wppa( 'current_album' ) );
 		if ( $key == 'top' ) {
-			$result .= '<div id="wppa-albdesc-'.$wppa['mocc'].'" class="wppa-box-text wppa-black" style="padding-right:6px;'.__wcs( 'wppa-box-text' ).__wcs( 'wppa-black' ).'" >'.$desc.'</div><div style="clear:both" ></div>';
+			$result .= 	'<div' .
+							' id="wppa-albdesc-'.wppa( 'mocc' ).'"' .
+							' class="wppa-box-text wppa-black"' .
+							' style="padding-right:6px;'.__wcs( 'wppa-box-text' ).__wcs( 'wppa-black' ).'"' .
+							' >' .
+							$desc .
+						'</div>' .
+						'<div style="clear:both" ></div>';
 		}
 		if ( $key == 'bottom' ) {
-			$result .= '<div id="wppa-albdesc-b-'.$wppa['mocc'].'" class="wppa-box-text wppa-black" style="clear:both; padding-right:6px;'.__wcs( 'wppa-box-text' ).__wcs( 'wppa-black' ).'" >'.$desc.'</div>';
+			$result .= 	'<div' .
+							' id="wppa-albdesc-b-'.wppa( 'mocc' ).'"' .
+							' class="wppa-box-text wppa-black"' .
+							' style="clear:both; padding-right:6px;'.__wcs( 'wppa-box-text' ).__wcs( 'wppa-black' ).'"' .
+							' >' .
+							$desc .
+						'</div>';
 		}
 	}
-	$wppa['out'] .= $result;
+
+	wppa_out( $result );
 }
 
-// The auto age links
+// The auto page links
 function wppa_auto_page_links( $where ) {
 global $wppa;
 global $wpdb;
@@ -2676,7 +2893,12 @@ global $wpdb;
 	$mustwhere = wppa_opt( 'wppa_auto_page_links' );
 	if ( ( $mustwhere == 'top' || $mustwhere == 'both' ) && ( $where == 'top' ) || ( ( $mustwhere == 'bottom' || $mustwhere == 'both' ) && ( $where == 'bottom' ) ) ) {
 		$wppa['out'] .= '
-			<div id="prevnext1-'.$wppa['mocc'].'" class="wppa-box wppa-nav wppa-nav-text" style="text-align: center; '.__wcs( 'wppa-box' ).__wcs( 'wppa-nav' ).__wcs( 'wppa-nav-text' ).$m.'">';
+			<div' .
+				' id="prevnext1-'.wppa( 'mocc' ).'"' .
+				' class="wppa-box wppa-nav wppa-nav-text"' .
+				' style="text-align: center; '.__wcs( 'wppa-box' ).__wcs( 'wppa-nav' ).__wcs( 'wppa-nav-text' ).$m.'"' .
+				' >';
+
 		$photo = $wppa['single_photo'];
 		$thumb = wppa_cache_thumb( $photo );
 		$album = $thumb['album'];
@@ -2697,7 +2919,7 @@ global $wpdb;
 				}
 			}
 		}
-		
+
 		if ( $prevpag ) {
 			$wppa['out'] .= '
 			<a href="'.get_permalink( $prevpag ).'" style="float:left" >'.__( '< Previous', 'wppa' ).'</a>';
@@ -2726,7 +2948,7 @@ function wppa_bestof_box ( $args ) {
 global $wppa;
 
 	wppa_container ( 'open' );
-	$wppa['out'] .= wppa_nltab ( '+' ).'<div id="wppa-bestof-'.$wppa['mocc'].'" class="wppa-box wppa-bestof" style="'.__wcs( 'wppa-box' ).__wcs( 'wppa-bestof' ).'">';
+	$wppa['out'] .= wppa_nltab ( '+' ).'<div id="wppa-bestof-'.wppa( 'mocc' ).'" class="wppa-box wppa-bestof" style="'.__wcs( 'wppa-box' ).__wcs( 'wppa-bestof' ).'">';
 		$wppa['out'] .= wppa_bestof_html( $args, false );
 	$wppa['out'] .= wppa_nltab ( '-' ).'<div style="clear:both; height:4px;"></div></div>';
 	wppa_container ( 'close' );
@@ -2738,7 +2960,7 @@ function wppa_bestof_html( $args, $widget = true ) {
 	// Copletify args
 	$args = wp_parse_args( ( array ) $args, array( 	'page' 			=> '0',
 													'count' 		=> '1',
-													'sortby' 		=> 'maxratingcount', 
+													'sortby' 		=> 'maxratingcount',
 													'display' 		=> 'photo',
 													'period' 		=> 'thisweek',
 													'maxratings'	=> 'yes',
@@ -2750,20 +2972,26 @@ function wppa_bestof_html( $args, $widget = true ) {
 													'lineheight' 	=> wppa_opt( 'wppa_fontsize_widget_thumb' ) * 1.5,
 													'height' 		=> '200'
 											 ) );
-											
+
 	// Make args into seperate vars
 	extract ( $args );
-	
+
 	// Validate args
-	if ( ! in_array( $sortby, array ( 'maxratingcount', 'meanrating', 'ratingcount' ) ) ) wppa_dbg_msg ( 'Invalid arg sortby "'.$sortby.'" must be "maxratingcount", "meanrating" or "ratingcount"', 'red', 'force' );
-	if ( ! in_array( $display, array ( 'photo', 'owner' ) ) ) wppa_dbg_msg ( 'Invalid arg display "'.$display.'" must be "photo" or "owner"', 'red', 'force' );
-	if ( ! in_array( $period, array ( 'lastweek', 'thisweek', 'lastmonth', 'thismonth', 'lastyear', 'thisyear' ) ) ) wppa_dbg_msg ( 'Invalid arg period "'.$period.'" must be "lastweek", "thisweek", "lastmonth", "thismonth", "lastyear" or "thisyear"', 'red', 'force' );
+	if ( ! in_array( $sortby, array ( 'maxratingcount', 'meanrating', 'ratingcount' ) ) ) {
+		wppa_dbg_msg ( 'Invalid arg sortby "'.$sortby.'" must be "maxratingcount", "meanrating" or "ratingcount"', 'red', 'force' );
+	}
+	if ( ! in_array( $display, array ( 'photo', 'owner' ) ) ) {
+		wppa_dbg_msg ( 'Invalid arg display "'.$display.'" must be "photo" or "owner"', 'red', 'force' );
+	}
+	if ( ! in_array( $period, array ( 'lastweek', 'thisweek', 'lastmonth', 'thismonth', 'lastyear', 'thisyear' ) ) ) {
+		wppa_dbg_msg ( 'Invalid arg period "'.$period.'" must be "lastweek", "thisweek", "lastmonth", "thismonth", "lastyear" or "thisyear"', 'red', 'force' );
+	}
 	if ( ! $widget ) $size = $height;
-	
+
 	$result = '';
-	
+
 	$data = wppa_get_the_bestof( $count, $period, $sortby, $display );
-			
+
 	if ( $display == 'photo' ) {
 		if ( is_array( $data ) ) {
 			foreach ( array_keys( $data ) as $id ) {
@@ -2784,8 +3012,12 @@ function wppa_bestof_html( $args, $widget = true ) {
 					if ( $ratcount == 'yes' ) 	$totalh += $lineheight;
 
 					if ( $widget ) $clear = 'clear:both; '; else $clear = '';
-					$result .= "\n".'<div class="wppa-widget" style="'.$clear.'width:'.$maxw.'px; height:'.$totalh.'px; margin:4px; display:inline; text-align:center; float:left;">'; 
-				
+					$result .= "\n" .
+								'<div' .
+									' class="wppa-widget"' .
+									' style="'.$clear.'width:'.$maxw.'px; height:'.$totalh.'px; margin:4px; display:inline; text-align:center; float:left;"'.
+									' >';
+
 						// The medal if at the top
 						$result .= wppa_get_medal_html_a( array( 'id' => $id, 'size' => 'M', 'where' => 'top' ) );
 
@@ -2807,15 +3039,19 @@ function wppa_bestof_html( $args, $widget = true ) {
 							}
 							$result .= '<a href="'.wppa_convert_to_pretty( $href ).'" title="'.$title.'" >';
 						}
-						
+
 						// The image
-						$result .= '<img style="height:'.$maxh.'px; width:'.$maxw.'px;" src="'.wppa_fix_poster_ext( wppa_get_photo_url( $id, '', $maxw, $maxh ), $id ).'" '.wppa_get_imgalt( $id ).'/>';
-						
+						$result .= 	'<img' .
+										' style="height:'.$maxh.'px; width:'.$maxw.'px;"' .
+										' src="' . wppa_fix_poster_ext( wppa_get_photo_url( $id, '', $maxw, $maxh ), $id ) . '"' .
+										' ' . wppa_get_imgalt( $id ) .
+										' />';
+
 						// The /link
 						if ( $linktype != 'none' ) {
 							$result .= '</a>';
 						}
-						
+
 						// The medal if near the bottom
 						$result .= wppa_get_medal_html_a( array( 'id' => $id, 'size' => 'M', 'where' => 'bot' ) );
 
@@ -2827,14 +3063,14 @@ function wppa_bestof_html( $args, $widget = true ) {
 							if ( $meanrat  		== 'yes' ) $result .= sprintf( __a( 'Mean value: %4.2f.' ), $data[$id]['meanrating'] ).'<br />';
 						$result .= '</div>';
 						$result .= '<div style="clear:both" ></div>';
-						
+
 					$result .= "\n".'</div>';
 				}
 				else {	// No image
 					$result .= '<div>'.sprintf( __a( 'Photo %s not found.' ), $id ).'</div>';
 				}
 			}
-		}	
+		}
 		else {
 			$result .= $data;	// No array, print message
 		}
@@ -2862,7 +3098,7 @@ function wppa_bestof_html( $args, $widget = true ) {
 					}
 					$result .= '<a href="'.$href.'" title="'.$title.'" >';
 				}
-				
+
 				// The name
 				$result .= $author;
 
@@ -2870,17 +3106,18 @@ function wppa_bestof_html( $args, $widget = true ) {
 				if ( $linktype != 'none' ) {
 					$result .= '</a>';
 				}
-				
+
 				$result .= '<br/>';
-				
+
 				// The subtitles
-				$result .= "\n\t".'<div style="font-size:'.wppa_opt( 'wppa_fontsize_widget_thumb' ).'px; line-height:'.$lineheight.'px; ">';
+				$result .= "\n" .
+							'<div style="font-size:'.wppa_opt( 'wppa_fontsize_widget_thumb' ).'px; line-height:'.$lineheight.'px; ">';
 							if ( $maxratings 	== 'yes' ) $result .= sprintf( __a( 'Max ratings: %s.' ), $data[$author]['maxratingcount'] ).'<br />';
 							if ( $ratcount 		== 'yes' ) $result .= sprintf( __a( 'Votes: %s.' ), $data[$author]['ratingcount'] ).'<br />';
 							if ( $meanrat  		== 'yes' ) $result .= sprintf( __a( 'Mean value: %4.2f.' ), $data[$author]['meanrating'] ).'<br />';
-				
-				$result .= '</div>';
-				$result .= '</li>';
+
+				$result .= 	'</div>';
+				$result .= 	'</li>';
 			}
 			$result .= '</ul>';
 		}
@@ -2888,6 +3125,6 @@ function wppa_bestof_html( $args, $widget = true ) {
 			$result .= $data;	// No array, print message
 		}
 	}
-	
+
 	return $result;
 }

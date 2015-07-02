@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 6.1.15
+* Version 6.1.16
 * 
 */
 
@@ -783,6 +783,8 @@ Hide Camera info
 						'wppa_custom_visible_8' 		=> 'no',
 						'wppa_custom_caption_9' 		=> '',
 						'wppa_custom_visible_9' 		=> 'no',
+						
+						'wppa_close_text' 				=> 'Close',
 
 
 						// Table III: Backgrounds
@@ -886,6 +888,7 @@ Hide Camera info
 						'wppa_align_thumbtext' 			=> 'no',
 						// D Albums and covers
 						'wppa_list_albums_by' 			=> '0',
+						'wppa_main_photo' 				=> '0',
 						'wppa_coverphoto_pos'			=> 'right',
 						'wppa_use_cover_opacity' 		=> 'yes',
 						'wppa_cover_opacity' 			=> '85',

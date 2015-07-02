@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for album covers
-* Version 6.1.15
+* Version 6.1.16
 *
 */
 
@@ -967,6 +967,16 @@ global $wppa;
 			"SELECT * FROM `" . WPPA_PHOTOS . 
 			"` WHERE `album` = %s AND `status` = 'featured' ORDER BY RAND( " . wppa_get_randseed( 'page' ) . " ) LIMIT %d", 
 			$alb, $count ), ARRAY_A );
+	}
+	
+	// Random from children
+	if ( '-3' == $id ) {
+		$allalb = wppa_alb_to_enum_children( $alb );			
+		$temp = $wpdb->get_results( $wpdb->prepare(
+			"SELECT * FROM `" . WPPA_PHOTOS . "` " .
+			"WHERE `album` IN ( " . str_replace( '.', ',', $allalb ) . " ) " .
+			"AND ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR `owner` = %s ) " .
+			"ORDER BY RAND( " . wppa_get_randseed( 'page' ) . " ) LIMIT %d", wppa_get_user(), $count ), ARRAY_A );
 	}
 
 	// Report query

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 6.1.14
+* Version 6.1.16
 *
 */
 
@@ -964,29 +964,39 @@ function wppa_page_links( $npages = '1', $curpage = '1', $slide = false ) {
 			wppa_out( '<span class="wppa-arrow" style="'.__wcs('wppa-arrow').'cursor: default;">&nbsp;&raquo;</span>' );
 		wppa_out( '</div><!-- #next-page -->' );
 		
-		if ($from > '1') {
-			wppa_out( '.&nbsp;.&nbsp;.&nbsp;' );
-		}
-		for ($i=$from; $i<=$to; $i++) {
-			if ($curpage == $i) { 
-				wppa_out( '<div class="wppa-mini-box wppa-alt wppa-black" style="display:inline; text-align:center; '.__wcs('wppa-mini-box').__wcs('wppa-alt').__wcs('wppa-black').' text-decoration: none; cursor: default; font-weight:normal; " >' );
-					wppa_out( '&nbsp;'.$i.'&nbsp;' );
-				wppa_out( '</div>' );
+		// The numbered pagelinks ?
+		if ( wppa_opt( 'wppa_pagelinks_max' ) ) {
+			if ($from > '1') {
+				wppa_out( '.&nbsp;.&nbsp;.&nbsp;' );
 			}
-			else { 
-				wppa_out( '<div class="wppa-mini-box wppa-even" style="display:inline; text-align:center; '.__wcs('wppa-mini-box').__wcs('wppa-even').'" >' );
-					if ( ( ! $slide && wppa_switch('wppa_allow_ajax') ) || ( $slide && wppa_switch('wppa_slideshow_page_allow_ajax') ) ) {
-						wppa_out( '<a style="cursor:pointer;" onclick="wppaDoAjaxRender('.wppa( 'mocc' ).', \''.$ajax_url.'&amp;wppa-page='.$i.'\', \''.wppa_convert_to_pretty($link_url.'&amp;wppa-page='.$i).'\')">&nbsp;'.$i.'&nbsp;</a>' );
-					}
-					else {
-						wppa_out( '<a style="cursor:pointer;" href="'.$link_url.'&amp;wppa-page='.$i.'">&nbsp;'.$i.'&nbsp;</a>' );
-					}
-				wppa_out( '</div>' );	
+			for ($i=$from; $i<=$to; $i++) {
+				if ($curpage == $i) { 
+					wppa_out( '<div class="wppa-mini-box wppa-alt wppa-black" style="display:inline; text-align:center; '.__wcs('wppa-mini-box').__wcs('wppa-alt').__wcs('wppa-black').' text-decoration: none; cursor: default; font-weight:normal; " >' );
+						wppa_out( '&nbsp;'.$i.'&nbsp;' );
+					wppa_out( '</div>' );
+				}
+				else { 
+					wppa_out( '<div class="wppa-mini-box wppa-even" style="display:inline; text-align:center; '.__wcs('wppa-mini-box').__wcs('wppa-even').'" >' );
+						if ( ( ! $slide && wppa_switch('wppa_allow_ajax') ) || ( $slide && wppa_switch('wppa_slideshow_page_allow_ajax') ) ) {
+							wppa_out( '<a style="cursor:pointer;" onclick="wppaDoAjaxRender('.wppa( 'mocc' ).', \''.$ajax_url.'&amp;wppa-page='.$i.'\', \''.wppa_convert_to_pretty($link_url.'&amp;wppa-page='.$i).'\')">&nbsp;'.$i.'&nbsp;</a>' );
+						}
+						else {
+							wppa_out( '<a style="cursor:pointer;" href="'.$link_url.'&amp;wppa-page='.$i.'">&nbsp;'.$i.'&nbsp;</a>' );
+						}
+					wppa_out( '</div>' );	
+				}
+			}
+			if ( $to < $npages ) {
+				wppa_out( '&nbsp;.&nbsp;.&nbsp;.' );
 			}
 		}
-		if ( $to < $npages ) {
-			wppa_out( '&nbsp;.&nbsp;.&nbsp;.' );
+		
+		// The 3/17 indicator
+		else {
+			wppa_out( $curpage . '/' . $npages );
 		}
+		
+		
 	wppa_out( '</div><!-- #prevnext-a-'.wppa( 'mocc' ).' -->' );
 }
 

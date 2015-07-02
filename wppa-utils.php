@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 6.1.15
+* Version 6.1.16
 * 
 */
  
@@ -337,7 +337,7 @@ global $wppa;
 			$oldval = $wppa[$key];
 			
 			// New value supplied?
-			if ( $newval != 'nil' ) {
+			if ( $newval !== 'nil' ) {
 				$wppa[$key] = $newval;
 			}
 		}
@@ -944,13 +944,15 @@ global $wppa;
 	$pendphotos = '5';
 	$scheduledphotos = '6';
 
-	// See if we have this in cache
+	// Initial fetch
 	if ( ! isset($wppa['counts']) ) {
-		$wppa['counts'] = WPPA_MULTISITE_GLOBAL ? get_site_option( 'wppa_counts', array() ) : get_option( 'wppa_counts', array() );			// Initial fetch
+		$wppa['counts'] = WPPA_MULTISITE_GLOBAL ? get_site_option( 'wppa_counts', array() ) : get_option( 'wppa_counts', array() );
 	}
 	if ( ! isset($wppa['treecounts']) ) {
-		$wppa['treecounts'] = WPPA_MULTISITE_GLOBAL ? get_site_option( 'wppa_counts_tree', array() ) : get_option( 'wppa_counts_tree', array() );	// Initial fetch
+		$wppa['treecounts'] = WPPA_MULTISITE_GLOBAL ? get_site_option( 'wppa_counts_tree', array() ) : get_option( 'wppa_counts_tree', array() );
 	}
+
+	// See if we have this in cache
 	if ( isset( $wppa['counts'][$alb] ) && isset( $wppa['treecounts'][$alb] ) ) {	// Album found
 		$result['albums'] = $wppa['treecounts'][$alb][$albums];			// Use data
 		$result['photos'] = $wppa['treecounts'][$alb][$photos];
@@ -961,14 +963,24 @@ global $wppa;
 
 		return $result;													// And return
 	}
-	else {	// Not in cache
+	
+	// Not in cache
+	else {	
 		$albs	 	 = $wpdb->get_results( $wpdb->prepare( "SELECT `id` FROM `".WPPA_ALBUMS."` WHERE `a_parent` = %s", $alb ), ARRAY_A );
 		$album_count = empty($albs) ? '0' : count($albs);
 		$photo_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND `status` <> 'pending' AND `status` <> 'scheduled'", $alb ) );
 		$pend_count  = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND `status` = 'pending'", $alb ) );
 		$sched_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND `status` = 'scheduled'", $alb ) );
+		
 		// Result this level
-		$result = array('albums' => $album_count, 'photos' => $photo_count, 'selfalbums' => $album_count, 'selfphotos' => $photo_count, 'pendphotos' => $pend_count, 'scheduledphotos' => $sched_count );
+		$result = array(	'albums' => $album_count, 
+							'photos' => $photo_count, 
+							'selfalbums' => $album_count, 
+							'selfphotos' => $photo_count, 
+							'pendphotos' => $pend_count, 
+							'scheduledphotos' => $sched_count,
+							);
+							
 		// Subalbums to process?
 		if ( empty($albs) ) {}
 		else {
@@ -978,6 +990,7 @@ global $wppa;
 				$result['photos'] += $subcount['photos'];
 			}
 		}
+		
 		// Save to cache
 		$wppa['treecounts'][$alb][$albums] = $result['albums'];
 		$wppa['treecounts'][$alb][$photos] = $result['photos'];
@@ -1172,7 +1185,11 @@ global $wppa_opt;
 	$start = get_option('wppa_sourcefile_fix_start', '0');
 	if ( $start == '-1' ) return; // Done!
 	
-	$photos = $wpdb->get_results("SELECT `id`, `album`, `name`, `filename` FROM `".WPPA_PHOTOS."` WHERE `filename` <> ''  AND `filename` <> `name` AND `id` > ".$start." ORDER BY `id`", ARRAY_A);
+	$photos = $wpdb->get_results( 	"SELECT `id`, `album`, `name`, `filename`" .
+										" FROM `".WPPA_PHOTOS."`" .
+										" WHERE `filename` <> ''  AND `filename` <> `name` AND `id` > " . $start . 
+										" ORDER BY `id`", ARRAY_A
+								);
 	if ( $photos ) {
 		foreach ( $photos as $data ) {
 			$faulty_sourcefile_name = $wppa_opt['wppa_source_dir'].'/album-'.$data['album'].'/'.preg_replace('/\.[^.]*$/', '', $data['filename']);
@@ -1187,7 +1204,11 @@ global $wppa_opt;
 				$count++;
 			}
 			if ( time() > $end ) {
-				wppa_ok_message('Fixed '.$count.' faulty sourcefile names. Last was '.$data['id'].'. Not finished yet. I will continue fixing next time you enter this page. Sorry for the inconvenience.');
+				wppa_ok_message( 'Fixed ' . $count . ' faulty sourcefile names.' .
+									' Last was ' . $data['id'] . '.' .
+									' Not finished yet. I will continue fixing next time you enter this page. Sorry for the inconvenience.'
+								);
+									
 				update_option('wppa_sourcefile_fix_start', $data['id']);
 				return;
 			}
@@ -1404,8 +1425,11 @@ global $thumb;
 
 	wppa_cache_thumb( $id );
 	
-	$result = sprintf(__a('See this image on %s'), str_replace('&amp;', __a('and'), get_bloginfo('name'))).': '.strip_shortcodes( wppa_strip_tags( wppa_html( wppa_get_photo_desc( $id ) ), 'all' ) );
-	$result = apply_filters( 'wppa_get_og_desc', $result );
+	$result = 	sprintf( __a('See this image on %s'), str_replace( '&amp;', __a( 'and' ), get_bloginfo( 'name' ) ) ) .
+				': ' . 
+				strip_shortcodes( wppa_strip_tags( wppa_html( wppa_get_photo_desc( $id ) ), 'all' ) );
+				
+	$result = 	apply_filters( 'wppa_get_og_desc', $result );
 
 	return $result;
 }
@@ -1809,7 +1833,12 @@ global $wppa_opt;
 	
 	if ( $wppa_opt['wppa_medal_bronze_when'] || $wppa_opt['wppa_medal_silver_when'] || $wppa_opt['wppa_medal_gold_when'] ) {
 		$max_score = $wppa_opt['wppa_rating_max'];
-		$max_ratings = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_RATING."` WHERE `photo` = %s AND `value` = %s AND `status` = %s", $id, $max_score, 'publish' ) );
+		
+		$max_ratings = $wpdb->get_var( $wpdb->prepare( 	"SELECT COUNT(*) FROM `".WPPA_RATING."` " .
+														"WHERE `photo` = %s AND `value` = %s AND `status` = %s", $id, $max_score, 'publish' 
+													) 
+									);
+									
 		if ( $max_ratings >= $wppa_opt['wppa_medal_gold_when'] ) $status = 'gold';
 		elseif ( $max_ratings >= $wppa_opt['wppa_medal_silver_when'] ) $status = 'silver';
 		elseif ( $max_ratings >= $wppa_opt['wppa_medal_bronze_when'] ) $status = 'bronze';
@@ -1950,7 +1979,11 @@ function wppa_file_is_in_album( $filename, $alb ) {
 global $wpdb;
 
 	if ( ! $filename ) return false;	// Copy/move very old photo, before filnametracking
-	$photo_id = $wpdb->get_var ( $wpdb->prepare ( "SELECT `id` FROM `".WPPA_PHOTOS."` WHERE ( `filename` = %s OR `filename` = %s ) AND `album` = %s LIMIT 1", wppa_sanitize_file_name( $filename ), $filename, $alb ) );
+	$photo_id = $wpdb->get_var ( $wpdb->prepare ( 	"SELECT `id` FROM `".WPPA_PHOTOS."` " .
+													"WHERE ( `filename` = %s OR `filename` = %s ) AND `album` = %s LIMIT 1", 
+														wppa_sanitize_file_name( $filename ), $filename, $alb 
+												) 
+								);
 	return $photo_id;			
 }
 
@@ -2275,7 +2308,9 @@ global $wpdb;
 		$max_count = wppa_opt( 'wppa_comten_count' );
 	}
 	
-	$photo_ids = $wpdb->get_results( $wpdb->prepare( "SELECT `photo` FROM `".WPPA_COMMENTS."` WHERE `status` = 'approved' ORDER BY `timestamp` DESC LIMIT %d", 100 * $max_count), ARRAY_A );
+	$photo_ids = $wpdb->get_results( $wpdb->prepare( 	"SELECT `photo` FROM `".WPPA_COMMENTS."` " .
+														"WHERE `status` = 'approved' " .
+														"ORDER BY `timestamp` DESC LIMIT %d", 100 * $max_count ), ARRAY_A );
 	$result = array();
 	
 	if ( is_array( $photo_ids ) ) {
@@ -2614,6 +2649,8 @@ function wppa_is_virtual() {
 	if ( wppa( 'is_cat' ) ) return true;
 	if ( wppa( 'is_supersearch' ) ) return true;
 	if ( wppa( 'src' ) ) return true;
+	if ( wppa( 'supersearch' ) ) return true;
+	if ( wppa( 'searchstring' ) ) return true;
 	
 	return false;
 }

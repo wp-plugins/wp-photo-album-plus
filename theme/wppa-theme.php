@@ -349,6 +349,7 @@ function wppa_is_wanted_empty( $thumbs ) {
 	if ( ! wppa_switch( 'show_empty_thumblist' ) ) return false;							// Feature not enabled
 	if ( is_array( $thumbs ) && count( $thumbs ) > wppa_get_mincount() ) return false;		// Album is not empty
 	if ( wppa_is_virtual() ) return false; 													// wanted empty only on real albums
+	if ( ! wppa_is_int( wppa( 'start_album' ) ) ) return false;								// Only seingle albums, no enumerations
 	if ( wppa( 'albums_only' ) ) return false;												// Explicitly no thumbs
 	
 //	if ( wppa_switch( 'thumbs_first' ) && wppa_get_curpage() != '1' ) return false;			// Only on page 1 if thumbs first

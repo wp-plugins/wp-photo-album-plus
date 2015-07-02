@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 6.1.15
+* Version 6.1.16
 *
 */
 
@@ -2608,6 +2608,18 @@ global $wppa_tags;
 							}
 						wppa_setting_subheader( 'J', '1', __( 'Miscellaneous visibility settings', 'wppa' ) );
 							{
+							$name = __('Frontend ending label', 'wppa');
+							$desc = __('Frontend upload / create / edit dialog closing label text.', 'wppa');
+							$help = '';
+							$slug = 'wppa_close_text';
+							$opts = array( __a('Abort'), __a('Cancel'), __a('Close'), __a('Exit'), __a('Quit') );
+							$vals = array( 'Abort', 'Cancel', 'Close', 'Exit', 'Quit' );
+							$html = wppa_select($slug, $opts, $vals);
+							$clas = '';
+							$tags = 'layout';
+							wppa_setting($slug, '1', $name, $desc, $html, $help, $clas, $tags);
+							
+							
 							$name = __('Widget thumbs fontsize', 'wppa');
 							$desc = __('Font size for thumbnail subtext in widgets.', 'wppa');
 							$help = '';
@@ -2657,6 +2669,8 @@ global $wppa_tags;
 								$tags = 'meta';
 								wppa_setting(array($slug1,$slug2), '10.'.$i.'a,b', $name, $desc, $html1.$html2, $help, $clas, $tags);
 							}
+							
+							
 
 							}
 							?>
@@ -3588,6 +3602,17 @@ global $wppa_tags;
 							$tags = 'album,system';
 							wppa_setting($slug, '1', $name, $desc, $html, $help, $clas, $tags);
 							
+							$name = __('Default coverphoto selection', 'wppa');
+							$desc = __('Default select cover photo method.', 'wppa');
+							$help = esc_js(__('This is the initial value on album creation only. It can be overruled on the edit album page.', 'wppa'));
+							$opts = array(__('Random from album', 'wppa'), __('Random featured from album', 'wppa'), __('Most recently added to album', 'wppa'), __('Random from album or any sub album', 'wppa') );
+							$vals = array('0', '-1', '-2', '-3');
+							$slug = 'wppa_main_photo';
+							$html = wppa_select($slug, $opts, $vals);
+							$clas = '';
+							$tags = 'album,cover';
+							wppa_setting($slug, '2', $name, $desc, $html, $help, $clas, $tags);
+							
 							$name = __('Placement', 'wppa');
 							$desc = __('Cover image position.', 'wppa');
 							$help = esc_js(__('Enter the position that you want to be used for the default album cover selected in Table IV-D6.', 'wppa'));
@@ -4002,9 +4027,10 @@ global $wppa_tags;
 							$tags = 'comment,layout';
 							wppa_setting($slug, '9', $name, $desc, $html, $help, $clas, $tags);
 							
-							$name = __('Show email to uploader', 'wppa');
-							$desc = __('Show the commenter\'s email in the notify email to uploader.', 'wppa');
-							$help = '';
+							$name = __('Show commenter email', 'wppa');
+							$desc = __('Show the commenter\'s email in the notify emails.', 'wppa');
+							$help = esc_js(__('Shows the email address of the commenter in all notify emails.', 'wppa'));
+							$help .= '\n'.esc_js(__(' If switched off, admin will still receive the senders email in the notification mail', 'wppa'));
 							$slug = 'wppa_mail_upl_email';
 							$html = wppa_checkbox($slug);
 							$clas = 'wppa_comment_';

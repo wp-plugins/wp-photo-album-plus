@@ -4,7 +4,7 @@
 *
 * Functions for counts etc
 * Common use front and admin
-* Version 6.1.11
+* Version 6.1.16
 *
 */
 
@@ -157,7 +157,7 @@ global $wppa_session;
 	if ( ! wppa_switch('wppa_track_viewcounts') ) return;
 	
 	if ( $type != 'album' && $type != 'photo' ) die ( 'Illegal $type in wppa_bump_viewcount: '.$type);
-	if ( ! is_numeric($id) ) die ( 'Illegal $id in wppa_bump_viewcount: '.$id);
+	if ( ! is_numeric($id) ) return;	//die ( 'Illegal $id in wppa_bump_viewcount: '.$id);
 
 	if ( ! $id ) return;	// Not a wppa image
 	

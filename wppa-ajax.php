@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 6.1.15
+* version 6.1.16
 *
 */
 
@@ -1543,7 +1543,7 @@ global $wppa_session;
 					wppa_ajax_check_range( $value, false, '0', false, __( 'Slideshow pagesize', 'wppa' ) );
 					break;
 				case 'wppa_pagelinks_max':
-					wppa_ajax_check_range( $value, false, '3', false, __( 'Max Pagelinks', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '0', false, __( 'Max Pagelinks', 'wppa' ) );
 					break;
 				case 'wppa_rating_clear':
 					$iret1 = $wpdb->query( 'TRUNCATE TABLE '.WPPA_RATING );

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 6.1.3
+* version 6.1.16
 *
 */
 
@@ -1735,9 +1735,9 @@ global $wpdb;
 	$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s '.wppa_get_photo_order($a_id), $a_id), ARRAY_A);
 	
 	$output = '';
-	if ( ! empty($photos) ) {
+//	if ( ! empty($photos) ) {
 		$output .= '<select name="wppa-main" onchange="wppaAjaxUpdateAlbum('.$a_id.', \'main_photo\', this)" >';
-		$output .= '<option value="">'.__('--- please select ---', 'wppa').'</option>';
+//		$output .= '<option value="">'.__('--- please select ---', 'wppa').'</option>';
 		if ( $covertype == 'imagefactory' || ( $covertype == '' && wppa_opt('wppa_cover_type') == 'imagefactory' ) ) {
 			if ( $cur == '0' ) $selected = 'selected="selected"'; else $selected = '';
 			$output .= '<option value="0" '.$selected.'>'.sprintf(__('auto select max %s random', 'wppa'), wppa_opt('wppa_imgfact_count')).'</option>';
@@ -1745,6 +1745,8 @@ global $wpdb;
 			$output .= '<option value="-1" '.$selected.'>'.sprintf(__('auto select max %s featured', 'wppa'), wppa_opt('wppa_imgfact_count')).'</option>';
 			if ( $cur == '-2' ) $selected = 'selected="selected"'; else $selected = '';
 			$output .= '<option value="-2" '.$selected.'>'.sprintf(__('max %s most recent added', 'wppa'), wppa_opt('wppa_imgfact_count')).'</option>';
+			if ( $cur == '-3' ) $selected = 'selected="selected"'; else $selected = '';
+			$output .= '<option value="-3" '.$selected.'>'.sprintf(__('max %s from (grand)child albums', 'wppa'), wppa_opt('wppa_imgfact_count')).'</option>';
 		}
 		else {
 			if ( $cur == '0' ) $selected = 'selected="selected"'; else $selected = '';
@@ -1753,9 +1755,11 @@ global $wpdb;
 			$output .= '<option value="-1" '.$selected.'>'.__('--- random featured ---', 'wppa').'</option>';
 			if ( $cur == '-2' ) $selected = 'selected="selected"'; else $selected = '';
 			$output .= '<option value="-2" '.$selected.'>'.__('--- most recent added ---', 'wppa').'</option>';
+			if ( $cur == '-3' ) $selected = 'selected="selected"'; else $selected = '';
+			$output .= '<option value="-3" '.$selected.'>'.__('--- random from (grand)children ---', 'wppa').'</option>';
 		}
 
-		foreach($photos as $photo) {
+		if ( ! empty($photos) ) foreach($photos as $photo) {
 			if ($cur == $photo['id']) { 
 				$selected = 'selected="selected"'; 
 			} 
@@ -1769,9 +1773,9 @@ global $wpdb;
 		}
 		
 		$output .= '</select>';
-	} else {
-		$output = '<p>'.__('No photos yet', 'wppa').'</p>';
-	}
+//	} else {
+//		$output = '<p>'.__('No photos yet', 'wppa').'</p>';
+//	}
 	return $output;
 }
 

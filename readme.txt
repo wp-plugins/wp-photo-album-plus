@@ -1,8 +1,8 @@
 === WP Photo Album Plus ===
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
-Tags: photo, album, photoalbum, gallery, slideshow, video, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, myCRED, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto, CMTooltipGlossary
-Version: 6.1.15
+Tags: photo, album, gallery, slideshow, video, audio, lightbox, iptc, exif, cloudinary, fotomoto
+Version: 6.1.16
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -188,6 +188,22 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 6.1.16 =
+
+= Bug Fixes =
+
+* If Show empty thumbnail area was on ( Table II-D18 ) and the album was an enumeration, the thumbnail page crashed. Fixed.
+
+= New Features =
+
+* Table IV-D2: Default cover photo selection method ( for new alums ), and added option '--- Random from (grand)children ---' on the album admin page.
+
+= Other Changes =
+
+* You can select a text for the close link in frontend upload/create/edit dialogs in Table II-J1.
+* The switch Table IV-F10 now works for all non-admin receivers of comment notifications emails.
+* If you set Table I-A9 to 0, the pagelink bar shows n/m in the center.
 
 = 6.1.15 =
 
