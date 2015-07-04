@@ -971,7 +971,7 @@ global $wppa;
 	
 	// Random from children
 	if ( '-3' == $id ) {
-		$allalb = wppa_alb_to_enum_children( $alb );			
+		$allalb = wppa_expand_enum( wppa_alb_to_enum_children( $alb ) );
 		$temp = $wpdb->get_results( $wpdb->prepare(
 			"SELECT * FROM `" . WPPA_PHOTOS . "` " .
 			"WHERE `album` IN ( " . str_replace( '.', ',', $allalb ) . " ) " .
