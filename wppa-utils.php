@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 6.1.16
+* Version 6.2.0
 * 
 */
  
@@ -28,11 +28,11 @@ global $thumb;
 global $wppa_opt;
 global $blog_id;
 
-	// If a video
-//	if ( wppa_is_video( $id ) ) return wppa_get_photo_url( $id, $system, $x, $y );
+	wppa_cache_thumb($id);
 	
 	// If in the cloud...
-	if ( wppa_cdn() && ! wppa_is_multi( $id ) ) {	
+	$is_old = wppa_too_old_for_cloud( $id );
+	if ( wppa_cdn() && ! wppa_is_multi( $id ) && ! $is_old ) {	
 		if ( $x && $y ) {		// Only when size is given !! To prevent download of the fullsize image
 			switch ( wppa_cdn() ) {
 				case 'cloudinary':
@@ -55,7 +55,6 @@ global $blog_id;
 	if ( get_option('wppa_file_system') == 'flat' ) $system = 'flat';	// Have been converted, ignore argument
 	if ( get_option('wppa_file_system') == 'tree' ) $system = 'tree';	// Have been converted, ignore argument
 	if ( ! is_numeric($id) || $id < '1' ) wppa_dbg_msg('Invalid arg wppa_get_thumb_url('.$id.')', 'red');
-	wppa_cache_thumb($id);
 	if ( $system == 'tree' ) {
 		$url = WPPA_UPLOAD_URL.'/thumbs/'.wppa_expand_id($thumb['id']).'.'.$thumb['ext'].'?ver='.get_option('wppa_thumb_version', '1');
 	}
@@ -94,7 +93,8 @@ global $blog_id;
 	if ( is_feed() && wppa_switch('wppa_feed_use_thumb') ) return wppa_get_thumb_url($id, $system);
 	
 	// If in the cloud...
-	if ( wppa_cdn() && ! wppa_is_multi( $id ) ) { 
+	$is_old = wppa_too_old_for_cloud( $id );
+	if ( wppa_cdn() && ! wppa_is_multi( $id ) && ! $is_old ) { 
 		switch ( wppa_cdn() ) {
 			case 'cloudinary':
 				$x = round($x);
@@ -1691,6 +1691,18 @@ function wppa_get_hires_url( $id ) {
 		return $url;
 	}
 	
+	// Try CDN
+	if ( wppa_cdn() && ! wppa_too_old_for_cloud( $id ) ) {
+		switch ( wppa_cdn() ) {
+			case 'cloudinary':
+				$url = wppa_get_cloudinary_url( $id );
+				break;
+			default:
+				$url = '';
+		}
+		if ( $url ) return $url;
+	}
+	
 	// Try the source url
 	$source_path = wppa_get_source_path( $id );
 	$wp_content = trim( str_replace( site_url(), '', content_url() ), '/' );
@@ -2653,4 +2665,13 @@ function wppa_is_virtual() {
 	if ( wppa( 'searchstring' ) ) return true;
 	
 	return false;
+}
+
+function wppa_too_old_for_cloud( $id ) {
+
+	$thumb = wppa_cache_thumb( $id );
+	
+	$is_old = wppa_cdn() && wppa_opt( 'wppa_max_cloud_life' ) && ( time() > ( $thumb['timestamp'] + wppa_opt( 'wppa_max_cloud_life' ) ) );
+
+	return $is_old;
 }

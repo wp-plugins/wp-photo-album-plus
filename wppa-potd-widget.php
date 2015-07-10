@@ -3,17 +3,16 @@
 * Package: wp-photo-album-plus
 *
 * display the widget
-* Version 6.1.15
+* Version 6.2.0
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
 class PhotoOfTheDay extends WP_Widget {
     /** constructor */
-    function PhotoOfTheDay() {
-        parent::WP_Widget(false, $name = 'Photo Of The Day');	
+    function __construct() {
 		$widget_ops = array('classname' => 'wppa_widget', 'description' => __( 'WPPA+ Photo Of The Day', 'wppa') );	//
-		$this->WP_Widget('wppa_widget', __('Photo Of The Day', 'wppa'), $widget_ops);															//
+		parent::__construct('wppa_widget', __('Photo Of The Day', 'wppa'), $widget_ops);															//
     }
 
 	/** @see WP_Widget::widget */

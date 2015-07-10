@@ -3,15 +3,14 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail photos
-* Version 6.1.3
+* Version 6.2.0
 */
 
 class ThumbnailWidget extends WP_Widget {
     /** constructor */
-    function ThumbnailWidget() {
-        parent::WP_Widget(false, $name = 'Thumbnail Photos');	
+    function __construct() {
 		$widget_ops = array('classname' => 'wppa_thumbnail_widget', 'description' => __( 'WPPA+ Thumbnails', 'wppa') );
-		$this->WP_Widget('wppa_thumbnail_widget', __('Thumbnail Photos', 'wppa'), $widget_ops);
+		parent::__construct('wppa_thumbnail_widget', __('Thumbnail Photos', 'wppa'), $widget_ops);
     }
 
 	/** @see WP_Widget::widget */

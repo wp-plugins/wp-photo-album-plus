@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 6.1.16
+* Version 6.2.0
 * 
 */
 
@@ -1155,6 +1155,7 @@ Hide Camera info
 						'wppa_tag_to_edit' 			=> '',
 						'wppa_new_tag_value' 		=> '',
 						'wppa_edit_tag' 			=> '',
+						'wppa_sync_cloud' 	=> '',
 						
 						'wppa_maint_ignore_concurrency_error' 	=> 'no',
 
@@ -1291,20 +1292,22 @@ Hide Camera info
 						'wppa_use_CMTooltipGlossary' 	=> 'no',
 						
 						// K External services
-						'wppa_cdn_service'					=> '',
-						'wppa_cdn_cloud_name'				=> '',
-						'wppa_cdn_api_key'					=> '',
-						'wppa_cdn_api_secret'				=> '',
-						'wppa_cdn_service_update'			=> 'no',
-						'wppa_delete_all_from_cloudinary' 	=> '',
-						'wppa_gpx_implementation' 			=> 'none',
-						'wppa_map_height' 					=> '300',
-						'wppa_map_apikey' 					=> '',
-						'wppa_gpx_shortcode'				=> '[map style="width: auto; height:300px; margin:0; " marker="yes" lat="w#lat" lon="w#lon"]',
-						'wppa_fotomoto_on'					=> 'no',
-						'wppa_fotomoto_fontsize'			=> '',
-						'wppa_fotomoto_hide_when_running'	=> 'no',
-						'wppa_fotomoto_min_width' 			=> '400',
+						'wppa_cdn_service'						=> '',
+						'wppa_cdn_cloud_name'					=> '',
+						'wppa_cdn_api_key'						=> '',
+						'wppa_cdn_api_secret'					=> '',
+						'wppa_cdn_service_update'				=> 'no',
+						'wppa_delete_all_from_cloudinary' 		=> '',
+						'wppa_delete_derived_from_cloudinary' 	=> '',
+						'wppa_max_cloud_life' 					=> '0',
+						'wppa_gpx_implementation' 				=> 'none',
+						'wppa_map_height' 						=> '300',
+						'wppa_map_apikey' 						=> '',
+						'wppa_gpx_shortcode'					=> '[map style="width: auto; height:300px; margin:0; " marker="yes" lat="w#lat" lon="w#lon"]',
+						'wppa_fotomoto_on'						=> 'no',
+						'wppa_fotomoto_fontsize'				=> '',
+						'wppa_fotomoto_hide_when_running'		=> 'no',
+						'wppa_fotomoto_min_width' 				=> '400',
 
 						// Photo of the day widget
 						'wppa_widgettitle'			=> __('Photo of the day', 'wppa'),

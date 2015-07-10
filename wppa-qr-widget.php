@@ -3,16 +3,15 @@
 * Package: wp-photo-album-plus
 *
 * display qr code
-* Version 6.1.14
+* Version 6.2.0
 */
 
 
 class wppaQRWidget extends WP_Widget {
     /** constructor */
-    function wppaQRWidget() {
-        parent::WP_Widget(false, $name = 'QR Widget');	
+    function __construct() {
 		$widget_ops = array('classname' => 'qr_widget', 'description' => __( 'WPPA+ QR Widget', 'wppa' ) );	//
-		$this->WP_Widget('qr_widget', __('QR Widget', 'wppa'), $widget_ops);															//
+		parent::__construct('qr_widget', __('QR Widget', 'wppa'), $widget_ops);															//
     }
 
 	/** @see WP_Widget::widget */

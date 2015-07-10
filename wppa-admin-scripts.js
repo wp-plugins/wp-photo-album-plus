@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 6.1.0
+/* Version 6.2.0
 /* Various js routines used in admin pages		
 */
 
@@ -353,7 +353,7 @@ function wppaCheckFullHalign() {
 /* Check for CDN type */
 function wppaCheckCDN() {
 	var cdn = document.getElementById('wppa_cdn_service').value;
-	if ( cdn == 'cloudinary' ) jQuery('.cloudinary').css('display', '');
+	if ( cdn == 'cloudinary' || cdn == 'cloudinarymaintenance' ) jQuery('.cloudinary').css('display', '');
 	else jQuery('.cloudinary').css('display', 'none');
 }
 

@@ -3,16 +3,15 @@
 * Package: wp-photo-album-plus
 *
 * display the search widget
-* Version 6.1.3
+* Version 6.2.0
 *
 */
 
 class SearchPhotos extends WP_Widget {
     /** constructor */
-    function SearchPhotos() {
-        parent::WP_Widget(false, $name = 'Search Photos');	
+    function __construct() {
 		$widget_ops = array('classname' => 'wppa_search_photos', 'description' => __( 'WPPA+ Search Photos', 'wppa') );	//
-		$this->WP_Widget('wppa_search_photos', __('Search Photos', 'wppa'), $widget_ops);															//
+		parent::__construct('wppa_search_photos', __('Search Photos', 'wppa'), $widget_ops);															//
     }
 
 	/** @see WP_Widget::widget */

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display a slideshow in the sidebar
-* Version 6.1.3
+* Version 6.2.0
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -13,11 +13,9 @@ if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
  */
 class SlideshowWidget extends WP_Widget {
     /** constructor */
-    function SlideshowWidget() {
-        parent::WP_Widget(false, $name = 'Sidebar Slideshow');	
+    function __construct() {
 		$widget_ops = array('classname' => 'slideshow_widget', 'description' => __( 'WPPA+ Sidebar Slideshow', 'wppa') );	//
-		$this->WP_Widget('slideshow_widget', __('Sidebar Slideshow', 'wppa'), $widget_ops);															
-		
+		parent::__construct('slideshow_widget', __('Sidebar Slideshow', 'wppa'), $widget_ops);															
     }
 
 	/** @see WP_Widget::widget */

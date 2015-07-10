@@ -6,16 +6,14 @@
 *
 * A wppa widget to upload photos
 *
-* Version 6.1.3
+* Version 6.2.0
 */
 
 class WppaUploadWidget extends WP_Widget {
 
-	function WppaUploadWidget() {
-	    parent::WP_Widget(false, $name = 'Upload widget');	
+	function __construct() {
 		$widget_ops = array('classname' => 'wppa_upload_widget', 'description' => __('WPPA+ Upload photos widget', 'wppa'));
-//		$control_ops = array('width' => 400, 'height' => 350);
-		$this->WP_Widget('wppa_upload_widget', __('WPPA+ Upload', 'wppa'), $widget_ops); // , $control_ops);
+		parent::__construct('wppa_upload_widget', __('WPPA+ Upload', 'wppa'), $widget_ops);
 	}
 
 	function widget( $args, $instance ) {

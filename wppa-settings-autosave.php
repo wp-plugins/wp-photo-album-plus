@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 6.1.16
+* Version 6.2.0
 *
 */
 
@@ -196,8 +196,23 @@ global $wppa_tags;
 				break;
 				
 			case 'wppa_delete_all_from_cloudinary':
-				wppa_delete_all_from_cloudinary();
-				echo 'Done! wppa_delete_all_from_cloudinary';
+				$bret = wppa_delete_all_from_cloudinary();
+				if ( $bret ) {
+					echo 'Done! wppa_delete_all_from_cloudinary';
+				}
+				else {
+					echo 'Not yet Done! wppa_delete_all_from_cloudinary';
+				}
+				break;
+				
+			case 'wppa_delete_derived_from_cloudinary':
+				$bret = wppa_delete_derived_from_cloudinary();
+				if ( $bret ) {
+					echo 'Done! wppa_delete_derived_from_cloudinary';
+				}
+				else {
+					echo 'Not yet Done! wppa_delete_derived_from_cloudinary';
+				}
 				break;
 				
 			default: wppa_error_message('Unimplemnted action key: '.$key);
@@ -234,20 +249,24 @@ global $wppa_tags;
 
 					if ( $photos ) foreach ( $photos as $photo ) {
 					
-						if ( ! isset( $present_at_cloudinary[$photo['id']] ) ) {
-							echo '['.$photo['id'].']';
-							$path = wppa_get_photo_path( $photo['id'] );
-							if ( file_exists( $path ) ) {
-								wppa_upload_to_cloudinary( $photo['id'] );
+						if ( ! wppa_too_old_for_cloud( $photo['id'] ) ) {
+						
+							if ( ! isset( $present_at_cloudinary[$photo['id']] ) ) {
+								echo '['.$photo['id'].']';
+								$path = wppa_get_photo_path( $photo['id'] );
+								if ( file_exists( $path ) ) {
+									wppa_upload_to_cloudinary( $photo['id'] );
+								}
+								else {
+									wppa_error_message( sprintf( __( 'Unexpected error: Photo %s does not exist!', 'wppa' ), $photo['id'] ) );
+								}
+								$j++;
+								if ( $j % '10' == '0' ) echo '<br />';
 							}
 							else {
-								wppa_error_message( sprintf( __( 'Unexpected error: Photo %s does not exist!', 'wppa' ), $photo['id'] ) );
+								echo '.';
 							}
-							$j++;
-							if ( $j % '10' == '0' ) echo '<br />';
-						}
-						else {
-							echo '.';
+							
 						}
 						
 						update_option('wppa_last_cloud_upload', $photo['id']);
@@ -6269,9 +6288,21 @@ global $wppa_tags;
 							$html = array( $html1 . '<br />' . $html2, $html3, $html4, $html5 );
 							$clas = '';
 							$tags = 'system,meta';
-							wppa_setting( false, '13', $name, $desc, $html, $help, $clas, $tags);
+							wppa_setting( false, '14', $name, $desc, $html, $help, $clas, $tags);
 							
-							
+							$name = __('Synchronize Cloudinary', 'wppa');
+							$desc = __('Removes/adds images in the cloud.', 'wppa');
+							$help = esc_js(__('Removes old images and verifies/adds new images to Cloudinary.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('See Table IX-K4.7 for the configured lifetime.', 'wppa'));
+							$slug2 = 'wppa_sync_cloud';
+							$html1 = '';
+							$html2 = wppa_maintenance_button( $slug2 );
+							$html3 = wppa_status_field( $slug2 );
+							$html4 = wppa_togo_field( $slug2 );
+							$html = array($html1, $html2, $html3, $html4);
+							$clas = 'cloudinary';
+							$tags = 'system';
+							wppa_setting(false, '15', $name, $desc, $html, $help, $clas, $tags);
 
 						wppa_setting_subheader('C', '4', __('Listings', 'wppa'));
 
@@ -7629,8 +7660,8 @@ global $wppa_tags;
 							$desc = __('Select a CDN Service you want to use.', 'wppa');
 							$help = '';
 							$slug = 'wppa_cdn_service';
-							$opts = array(__('--- none ---'), 'Cloudinary');
-							$vals = array('', 'cloudinary');
+							$opts = array(__('--- none ---', 'wppa'), 'Cloudinary', __('Cloudinary in maintenance mode', 'wppa') );
+							$vals = array('', 'cloudinary', 'cloudinarymaintenance');
 							$onch = 'wppaCheckCDN()';
 							$html = wppa_select($slug, $opts, $vals, $onch);
 							$clas = '';
@@ -7679,13 +7710,104 @@ global $wppa_tags;
 								wppa_setting(false, '4.4', $name, $desc, $html, $help, $clas, $tags);
 								
 								$name = __('Delete all', 'wppa');
-								$desc = __('<span style="color"red" >Deletes them all !!!</span>', 'wppa');
+								$desc = '<span style="color:red;" >'.__('Deletes them all !!!', 'wppa').'</span>';
 								$help = '';
 								$slug = 'wppa_delete_all_from_cloudinary';
 								$html = wppa_doit_button('', $slug);
 								$clas = 'cloudinary';
 								$tags = 'system';
 								wppa_setting(false, '4.5', $name, $desc, $html, $help, $clas, $tags);
+								
+								$name = __('Delete derived images', 'wppa');
+								$desc = '<span style="color:red;" >'.__('Deletes all derived images !!!', 'wppa').'</span>';
+								$help = '';
+								$slug = 'wppa_delete_derived_from_cloudinary';
+								$html = wppa_doit_button('', $slug);
+								$clas = 'cloudinary';
+								$tags = 'system';
+								wppa_setting(false, '4.6', $name, $desc, $html, $help, $clas, $tags);
+								
+								$name = __('Max lifetime', 'wppa');
+								$desc = __('Old images from local server, new images from Cloudinary.', 'wppa');
+								$help = esc_js(__('If NOT set to Forever: You need to run Table VIII-B15 on a regular basis.', 'wppa'));
+								$slug = 'wppa_max_cloud_life';
+								$opts = array( 	__('Forever', 'wppa'),
+												__('One day', 'wppa'),
+												__('One week', 'wppa'),
+												__('One month', 'wppa'),
+												__('Two months', 'wppa'),
+												__('Three months', 'wppa'),
+												__('Six months', 'wppa'),
+												__('Nine months', 'wppa'),
+												__('One year', 'wppa'),
+												__('18 months', 'wppa'),
+												__('Two years', 'wppa'),
+												);
+								$vals = array(	0,
+												24*60*60,
+												7*24*60*60,
+												31*24*60*60,
+												61*24*60*60,
+												92*24*60*60,
+												183*24*60*60,
+												274*24*60*60,
+												365*24*60*60,
+												548*24*60*60,
+												730*24*60*60,
+												);
+								$onch = '';
+								$html = wppa_select($slug, $opts, $vals, $onch);
+								$clas = 'cloudinary';
+								$tags = 'system';
+								wppa_setting($slug, '4.7', $name, $desc, $html, $help, $clas, $tags);
+								
+								$name = __('Cloudinary usage', 'wppa');
+								if ( function_exists( 'wppa_get_cloudinary_usage' ) ) {
+									$data = wppa_get_cloudinary_usage();
+									if ( is_array( $data ) ) {
+										$desc = '<style type="text/css" scoped>table, tbody, tr, td { margin:0; padding:0; border:none; font-size: 9px; line-height: 11px; } td { height:11px; }</style>';
+										$desc .= '<table style="margin:0;padding:0;border:none:" ><tbody>';
+										foreach ( array_keys( $data ) as $i ) {
+											$item = $data[$i];
+											if ( is_array( $item ) ) {
+												$desc .= 	'<tr>' .
+																'<td>' . $i . '</td>';
+																foreach ( array_keys( $item ) as $j ) {
+																	if ( $j == 'used_percent' ) {
+																		$color = 'green';
+																		if ( $item[$j] > 80.0 ) $color = 'orange';
+																		if ( $item[$j] > 95.0 ) $color = 'red';
+												$desc .= 				'<td>' . $j . ': <span style="color:' . $color . '">' . $item[$j] . '</span></td>';					
+																	}
+																	else {
+												$desc .= 				'<td>' . $j . ': ' . $item[$j] . '</td>';
+																	}
+																}
+												$desc .= 	'</tr>';
+											}
+											else {
+												$desc .= 	'<tr>' .
+																'<td>' . $i . '</td>' .
+																'<td>' . $item . '</td>' .
+																'<td></td>' .
+																'<td></td>' .
+															'</tr>';
+											}
+										}										
+										$desc .= '</tbody></table>';
+									}
+									else {
+										$desc = __('Cloudinary usage data not available', 'wppa');
+									}
+								}
+								else {
+									$desc = __('Cloudinary routines not installed.', 'wppa');
+								}
+								$help = '';
+								$html = '';
+								$clas = 'cloudinary';
+								$tags = 'system';
+								wppa_setting($slug, '4.8', $name, $desc, $html, $help, $clas, $tags);
 								
 							}
 							else {

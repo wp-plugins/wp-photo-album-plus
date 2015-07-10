@@ -3,16 +3,15 @@
 * Package: wp-photo-album-plus
 *
 * ask the album / display you want
-* Version 6.1.3
+* Version 6.2.0
 */
 
 
 class SuperView extends WP_Widget {
     /** constructor */
-    function SuperView() {
-        parent::WP_Widget(false, $name = 'Super View Photos');	
+    function __construct() {
 		$widget_ops = array('classname' => 'wppa_super_view', 'description' => __( 'WPPA+ Selectable display', 'xxx') );	//
-		$this->WP_Widget('wppa_super_view', __('Super View Photos', 'wppa'), $widget_ops);															//
+		parent::__construct('wppa_super_view', __('Super View Photos', 'wppa'), $widget_ops);															//
     }
 
 	/** @see WP_Widget::widget */

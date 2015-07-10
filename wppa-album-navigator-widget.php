@@ -3,15 +3,14 @@
 * Package: wp-photo-album-plus
 *
 * display album names linking to content
-* Version 6.1.3
+* Version 6.2.0
 */
 
 class AlbumNavigatorWidget extends WP_Widget {
     /** constructor */
-    function AlbumNavigatorWidget() {
-        parent::WP_Widget(false, $name = 'Album navigator');	
+    function __construct() {
 		$widget_ops = array('classname' => 'wppa_album_navigator_widget', 'description' => __( 'WPPA+ Album navigator', 'wppa') );
-		$this->WP_Widget('wppa_album_navigator_widget', __('Album navigator', 'wppa'), $widget_ops);
+		parent::__construct('wppa_album_navigator_widget', __('Album navigator', 'wppa'), $widget_ops);
     }
 
 	/** @see WP_Widget::widget */

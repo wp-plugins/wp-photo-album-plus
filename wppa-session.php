@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all session routines
-* Version 5.1.14
+* Version 6.2.0
 *
 * Firefox modifies data in the superglobal $_SESSION.
 * See https://bugzilla.mozilla.org/show_bug.cgi?id=991019
@@ -94,4 +94,12 @@ global $wppa_session;
 	}
 
 	return true;
+}
+
+// Extends session for admin maintenance procedures, to report the right totals
+function wppa_extend_session() {
+global $wpdb;
+
+	$sessionid = wppa_get_session_id();
+	$wpdb->query( $wpdb->prepare( "UPDATE `" . WPPA_SESSION . "` SET `timestamp` = %d WHERE `session` = %s", time(), $sessionid ) );
 }

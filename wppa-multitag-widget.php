@@ -3,16 +3,15 @@
 * Package: wp-photo-album-plus
 *
 * display the multitag widget
-* Version 6.1.3
+* Version 6.2.0
 *
 */
 
 class MultitagPhotos extends WP_Widget {
     /** constructor */
-    function MultitagPhotos() {
-        parent::WP_Widget(false, $name = 'Multitag Photos');	
+    function __construct() {
 		$widget_ops = array('classname' => 'wppa_multitag_photos', 'description' => __( 'WPPA+ Photo Tags', 'wppa') );	//
-		$this->WP_Widget('wppa_multitag_photos', __('Photo Tags Filter', 'wppa'), $widget_ops);															//
+		parent::__construct('wppa_multitag_photos', __('Photo Tags Filter', 'wppa'), $widget_ops);															//
     }
 
 	/** @see WP_Widget::widget */

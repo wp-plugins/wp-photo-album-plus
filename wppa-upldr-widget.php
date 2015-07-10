@@ -3,17 +3,16 @@
 * Package: wp-photo-album-plus
 *
 * display a list of users linking to their photos
-* Version 6.1.3
+* Version 6.2.0
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
 class UpldrWidget extends WP_Widget {
     /** constructor */
-    function UpldrWidget() {
-        parent::WP_Widget(false, $name = 'User Photos');	
+    function __construct() {
 		$widget_ops = array('classname' => 'wppa_upldr_widget', 'description' => __( 'WPPA+ Uploader Photos', 'wppa') );
-		$this->WP_Widget('wppa_upldr_widget', __('Uploader Photos', 'wppa'), $widget_ops);
+		parent::__construct('wppa_upldr_widget', __('Uploader Photos', 'wppa'), $widget_ops);
     }
 
 	/** @see WP_Widget::widget */

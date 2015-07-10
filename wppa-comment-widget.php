@@ -3,17 +3,16 @@
 * Package: wp-photo-album-plus
 *
 * display the recent commets on photos
-* Version 6.1.14
+* Version 6.2.0
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
 class wppaCommentWidget extends WP_Widget {
     /** constructor */
-    function wppaCommentWidget() {
-        parent::WP_Widget(false, $name = 'Comments on Photos');	
+    function __construct() {
 		$widget_ops = array('classname' => 'wppa_comment_widget', 'description' => __( 'WPPA+ Comments on Photos', 'wppa') );
-		$this->WP_Widget('wppa_comment_widget', __('Comments on Photos', 'wppa'), $widget_ops);
+		parent::__construct('wppa_comment_widget', __('Comments on Photos', 'wppa'), $widget_ops);
     }
 
 	/** @see WP_Widget::widget */

@@ -3,17 +3,16 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail albums
-* Version 6.1.15
+* Version 6.2.0
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
 class AlbumWidget extends WP_Widget {
     /** constructor */
-    function AlbumWidget() {
-        parent::WP_Widget(false, $name = 'Thumbnail Albums' );	
+    function __construct() {
 		$widget_ops = array( 'classname' => 'wppa_album_widget', 'description' => __( 'WPPA+ Albums', 'wppa' ) );
-		$this->WP_Widget( 'wppa_album_widget', __( 'Thumbnail Albums', 'wppa' ), $widget_ops );
+		parent::__construct( 'wppa_album_widget', __( 'Thumbnail Albums', 'wppa' ), $widget_ops );
     } 
 
 	/** @see WP_Widget::widget */

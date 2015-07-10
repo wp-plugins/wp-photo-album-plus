@@ -3,15 +3,14 @@
 * Package: wp-photo-album-plus
 *
 * display the top rated photos
-* Version 6.1.12
+* Version 6.2.0
 */
 
 class TopTenWidget extends WP_Widget {
     /** constructor */
-    function TopTenWidget() {
-        parent::WP_Widget(false, $name = 'Top Ten Photos');	
+    function __construct() {
 		$widget_ops = array('classname' => 'wppa_topten_widget', 'description' => __( 'WPPA+ Top Ten Rated Photos', 'wppa') );
-		$this->WP_Widget('wppa_topten_widget', __('Top Ten Photos', 'wppa'), $widget_ops);
+		parent::__construct('wppa_topten_widget', __('Top Ten Photos', 'wppa'), $widget_ops);
     }
 
 	/** @see WP_Widget::widget */

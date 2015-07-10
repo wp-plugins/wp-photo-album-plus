@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, gallery, slideshow, video, audio, lightbox, iptc, exif, cloudinary, fotomoto
-Version: 6.1.16
+Version: 6.2.0
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -188,6 +188,17 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 6.2.0 =
+
+= New Features =
+
+* You can configure a limited use of Cloudinary CDN. In Table IX-K4.7 you can specify a max lifetime. Older photos will NOT be loaded from Cloudinary.
+To remove them from Cloudinary, run Table VIII-B15 on a regular basis.
+
+= Other Changes =
+
+* This is a maintenance release for compatibility with PHP5 object constructors.
 
 = 6.1.16 =
 

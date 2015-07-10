@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains (not yet, but in the future maybe) all the maintenance routines
-* Version 6.1.0
+* Version 6.2.0
 *
 */
 
@@ -48,7 +48,9 @@ global $wppa_supported_audio_extensions;
 							'wppa_add_gpx_tag',
 							'wppa_optimize_ewww',
 							'wppa_comp_sizes',
-							'wppa_edit_tag'
+							'wppa_edit_tag',
+							'wppa_sync_cloud',
+
 						);
 		foreach ( array_keys( $all_slugs ) as $key ) {
 			if ( $all_slugs[$key] != $slug ) {
@@ -62,6 +64,9 @@ global $wppa_supported_audio_extensions;
 	// Lock this proc
 	update_option( $slug.'_user', wppa_get_user() );
 	
+	// Extend session
+	wppa_extend_session();
+	
 	// Initialize
 	$endtime 	= time() + '5';	// Allow for 5 seconds
 	$chunksize 	= '1000';
@@ -73,6 +78,7 @@ global $wppa_supported_audio_extensions;
 	
 	if ( ! isset( $wppa_session ) ) $wppa_session = array();
 	if ( ! isset( $wppa_session[$slug.'_fixed'] ) )   $wppa_session[$slug.'_fixed'] = '0';
+	if ( ! isset( $wppa_session[$slug.'_added'] ) )   $wppa_session[$slug.'_added'] = '0';
 	if ( ! isset( $wppa_session[$slug.'_deleted'] ) ) $wppa_session[$slug.'_deleted'] = '0';
 	if ( ! isset( $wppa_session[$slug.'_skipped'] ) ) $wppa_session[$slug.'_skipped'] = '0';
 	
@@ -178,6 +184,7 @@ global $wppa_supported_audio_extensions;
 		case 'wppa_optimize_ewww':
 		case 'wppa_comp_sizes':
 		case 'wppa_edit_tag':
+		case 'wppa_sync_cloud':
 		
 			// Process photos
 			$table 		= WPPA_PHOTOS;
@@ -466,6 +473,26 @@ global $wppa_supported_audio_extensions;
 							$wppa_session[$slug.'_skipped']++;
 						}
 						break;
+						
+					case 'wppa_sync_cloud':
+						$is_old 	 = ( wppa_opt( 'wppa_max_cloud_life' ) ) && ( time() > ( $photo['timestamp'] + wppa_opt( 'wppa_max_cloud_life' ) ) );
+						$is_in_cloud = is_array( @ getimagesize( wppa_get_cloudinary_url( $photo['id'], 'test_only' ) ) );
+						if ( $is_old && $is_in_cloud ) {
+							wppa_delete_from_cloudinary( $photo['id'] );
+							$wppa_session[$slug.'_deleted']++;
+						}
+						if ( ! $is_old && ! $is_in_cloud ) {
+							wppa_upload_to_cloudinary( $photo['id'] );
+							$wppa_session[$slug.'_fixed']++;
+						}
+						if ( $is_old && ! $is_in_cloud ) {
+							$wppa_session[$slug.'_skipped']++;
+						}
+						if ( ! $is_old && $is_in_cloud ) {
+							$wppa_session[$slug.'_skipped']++;
+						}
+
+						break;
 		
 				}
 				// Test for timeout / ready
@@ -525,13 +552,17 @@ global $wppa_supported_audio_extensions;
 			$status .= ' fixed:'.$wppa_session[$slug.'_fixed'];
 			unset ( $wppa_session[$slug.'_fixed'] );
 		}
-		if ( $wppa_session[$slug.'_skipped'] ) {
-			$status .= ' skipped:'.$wppa_session[$slug.'_skipped'];
-			unset ( $wppa_session[$slug.'_skipped'] );
+		if ( $wppa_session[$slug.'_added'] ) {
+			$status .= ' added:'.$wppa_session[$slug.'_added'];
+			unset ( $wppa_session[$slug.'_added'] );
 		}
 		if ( $wppa_session[$slug.'_deleted'] ) {
 			$status .= ' deleted:'.$wppa_session[$slug.'_deleted'];
 			unset ( $wppa_session[$slug.'_deleted'] );
+		}
+		if ( $wppa_session[$slug.'_skipped'] ) {
+			$status .= ' skipped:'.$wppa_session[$slug.'_skipped'];
+			unset ( $wppa_session[$slug.'_skipped'] );
 		}
 		
 		// Re-Init options
@@ -723,7 +754,7 @@ global $thumb;
 							<th>Id</th>
 							<th>Session id</th>
 							<th>User</th>
-							<th>Rs</th>
+						
 							<th>Started</th>
 							<th>Count</th>
 							<th>Page</th>
@@ -745,7 +776,7 @@ global $thumb;
 								<td>'.$session['id'].'</td>
 								<td>'.$session['session'].'</td>
 								<td>'.$session['user'].'</td>
-								<td>'.$data['randseed'].'</td>
+								
 								<td style="text-wrap:none;" >'.wppa_local_date(get_option('date_format', "F j, Y,").' '.get_option('time_format', "g:i a"), $session['timestamp']).'</td>
 								<td>'.$session['count'].'</td>
 								<td>'.( isset( $data['page'] ) ? $data['page'] : '' ).'</td>
@@ -753,7 +784,7 @@ global $thumb;
 								<td>'.( isset( $data['album'] ) ? wppa_index_array_to_string( array_keys( $data['album'] ) ) : '' ).'</td>
 								<td>'.( isset( $data['photo'] ) ? wppa_index_array_to_string( array_keys( $data['photo'] ) ) : '' ).'</td>
 								<td>'.( isset( $data['use_searchstring'] ) ? $data['use_searchstring'] : '' ).'</td>
-								<td style="text-wrap:unrestricted; max-width:300px;" >'.( isset( $data['search_root'] ) ? $data['search_root'].' ' : '' ).( isset( $data['rootbox'] ) ? ( $data['rootbox'] ? 'on' : 'off' ) : '' ).'</td>
+								<td style="max-width:200px;overflow:hidden;" >'.( isset( $data['search_root'] ) ? $data['search_root'].' ' : '' ).( isset( $data['rootbox'] ) ? ( $data['rootbox'] ? 'on' : 'off' ) : '' ).'</td>
 								<td>'.( isset( $data['subbox'] ) ? ( $data['subbox'] ? 'Y' : 'N' ) : '' ).'</td>
 								<td>'.( isset( $data['superalbum'] ) ? $data['superalbum'].' ' : '' ).( isset( $data['superview'] ) ? $data['superview'] : '' ).'</td>
 							</tr>';

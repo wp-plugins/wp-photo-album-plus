@@ -3,16 +3,15 @@
 * Package: wp-photo-album-plus
 *
 * display the tagcloud widget
-* Version 6.1.3
+* Version 6.2.0
 *
 */
 
 class TagcloudPhotos extends WP_Widget {
     /** constructor */
-    function TagcloudPhotos() {
-        parent::WP_Widget(false, $name = 'Tagcloud Photos');	
+    function __construct() {
 		$widget_ops = array('classname' => 'wppa_tagcloud_photos', 'description' => __( 'WPPA+ Photo Tags', 'wppa') );	//
-		$this->WP_Widget('wppa_tagcloud_photos', __('Photo Tag Cloud', 'wppa'), $widget_ops);															//
+		parent::__construct('wppa_tagcloud_photos', __('Photo Tag Cloud', 'wppa'), $widget_ops);															//
     }
 
 	/** @see WP_Widget::widget */

@@ -6,16 +6,14 @@
 *
 * A text widget that hooks the wppa+ filter
 *
-* Version 6.1.15
+* Version 6.2.0
 */
 
 class WppaGpWidget extends WP_Widget {
 
-	function WppaGpWidget() {
-	    parent::WP_Widget(false, $name = 'General purpose widget');	
+	function __construct() {
 		$widget_ops = array('classname' => 'wppa_gp_widget', 'description' => __('WPPA+ General purpose widget', 'wppa'));
-		$control_ops = array('width' => 400, 'height' => 350);
-		$this->WP_Widget('wppa_gp_widget', __('WPPA+ Text', 'wppa'), $widget_ops, $control_ops);
+		parent::__construct('wppa_gp_widget', __('WPPA+ Text', 'wppa'), $widget_ops );
 	}
 
 	function widget( $args, $instance ) {

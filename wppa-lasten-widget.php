@@ -3,15 +3,14 @@
 * Package: wp-photo-album-plus
 *
 * display the last uploaded photos
-* Version 6.1.6
+* Version 6.2.0
 */
 
 class LasTenWidget extends WP_Widget {
     /** constructor */
-    function LasTenWidget() {
-        parent::WP_Widget(false, $name = 'Last Ten Photos');	
+    function __construct() {
 		$widget_ops = array('classname' => 'wppa_lasten_widget', 'description' => __( 'WPPA+ Last Ten Uploaded Photos', 'wppa') );
-		$this->WP_Widget('wppa_lasten_widget', __('Last Ten Photos', 'wppa'), $widget_ops);
+		parent::__construct('wppa_lasten_widget', __('Last Ten Photos', 'wppa'), $widget_ops);
     }
 
 	/** @see WP_Widget::widget */

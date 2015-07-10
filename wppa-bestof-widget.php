@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the best rated photos
-* Version 6.1.3
+* Version 6.2.0
 *
 */
 
@@ -11,10 +11,9 @@ if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
 class BestOfWidget extends WP_Widget {
     /** constructor */
-    function BestOfWidget() {
-        parent::WP_Widget(false, $name = 'Best Of Photos');	
+    function __construct() {
 		$widget_ops = array('classname' => 'wppa_bestof_widget', 'description' => __( 'WPPA+ Best Of Rated Photos', 'wppa') );
-		$this->WP_Widget('wppa_bestof_widget', __('Best Of Photos', 'wppa'), $widget_ops);
+		parent::__construct('wppa_bestof_widget', __('Best Of Photos', 'wppa'), $widget_ops);
     }
 
 	/** @see WP_Widget::widget */
