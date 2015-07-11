@@ -883,13 +883,11 @@ global $thumb;
 		if ( is_admin() && ! $wppa['ajax'] ) echo( '.' );
 		
 		// Update CDN
-		switch ( wppa_cdn() ) {
-			case 'cloudinary':
-				wppa_upload_to_cloudinary( $id );
-				break;
+		if ( wppa_opt( 'wppa_cdn_service' ) == 'cloudinary' || wppa_opt( 'wppa_cdn_service' ) == 'cloudinarymaintenance' ) {
+			wppa_upload_to_cloudinary( $id );
 		}
 		
-		// Clear ( super )cache
+		// Clear (super)cache
 		wppa_clear_cache();
 		return true;
 	}

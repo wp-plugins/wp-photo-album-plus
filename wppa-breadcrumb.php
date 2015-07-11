@@ -167,12 +167,12 @@ global $wppa_session;
 						case 'i':
 							$label = $wpdb->get_var( $wpdb->prepare( "SELECT `description` FROM `" . WPPA_IPTC . "` WHERE `tag` = %s AND `photo` = '0'", str_replace( 'H', '#', $ss_data['2'] ) ) );
 							$label = trim( $label, ':' );
-							$value .= ' ' . __('with iptc tag:') . ' <b>' . $label . '</b> ' . __('with content:') .' <b>' . $ss_data['3'] . '</b>';
+							$value .= ' ' . __('with iptc tag:') . ' <b>' . __($label) . '</b> ' . __('with content:') .' <b>' . $ss_data['3'] . '</b>';
 							break;
 						case 'e':
 							$label = $wpdb->get_var( $wpdb->prepare( "SELECT `description` FROM `" . WPPA_EXIF . "` WHERE `tag` = %s AND `photo` = '0'", str_replace( 'H', '#', $ss_data['2'] ) ) );
 							$label = trim( $label, ':' );
-							$value .= ' ' . __('with exif tag:') . ' <b>' . $label . '</b> ' . __('with content:') .' <b>' . $ss_data['3'] . '</b>';
+							$value .= ' ' . __('with exif tag:') . ' <b>' . __($label) . '</b> ' . __('with content:') .' <b>' . $ss_data['3'] . '</b>';
 							break;
 					}
 					break;

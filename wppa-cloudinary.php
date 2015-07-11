@@ -44,7 +44,6 @@ function wppa_upload_to_cloudinary( $id ) {
 	if ( ! is_file( $file ) ) {
 		$file 	= wppa_get_photo_path( $id );
 	}
-	else wppa_log('dbg', 'Source used to cloudinary: '.$file );
 	
 	// Doit
 	if ( is_file ( $file ) ) {
@@ -105,39 +104,20 @@ function wppa_delete_from_cloudinary( $id ) {
 function wppa_delete_all_from_cloudinary() {
 global $wppa_cloudinary_api;
 
-	$count = 0;
-
 	$data = $wppa_cloudinary_api->delete_all_resources();
 	$temp = get_object_vars( $data );
 	
-	while ( isset( $temp['next_cursor'] ) ) {
-		$count++;
-		if ( wppa_is_time_up( $count * 1000 ) ) {
-			return false;
-		}
-		$data = $wppa_cloudinary_api->delete_all_resources( array( "next_cursor" => $temp['next_cursor'] ) );
-		$temp = get_object_vars( $data );
-	}
+	if ( isset( $temp['next_cursor'] ) ) return false;
 	return true;
 }
 
 function wppa_delete_derived_from_cloudinary() {
 global $wppa_cloudinary_api;
 
-	$count = 0;
-	
 	$data = $wppa_cloudinary_api->delete_all_resources( array( "keep_original" => TRUE	) );
 	$temp = get_object_vars( $data );
 	
-	while ( isset( $temp['next_cursor'] ) ) {
-		$count++;
-		if ( wppa_is_time_up( $count * 1000 ) ) {
-			return false;
-		}
-		$data = $wppa_cloudinary_api->delete_all_resources( array( "keep_original" => TRUE, "next_cursor" => $temp['next_cursor'] ) );
-		$temp = get_object_vars( $data );
-	}
-	
+	if ( isset( $temp['next_cursor'] ) ) return false;
 	return true;
 }
 

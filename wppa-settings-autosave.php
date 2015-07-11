@@ -48,6 +48,7 @@ global $wppa_tags;
 	$key = '';
 	// Someone hit a submit button or the like?
 	if ( isset($_REQUEST['wppa_settings_submit']) ) {	// Yep!
+
 		check_admin_referer(  'wppa-nonce', 'wppa-nonce' );
 		$key = $_REQUEST['wppa-key'];
 		$sub = $_REQUEST['wppa-sub'];
@@ -198,23 +199,45 @@ global $wppa_tags;
 			case 'wppa_delete_all_from_cloudinary':
 				$bret = wppa_delete_all_from_cloudinary();
 				if ( $bret ) {
-					echo 'Done! wppa_delete_all_from_cloudinary';
+					wppa_ok_message('Done! wppa_delete_all_from_cloudinary');
 				}
 				else {
-					echo 'Not yet Done! wppa_delete_all_from_cloudinary';
+					sleep(5);
+					wppa_ok_message('Not yet Done! wppa_delete_all_from_cloudinary' .
+									'<br />Trying to continue...');
+					echo
+							'<script type="text/javascript">' .
+								'document.location=' .
+									'document.location+"&' .
+									'wppa_settings_submit=Doit&' . 
+									'wppa-nonce=' . $_REQUEST['wppa-nonce'] . '&' .
+									'wppa-key=' . $key . '&' .
+									'_wp_http_referer=' . $_REQUEST['_wp_http_referer'] . '"' .
+							'</script>';
 				}
 				break;
 				
 			case 'wppa_delete_derived_from_cloudinary':
 				$bret = wppa_delete_derived_from_cloudinary();
 				if ( $bret ) {
-					echo 'Done! wppa_delete_derived_from_cloudinary';
+					wppa_ok_message('Done! wppa_delete_derived_from_cloudinary');
 				}
 				else {
-					echo 'Not yet Done! wppa_delete_derived_from_cloudinary';
+					sleep(5);
+					wppa_ok_message('Not yet Done! wppa_delete_derived_from_cloudinary' .
+									'<br />Trying to continue...');
+					echo
+							'<script type="text/javascript">' .
+								'document.location=' .
+									'document.location+"&' .
+									'wppa_settings_submit=Doit&' . 
+									'wppa-nonce=' . $_REQUEST['wppa-nonce'] . '&' .
+									'wppa-key=' . $key . '&' .
+									'_wp_http_referer=' . $_REQUEST['_wp_http_referer'] . '"' .
+							'</script>';
 				}
 				break;
-				
+
 			default: wppa_error_message('Unimplemnted action key: '.$key);
 		}
 		
