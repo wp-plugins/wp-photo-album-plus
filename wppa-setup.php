@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 6.2.0
+* Version 6.2.1
 * 
 */
 
@@ -1076,6 +1076,8 @@ Hide Camera info
 						'wppa_album_navigator_widget_linktype' 	=> 'thumbs',
 						'wppa_album_navigator_widget_linkpage' 	=> '0', 
 						
+						'wppa_widget_sm_linktype' 			=> 'landing',
+						'wppa_widget_sm_linkpage' 			=> '0',
 						
 						// Table VII: Security
 						// B

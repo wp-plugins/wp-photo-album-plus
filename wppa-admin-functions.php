@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 6.1.16
+* version 6.2.1
 *
 */
 
@@ -413,6 +413,15 @@ global $wpdb;
 	// Destroy the result
 	imagedestroy( $rotate );
 
+	// Clear stored dimensions
+	wppa_update_photo( array( 	'id' 	 => $id,
+								'thumbx' => '0',
+								'thumby' => '0',
+								'photox' => '0',
+								'photoy' => '0',
+							)
+						);	
+	
 	$err = '30';
 	
 	// Recreate the thumbnail, do NOT use source: source can not be rotated

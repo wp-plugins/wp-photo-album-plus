@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 6.1.16
+* Version 6.2.1
 *
 */
 
@@ -1231,10 +1231,20 @@ function wppa_get_import_files() {
 		
 		// Is it a photofile in a wppa tree filestructure?
 		$old_setting = $setting;
-		$setting = wppa_expand_tree_path( $old_setting );
+		
+		// assume not
 		if ( is_array( @ getimagesize( $setting ) ) ) {
 			global $wppa;
-			$wppa['is_wppa_tree'] =  true;
+			$wppa['is_wppa_tree'] =  false;
+		}
+		
+		// though?
+		else {
+			$setting = wppa_expand_tree_path( $old_setting );
+			if ( is_array( @ getimagesize( $setting ) ) ) {
+				global $wppa;
+				$wppa['is_wppa_tree'] =  true;
+			}
 		}
 		
 		// Is it a photofile?
@@ -2399,6 +2409,9 @@ function wppa_is_wppa_tree( $file ) {
 		$temp[1] = wppa_expand_id( wppa_strip_ext( $temp[1] ) ) . '.' . wppa_get_ext( $temp[1] );
 		$newf = implode( '/wppa/', $temp );
 		wppa( 'is_wppa_tree', ( $newf != $file ) );
+	}
+	else {
+		wppa( 'is_wppa_tree', false );
 	}
 	return wppa( 'is_wppa_tree' );
 }

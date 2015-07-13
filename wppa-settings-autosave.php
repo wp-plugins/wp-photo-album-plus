@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 6.2.0
+* Version 6.2.1
 *
 */
 
@@ -250,15 +250,22 @@ global $wppa_tags;
 	$need_cloud = wppa_switch( 'wppa_cdn_service_update' ); 
 	global $blog_id;
 	if ( $need_cloud ) { 
-		switch ( wppa_cdn() ) {
+		switch ( wppa_opt( 'wppa_cdn_service' ) ) {
 			case 'cloudinary':
+			case 'cloudinarymaintenance':
 				if ( ! function_exists( 'wppa_upload_to_cloudinary' ) ) {
 					wppa_error_message('Trying to upload to Cloudinary, but it is not configured');
 					exit;
 				}
 				$j = '0';
 				$last = get_option('wppa_last_cloud_upload', '0');
-				$photos = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` > ".$last." ORDER BY `id` LIMIT 1000", ARRAY_A );
+				if ( wppa_opt( 'wppa_max_cloud_life' ) ) {
+					$from = time() - wppa_opt( 'wppa_max_cloud_life' );
+					$photos = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` > ".$last." AND `timestamp` > ".$from." ORDER BY `id` LIMIT 1000", ARRAY_A );
+				}
+				else {
+					$photos = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` > ".$last." ORDER BY `id` LIMIT 1000", ARRAY_A );
+				}
 				if ( empty($photos) ) {
 					wppa_ok_message(__('Ready uploading to Cloudinary', 'wppa'));
 					update_option('wppa_cdn_service_update', 'no');
@@ -5364,8 +5371,38 @@ global $wppa_tags;
 							$tags = 'link';
 							wppa_setting($slug, '9', $name, $desc, $html, $help, $clas, $tags);
 							}
+							{
+							$name = __('SM widget return', 'wppa');
+							$desc = __('Select the return link for social media invoked from widgets', 'wppa');
+							$help = '';
+							$slug1 = 'wppa_widget_sm_linktype';
+							$slug2 = 'wppa_widget_sm_linkpage';
+							wppa_verify_page($slug2);
+							$slug3 = '';
+							$slug4 = '';
+							$slug = array($slug1, $slug2, $slug3, $slug4);
+							$opts = array( 
+								__('Hope page', 'wppa'), 
+								__('Landing page', 'wppa')
+							);
+							$vals = array( 
+								'home', 
+								'landing' 
+							);
+							$onchange = 'wppaCheckSmWidgetLink();';
+							$clas = 'wppa_smrt';
+							$html1 = wppa_select($slug1, $opts, $vals, $onchange, $clas);				
+							$clas = 'wppa_smrp';
+							$html2 = wppa_select($slug2, $options_page_auto, $values_page, '', $clas);
+							$html3 = '';
+							$html4 = '';
+							$html = array($html1, $html2, $html3, $html4);
+							$clas = '';
+							$tags = 'link';
+							wppa_setting($slug, '10', $name, $desc, $html, $help, $clas, $tags);
 							
-							
+							}
+
 							?>
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_6">

@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, gallery, slideshow, video, audio, lightbox, iptc, exif, cloudinary, fotomoto
-Version: 6.2.0
+Version: 6.2.1
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -188,6 +188,21 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 6.2.1 =
+
+= Bug Fixes =
+
+* Fixed a spurious problem in import from remote
+
+= New Features =
+
+* You can select either Home or Landing for the return link from social media shares that are invoked from widgets. Table VI-C10.
+
+= Other Changes =
+
+* Mods to Cloudinary support. Table IX-K4.4 no longer uploads over-aged photos.
+* After rotating a photo, the stored dimensions are now properly reset.
 
 = 6.2.0 =
 

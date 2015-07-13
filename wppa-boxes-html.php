@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 6.1.16
+* Version 6.2.1
 *
 *
 */
@@ -791,7 +791,7 @@ global $wppa_session;
 	$result = '
 	<div>
 		<form action="' . $url . '" method = "get">
-			<label>' . __( 'Album:', 'wppa' ) . '</label><br />
+			<label>' . __a( 'Album:' ) . '</label><br />
 			<select name="wppa-album">' .
 				wppa_album_select_a( array( 'selected' 			=> $wppa_session['superalbum'],
 											'addpleaseselect' 	=> true,
@@ -807,7 +807,7 @@ global $wppa_session;
 				' value="nil" ' .
 				( $wppa_session['superview'] == 'thumbs' ? $checked : '' ) .
 				' >' .
-				__( 'Thumbnails', 'wppa' ) .
+				__a( 'Thumbnails' ) .
 				'<br />
 			<input' .
 				' type="radio"' .
@@ -815,11 +815,11 @@ global $wppa_session;
 				' value="1" ' .
 				( $wppa_session['superview'] == 'slide' ? $checked : '' ) .
 				' >' .
-				__( 'Slideshow', 'wppa' ) .
+				__a( 'Slideshow' ) .
 				'<br />
 			<input type="hidden" name="wppa-occur" value="1" />
 			<input type="hidden" name="wppa-superview" value="1" />
-			<input type="submit" value="'.__( 'Submit', 'wppa' ).'" />
+			<input type="submit" value="'.__a( 'Submit' ).'" />
 		</form>
 	</div>
 	';
@@ -1083,8 +1083,23 @@ global $wppa_locale;
 	if ( ! $do_it ) return '';
 
 	// The share url
-	$share_url = wppa_get_image_page_url_by_id( $id, wppa_switch( 'share_single_image' ) );
-	$share_url = str_replace( '&amp;', '&', $share_url );
+	if ( wppa( 'in_widget' ) ) {
+		if ( wppa_opt( 'wppa_widget_sm_linktype' ) == 'home' ) {
+			$share_url = home_url();
+		}
+		else {
+			$share_url = get_permalink( wppa_get_the_landing_page( 'wppa_widget_sm_linkpage', __a( 'Social media landing page' ) ) );
+			$alb = wppa_get_photo_item( $id, 'album' );
+			$share_url .= '?wppa-album='.$alb.'&wppa-photo='.$id.'&wppa-cover=0&wppa-occur=1';	
+			if ( wppa_switch( 'wppa_share_single_image' ) ) {
+				$share_url .= '&wppa-single=1';
+			}
+		}
+	}
+	else {
+		$share_url = wppa_get_image_page_url_by_id( $id, wppa_switch( 'share_single_image' ) );
+		$share_url = str_replace( '&amp;', '&', $share_url );
+	}
 
 	// The share title
 	$photo_name = wppa_get_photo_name( $id );
@@ -2922,20 +2937,20 @@ global $wpdb;
 
 		if ( $prevpag ) {
 			$wppa['out'] .= '
-			<a href="'.get_permalink( $prevpag ).'" style="float:left" >'.__( '< Previous', 'wppa' ).'</a>';
+			<a href="'.get_permalink( $prevpag ).'" style="float:left" >'.__a( '< Previous' ).'</a>';
 		}
 		else {
 			$wppa['out'] .= '
-			<span style="visibility:hidden" >'.__( '< Previous', 'wppa' ).'</span>';
+			<span style="visibility:hidden" >'.__a( '< Previous' ).'</span>';
 		}
 		$wppa['out'] .= ++$current.'/'.$count;
 		if ( $nextpag ) {
 			$wppa['out'] .= '
-			<a href="'.get_permalink( $nextpag ).'" style="float:right" >'.__( 'Next >', 'wppa' ).'</a>';
+			<a href="'.get_permalink( $nextpag ).'" style="float:right" >'.__a( 'Next >' ).'</a>';
 		}
 		else {
 			$wppa['out'] .= '
-			<span style="visibility:hidden" >'.__( 'Next >', 'wppa' ).'</span>';
+			<span style="visibility:hidden" >'.__a( 'Next >' ).'</span>';
 		}
 
 		$wppa['out'] .= '
