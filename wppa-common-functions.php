@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 6.1.16
+* version 6.2.2
 * 
 */
 
@@ -137,6 +137,11 @@ global $wppa_defaults;
 			'lbtitle' 					=> get_option( 'wppa_lightbox_name' ) == 'wppa' ? 'data-lbtitle' : 'title',
 			'alt'						=> 'even',
 			'is_wppa_tree' 				=> false,
+			'is_calendar' 				=> false,
+			'calendar' 					=> '',
+			'caldate' 					=> '',
+			'calendarall' 				=> false,
+
 		 );
 	}
 	

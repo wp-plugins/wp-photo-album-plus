@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, gallery, slideshow, video, audio, lightbox, iptc, exif, cloudinary, fotomoto
-Version: 6.2.1
+Version: 6.2.2
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -188,6 +188,21 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 6.2.2 =
+
+= Bug Fixes =
+
+= New Features =
+
+* New shortcode type calendar. Calendar types: exifdtm, timestamp, modified. Optional argument: all="1" to initially display all. 
+examples: [wppa type="calendar" calendar="exifdtm"][/wppa], [wppa type="calendar" calendar="modified" all="1"][/wppa].
+
+= Other Changes =
+
+* Exif date is now editable for administrators.
+* Social Media Widget return link can specify the occurrance in Table VI-C10.
+* improved performance on synchronisation with Cloudinary.
 
 = 6.2.1 =
 

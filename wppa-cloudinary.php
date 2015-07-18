@@ -127,7 +127,7 @@ global $blog_id;
 	$thumb 		= wppa_cache_thumb( $id );
 	$ext 		= $thumb['ext'] == 'xxx' ? 'jpg' : $thumb['ext'];
 	$prefix 	= ( is_multisite() && ! WPPA_MULTISITE_GLOBAL ) ? $blog_id.'-' : '';
-	$size 		= $test_only ? 'h_144/' : '';
+	$size 		= $test_only ? 'h_32/' : '';
 	$s 			= is_ssl() ? 's' : '';
 	
 	$url = 'http'.$s.'://res.cloudinary.com/'.get_option('wppa_cdn_cloud_name').'/image/upload/'.$size.$prefix.$id.'.'.$ext;

@@ -3,7 +3,7 @@
 /* Package: wp-photo-album-plus
 /*
 /* Various style computation routines
-/* Version 6.1.0
+/* Version 6.2.2
 /*
 */
 
@@ -237,6 +237,12 @@ global $wppa_dynamic_css_data;
 .wppa-search {
 	' . ( wppa_opt( 'wppa_bgcolor_search' ) ? 'background-color:' . wppa_opt( 'wppa_bgcolor_search' ) . '; ' : '' ) . '
 	' . ( wppa_opt( 'wppa_bcolor_search' ) ? 'border-color:' . wppa_opt( 'wppa_bcolor_search' ) . '; ' : '' ) . '
+}';
+
+	$content .= '
+.wppa-calendar {
+	' . ( wppa_opt( 'wppa_bgcolor_calendar' ) ? 'background-color:' . wppa_opt( 'wppa_bgcolor_calendar' ) . '; ' : '' ) . '
+	' . ( wppa_opt( 'wppa_bcolor_calendar' ) ? 'border-color:' . wppa_opt( 'wppa_bcolor_calendar' ) . '; ' : '' ) . '
 }';
 
 	$content .= '
@@ -875,6 +881,12 @@ global $wppa;
 			$opt = wppa_opt( 'wppa_bgcolor_search' );
 			if ( $opt ) $result .= 'background-color:' . $opt . '; ';
 			$opt = wppa_opt( 'wppa_bcolor_search' );
+			if ( $opt ) $result .= 'border-color:' . $opt . '; ';
+			break;
+		case 'wppa-calendar':
+			$opt = wppa_opt( 'wppa_bgcolor_calendar' );
+			if ( $opt ) $result .= 'background-color:' . $opt . '; ';
+			$opt = wppa_opt( 'wppa_bcolor_calendar' );
 			if ( $opt ) $result .= 'border-color:' . $opt . '; ';
 			break;
 		case 'wppa-black':

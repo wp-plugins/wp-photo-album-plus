@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 6.1.10
+* version 6.2.2
 * 
 */
 
@@ -279,16 +279,21 @@ global $wppa;
 							</tr>
 							
 							<!-- EXIF Date -->
-							<?php if ( $photo['exifdtm'] ) { ?>
 							<tr>
 								<th>
 									<label><?php _e( 'EXIF Date', 'wppa' ) ?></label>
 								</th>
 								<td>
-									<?php echo $photo['exifdtm'] ?>
+								<?php 
+								if ( wppa_user_is( 'administrator' ) ) {
+									echo '<input type="text" onkeyup="wppaAjaxUpdatePhoto( \''.$photo['id'].'\', \'exifdtm\', this )" onchange="wppaAjaxUpdatePhoto( \''.$photo['id'].'\', \'exifdtm\', this )" value="'.$photo['exifdtm'].'" />';
+								}
+								else {
+									echo $photo['exifdtm'];
+								}
+								?>
 								</td>
 							</tr>
-							<?php } ?>
 							
 							<!-- Rating -->
 							<tr  >

@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 6.1.16
+* version 6.2.2
 *
 */
 
@@ -1007,6 +1007,59 @@ global $wppa_session;
 			}
 			
 			switch ( $item ) {
+				case 'exifdtm':
+						$format = '0000:00:00 00:00:00';
+						$err = '0';
+						
+						// Length ok?
+						if ( strlen( $value ) != 19 ) {
+							$err = '1';
+						}
+						
+						// Check on digits, colons and space
+						for ( $i = 0; $i < 19; $i++ ) {
+							$d = substr( $value, $i, 1 );
+							$f = substr( $format, $i, 1 );
+							switch ( $f ) {
+								case '0':
+									if ( ! in_array( $d, array( '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ) ) ) {
+										$err = '2';
+									}
+									break;
+								case ':':
+								case ' ':
+									if ( $d != $f ) {
+										$err = '3';
+									}
+									break;
+							}
+						}
+						
+						// Check on values if format correct, report first error only
+						if ( ! $err ) {
+							$temp = explode( ':', str_replace( ' ', ':', $value ) );
+							if ( $temp['0'] < '1970' ) 					$err = '11';	// Before UNIX epoch
+							if ( ! $err && $temp['0'] > date( 'Y' ) ) 	$err = '12';	// Future
+							if ( ! $err && $temp['1'] < '1' )			$err = '13'; 	// Before january
+							if ( ! $err && $temp['1'] > '12' )			$err = '14';	// After december
+							if ( ! $err && $temp['2'] < '1' ) 			$err = '15'; 	// Before first of month
+							if ( ! $err && $temp['2'] > '31' ) 			$err = '17';	// After 31st ( forget about feb and months with 30 days )
+							if ( ! $err && $temp['3'] < '1' ) 			$err = '18'; 	// Before first hour
+							if ( ! $err && $temp['3'] > '24' )			$err = '19'; 	// Hour > 24
+							if ( ! $err && $temp['4'] < '1' ) 			$err = '20';	// Min < 1
+							if ( ! $err && $temp['4'] > '59' ) 			$err = '21';	// Min > 59
+							if ( ! $err && $temp['5'] < '1' ) 			$err = '22';	// Sec < 1
+							if ( ! $err && $temp['5'] > '59' ) 			$err = '23';	// Sec > 59
+						}
+						if ( $err ) {
+							echo '||1||'.sprintf(__( 'Format error %s. Must be yyyy:mm:dd hh:mm:ss', 'wppa' ), $err );
+						}
+						else {
+							wppa_update_photo( array( 'id' => $photo, 'exifdtm' => $value ) );
+							echo '||0||'.__( 'Exif date/time updated', 'wppa' );
+						}
+						exit;
+					break;
 				case 'lat':
 					if ( ! is_numeric( $value ) || $value < '-90.0' || $value > '90.0' ) {
 						echo '||1||'.__( 'Enter a value > -90 and < 90', 'wppa' );

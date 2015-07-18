@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 6.1.16
+* Version 6.2.2
 *
 */
 
@@ -99,7 +99,7 @@ global $wppa_lang;
 }
 
 // Like get_permalink but for ajax use
-function wppa_get_ajaxlink($key = '') {
+function wppa_get_ajaxlink( $key = '', $deltamoccur = '0' ) {
 global $wppa_lang;
 
 	if ( wppa_switch( 'wppa_ajax_non_admin' ) ) {
@@ -124,7 +124,7 @@ global $wppa_lang;
 	}
 	else {	// directly from a page or post
 		$al .= '&amp;wppa-size='.wppa_get_container_width();
-		$al .= '&amp;wppa-moccur=' . wppa( 'mocc' );
+		$al .= '&amp;wppa-moccur=' . ( wppa( 'mocc' ) + $deltamoccur );
 		if ( is_numeric($key) && $key > '0' ) {
 			$al .= '&amp;page_id=' . $key;
 		}
@@ -244,6 +244,9 @@ function wppa_get_slideshow_url($id, $page = '', $pid = '') {
 		if ( wppa( 'is_upldr' ) ) $link .= '&amp;wppa-upldr=' . wppa( 'is_upldr' );
 		// can be extended for other special cases, see wppa_thumb_default() in wppa-functions.php
 	}
+	elseif (wppa( 'calendar') ) {
+		$link = wppa_get_permalink( $page );
+	}
 	else {
 		$link = '';
 	}
@@ -260,6 +263,13 @@ function wppa_get_slideshow_url_ajax($id, $page = '') {
 		$link = wppa_get_ajaxlink($page).'wppa-album='.$id.'&amp;wppa-slide'.'&amp;wppa-'.$w.'occur='.$occur;	// slide=true changed in slide
 		if ( wppa( 'is_upldr' ) ) $link .= '&amp;wppa-upldr='.wppa( 'is_upldr' );
 		// can be extended for other special cases, see wppa_thumb_default() in wppa-functions.php
+	}
+	elseif ( wppa( 'calendar') ) {
+		$link = wppa_get_ajaxlink( $page ) .
+					'&amp;wppa-calendar=' . wppa( 'calendar' ) . 
+					'&amp;wppa-caldate=' . wppa( 'caldate' ) .
+					'&amp;wppa-slide' .
+					'&amp;wppa-occur=' . wppa( 'mocc' );
 	}
 	else {
 		$link = '';
@@ -368,6 +378,12 @@ function wppa_convert_from_pretty( $uri ) {
 				case 'hl':
 					$deltauri = 'wppa-hilite=';
 					break;
+				case 'ca':
+					$deltauri = 'wppa-calendar=';
+					break;
+				case 'cd':
+					$deltauri = 'wppa-caldate=';
+					break;
 					
 				default:
 					$deltauri = '';
@@ -433,6 +449,7 @@ function wppa_convert_to_pretty( $xuri ) {
 					'rootsearch',
 					'slide', 'cover', 'page',
 					'album', 'photo', 'hilite',
+					'calendar', 'caldate',
 					'debug' );
 	$uri = $parts[0] . '?';
 	$first = true;
@@ -573,7 +590,9 @@ function wppa_convert_to_pretty( $xuri ) {
 						'upldr', 
 						'owner', 
 						'rootsearch', 
-						'hilite' 
+						'hilite',
+						'calendar',
+						'caldate',
 					);
 	if ( count($args) > 0 ) {
 		foreach ( $args as $arg ) {
@@ -657,6 +676,12 @@ function wppa_convert_to_pretty( $xuri ) {
 						break;
 					case 'hilite':
 						$newuri .= 'hl';
+						break;
+					case 'calendar':
+						$newuri .= 'ca';
+						break;
+					case 'caldate':
+						$newuri .= 'cd';
 						break;
 				}
 				if ( $val !== false ) {
@@ -907,6 +932,9 @@ function wppa_page_links( $npages = '1', $curpage = '1', $slide = false ) {
 	
 	// Uploader?
 	if ( wppa( 'is_upldr' ) ) $extra_url .= '&amp;wppa-upldr='.wppa( 'is_upldr' );
+	
+	// Calendar ?
+	if ( wppa( 'calendar' ) ) $extra_url .= '&amp;wppa-calendar='.wppa( 'calendar' ).'&amp;wppa-caldate='.wppa( 'caldate' );
 	
 	// Photos only?
 	if ( wppa( 'photos_only' ) ) $extra_url .= '&amp;wppa-photos-only=1';
@@ -1180,6 +1208,8 @@ global $wpdb;
 	
 	if ( wppa( 'supersearch' ) ) $album = '0';
 	
+	if ( wppa( 'calendar' ) ) $album = '0';
+	
 //	if ( wppa( 'is_upldr' ) ) $album = '0';	// probeersel upldr parent
 	
 	if ( $id ) {
@@ -1440,6 +1470,11 @@ global $wpdb;
 	}
 	
 	if ( $type != 'thumbalbum' ) {
+	
+		if ( wppa( 'calendar' ) ) {
+			$result['url'] .= '&amp;wppa-calendar=' . wppa( 'calendar' ) . '&amp;wppa-caldate=' . wppa( 'caldate' );
+		}
+		
 		if ( wppa( 'supersearch' ) ) {
 			$result['url'] .= '&amp;wppa-supersearch=' . urlencode( wppa( 'supersearch' ) );
 		}

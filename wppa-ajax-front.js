@@ -3,10 +3,20 @@
 // Contains frontend ajax modules
 // Dependancies: wppa.js and default wp jQuery library
 // 
-var wppaJsAjaxVersion = '6.1.9';
+var wppaJsAjaxVersion = '6.2.2';
+
+var wppaRenderAdd = false;
+var wppaWaitForCounter = 0;
 
 // The new AJAX rendering routine Async
-function wppaDoAjaxRender( mocc, ajaxurl, newurl ) {
+function wppaDoAjaxRender( mocc, ajaxurl, newurl, add = false, waitfor = 0 ) {
+
+	if ( waitfor > 0 && waitfor != wppaWaitForCounter ) {
+		setTimeout( 'wppaDoAjaxRender( '+mocc+', \''+ajaxurl+'\', \''+newurl+'\', \''+add+'\', '+waitfor+' )', 100 );
+		return;
+	}
+
+	wppaRenderAdd = add;
 
 	// Fix the url
 	if ( wppaLang != '' ) ajaxurl += '&lang='+wppaLang;
@@ -27,7 +37,13 @@ function wppaDoAjaxRender( mocc, ajaxurl, newurl ) {
 										jQuery( '#wppa-ajax-spin-'+mocc ).css( 'display', '' );
 									},
 						success: 	function( result, status, xhr ) {
-										jQuery( '#wppa-container-'+mocc ).html( result );
+										if ( wppaRenderAdd ) {
+											var oldHtml = jQuery( '#wppa-container-'+mocc ).html();
+											jQuery( '#wppa-container-'+mocc ).html( oldHtml + wppaRenderAdd + result );
+										}
+										else {
+											jQuery( '#wppa-container-'+mocc ).html( result );
+										}
 										
 										// Push the stack
 										if ( wppaCanPushState && wppaUpdateAddressLine ) {
@@ -70,7 +86,8 @@ function wppaDoAjaxRender( mocc, ajaxurl, newurl ) {
 										}
 										else {
 											wppaConsoleLog( 'Ajax render did contain a script tag at position '+scriptPos+' last at '+scriptPosLast, 'force' );
-										}									},
+										}									
+									},
 						error: 		function( xhr, status, error ) {
 										wppaConsoleLog( 'wppaDoAjaxRender failed. Error = ' + error + ', status = ' + status, 'force' );
 										
@@ -82,10 +99,9 @@ function wppaDoAjaxRender( mocc, ajaxurl, newurl ) {
 										_wppaDoAutocol( mocc );
 									},
 						complete: 	function( xhr, status, newurl ) {
-						
-
+										wppaWaitForCounter++;
 									}
-					} );
+					} );					
 	}
 	
 	// Ajax NOT possible

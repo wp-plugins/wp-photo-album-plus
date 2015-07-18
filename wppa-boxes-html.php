@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 6.2.1
+* Version 6.2.2
 *
 *
 */
@@ -58,7 +58,8 @@ function wppa_thumb_area( $action ) {
 		// Display create subalbum and upload photo links conditionally
 		if ( 	! wppa( 'is_upldr' ) &&
 				! wppa( 'searchstring' ) &&
-				! wppa( 'supersearch' ) ) {
+				! wppa( 'supersearch' )  &&
+				! wppa( 'calendar' ) ) {
 
 			$alb = wppa( 'current_album' );
 			wppa_user_create_html( $alb, wppa_get_container_width( 'netto' ), 'thumb' );
@@ -1090,7 +1091,8 @@ global $wppa_locale;
 		else {
 			$share_url = get_permalink( wppa_get_the_landing_page( 'wppa_widget_sm_linkpage', __a( 'Social media landing page' ) ) );
 			$alb = wppa_get_photo_item( $id, 'album' );
-			$share_url .= '?wppa-album='.$alb.'&wppa-photo='.$id.'&wppa-cover=0&wppa-occur=1';	
+			$oc = wppa_opt( 'wppa_widget_sm_linkpage_oc' );
+			$share_url .= '?wppa-album='.$alb.'&wppa-photo='.$id.'&wppa-cover=0&wppa-occur='.$oc;	
 			if ( wppa_switch( 'wppa_share_single_image' ) ) {
 				$share_url .= '&wppa-single=1';
 			}
@@ -2440,7 +2442,6 @@ global $wppa_first_comment_html;
 
 	// See if we are currently in the process of adding/editing this comment
 	$is_current = ( $id == wppa( 'comment_photo' ) && wppa( 'comment_id' ) );
-	// $debugtext=' ( id='.$id.', comment_photo='.$wppa['comment_photo'].', comment_id='.$wppa['comment_id'].' )';
 	if ( $is_current ) {
 		$txt = wppa( 'comment_text' );
 		$btn = __a( 'Edit!' );
@@ -2901,20 +2902,19 @@ function wppa_album_desc( $key ) {
 
 // The auto page links
 function wppa_auto_page_links( $where ) {
-global $wppa;
 global $wpdb;
 
 	$m = $where == 'bottom' ? 'margin-top:8px;' : '';
 	$mustwhere = wppa_opt( 'wppa_auto_page_links' );
 	if ( ( $mustwhere == 'top' || $mustwhere == 'both' ) && ( $where == 'top' ) || ( ( $mustwhere == 'bottom' || $mustwhere == 'both' ) && ( $where == 'bottom' ) ) ) {
-		$wppa['out'] .= '
+		wppa_out( '
 			<div' .
 				' id="prevnext1-'.wppa( 'mocc' ).'"' .
 				' class="wppa-box wppa-nav wppa-nav-text"' .
 				' style="text-align: center; '.__wcs( 'wppa-box' ).__wcs( 'wppa-nav' ).__wcs( 'wppa-nav-text' ).$m.'"' .
-				' >';
+				' >' );
 
-		$photo = $wppa['single_photo'];
+		$photo = wppa( 'single_photo' );
 		$thumb = wppa_cache_thumb( $photo );
 		$album = $thumb['album'];
 		$photos = $wpdb->get_results( $wpdb->prepare( "SELECT `id`, `page_id` FROM `".WPPA_PHOTOS."` WHERE `album` = %s ".wppa_get_photo_order( $album ), $album ), ARRAY_A );
@@ -2936,36 +2936,45 @@ global $wpdb;
 		}
 
 		if ( $prevpag ) {
-			$wppa['out'] .= '
-			<a href="'.get_permalink( $prevpag ).'" style="float:left" >'.__a( '< Previous' ).'</a>';
+			wppa_out(	'<a href="'.get_permalink( $prevpag ).'" style="float:left" >' .
+							__a( '< Previous' ) .
+						'</a>' );
 		}
 		else {
-			$wppa['out'] .= '
-			<span style="visibility:hidden" >'.__a( '< Previous' ).'</span>';
+			wppa_out( 	'<span style="visibility:hidden" >' .
+							__a( '< Previous' ) .
+						'</span>' );
 		}
-		$wppa['out'] .= ++$current.'/'.$count;
+		wppa_out( ++$current.'/'.$count );
 		if ( $nextpag ) {
-			$wppa['out'] .= '
-			<a href="'.get_permalink( $nextpag ).'" style="float:right" >'.__a( 'Next >' ).'</a>';
+			wppa_out( 	'<a href="'.get_permalink( $nextpag ).'" style="float:right" >' .
+							__a( 'Next >' ) .
+						'</a>' );
 		}
 		else {
-			$wppa['out'] .= '
-			<span style="visibility:hidden" >'.__a( 'Next >' ).'</span>';
+			wppa_out( 	'<span style="visibility:hidden" >' .
+							__a( 'Next >' ) .
+						'</span>' );
 		}
 
-		$wppa['out'] .= '
-			</div><div style="clear:both"></div>';
+		wppa_out( '</div><div style="clear:both"></div>' );
 	}
 }
 
 // The bestof box
 function wppa_bestof_box ( $args ) {
-global $wppa;
 
 	wppa_container ( 'open' );
-	$wppa['out'] .= wppa_nltab ( '+' ).'<div id="wppa-bestof-'.wppa( 'mocc' ).'" class="wppa-box wppa-bestof" style="'.__wcs( 'wppa-box' ).__wcs( 'wppa-bestof' ).'">';
-		$wppa['out'] .= wppa_bestof_html( $args, false );
-	$wppa['out'] .= wppa_nltab ( '-' ).'<div style="clear:both; height:4px;"></div></div>';
+	wppa_out( 	'<div' .
+					' id="wppa-bestof-' . wppa( 'mocc' ) . '"' .
+					' class="wppa-box wppa-bestof"' .
+					' style="' . __wcs( 'wppa-box' ) . __wcs( 'wppa-bestof' ) . '"' .
+					'>' .
+					wppa_bestof_html( $args, false ) .
+					'<div style="clear:both; height:4px;">' .
+					'</div>' .
+				'</div>' 
+			);
 	wppa_container ( 'close' );
 }
 
@@ -3141,5 +3150,243 @@ function wppa_bestof_html( $args, $widget = true ) {
 		}
 	}
 
+	return $result;
+}
+
+// The calendar box
+function wppa_calendar_box() {
+
+	if ( is_feed() ) return;
+
+	// The calendar container
+	wppa_container( 'open' );
+	wppa_out( 	'<div' .
+					' id="wppa-calendar-' . wppa( 'mocc' ) . '"' .
+					' class="wppa-box wppa-calendar"' .
+					' style="' . 
+						'font-size:10px;' .
+						'line-height:12px;' .
+						__wcs( 'wppa-box' ) . 
+						__wcs( 'wppa-calendar' ) . 
+						'"' .
+					' >' .
+					'<div style="overflow:auto;" >' .
+						wppa_get_calendar_html() .
+					'</div>' .
+					'<div class="wppa-clear" style="' . __wis( 'clear:both;' ) . '" >' .
+					'</div>' .
+				'</div>'
+			);
+
+	wppa_container( 'close' );
+	
+	// Bump occurrances
+	wppa( 'occur', wppa( 'occur' ) + '1' );
+	wppa( 'mocc', wppa( 'mocc' ) + '1' );
+	
+	// The Display container. 
+	// Note: the display container ocurrance is one higher than the calendar occurrance.
+	wppa_container( 'open' );
+	wppa_container( 'close' );
+	
+}
+
+// The calendar html
+function wppa_get_calendar_html() {
+global $wpdb;
+
+	// Init
+	$result 		= '';
+	$secinday 		= 24*60*60;
+	$calendar_type 	= wppa( 'calendar' );
+	$autoall		= wppa( 'calendarall' );
+	
+	// Get todays daynumber and range
+	$today 	= floor( time() / $secinday );
+	switch ( $calendar_type ) {
+		case 'exifdtm':
+			$photos = $wpdb->get_results( 	"SELECT `id`, `exifdtm` " .
+											"FROM `" . WPPA_PHOTOS . "` " .
+											"WHERE `exifdtm` <> '' " .
+												"AND `status` <> 'pending' " .
+												"AND `status` <> 'scheduled' " .
+											"ORDER BY `exifdtm`", ARRAY_A );
+			$dates = array();
+			foreach ( $photos as $photo ) {
+				$date = substr( $photo['exifdtm'], 0, 10 );
+				if ( isset( $dates[$date] ) ) {
+					$dates[$date]++;
+				}
+				else {
+					$dates[$date] = '1';
+				}
+			}
+			$from 	= 0;
+			$to 	= count( $dates );
+			break;
+			
+		case 'timestamp':
+		case 'modified':
+			$photos = $wpdb->get_results( 	"SELECT `id`, `" . $calendar_type . "` " .
+											"FROM `" . WPPA_PHOTOS ."` " .
+											"WHERE `" . $calendar_type . "` > 0 " .
+												"AND `status` <> 'pending' " .
+												"AND `status` <> 'scheduled' " .
+											"ORDER BY `" . $calendar_type . "`", ARRAY_A );
+			$dates = array();
+			foreach ( $photos as $photo ) {
+				$date = floor( $photo[$calendar_type] / $secinday );
+				if ( isset( $dates[$date] ) ) {
+					$dates[$date]++;
+				}
+				else {
+					$dates[$date] = '1';
+				}
+			}
+			$from 	= 0;
+			$to 	= count( $dates );
+			break;
+	}
+	
+	// Display minicovers
+	$result .= 	'<div' .
+					' style="' .
+						'width:' . ( 33 * ( $to - $from ) ) . 'px;' .
+						'position:relative;' .
+						'"' .
+					' >';
+					
+	$result .= 	'<style type="text/css" scoped >' .
+					'.wppa-minicover-current div {' .
+						'color:blue;' .
+					'}' .
+				'</style>';
+				
+	$result .= 	'<script type="text/javascript" >' .
+					'wppaWaitForCounter = 0;' .
+				'</script>';
+					
+	switch( $calendar_type ) {
+		case 'exifdtm':
+		
+			$keys = array_keys( $dates );
+			
+			for ( $day = $from; $day < $to; $day++ ) {
+				$date 		= date_create_from_format( 'Y:m:d', $keys[$day] );
+
+				$ajaxurl 	= wppa_get_ajaxlink('', '1') .
+											'wppa-calendar=exifdtm&' .
+											'wppa-caldate=' . $keys[$day] . '&' .
+											'wppa-occur=1';
+				
+				if ( $autoall ) {
+					$onclick 	= 	'';
+				}
+				else {
+					$onclick 	= 	'jQuery( \'.wppa-minicover-' . wppa( 'mocc' ) . '\' ).removeClass( \'wppa-minicover-current\' );' .
+									'jQuery( this ).addClass( \'wppa-minicover-current\' );' .
+									'wppaDoAjaxRender( ' . ( wppa( 'mocc' ) + '1' ) . ', \'' . $ajaxurl . '\', \'\' );';
+				}
+				
+				$result .= 	'<a' .
+								( $autoall ? ' href="#wppa-' . $day . '"' : '' ) .
+								' class="wppa-minicover-' . wppa( 'mocc' ) . '"' .
+								' onclick="' . $onclick . '"' .
+								' >' .
+								'<div' .
+									' id="wppa-minicover-' . $day . '"' .
+									' class="wppa-minicover"' .
+									' style="' .
+										'border:1px solid gray;' .
+										'margin-right:1px;' .
+										'float:left;' .
+										'text-align:center;' .
+										'width:30px;"' .
+									' >' .
+									$date->format( 'M' ) . '<br />' .
+									$date->format( 'd' ) . '<br />' .
+									$date->format( 'D' ) . '<br />' .
+									$date->format( 'Y' ) . '<br />' .
+									'(' . $dates[$keys[$day]] . ')' . 
+								'</div>' .
+							'</a>';
+							
+				if ( $autoall ) {
+					$addlabel =	'<a id=\"wppa-' . $day . '\" ></a>';
+					
+					$result .= 	'<script type="text/javascript" >' .
+									'wppaDoAjaxRender( ' . 
+										( wppa( 'mocc' ) + '1' ) . 
+										', \'' . str_replace( '&amp;', '&', $ajaxurl ) . 
+										'\', \'\', \'' . $addlabel . '\', ' . ( $day + '1' ) .' );' .
+								'</script>';
+				}
+			}
+			break;
+	
+		case 'timestamp':
+		case 'modified':
+			$keys = array_keys( $dates );
+			
+			for ( $day = $from; $day < $to; $day++ ) {
+			
+				$date 		= $keys[$day];
+
+				$ajaxurl 	= wppa_get_ajaxlink('', '1') .
+											'wppa-calendar='.$calendar_type.'&' .
+											'wppa-caldate=' . $keys[$day] . '&' .
+											'wppa-occur=1';
+				
+				if ( $autoall ) {
+					$onclick 	= 	'';
+				}
+				else {
+					$onclick 	= 	'jQuery( \'.wppa-minicover-' . wppa( 'mocc' ) . '\' ).removeClass( \'wppa-minicover-current\' );' .
+									'jQuery( this ).addClass( \'wppa-minicover-current\' );' .
+									'wppaDoAjaxRender( ' . ( wppa( 'mocc' ) + '1' ) . ', \'' . $ajaxurl . '\', \'\' );';
+				}
+			
+				$result .= 	'<a' .
+								' class="wppa-minicover-' . wppa( 'mocc' ) . '"' .
+								' onclick="' . $onclick . '"' .
+								' >' .
+								'<div' .
+									' id="wppa-minicover-' . $day . '"' .
+									' class="wppa-minicover"' .
+									' style="' .
+										'border:1px solid gray;' .
+										'margin-right:1px;' .
+										'float:left;' .
+										'text-align:center;' .
+										'width:30px;"' .
+									' >' .
+									date( 'M', $date * $secinday ) . '<br />' .
+									date( 'd', $date * $secinday ) . '<br />' .
+									date( 'D', $date * $secinday ) . '<br />' .
+									date( 'Y', $date * $secinday ) . '<br />' .
+									'(' . $dates[$keys[$day]] . ')' . 
+								'</div>' .
+							'</a>';
+							
+				if ( $autoall ) {
+					$addlabel =	'<a id=\"wppa-' . $day . '\" ></a>';
+					
+					$result .= 	'<script type="text/javascript" >' .
+									'wppaDoAjaxRender( ' . 
+										( wppa( 'mocc' ) + '1' ) . 
+										', \'' . str_replace( '&amp;', '&', $ajaxurl ) . 
+										'\', \'\', \'' . $addlabel . '\', ' . ( $day + '1' ) .' );' .
+								'</script>';
+				}
+			}
+			break;
+	}
+	
+	$result .= 	'<script type="text/javascript" >' .
+					'jQuery(document).ready(function(){ wppaWaitForCounter = 1; });' .
+				'</script>';
+
+	$result .= 	'</div>';
+	
 	return $result;
 }

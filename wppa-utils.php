@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 6.2.0
+* Version 6.2.2
 * 
 */
  
@@ -156,7 +156,7 @@ function wppa_expand_id( $xid, $makepath = false ) {
 	return $result;
 }
 
-// Makes the html for the geo support for current theum and adds it to $wppa['geo']
+// Makes the html for the geo support for current theme and adds it to $wppa['geo']
 function wppa_do_geo( $id, $location ) {
 global $wppa;
 global $wppa_opt;
@@ -173,19 +173,19 @@ global $wppa_opt;
 			$geo = str_replace( 'w#lon', $lon, str_replace( 'w#lat', $lat, $wppa_opt['wppa_gpx_shortcode'] ) );
 			$geo = str_replace( 'w#ip', $_SERVER['REMOTE_ADDR'], $geo );
 			$geo = do_shortcode( $geo );
-			$wppa['geo'] .= '<div id="geodiv-' . $wppa['mocc'] . '-' . $id . '" style="display:none;">' . $geo . '</div>';
+			$wppa['geo'] .= '<div id="geodiv-' . wppa( 'mocc' ) . '-' . $id . '" style="display:none;">' . $geo . '</div>';
 			break;
 		case 'wppa-plus-embedded':
 			if ( $wppa['geo'] == '' ) { 	// First
 				$wppa['geo'] = '
-<div id="map-canvas-' . $wppa['mocc'].'" style="height:' . $wppa_opt['wppa_map_height'] . 'px; width:100%; padding:0; margin:0; font-size: 10px;" ></div>
+<div id="map-canvas-' . wppa( 'mocc' ).'" style="height:' . $wppa_opt['wppa_map_height'] . 'px; width:100%; padding:0; margin:0; font-size: 10px;" ></div>
 <script type="text/javascript" >
 	if ( typeof ( _wppaLat ) == "undefined" ) { var _wppaLat = new Array();	var _wppaLon = new Array(); }
-	_wppaLat[' . $wppa['mocc'] . '] = new Array(); _wppaLon[' . $wppa['mocc'] . '] = new Array();
+	_wppaLat[' . wppa( 'mocc' ) . '] = new Array(); _wppaLon[' . wppa( 'mocc' ) . '] = new Array();
 </script>';
 			}	// End first
 			$wppa['geo'] .= '
-<script type="text/javascript">_wppaLat[' . $wppa['mocc'] . '][' . $id . '] = ' . $lat.'; _wppaLon[' . $wppa['mocc'] . '][' . $id.'] = ' . $lon . ';</script>';
+<script type="text/javascript">_wppaLat[' . wppa( 'mocc' ) . '][' . $id . '] = ' . $lat.'; _wppaLon[' . wppa( 'mocc' ) . '][' . $id.'] = ' . $lon . ';</script>';
 			break;	// End native
 	}
 }
@@ -1493,9 +1493,9 @@ function wppa_is_landscape($img_attr) {
 }
 
 function wppa_get_the_id() {
-global $wppa;
+
 	$id = '0';
-	if ( $wppa['ajax'] ) {
+	if ( wppa( 'ajax' ) ) {
 		if ( wppa_get_get( 'page_id' ) ) $id = wppa_get_get( 'page_id' );
 		elseif ( wppa_get_get( 'p' ) ) $id = wppa_get_get( 'p' );
 		elseif ( wppa_get_get( 'wppa-fromp' ) ) $id = wppa_get_get( 'wppa-fromp' );
@@ -2663,6 +2663,7 @@ function wppa_is_virtual() {
 	if ( wppa( 'src' ) ) return true;
 	if ( wppa( 'supersearch' ) ) return true;
 	if ( wppa( 'searchstring' ) ) return true;
+	if ( wppa( 'calendar' ) ) return true;
 	
 	return false;
 }

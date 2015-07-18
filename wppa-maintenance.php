@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains (not yet, but in the future maybe) all the maintenance routines
-* Version 6.2.0
+* Version 6.2.2
 *
 */
 
@@ -75,6 +75,7 @@ global $wppa_supported_audio_extensions;
 	$id 		= '0';
 	$topid 		= '0';
 	$reload 	= '';
+	$to_delete_from_cloudinary = array();
 	
 	if ( ! isset( $wppa_session ) ) $wppa_session = array();
 	if ( ! isset( $wppa_session[$slug.'_fixed'] ) )   $wppa_session[$slug.'_fixed'] = '0';
@@ -478,7 +479,11 @@ global $wppa_supported_audio_extensions;
 						$is_old 	 = ( wppa_opt( 'wppa_max_cloud_life' ) ) && ( time() > ( $photo['timestamp'] + wppa_opt( 'wppa_max_cloud_life' ) ) );
 						$is_in_cloud = is_array( @ getimagesize( wppa_get_cloudinary_url( $photo['id'], 'test_only' ) ) );
 						if ( $is_old && $is_in_cloud ) {
-							wppa_delete_from_cloudinary( $photo['id'] );
+							$to_delete_from_cloudinary[] = strval( $photo['id'] );
+							if ( count( $to_delete_from_cloudinary ) == 10 ) {
+								wppa_delete_from_cloudinary( $to_delete_from_cloudinary );
+								$to_delete_from_cloudinary = array();
+							}
 							$wppa_session[$slug.'_deleted']++;
 						}
 						if ( ! $is_old && ! $is_in_cloud ) {
@@ -534,18 +539,36 @@ global $wppa_supported_audio_extensions;
 	}
 	
 	// either $albums / $photos has been exhousted ( for this try ) or time is up
+	
+	// Post proc this try:
+	switch ( $slug ) {
+	
+		case 'wppa_sync_cloud':
+			if ( count( $to_delete_from_cloudinary ) > 0 ) {
+				wppa_delete_from_cloudinary( $to_delete_from_cloudinary );
+			}
+			break;
+	}
+								
+	// Fiond togo
 	if ( $slug == 'wppa_cleanup' ) {
 		$togo 	= $topid - $lastid;
 	}
 	else {
 		$togo 	= $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".$table."` WHERE `id` > %s ", $lastid ) );
 	}
+	
+	// Find status
 	$status = $togo ? 'Pending' : 'Ready';
+	
+	// Not done yet?
 	if ( $togo ) {
 		update_option( $slug.'_togo', $togo );
 		update_option( $slug.'_status', $status );
 	}
-	else {	// Really done
+	
+	// Really done
+	else {	
 	
 		// Report fixed/skipped/deleted
 		if ( $wppa_session[$slug.'_fixed'] ) {

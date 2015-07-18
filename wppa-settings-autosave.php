@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 6.2.1
+* Version 6.2.2
 *
 */
 
@@ -3025,7 +3025,21 @@ global $wppa_tags;
 							$html = array($html1, $html2);
 							$clas = '';
 							$tags = 'layout,search';
-						wppa_setting($slug, '9', $name, $desc, $html, $help, $clas, $tags);
+							wppa_setting($slug, '9', $name, $desc, $html, $help, $clas, $tags);
+
+							$name = __('Calendar', 'wppa');
+							$desc = __('Calendar box background.', 'wppa');
+							$help = esc_js(__('Enter valid CSS colors for calendar box backgrounds and borders.', 'wppa'));
+							$slug1 = 'wppa_bgcolor_calendar';
+							$slug2 = 'wppa_bcolor_calendar';
+							$slug = array($slug1, $slug2);
+							$html1 = wppa_input($slug1, '100px', '', '', "checkColor('".$slug1."')") . '</td><td>' . wppa_color_box($slug1);
+							$html2 = wppa_input($slug2, '100px', '', '', "checkColor('".$slug2."')") . '</td><td>' . wppa_color_box($slug2);
+							$html = array($html1, $html2);
+							$clas = '';
+							$tags = 'layout';
+							wppa_setting($slug, '10', $name, $desc, $html, $help, $clas, $tags);
+
 							}
 							?>
 						</tbody>
@@ -5373,13 +5387,14 @@ global $wppa_tags;
 							}
 							{
 							$name = __('SM widget return', 'wppa');
-							$desc = __('Select the return link for social media invoked from widgets', 'wppa');
-							$help = '';
+							$desc = __('Select the return link for social media from widgets', 'wppa');
+							$help = esc_js(__('If you select Landing page, and it wont work, it may be required to set the Occur to the sequence number of the landing shortcode on the page.', 'wppa'));
+							$help .= '\n'.esc_js(__('Normally it is 1, but you can try 2 etc. Always create a new shared link to test a setting.', 'wppa'));
 							$slug1 = 'wppa_widget_sm_linktype';
 							$slug2 = 'wppa_widget_sm_linkpage';
 							wppa_verify_page($slug2);
 							$slug3 = '';
-							$slug4 = '';
+							$slug4 = 'wppa_widget_sm_linkpage_oc';
 							$slug = array($slug1, $slug2, $slug3, $slug4);
 							$opts = array( 
 								__('Hope page', 'wppa'), 
@@ -5394,8 +5409,8 @@ global $wppa_tags;
 							$html1 = wppa_select($slug1, $opts, $vals, $onchange, $clas);				
 							$clas = 'wppa_smrp';
 							$html2 = wppa_select($slug2, $options_page_auto, $values_page, '', $clas);
-							$html3 = '';
-							$html4 = '';
+							$html3 = '<div style="font-size:9px;foat:left;" class="'.$clas.'" >'.__('Occur', 'wppa').'</div>';
+							$html4 = wppa_select($slug4, array('1','2','3','4','5'), array('1','2','3','4','5'), '', $clas);
 							$html = array($html1, $html2, $html3, $html4);
 							$clas = '';
 							$tags = 'link';

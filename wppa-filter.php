@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 6.1.14
+* version 6.2.2
 *
 */
 
@@ -382,6 +382,16 @@ global $wppa_opt;
 			break;
 		case 'supersearch':
 			$wppa['is_supersearch'] = true;
+			break;
+		case 'calendar':
+			$wppa['is_calendar'] = true;
+			$wppa['calendar'] = 'timestamp';
+			if ( isset( $xatts['calendar'] ) && in_array( $xatts['calendar'], array( 'exifdtm', 'timestamp', 'modified' ) ) ) {
+				$wppa['calendar'] = $xatts['calendar'];
+			}
+			if ( isset( $xatts['all'] ) ) {
+				$wppa['calendarall'] = true;
+			}
 			break;
 			
 		default:

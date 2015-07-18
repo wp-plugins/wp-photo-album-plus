@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for breadcrumbs
-* Version 6.1.10
+* Version 6.2.2
 *
 */
 
@@ -60,7 +60,7 @@ global $wppa_session;
 	
 	$virtual = ( 
 		$wppa['is_topten'] || $wppa['is_lasten'] || $wppa['is_comten'] || 
-		$wppa['is_featen'] || $wppa['is_tag'] || $wppa['last_albums'] || $wppa['is_upldr'] || $wppa['supersearch']
+		$wppa['is_featen'] || $wppa['is_tag'] || $wppa['last_albums'] || $wppa['is_upldr'] || $wppa['supersearch'] || $wppa['calendar']
 		 );
 		
 	if ( $wppa['last_albums'] ) {
@@ -214,6 +214,44 @@ global $wppa_session;
 			$value  = __a( 'Searchstring:' ) . ' ' . ( isset ( $wppa_session['display_searchstring'] ) ? $wppa_session['display_searchstring'] : stripslashes( $wppa['searchstring'] ) ) . $albtxt;
 			$href 	= '';
 			$title	= '';
+			wppa_bcitem( $value, $href, $title, 'b9' );
+		}
+		elseif ( $wppa['calendar'] ) {
+			if ( $wppa['is_slide'] ) {
+				switch( $wppa['calendar'] ) {
+					case 'exifdtm':
+						$value 	= __a( 'Photos by EXIF date' ) . ': ' . $wppa['caldate'];
+						break;
+						
+					case 'timestamp':
+						$value 	= __a( 'Photos by date of upload' ) . ': ' . date( 'M d D Y', $wppa['caldate'] * 24*60*60 );
+						break;
+						
+					case 'modified':
+						$value 	= __a( 'Photos by date last modified' ) . ': ' . date( 'M d D Y', $wppa['caldate'] * 24*60*60 );
+						break;
+						
+				}
+				$thumbhref = '#';
+				$title = 'T8';
+				wppa_bcitem( $value, $thumbhref, $title, 'b8' );
+			}
+			switch( $wppa['calendar'] ) {
+				case 'exifdtm':
+					$value 	= __a( 'Photos by EXIF date' ) . ': ' . $wppa['caldate'];
+					break;
+					
+				case 'timestamp':
+					$value 	= __a( 'Photos by date of upload' ) . ': ' . date( 'M d D Y', $wppa['caldate'] * 24*60*60 );
+					break;
+					
+				case 'modified':
+					$value 	= __a( 'Photos by date last modified' ) . ': ' . date( 'M d D Y', $wppa['caldate'] * 24*60*60 );
+					break;
+					
+			}
+			$href 	= '';
+			$title 	= '';
 			wppa_bcitem( $value, $href, $title, 'b9' );
 		}
 		elseif ( $wppa['is_upldr'] ) {
@@ -384,7 +422,7 @@ global $wppa_session;
 		}
 		
 		// 'Go to thumbnail display' - icon
-		if ( $wppa['is_slide'] ) {
+		if ( $wppa['is_slide'] && ! $wppa['calendar'] ) {
 			if ( wppa_switch( 'wppa_bc_slide_thumblink' ) ) {
 				if ( $virtual ) {
 					if ( $thumbhref ) {

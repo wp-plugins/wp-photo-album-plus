@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 6.2.1
+* Version 6.2.2
 * 
 */
 
@@ -826,6 +826,8 @@ Hide Camera info
 						'wppa_bcolor_superview'			=> '#bbbbbb',
 						'wppa_bgcolor_search'			=> '#dddddd',
 						'wppa_bcolor_search'			=> '#bbbbbb',
+						'wppa_bgcolor_calendar'			=> '#dddddd',
+						'wppa_bcolor_calendar'			=> '#bbbbbb',
 						'wppa_bgcolor_bestof'			=> '#dddddd',
 						'wppa_bcolor_bestof'			=> '#bbbbbb',
 
@@ -1078,6 +1080,7 @@ Hide Camera info
 						
 						'wppa_widget_sm_linktype' 			=> 'landing',
 						'wppa_widget_sm_linkpage' 			=> '0',
+						'wppa_widget_sm_linkpage_oc' 		=> '1',
 						
 						// Table VII: Security
 						// B

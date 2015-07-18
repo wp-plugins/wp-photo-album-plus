@@ -5,7 +5,7 @@
 * Various funcions to display a thumbnail image
 * Contains all possible frontend thumbnail types
 *
-* Version 6.1.16
+* Version 6.2.2
 *
 */
 
@@ -194,12 +194,21 @@ global $wpdb;
 				&& ! wppa( 'is_upldr' )														// not on uploader deisplay
 				&& ! wppa( 'src' )															// no search
 				&& ! wppa( 'supersearch' )													// no supersearch
+//				&& ! wppa( 'calendar' )
 				&& ( wppa_is_int( wppa( 'start_album' ) ) || wppa( 'start_album' ) == '' )	// no set of albums
 				 )
 			{ 	// Ajax	possible
 
 				// The a img ajax
-				$onclick = "wppaDoAjaxRender( ".wppa( 'mocc' ).", '".wppa_get_slideshow_url_ajax( wppa( 'start_album' ), '0' ).'&amp;wppa-photo='.$id."', '".wppa_convert_to_pretty( wppa_get_slideshow_url( wppa( 'start_album' ), '0' )."&amp;wppa-photo=".$id )."' )";
+				$p =  wppa( 'calendar') ? '' : '&amp;wppa-photo=' . $id;
+				$onclick = 'wppaDoAjaxRender( ' . 
+								wppa( 'mocc' ) . ', \'' . 
+								wppa_get_slideshow_url_ajax( wppa( 'start_album' ), '0' ) . 
+								'&amp;wppa-photo=' . $id . 
+								'\', \'' . 
+								wppa_convert_to_pretty( wppa_get_slideshow_url( wppa( 'start_album' ), '0' ) . $p ) .
+								'\' )';
+								
 				$result .= '<a style="position:static;" class="thumb-img" id="x-'.$id.'-'.wppa( 'mocc' ).'">';
 
 				// Video?
@@ -1060,11 +1069,21 @@ global $wpdb;
 				&& ! wppa( 'is_upldr' )													// not on uploader deisplay
 				&& ! wppa( 'src' )														// no search
 				&& ! wppa( 'supersearch' )													// no supersearch
+	//			&& ! wppa( 'calendar' )
 				&& ( wppa_is_int( wppa( 'start_album' ) ) || wppa( 'start_album' ) == '' )	// no set of albums
 				 )
 			{ 	// Ajax	possible
+			
 				// The a img ajax
-				$onclick = "wppaDoAjaxRender( ".wppa( 'mocc' ).", '".wppa_get_slideshow_url_ajax( wppa( 'start_album' ), '0' ).'&amp;wppa-photo='.$id."', '".wppa_convert_to_pretty( wppa_get_slideshow_url( wppa( 'start_album' ), '0' )."&amp;wppa-photo=".$id )."' )";
+				$p =  wppa( 'calendar') ? '' : '&amp;wppa-photo=' . $id;
+				$onclick = 'wppaDoAjaxRender( ' . 
+								wppa( 'mocc' ) . ', \'' . 
+								wppa_get_slideshow_url_ajax( wppa( 'start_album' ), '0' ) . 
+								'&amp;wppa-photo=' . $id . 
+								'\', \'' . 
+								wppa_convert_to_pretty( wppa_get_slideshow_url( wppa( 'start_album' ), '0' ) . $p ) .
+								'\' )';
+// old			$onclick = "wppaDoAjaxRender( ".wppa( 'mocc' ).", '".wppa_get_slideshow_url_ajax( wppa( 'start_album' ), '0' ).'&amp;wppa-photo='.$id."', '".wppa_convert_to_pretty( wppa_get_slideshow_url( wppa( 'start_album' ), '0' )."&amp;wppa-photo=".$id )."' )";
 				$result .= '<a style="position:static;" class="thumb-img" id="x-'.$id.'-'.wppa( 'mocc' ).'">';
 				if ( $is_video ) {
 //					$result .= '<video preload="metadata" onclick="'.$onclick.'" id="i-'.$id.'-'.wppa( 'mocc' ).'" '.$imgalt.' title="'.$title.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' >'.wppa_get_video_body( $id ).'</video>';

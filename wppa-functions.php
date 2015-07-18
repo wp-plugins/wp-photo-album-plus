@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 6.1.16
+* Version 6.2.2
 *
 */
 
@@ -60,7 +60,7 @@ global $wppa_session;
 			wppa( 'mocc', '1' );
 		}
 		
-		$wppa['fullsize'] = $_GET['wppa-size'];
+		$wppa['fullsize'] = wppa_get_get( 'wppa-size', wppa_get_container_width() );
 		
 		if ( wppa_get_get( 'occur' ) ) {
 			$wppa['occur'] = wppa_get_get( 'occur' );
@@ -162,6 +162,8 @@ global $wppa_session;
 				$wppa['photos_only'] = true;
 			}
 		}
+		$wppa['calendar'] = strip_tags( wppa_get_get( 'calendar' ) );
+		$wppa['caldate'] = strip_tags( wppa_get_get( 'caldate' ) );
 	}
 	
 	// 2. wppa_albums is called directly. Assume any arg. If not, no worry, system defaults are used == generic
@@ -616,6 +618,10 @@ global $wppa_session;
 		wppa_sphoto();
 		if ( $wppa['is_autopage'] ) wppa_auto_page_links( 'bottom' );
 	}
+	// Is it the calendar?
+	elseif ( $wppa['is_calendar'] ) {
+		wppa_calendar_box();
+	}
 	// The normal case
 	else {
 		if ( function_exists( 'wppa_theme' ) ) {
@@ -734,6 +740,10 @@ global $thumbs;
 	$wppa['portrait_only'] 		= false;
 	$wppa['is_supersearch'] 	= false;
 	$wppa['supersearch'] 		= '';
+	$wppa['is_calendar'] 		= false;
+	$wppa['calendar'] 			= '';
+	$wppa['caldate'] 			= '';
+	$wppa['calendarall'] 		= false;
 
 }
 
@@ -775,6 +785,10 @@ global $wppa_session;
 	
 	if ( $wppa['src'] && wppa_switch( 'photos_only' ) ) 	return false;
 	if ( $wppa['is_owner'] && ! $wppa['start_album'] ) 		return false; 	// No owner album( s )
+	
+	if ( $wppa['calendar'] == 'exifdtm' ) return false;
+	if ( $wppa['calendar'] == 'timestamp' ) return false;
+	if ( $wppa['calendar'] == 'modified' ) return false;
 	
 	// Supersearch?
 	if ( $wppa['supersearch'] ) {
@@ -1524,7 +1538,36 @@ global $wppa_session;
 		
 		$wppa['any'] = ! empty ( $thumbs );
 	}
-	else {	// Not search, normal
+	
+	// Calendar?
+	elseif ( $wppa['calendar'] ) {
+		switch ( $wppa['calendar'] ) {
+			case 'exifdtm':
+				$t = explode( ':', $wppa['caldate'] );
+				foreach( array_keys( $t ) as $k ) $t[$k] = strval( intval( $t[$k] ) );
+				$t = implode( ':', $t );
+				$selection = "`exifdtm` LIKE '" . $wppa['caldate'] . "%' AND `status` <> 'pending' AND `status` <> 'scheduled' ";
+				$thumbs = $wpdb->get_results( "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE " . $selection . wppa_get_photo_order( '0' ), ARRAY_A );
+				break;
+			
+			case 'timestamp':
+				$t1 = strval( intval( $wppa['caldate'] * 24*60*60 ) );
+				$t2 = $t1 + 24*60*60;
+				$selection = "`timestamp` >= $t1 AND `timestamp` < $t2 AND `status` <> 'pending' AND `status` <> 'scheduled' ";
+				$thumbs = $wpdb->get_results( "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE " . $selection . wppa_get_photo_order( '0' ), ARRAY_A );
+				break;
+
+			case 'modified':
+				$t1 = strval( intval( $wppa['caldate'] * 24*60*60 ) );
+				$t2 = $t1 + 24*60*60;
+				$selection = "`modified` >= $t1 AND `modified` < $t2 AND `status` <> 'pending' AND `status` <> 'scheduled' ";
+				$thumbs = $wpdb->get_results( "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE " . $selection . wppa_get_photo_order( '0' ), ARRAY_A );
+				break;
+		}
+	}
+	
+	// Normal
+	else {
 	
 		// Init $thumbs
 		$thumbs = array();
@@ -2881,6 +2924,7 @@ global $wppa;
 					&& ! $wppa['is_related']
 					&& ! $wppa['is_upldr']
 					&& ! $wppa['supersearch']
+					&& ! $wppa['calendar']
 				 ) {	// Less than treshold and not searching and not from tagcloud: 0
 			$result = '0';
 		}
@@ -2905,6 +2949,7 @@ global $wppa;
 	if ( $wppa['is_tag'] ) return '0';
 	if ( $wppa['is_upldr'] ) return '0';
 	if ( $wppa['supersearch'] ) return '0';
+	if ( $wppa['calendar'] ) return '0';
 
 	return wppa_opt( 'min_thumbs' );
 }
