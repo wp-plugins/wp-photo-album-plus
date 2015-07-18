@@ -197,6 +197,7 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
 * New shortcode type calendar. Calendar types: exifdtm, timestamp, modified. Optional argument: all="1" to initially display all. 
 examples: [wppa type="calendar" calendar="exifdtm"][/wppa], [wppa type="calendar" calendar="modified" all="1"][/wppa].
+This feature requires Ajax active ( Table IV-A1.0 ).
 
 = Other Changes =
 

@@ -384,6 +384,10 @@ global $wppa_opt;
 			$wppa['is_supersearch'] = true;
 			break;
 		case 'calendar':
+			if ( ! wppa_switch( 'allow_ajax' ) ) {
+				wppa_dbg_msg ( 'Shortcode [wppa type="calendar" ...  requires Ajax acive. See Photo Albums -> Settings Table IV-A1.0', 'red', 'force' );
+				return '';
+			}
 			$wppa['is_calendar'] = true;
 			$wppa['calendar'] = 'timestamp';
 			if ( isset( $xatts['calendar'] ) && in_array( $xatts['calendar'], array( 'exifdtm', 'timestamp', 'modified' ) ) ) {
