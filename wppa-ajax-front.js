@@ -9,9 +9,9 @@ var wppaRenderAdd = false;
 var wppaWaitForCounter = 0;
 
 // The new AJAX rendering routine Async
-function wppaDoAjaxRender( mocc, ajaxurl, newurl, add = false, waitfor = 0 ) {
+function wppaDoAjaxRender( mocc, ajaxurl, newurl, add, waitfor ) {
 
-	if ( waitfor > 0 && waitfor != wppaWaitForCounter ) {
+	if ( parseInt(waitfor) > 0 && waitfor != wppaWaitForCounter ) {
 		setTimeout( 'wppaDoAjaxRender( '+mocc+', \''+ajaxurl+'\', \''+newurl+'\', \''+add+'\', '+waitfor+' )', 100 );
 		return;
 	}
