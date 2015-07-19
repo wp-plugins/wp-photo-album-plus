@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, gallery, slideshow, video, audio, lightbox, iptc, exif, cloudinary, fotomoto
-Version: 6.2.2
+Version: 6.2.3
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -188,6 +188,17 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 6.2.3 =
+
+= Bug Fixes =
+
+* Ajax links stopped working in Chrome and IE. Fixed.
+
+= Other Changes =
+
+* The album='..' attribute now works in the calendar shortcodes.
+* Performance improvement in calendar shortcodes with attribute all="1".
 
 = 6.2.2 =
 

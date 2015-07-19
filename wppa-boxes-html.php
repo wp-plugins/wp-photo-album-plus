@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 6.2.2
+* Version 6.2.3
 *
 *
 */
@@ -3200,9 +3200,13 @@ global $wpdb;
 	$secinday 		= 24*60*60;
 	$calendar_type 	= wppa( 'calendar' );
 	$autoall		= wppa( 'calendarall' );
+	$albums 		= wppa( 'start_album' ) ? wppa_expand_enum( wppa_alb_to_enum_children( wppa( 'start_album' ) ) ) : '';
+	$alb_clause 	= $albums ? ' AND `album` IN ( ' . str_replace( '.', ',' , $albums ) . ' ) ' : '';
+	$alb_arg 		= wppa( 'start_album' ) ? 'wppa-album=' . wppa_alb_to_enum_children( wppa( 'start_album' ) ) . '&' : '';
 	
 	// Get todays daynumber and range
 	$today 	= floor( time() / $secinday );
+
 	switch ( $calendar_type ) {
 		case 'exifdtm':
 			$photos = $wpdb->get_results( 	"SELECT `id`, `exifdtm` " .
@@ -3210,6 +3214,7 @@ global $wpdb;
 											"WHERE `exifdtm` <> '' " .
 												"AND `status` <> 'pending' " .
 												"AND `status` <> 'scheduled' " .
+												$alb_clause .
 											"ORDER BY `exifdtm`", ARRAY_A );
 			$dates = array();
 			foreach ( $photos as $photo ) {
@@ -3234,6 +3239,7 @@ global $wpdb;
 											"WHERE `" . $calendar_type . "` > 0 " .
 												"AND `status` <> 'pending' " .
 												"AND `status` <> 'scheduled' " .
+												$alb_clause .
 											"ORDER BY `" . $calendar_type . "`", ARRAY_A );
 			$dates = array();
 			foreach ( $photos as $photo ) {
@@ -3284,6 +3290,7 @@ global $wpdb;
 					$ajaxurl 	= wppa_get_ajaxlink('', '1') .
 												'wppa-calendar=exifdtm&' .
 												'wppa-caldate=' . $keys[$day] . '&' .
+												$alb_arg .
 												'wppa-occur=1';
 					
 					if ( $autoall ) {
@@ -3343,6 +3350,7 @@ global $wpdb;
 				$ajaxurl 	= wppa_get_ajaxlink('', '1') .
 											'wppa-calendar='.$calendar_type.'&' .
 											'wppa-caldate=' . $keys[$day] . '&' .
+											$alb_arg . 
 											'wppa-occur=1';
 				
 				if ( $autoall ) {

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 6.2.2
+* Version 6.2.3
 *
 */
 
@@ -1541,27 +1541,30 @@ global $wppa_session;
 	
 	// Calendar?
 	elseif ( $wppa['calendar'] ) {
+		if ( $wppa['start_album'] ) {
+			$alb_clause = " AND `album` IN ( ". str_replace( '.', ',', wppa_expand_enum( $wppa['start_album'] ) ) ." ) ";
+		}
+		else {
+			$alb_claus = '';
+		}
 		switch ( $wppa['calendar'] ) {
 			case 'exifdtm':
-				$t = explode( ':', $wppa['caldate'] );
-				foreach( array_keys( $t ) as $k ) $t[$k] = strval( intval( $t[$k] ) );
-				$t = implode( ':', $t );
-				$selection = "`exifdtm` LIKE '" . $wppa['caldate'] . "%' AND `status` <> 'pending' AND `status` <> 'scheduled' ";
-				$thumbs = $wpdb->get_results( "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE " . $selection . wppa_get_photo_order( '0' ), ARRAY_A );
+				$selection = "`exifdtm` LIKE '" . strip_tags( $wppa['caldate'] ) . "%' AND `status` <> 'pending' AND `status` <> 'scheduled' ";
+				$thumbs = $wpdb->get_results( "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE " . $selection . $alb_clause . wppa_get_photo_order( '0' ), ARRAY_A );
 				break;
 			
 			case 'timestamp':
 				$t1 = strval( intval( $wppa['caldate'] * 24*60*60 ) );
 				$t2 = $t1 + 24*60*60;
 				$selection = "`timestamp` >= $t1 AND `timestamp` < $t2 AND `status` <> 'pending' AND `status` <> 'scheduled' ";
-				$thumbs = $wpdb->get_results( "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE " . $selection . wppa_get_photo_order( '0' ), ARRAY_A );
+				$thumbs = $wpdb->get_results( "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE " . $selection . $alb_clause . wppa_get_photo_order( '0' ), ARRAY_A );
 				break;
 
 			case 'modified':
 				$t1 = strval( intval( $wppa['caldate'] * 24*60*60 ) );
 				$t2 = $t1 + 24*60*60;
 				$selection = "`modified` >= $t1 AND `modified` < $t2 AND `status` <> 'pending' AND `status` <> 'scheduled' ";
-				$thumbs = $wpdb->get_results( "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE " . $selection . wppa_get_photo_order( '0' ), ARRAY_A );
+				$thumbs = $wpdb->get_results( "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE " . $selection . $alb_clause . wppa_get_photo_order( '0' ), ARRAY_A );
 				break;
 		}
 	}
@@ -2842,6 +2845,7 @@ global $blog_id;
 		$wppa['out'] .= wppa_nltab().'<script type="text/javascript" >if ( typeof(wppaInitOverlay) != "undefined" ) { wppaInitOverlay(); }</script>';
 		
 		if ( ! $wppa['ajax'] ) {
+			$wppa['out'] .= '<div id="wppa-container-' . wppa( 'mocc' ) . '-end" ></div>';
 			$wppa['out'] .= wppa_nltab( '-' ).'</div><!-- wppa-container-'.wppa( 'mocc' ).' -->';
 			$wppa['out'] .= wppa_nltab().'<!-- End WPPA+ generated code -->';
 		}

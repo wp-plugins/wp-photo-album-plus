@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 6.2.2
+* version 6.2.3
 *
 */
 
@@ -396,6 +396,7 @@ global $wppa_opt;
 			if ( isset( $xatts['all'] ) ) {
 				$wppa['calendarall'] = true;
 			}
+			$wppa['start_album'] = $album;
 			break;
 			
 		default:

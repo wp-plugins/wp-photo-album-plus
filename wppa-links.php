@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 6.2.2
+* Version 6.2.3
 *
 */
 
@@ -269,6 +269,7 @@ function wppa_get_slideshow_url_ajax($id, $page = '') {
 					'&amp;wppa-calendar=' . wppa( 'calendar' ) . 
 					'&amp;wppa-caldate=' . wppa( 'caldate' ) .
 					'&amp;wppa-slide' .
+					( wppa( 'start_album' ) ? '&amp; wppa-album=' . wppa( 'start_album' ) : '' ) .
 					'&amp;wppa-occur=' . wppa( 'mocc' );
 	}
 	else {
@@ -1208,7 +1209,7 @@ global $wpdb;
 	
 	if ( wppa( 'supersearch' ) ) $album = '0';
 	
-	if ( wppa( 'calendar' ) ) $album = '0';
+	if ( wppa( 'calendar' ) ) $album = wppa( 'start_album' ) ? wppa( 'start_album' ) : '0';
 	
 //	if ( wppa( 'is_upldr' ) ) $album = '0';	// probeersel upldr parent
 	
