@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 6.2.2
+* version 6.2.4
 * 
 */
 
@@ -141,6 +141,7 @@ global $wppa_defaults;
 			'calendar' 					=> '',
 			'caldate' 					=> '',
 			'calendarall' 				=> false,
+			'reverse' 					=> false,
 
 		 );
 	}

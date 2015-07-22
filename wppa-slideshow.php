@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 6.1.14
+* Version 6.2.4
 *
 */
 
@@ -273,8 +273,8 @@ global $wppa_opt;
 				$wppa['out'] .= wppa_nltab().'<img id="bbb-'.$wppa['mocc'].'-r" class="bbb-r bbb-'.$wppa['mocc'].'" src="'.wppa_get_imgdir().'bbbr.png" alt="bbbr" style="background-color: transparent; border:none; z-index:83; position: absolute; float:right; top: 0px; width: '.($wppa['slideframewidth']*0.5).'px; height: '.$wppa['slideframeheight'].'px; box-shadow: none; cursor:default;" onmouseover="wppaBbb('.$wppa['mocc'].',\'r\',\'show\')" onmouseout="wppaBbb('.$wppa['mocc'].',\'r\',\'hide\')" onclick="wppaBbb('.$wppa['mocc'].',\'r\',\'click\')" />';
 			} /***/
 			if ( ( wppa_switch('wppa_show_ubb') && ! $wppa['in_widget'] ) || ( wppa_switch('wppa_show_ubb_widget') && $wppa['in_widget'] ) ) { // Ugly browse buttons
-				$wppa['out'] .= wppa_nltab().'<img id="ubb-'.$wppa['mocc'].'-l" class="ubb-l ubb-'.$wppa['mocc'].'" src="'.wppa_get_imgdir().'ubbl.png" alt="ubbl" style="background-color: transparent; border:none; z-index:183; position: absolute; top: 100px; left:0; box-shadow: none; cursor:pointer; top:'.($wppa['slideframeheight']/2-10).'px;" onmouseover="wppaUbb('.$wppa['mocc'].',\'l\',\'show\')" onmouseout="wppaUbb('.$wppa['mocc'].',\'l\',\'hide\')" onclick="wppaUbb('.$wppa['mocc'].',\'l\',\'click\')" />';
-				$wppa['out'] .= wppa_nltab().'<img id="ubb-'.$wppa['mocc'].'-r" class="ubb-r ubb-'.$wppa['mocc'].'" src="'.wppa_get_imgdir().'ubbr.png" alt="ubbr" style="background-color: transparent; border:none; z-index:183; position: absolute; top: 100px; right:0; box-shadow: none; cursor:pointer; top:'.($wppa['slideframeheight']/2-10).'px;" onmouseover="wppaUbb('.$wppa['mocc'].',\'r\',\'show\')" onmouseout="wppaUbb('.$wppa['mocc'].',\'r\',\'hide\')" onclick="wppaUbb('.$wppa['mocc'].',\'r\',\'click\')" />';
+				$wppa['out'] .= wppa_nltab().'<img id="ubb-'.$wppa['mocc'].'-l" class="ubb ubb-l ubb-'.$wppa['mocc'].'" src="'.wppa_get_imgdir().'ubbl'.wppa_opt('ubb_color').'.png" alt="ubbl" style="background-color: transparent; border:none; z-index:183; position: absolute; top: 100px; left:0; box-shadow: none; cursor:pointer; top:'.($wppa['slideframeheight']/2-10).'px;" onmouseover="wppaUbb('.$wppa['mocc'].',\'l\',\'show\')" onmouseout="wppaUbb('.$wppa['mocc'].',\'l\',\'hide\')" onclick="wppaUbb('.$wppa['mocc'].',\'l\',\'click\')" />';
+				$wppa['out'] .= wppa_nltab().'<img id="ubb-'.$wppa['mocc'].'-r" class="ubb ubb-r ubb-'.$wppa['mocc'].'" src="'.wppa_get_imgdir().'ubbr'.wppa_opt('ubb_color').'.png" alt="ubbr" style="background-color: transparent; border:none; z-index:183; position: absolute; top: 100px; right:0; box-shadow: none; cursor:pointer; top:'.($wppa['slideframeheight']/2-10).'px;" onmouseover="wppaUbb('.$wppa['mocc'].',\'r\',\'show\')" onmouseout="wppaUbb('.$wppa['mocc'].',\'r\',\'hide\')" onclick="wppaUbb('.$wppa['mocc'].',\'r\',\'click\')" />';
 			}
 		}
 		wppa_numberbar();

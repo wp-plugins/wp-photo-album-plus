@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 6.2.2
+* version 6.2.4
 * 
 */
 
@@ -455,13 +455,27 @@ global $wppa;
 						<tbody>
 						
 							<!-- Filename -->
-							<?php if ( $photo['filename'] ) { ?>
-							<tr  >
-								<th  >
+							<tr>
+								<th>
 									<label><?php _e( 'Filename:', 'wppa' ); ?></label>
 								</th>
 								<td>
-									<?php echo $photo['filename'] ?>
+									<?php 
+									echo $photo['filename'];
+									if ( wppa_user_is( 'administrator' ) || ! wppa_switch( 'wppa_reup_is_restricted' ) ) { ?>
+										<input type="button" onclick="jQuery( '#re-up-<?php echo $photo['id'] ?>' ).css( 'display', '' );" value="<?php _e('Update file', 'wppa') ?>" />
+									<?php } ?>
+								</td>
+							</tr>
+							<?php if ( wppa_user_is( 'administrator' ) || ! wppa_switch( 'wppa_reup_is_restricted' ) ) { ?>
+							<tr id="re-up-<?php echo $photo['id'] ?>" style="display:none" >
+								<th>
+								</th>
+								<td>
+									<form id="wppa-re-up-form-<?php echo $photo[ 'id'] ?>" onsubmit="wppaReUpload( event,<?php echo $photo['id'] ?>, '<?php echo $photo['filename'] ?>' )" >
+										<input type="file" id="wppa-re-up-file-<?php echo $photo['id'] ?>" />
+										<input type="submit" id="wppa-re-up-butn-<?php echo $photo['id'] ?>" value="<?php _e( 'Upload', 'wppa') ?>" />
+									</form>
 								</td>
 							</tr>
 							<?php } ?>
@@ -665,6 +679,7 @@ global $wppa;
 							</tr>
 							
 							<!-- Description -->
+							<?php if ( ! wppa_switch( 'wppa_desc_is_restricted' ) || wppa_user_is( 'administrator' ) ) { ?>
 							<tr>
 								<th>
 									<label><?php _e( 'Description:', 'wppa' ); ?></label>
@@ -688,6 +703,16 @@ global $wppa;
 								</td>
 								<?php } ?>
 							</tr>
+							<?php } else { ?>
+							<tr>
+								<th>
+									<label><?php _e( 'Description:', 'wppa' ); ?></label>
+								</th>
+								<td>
+									<div style="width: 100%; height:120px; overflow:auto;" ><?php echo( stripslashes( $photo['description'] ) ) ?></div>
+								</td>
+							</tr>
+							<?php } ?>
 							
 							<!-- Custom -->
 							<?php

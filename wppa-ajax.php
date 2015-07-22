@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 6.2.2
+* version 6.2.4
 *
 */
 
@@ -1342,6 +1342,44 @@ global $wppa_session;
 					wppa_update_photo( array( 'id' => $photo, 'custom' => $custom ) );
 					wppa_index_update( 'photo', $photo );
 					echo '||0||'.sprintf( __( '<b>Custom field %s</b> of photo %s updated', 'wppa' ), wppa_opt( 'custom_caption_'.$index ), $photo );
+					break;
+					
+				case 'file':
+
+					// Check on upload error
+					if ( $_FILES[photo][error] ) {
+						echo '||'.$_FILES[photo][error].'||'.__( '<b>Error during upload.</b>', 'wppa');
+						exit;
+					}
+					
+					// Save new source
+					wppa_save_source( $_FILES['photo']['tmp_name'], wppa_get_photo_item( $photo, 'filename' ), wppa_get_photo_item( $photo, 'album') );
+					
+					// Make the files
+					$bret = wppa_make_the_photo_files( $_FILES['photo']['tmp_name'], $photo, strtolower( wppa_get_ext( $_FILES['photo']['name'] ) ) );
+					if ( $bret ) {
+					
+						// Update timestamps and sizes
+						wppa_update_album( array( 	'id' => $alb, 
+													'timestamp' => time(),
+													) );
+						wppa_update_photo( array( 	'id' => $photo, 
+													'modified' => time(),
+													'thumbx' => '0',
+													'thumby' => '0',
+													'photox' => '0',
+													'photoy' => '0',
+													) );
+						
+						// Report success
+						echo '||0||'.__( 'Photo files updated.', 'wppa' );
+					}
+					else {
+					
+						// Report fail
+						echo '||1||'.__( 'Could not update files.', 'wppa' );
+					}
+					exit;					
 					break;
 					
 				default:

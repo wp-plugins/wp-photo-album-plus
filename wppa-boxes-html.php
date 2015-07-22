@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 6.2.3
+* Version 6.2.4
 *
 *
 */
@@ -3203,6 +3203,7 @@ global $wpdb;
 	$albums 		= wppa( 'start_album' ) ? wppa_expand_enum( wppa_alb_to_enum_children( wppa( 'start_album' ) ) ) : '';
 	$alb_clause 	= $albums ? ' AND `album` IN ( ' . str_replace( '.', ',' , $albums ) . ' ) ' : '';
 	$alb_arg 		= wppa( 'start_album' ) ? 'wppa-album=' . wppa_alb_to_enum_children( wppa( 'start_album' ) ) . '&' : '';
+	$reverse 		= wppa( 'reverse' ) ? ' DESC ' : '';
 	
 	// Get todays daynumber and range
 	$today 	= floor( time() / $secinday );
@@ -3215,7 +3216,7 @@ global $wpdb;
 												"AND `status` <> 'pending' " .
 												"AND `status` <> 'scheduled' " .
 												$alb_clause .
-											"ORDER BY `exifdtm`", ARRAY_A );
+											"ORDER BY `exifdtm`" . $reverse, ARRAY_A );
 			$dates = array();
 			foreach ( $photos as $photo ) {
 				$date = substr( $photo['exifdtm'], 0, 10 );
@@ -3240,7 +3241,7 @@ global $wpdb;
 												"AND `status` <> 'pending' " .
 												"AND `status` <> 'scheduled' " .
 												$alb_clause .
-											"ORDER BY `" . $calendar_type . "`", ARRAY_A );
+											"ORDER BY `" . $calendar_type . "`" . $reverse, ARRAY_A );
 			$dates = array();
 			foreach ( $photos as $photo ) {
 				$date = floor( $photo[$calendar_type] / $secinday );

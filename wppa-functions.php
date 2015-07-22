@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 6.2.3
+* Version 6.2.4
 *
 */
 
@@ -744,6 +744,7 @@ global $thumbs;
 	$wppa['calendar'] 			= '';
 	$wppa['caldate'] 			= '';
 	$wppa['calendarall'] 		= false;
+	$wppa['reverse'] 			= false;
 
 }
 
@@ -1545,7 +1546,7 @@ global $wppa_session;
 			$alb_clause = " AND `album` IN ( ". str_replace( '.', ',', wppa_expand_enum( $wppa['start_album'] ) ) ." ) ";
 		}
 		else {
-			$alb_claus = '';
+			$alb_clause = '';
 		}
 		switch ( $wppa['calendar'] ) {
 			case 'exifdtm':

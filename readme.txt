@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, gallery, slideshow, video, audio, lightbox, iptc, exif, cloudinary, fotomoto
-Version: 6.2.3
+Version: 6.2.4
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -188,6 +188,15 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 6.2.4 =
+
+= New Features =
+
+* Re-upload existing photo on the Photo admin screen and the front-end edit photo screen.
+For administrators or for anybody that sees the edit photo screen when Table VII-C8 (Update photofiles restricted) is unchecked.
+* Shortcode attribute reverse="1" for type="calendar", to get the youngest first.
+* You can select black or lightgray for the Ugly Browse Buttons in Table II-B13.1
 
 = 6.2.3 =
 

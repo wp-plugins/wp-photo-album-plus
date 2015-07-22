@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 6.2.1
+/* Version 6.2.4
 /* Various js routines used in admin pages		
 */
 
@@ -21,6 +21,90 @@ function checkjQueryRev(msg, elm, rev){
 			elm.checked = '';
 		}
 	}
+}
+
+function wppaReUpload( event, photo, expectedName ) {
+
+	var form = document.getElementById('wppa-re-up-form-'+photo);
+	var fileSelect = document.getElementById('wppa-re-up-file-'+photo);
+	var button = document.getElementById('wppa-re-up-butn-'+photo);
+	
+	// Remove default action
+	event.preventDefault();
+	
+	// Get the selected file from the input.
+	var file = fileSelect.files[0];
+	
+	// Check the file type.
+	if ( !file.type.match( 'image.*' ) ) {
+		alert( 'File is not an image file!' );
+		return;
+	}
+	
+	// Check the file name
+	if ( file.name != expectedName ) {
+		if ( ! confirm( 'Filename is different.\nIf you continue, the filename will not be updated!.\n\nContinue?' ) ) {
+			jQuery( '#re-up-'+photo ).css( 'display', 'none' );
+			return;
+		}
+	}
+	
+	// Update button text
+	button.value = 'Uploading...';
+	button.style.color = 'black';
+	
+	// Create a new FormData object.
+	var formData = new FormData();
+	
+	// Add the file to the request.
+	formData.append('photo', file, file.name);
+	
+	// Set up the request.
+	var xhr = new XMLHttpRequest();
+
+	// Open the connection.
+	var queryString = 	'?action=wppa' +
+						'&wppa-action=update-photo' +
+						'&photo-id=' + photo +
+						'&item=file' +
+						'&wppa-nonce=' + document.getElementById('photo-nonce-'+photo).value;
+						
+	xhr.open( 'POST', wppaAjaxUrl + queryString, true );
+
+	// Set up a handler for when the request finishes.
+	xhr.onload = function () {
+	
+		if ( xhr.status === 200 ) {
+			
+			var str = wppaTrim( xhr.responseText );
+			var ArrValues = str.split( "||" );
+
+				if ( ArrValues[0] != '' ) {
+					alert( 'The server returned unexpected output:\n' + ArrValues[0] );
+				}
+				switch ( ArrValues[1] ) {
+					case '0':		// No error
+						jQuery('#photostatus-'+photo).html(ArrValues[2]);
+						button.value = 'Upload';
+						jQuery( '#re-up-'+photo ).css( 'display', 'none' );
+						break;
+					case '99':	// Photo is gone
+						document.getElementById('photoitem-'+photo).innerHTML = '<span style="color:red">'+ArrValues[2]+'</span>';
+						break;
+					default:	// Any error
+						document.getElementById('photostatus-'+photo).innerHTML = '<span style="color:red">'+ArrValues[2]+' ('+ArrValues[1]+')</span>';
+						button.value = 'Error occured';
+						button.style.color = 'red';
+						break;
+				}
+		} 
+		else {
+			alert('An error occurred!');
+		}
+	};
+	
+	// Send the Data.
+	xhr.send( formData );
 }
 	
 /* This functions does the init after loading settings page. do not put this code in the document.ready function!!! */

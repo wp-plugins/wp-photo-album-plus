@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 6.2.2
+* Version 6.2.4
 *
 */
 
@@ -1706,12 +1706,16 @@ global $wppa_tags;
 							$name = __('Ugly Browse Buttons', 'wppa');
 							$desc = __('Enable the ugly browsing buttons.', 'wppa');
 							$help = esc_js(__('If checked, the fullsize image is covered by two browse buttons.', 'wppa'));
-							$slug = 'wppa_show_ubb';
-							$html = wppa_checkbox($slug);
+							$slug1 = 'wppa_show_ubb';
+							$slug2 = 'wppa_ubb_color';
+							$html1 = wppa_checkbox($slug1);
+							$opts = array( __('Black', 'wppa'), __('Light gray') );
+							$vals = array( '', 'c');
+							$html2 = wppa_select($slug2, $opts, $vals);
 							$clas = '';
 							$tags = 'slide,navi';
-							wppa_setting($slug, '13.1', $name, $desc, $html, $help, $clas, $tags);
-
+							wppa_setting($slug1, '13.1', $name, $desc, $html1.$html2, $help, $clas, $tags);
+							
 							$name = __('Show custom box', 'wppa');
 							$desc = __('Display the custom box in the slideshow', 'wppa');
 							$help = esc_js(__('You can fill the custom box with any html you like. It will not be checked, so it is your own responsability to close tags properly.', 'wppa'));
@@ -5720,6 +5724,28 @@ global $wppa_tags;
 							$clas = ''; 
 							$tags = 'access,system';
 							wppa_setting($slug, '6', $name, $desc, $html, $help, $clas, $tags);
+							
+							$name = __('Photo description restricted', 'wppa');
+							$desc = __('Edit photo description requires admin rights.', 'wppa');
+							$help = '';
+							$slug = 'wppa_desc_is_restricted';
+							$html1 = wppa_checkbox($slug);
+							$html2 = '';
+							$html = array( $html1, $html2 );
+							$clas = ''; 
+							$tags = 'access,system';
+							wppa_setting($slug, '7', $name, $desc, $html, $help, $clas, $tags);
+							
+							$name = __('Update photofiles restricted', 'wppa');
+							$desc = __('Re-upload files requires admin rights', 'wppa');
+							$help = '';
+							$slug = 'wppa_reup_is_restricted';
+							$html1 = wppa_checkbox($slug);
+							$html2 = '';
+							$html = array( $html1, $html2 );
+							$clas = ''; 
+							$tags = 'access,system';
+							wppa_setting($slug, '8', $name, $desc, $html, $help, $clas, $tags);
 
 							wppa_setting_subheader('D', '2', __('Miscellaneous limiting settings', 'wppa'));
 							

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 6.2.2
+* Version 6.2.4
 * 
 */
 
@@ -706,6 +706,7 @@ Hide Camera info
 						// E Widgets
 						'wppa_show_bbb_widget'				=> 'no',	// 1
 						'wppa_show_ubb_widget'				=> 'no',	// 1
+						'wppa_ubb_color' 					=> '',
 						'wppa_show_albwidget_tooltip'		=> 'yes',
 						// F Overlay
 						'wppa_ovl_close_txt'				=> 'Close',
@@ -1226,6 +1227,7 @@ Hide Camera info
 						'wppa_link_is_restricted'		=> 'no',
 						'wppa_covertype_is_restricted'	=> 'no',
 						'wppa_porder_restricted'		=> 'no',
+						'wppa_reup_is_restricted' 		=> 'yes',
 						
 //						'wppa_strip_file_ext'			=> 'no',
 						'wppa_newphoto_name_method' 	=> 'filename',
@@ -1283,6 +1285,7 @@ Hide Camera info
 						'wppa_exif_max_array_size'		=> '10',
 						'wppa_chgsrc_is_restricted'		=> 'no',
 						'wppa_ext_status_restricted' 	=> 'no',
+						'wppa_desc_is_restricted' 		=> 'no',
 						'wppa_newpag_create'			=> 'no',
 						'wppa_newpag_content'			=> '[wppa type="cover" album="w#album" align="center"][/wppa]',
 						'wppa_newpag_type'				=> 'page',

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 6.2.3
+* version 6.2.4
 *
 */
 
@@ -250,18 +250,19 @@ function wppa_shortcodes( $xatts, $content = '' ) {
 global $wppa;
 global $wppa_postid;
 global $wppa_opt;
-
-	$atts = $xatts;
 	
-	extract( shortcode_atts( array(
+	$atts = shortcode_atts( array(
 		'type'  	=> 'generic',
 		'album' 	=> '',
 		'photo' 	=> '',
 		'size'		=> '',
 		'align'		=> '',
 		'taglist'	=> '',
-		'cols'		=> ''
-	), $atts ) );
+		'cols'		=> '',
+		'calendar' 	=> '',
+		'all' 		=> '',
+		'reverse' 	=> '',
+	), $xatts );
 
 	// Find occur
 	if ( get_the_ID() != $wppa_postid ) {		// New post
@@ -292,79 +293,78 @@ global $wppa_opt;
 	$wppa['shortcode_content'] 	= $content;
 
 	// Find type
-	switch ( $type ) {
+	switch ( $atts['type'] ) {
 		case 'landing':
 			$wppa['is_landing'] = '1';
 		case 'generic':
 			break;
 		case 'cover':
-			$wppa['start_album'] = $album;
+			$wppa['start_album'] = $atts['album'];
 			$wppa['is_cover'] = '1';
 			break;
 		case 'album':
 		case 'content':
-			$wppa['start_album'] = $album;
+			$wppa['start_album'] = $atts['album'];
 			break;
 		case 'thumbs':
-			$wppa['start_album'] = $album;
+			$wppa['start_album'] = $atts['album'];
 			$wppa['photos_only'] = true;
 			break;
 		case 'covers':
-			$wppa['start_album'] = $album;
+			$wppa['start_album'] = $atts['album'];
 			$wppa['albums_only'] = true;
 			break;
 		case 'slide':
-			$wppa['start_album'] = $album;
+			$wppa['start_album'] = $atts['album'];
 			$wppa['is_slide'] = '1';
-			$wppa['start_photo'] = $photo;
-//			$wppa['is_single'] = $single;
+			$wppa['start_photo'] = $atts['photo'];
 			break;
 		case 'slideonly':
-			$wppa['start_album'] = $album;
+			$wppa['start_album'] = $atts['album'];
 			$wppa['is_slideonly'] = '1';
-			$wppa['start_photo'] = $photo;
+			$wppa['start_photo'] = $atts['photo'];
 			break;
 		case 'slideonlyf':
-			$wppa['start_album'] = $album;
+			$wppa['start_album'] = $atts['album'];
 			$wppa['is_slideonly'] = '1';
 			$wppa['film_on'] = '1';
-			$wppa['start_photo'] = $photo;
+			$wppa['start_photo'] = $atts['photo'];
 			break;
 			
 		case 'filmonly':
-			$wppa['start_album'] = $album;
+			$wppa['start_album'] = $atts['album'];
 			$wppa['is_slideonly'] = '1';
 			$wppa['is_filmonly'] = '1';
 			$wppa['film_on'] = '1';
-			$wppa['start_photo'] = $photo;
+			$wppa['start_photo'] = $atts['photo'];
 			break;
 		
 		case 'photo':
-			$wppa['single_photo'] = $photo;
+			$wppa['single_photo'] = $atts['photo'];
 			break;
 		case 'mphoto':
-			$wppa['single_photo'] = $photo;
+			$wppa['single_photo'] = $atts['photo'];
 			$wppa['is_mphoto'] = '1';
 			break;
 		case 'slphoto':
 			$wppa['is_slide'] = '1';
-			$wppa['start_photo'] = $photo;
+			$wppa['start_photo'] = $atts['photo'];
 			$wppa['is_single'] = '1';
 			break;
 		case 'autopage':
 			$wppa['is_autopage'] = '1';
 			break;			
 		case 'upload':
-			$wppa['start_album'] = $album;
+			$wppa['start_album'] = $atts['album'];
 			$wppa['is_upload'] = true;
 			break;
 		case 'multitag':
-			$wppa['taglist'] = wppa_sanitize_tags($taglist);
+			$wppa['taglist'] = wppa_sanitize_tags($atts['taglist']);
 			$wppa['is_multitagbox'] = true;
-			if ( $cols ) $wppa['tagcols'] = $cols;
+			if ( $atts['cols'] ) $wppa['tagcols'] = $atts['cols'];
 			break;
 		case 'tagcloud':
-			$wppa['taglist'] = wppa_sanitize_tags($taglist);
+			$wppa['taglist'] = wppa_sanitize_tags($atts['taglist']);
 			$wppa['is_tagcloudbox'] = true;
 			break;
 		case 'bestof':
@@ -373,12 +373,12 @@ global $wppa_opt;
 			break;
 		case 'superview':
 			$wppa['is_superviewbox'] = true;
-			$wppa['start_album'] = $album;
+			$wppa['start_album'] = $atts['album'];
 			break;
 		case 'search':
 			$wppa['is_searchbox'] = true;
-			$wppa['may_sub'] = isset( $xatts['sub'] ) && $xatts['sub'];
-			$wppa['may_root'] = isset( $xatts['root'] ) && $xatts['root'];
+			$wppa['may_sub'] = $atts['sub'];
+			$wppa['may_root'] = $atts['root'];
 			break;
 		case 'supersearch':
 			$wppa['is_supersearch'] = true;
@@ -390,34 +390,35 @@ global $wppa_opt;
 			}
 			$wppa['is_calendar'] = true;
 			$wppa['calendar'] = 'timestamp';
-			if ( isset( $xatts['calendar'] ) && in_array( $xatts['calendar'], array( 'exifdtm', 'timestamp', 'modified' ) ) ) {
-				$wppa['calendar'] = $xatts['calendar'];
+			if ( in_array( $atts['calendar'], array( 'exifdtm', 'timestamp', 'modified' ) ) ) {
+				$wppa['calendar'] = $atts['calendar'];
 			}
-			if ( isset( $xatts['all'] ) ) {
+			if ( $atts['all'] ) {
 				$wppa['calendarall'] = true;
 			}
-			$wppa['start_album'] = $album;
+			$wppa['reverse'] 		= $atts['reverse'];
+			$wppa['start_album'] 	= $atts['album'];
 			break;
 			
 		default:
-			wppa_dbg_msg ( 'Invalid type: '.$type.' in wppa shortcode.', 'red', 'force' );
+			wppa_dbg_msg ( 'Invalid type: '.$atts['type'].' in wppa shortcode.', 'red', 'force' );
 			return '';
 	}
 	
 	// Count (internally to wppa_albums)
 	
 	// Find size
-	if ($size == 'auto') {
+	if ( $atts['size'] == 'auto' ) {
 		$wppa['auto_colwidth'] = true;
 		$wppa['fullsize'] = '';
 	}
 	else {
 		$wppa['auto_colwidth'] = false;
-		$wppa['fullsize'] = $size;
+		$wppa['fullsize'] = $atts['size'];
 	}
 	
 	// Find align
-	$wppa['align'] = $align;
+	$wppa['align'] = $atts['align'];
 
 	// Ready to render ???
 	$do_it = false;
@@ -452,40 +453,38 @@ add_shortcode( 'wppa', 'wppa_shortcodes' );
 function wppa_set_shortcodes( $xatts, $content = '' ) {
 global $wppa;
 global $wppa_opt;
-
-	$atts = $xatts;
 	
-	extract( shortcode_atts( array(
+	$atts = shortcode_atts( array(
 		'name' 		=> '',
 		'value' 	=> ''
-	), $atts ) );
+	), $xatts );
 	
 	$allowed = explode( ',', wppa_opt( 'wppa_wppa_set_shortcodes' ) );
 	
 	// Valid item?
-	if ( $name && ! in_array( $name, $allowed ) ) {
-		wppa_dbg_msg( $name . ' is not a runtime settable configuration entity.', 'red', 'force' );
+	if ( $atts['name'] && ! in_array( $atts['name'], $allowed ) ) {
+		wppa_dbg_msg( $atts['name'] . ' is not a runtime settable configuration entity.', 'red', 'force' );
 	}
 	// Reset?
-	elseif ( ! $name ) {
+	elseif ( ! $atts['name'] ) {
 		$wppa_opt = get_option( 'wppa_cached_options', false );
 		wppa_reset_occurrance();
 	}
 	// Option?
-	elseif ( substr( $name, 0, 5 ) == 'wppa_' ) {
-		if ( isset( $wppa_opt[$name] ) ) {
-			$wppa_opt[$name] = $value;
+	elseif ( substr( $atts['name'], 0, 5 ) == 'wppa_' ) {
+		if ( isset( $wppa_opt[$atts['name']] ) ) {
+			$wppa_opt[$atts['name']] = $atts['value'];
 		}
 		else {
-			wppa_dbg_msg( $name . ' is not an option value.', 'red', 'force' );
+			wppa_dbg_msg( $atts['name'] . ' is not an option value.', 'red', 'force' );
 		}
 	}
 	else {
-		if ( isset( $wppa[$name] ) ) {
-			$wppa[$name] = $value;
+		if ( isset( $wppa[$atts['name']] ) ) {
+			$wppa[$atts['name']] = $value;
 		}
 		else {
-			wppa_dbg_msg( $name . ' is not a runtime value.', 'red', 'force' );
+			wppa_dbg_msg( $atts['name'] . ' is not a runtime value.', 'red', 'force' );
 		}
 	}
 }
