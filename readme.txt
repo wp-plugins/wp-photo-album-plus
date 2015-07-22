@@ -195,6 +195,7 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
 * Re-upload existing photo on the Photo admin screen and the front-end edit photo screen.
 For administrators or for anybody that sees the edit photo screen when Table VII-C8 (Update photofiles restricted) is unchecked.
+* Edit photo description can be disabled for non-administrators in Table VII-C7.
 * Shortcode attribute reverse="1" for type="calendar", to get the youngest first.
 * You can select black or lightgray for the Ugly Browse Buttons in Table II-B13.1
 
