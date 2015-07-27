@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 6.2.4
+* version 6.2.5
 *
 */
 
@@ -259,6 +259,8 @@ global $wppa_opt;
 		'align'		=> '',
 		'taglist'	=> '',
 		'cols'		=> '',
+		'sub' 		=> '',
+		'root' 		=> '',
 		'calendar' 	=> '',
 		'all' 		=> '',
 		'reverse' 	=> '',

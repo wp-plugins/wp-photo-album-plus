@@ -5,7 +5,7 @@
 * Various funcions to display a thumbnail image
 * Contains all possible frontend thumbnail types
 *
-* Version 6.2.3
+* Version 6.2.5
 *
 */
 
@@ -1691,7 +1691,7 @@ global $thumb;
 		}
 
 			if ( $tmp == 'pre' && wppa_opt( 'film_linktype' ) == 'lightbox' ) $cursor = 'cursor:default;';
-			if ( $tmp == 'film' && ! $com_alt && ! wppa_cdn() && ! wppa_switch( 'lazy_or_htmlcomp' ) ) $result .= '<!--';
+			if ( $tmp == 'film' && ! $com_alt && ! wppa_cdn( 'front' ) && ! wppa_switch( 'lazy_or_htmlcomp' ) ) $result .= '<!--';
 				if ( wppa_is_video( $thumb['id'] ) ) {
 					$result .= wppa_get_video_html( array( 	'id' 			=> $thumb['id'],
 																	'width' 		=> $imgattr_a['width'],
@@ -1716,7 +1716,7 @@ global $thumb;
 									' data-title="' . ( $psourl ? esc_attr( $thumb['linktitle'] ) : '' ) . '"' .
 									' />';
 				}
-			if ( $tmp == 'film' && ! $com_alt && ! wppa_cdn() && ! wppa_switch( 'lazy_or_htmlcomp' ) ) $result .= '-->';
+			if ( $tmp == 'film' && ! $com_alt && ! wppa_cdn( 'front' ) && ! wppa_switch( 'lazy_or_htmlcomp' ) ) $result .= '-->';
 
 		if ( $psourl ) {	// True only when pso activated and data present
 			$result .= '</a>';	// $psourl contains url, target and title

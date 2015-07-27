@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 6.1.9
+* Version 6.2.5
 *
 */
 
@@ -164,6 +164,7 @@ global $wpdb;
 						'<option value="tagcloud" style="color:#070" >'.__('A tagcloud box', 'wppa').'</option>'.
 						'<option value="multitag" style="color:#070" >'.__('A multitag box', 'wppa').'</option>'.
 						'<option value="superview" style="color:#070" >'.__('A superview box', 'wppa').'</option>'.
+						'<option value="calendar" style="color:#070" >'.__('A calendar box', 'wppa').'</option>'.
 					'</select>'.
 				'</td>'.
 			'</tr>'.
@@ -478,6 +479,21 @@ global $wpdb;
 						}
 					$result .= '</select>'.
 				'</td>'.				
+			'</tr>'.
+			
+			// Calendar
+			'<tr id="wppagallery-calendar-tr" style="display:none;" >'.
+				'<th><label for="wppagallery-calendar">'.__('Calendar type:', 'wppa').'</lable></th>'.
+				'<td>'.
+					'<select id="wppagallery-calendar-type" style="color:#070;max-width:400px;" onchange="wppaGalleryEvaluate()" >'.
+						'<option value="exifdtm" >'.__('By EXIF date', 'wppa').'</option>'.
+						'<option value="timestamp" >'.__('By date of upload', 'wppa').'</option>'.
+						'<option value="modified" >'.__('By date last modified', 'wppa').'</option>'.
+					'</select>'.
+					'<br />'.
+					'<input type="checkbox" id="wppagallery-calendar-reverse" onchange="wppaGalleryEvaluate()" >'.__('Last date first', 'wppa').'&nbsp;&nbsp;'.
+					'<input type="checkbox" id="wppagallery-calendar-allopen" onchange="wppaGalleryEvaluate()" >'.__('Initially display all', 'wppw').
+				'</td>'.
 			'</tr>'.
 
 			// Size

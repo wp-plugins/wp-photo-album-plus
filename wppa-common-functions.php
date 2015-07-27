@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 6.2.4
+* version 6.2.5
 * 
 */
 
@@ -889,8 +889,15 @@ global $thumb;
 		if ( is_admin() && ! $wppa['ajax'] ) echo( '.' );
 		
 		// Update CDN
-		if ( wppa_opt( 'wppa_cdn_service' ) == 'cloudinary' || wppa_opt( 'wppa_cdn_service' ) == 'cloudinarymaintenance' ) {
-			wppa_upload_to_cloudinary( $id );
+		$cdn = wppa_cdn( 'admin' );
+		if ( $cdn ) {
+			switch ( $cdn ) {
+				case 'cloudinary':
+					wppa_upload_to_cloudinary( $id );
+					break;
+				default:
+					wppa_dbg_msg( 'Missing upload instructions for '.$cdn, 'red', 'force' );
+			}
 		}
 		
 		// Clear (super)cache

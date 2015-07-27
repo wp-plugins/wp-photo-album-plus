@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 6.2.2
+* Version 6.2.5
 * 
 */
  
@@ -32,9 +32,9 @@ global $blog_id;
 	
 	// If in the cloud...
 	$is_old = wppa_too_old_for_cloud( $id );
-	if ( wppa_cdn() && ! wppa_is_multi( $id ) && ! $is_old ) {	
+	if ( wppa_cdn( 'front' ) && ! wppa_is_multi( $id ) && ! $is_old ) {	
 		if ( $x && $y ) {		// Only when size is given !! To prevent download of the fullsize image
-			switch ( wppa_cdn() ) {
+			switch ( wppa_cdn( 'front' ) ) {
 				case 'cloudinary':
 					$transform	= explode( ':', $wppa_opt['wppa_thumb_aspect'] );
 					$t 			= 'limit';
@@ -94,8 +94,8 @@ global $blog_id;
 	
 	// If in the cloud...
 	$is_old = wppa_too_old_for_cloud( $id );
-	if ( wppa_cdn() && ! wppa_is_multi( $id ) && ! $is_old ) { 
-		switch ( wppa_cdn() ) {
+	if ( wppa_cdn( 'front' ) && ! wppa_is_multi( $id ) && ! $is_old ) { 
+		switch ( wppa_cdn( 'front' ) ) {
 			case 'cloudinary':
 				$x = round($x);
 				$y = round($y);
@@ -1269,10 +1269,8 @@ global $wpdb;
 	wppa_flush_upldr_cache('photoid', $photo);
 	
 	// Delete from cloud
-	switch ( wppa_cdn() ) {
-		case 'cloudinary':
-			wppa_delete_from_cloudinary( $photo );
-			break;
+	if ( wppa_cdn( 'admin' ) == 'cloudinary' ) {
+		wppa_delete_from_cloudinary( $photo );
 	}
 }
 
@@ -1618,7 +1616,7 @@ global $thumb;
 	return $thumb['owner'];
 }
 
-function wppa_cdn() {
+function wppa_cdn( $side ) {
 global $wppa_opt;
 
 	// What did we specify in the settings page?
@@ -1627,15 +1625,29 @@ global $wppa_opt;
 	// Check for fully configured and active
 	switch ( $cdn ) {
 		case 'cloudinary':
+		case 'cloudinarymaintenance':
 			if ( $wppa_opt['wppa_cdn_cloud_name'] && $wppa_opt['wppa_cdn_api_key'] && $wppa_opt['wppa_cdn_api_secret'] ) {
+				if ( $side == 'admin' ) {		// Admin: always return cloudinary
+					$cdn = 'cloudinary';
+				}
+				elseif ( $side == 'front' ) {	// Front: NOT if in maintenance
+					if ( $cdn == 'cloudinarymaintenance' ) {
+						$cdn = false;
+					}
+				}
+				else {
+					wppa_dbg_msg( 'dbg', 'Wrong arg:'.$side.' in wppa_cdn()', 'red', 'force' );
+					$cdn = false;
+				}
 			}
 			else {
-				$cdn = '';	// Incomplete configuration
+				wppa_dbg_msg( 'dbg', 'Incomplete configuration of Cloudinary', 'red', 'force' );
+				$cdn = false;	// Incomplete configuration
 			}
 			break;
 			
 		default:
-			$cdn = '';
+			$cdn = false;
 
 	}
 	
@@ -1692,8 +1704,8 @@ function wppa_get_hires_url( $id ) {
 	}
 	
 	// Try CDN
-	if ( wppa_cdn() && ! wppa_too_old_for_cloud( $id ) ) {
-		switch ( wppa_cdn() ) {
+	if ( wppa_cdn( 'front' ) && ! wppa_too_old_for_cloud( $id ) ) {
+		switch ( wppa_cdn( 'front' ) ) {
 			case 'cloudinary':
 				$url = wppa_get_cloudinary_url( $id );
 				break;
@@ -2672,7 +2684,7 @@ function wppa_too_old_for_cloud( $id ) {
 
 	$thumb = wppa_cache_thumb( $id );
 	
-	$is_old = wppa_cdn() && wppa_opt( 'wppa_max_cloud_life' ) && ( time() > ( $thumb['timestamp'] + wppa_opt( 'wppa_max_cloud_life' ) ) );
+	$is_old = wppa_cdn( 'admin' ) && wppa_opt( 'wppa_max_cloud_life' ) && ( time() > ( $thumb['timestamp'] + wppa_opt( 'wppa_max_cloud_life' ) ) );
 
 	return $is_old;
 }

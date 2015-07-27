@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, gallery, slideshow, video, audio, lightbox, iptc, exif, cloudinary, fotomoto
-Version: 6.2.4
+Version: 6.2.5
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -188,6 +188,22 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 6.2.5 =
+
+= Bug Fixes =
+
+* Files of type .pmf with unsanitized filenames were not recognized in Import Photos. Fixed.
+* Fixed several potential undefined value warnings.
+
+= New Features =
+
+* Bulk edit can now also change photo owner if you are administrator and Table VII-D10 is ticked.
+* Bulk edit has a quick delete link at each photo.
+
+= Other Changes =
+
+* Added calendar based shortcodes to the shorcode generator.
 
 = 6.2.4 =
 

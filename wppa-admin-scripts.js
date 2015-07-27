@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 6.2.4
+/* Version 6.2.5
 /* Various js routines used in admin pages		
 */
 
@@ -1078,8 +1078,13 @@ function impUpd(elm, id) {
 	}
 }
 
-function wppaAjaxDeletePhoto(photo) {
+function wppaAjaxDeletePhoto(photo, bef, aft) {
 
+	var before = '';
+	var after = '';
+	if ( bef ) before = bef;
+	if ( aft ) after = aft;
+	
 	wppaFeAjaxLog('in');
 
 	var xmlhttp = wppaGetXmlHttp();
@@ -1114,13 +1119,13 @@ function wppaAjaxDeletePhoto(photo) {
 				
 				if ( ArrValues[1] == 0 ) document.getElementById('photostatus-'+photo).innerHTML = ArrValues[2];	// Error
 				else {
-					document.getElementById('photoitem-'+photo).innerHTML = ArrValues[2];	// OK
+					document.getElementById('photoitem-'+photo).innerHTML = before+ArrValues[2]+after;	// OK
 					wppaProcessFull(ArrValues[3], ArrValues[4]);
 				}
 				wppaFeAjaxLog('out');
 			}
 			else {	// status != 200
-				document.getElementById('photoitem-'+photo).innerHTML = '<span style="color:red;" >Comm error '+xmlhttp.status+': '+xmlhttp.statusText+'</span>';
+				document.getElementById('photoitem-'+photo).innerHTML = before+'<span style="color:red;" >Comm error '+xmlhttp.status+': '+xmlhttp.statusText+'</span>'+after;
 			}			
 		}
 	}

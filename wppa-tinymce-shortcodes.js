@@ -2,7 +2,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 6.1.9
+* Version 6.2.5
 *
 */
 
@@ -93,6 +93,7 @@ function wppaGalleryEvaluate() {
 	jQuery('#wppagallery-search-tr').hide();
 	jQuery('#wppagallery-taglist-tr').hide();
 	jQuery('#wppagallery-album-super-tr').hide();
+	jQuery('#wppagallery-calendar-tr').hide();
 
 	// Init shortcode parts
 	var shortcode 		= '[wppa';
@@ -126,6 +127,9 @@ function wppaGalleryEvaluate() {
 	var tags 			= '';
 	var cat 			= '';
 	var i,j,t;
+	var caltype 		= '';
+	var reverse 		= false;
+	var allopen 		= false;
 	
 	// Type
 	topType = jQuery('#wppagallery-top-type').attr('value');
@@ -217,6 +221,14 @@ function wppaGalleryEvaluate() {
 				case 'superview':
 					jQuery('#wppagallery-album-super-tr').show();
 					album = jQuery('#wppagallery-album-super-parent').attr('value');
+					break;
+				case 'calendar':
+					jQuery('#wppagallery-calendar-tr').show();
+					jQuery('#wppagallery-album-super-tr').show();	// Optional parent album
+					caltype = jQuery('#wppagallery-calendar-type').attr('value');
+					reverse = jQuery('#wppagallery-calendar-reverse').attr('checked');
+					allopen = jQuery('#wppagallery-calendar-allopen').attr('checked');
+					parent  = jQuery('#wppagallery-album-super-parent').attr('value');
 					break;
 				default:
 			}
@@ -425,6 +437,18 @@ function wppaGalleryEvaluate() {
 	if ( type == 'tagcloud' || type == 'multitag' ) {
 		if ( taglist != '' ) {
 			shortcode += ' taglist="'+taglist+'"';
+		}
+	}
+	if ( type == 'calendar' ) {
+		shortcode += ' calendar="'+caltype+'"';
+		if ( parent ) {
+			shortcode += ' album="'+parent+'"';
+		}
+		if ( reverse ) {
+			shortcode += ' reverse="1"';
+		}
+		if ( allopen ) {
+			shortcode += ' all="1"';
 		}
 	}
 	

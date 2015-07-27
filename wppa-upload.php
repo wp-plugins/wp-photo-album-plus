@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 6.2.1
+* Version 6.2.5
 *
 */
 
@@ -757,8 +757,11 @@ global $wppa_supported_audio_extensions;
 								$ct = 0;
 								$idx = '0';
 								if ( is_array( $files ) ) foreach ( $files as $file ) {
-									$ext = strtolower( substr( strrchr( $file, "." ), 1 ) );
-									$meta =	wppa_strip_ext( $file ).'pmf';
+									$ext = wppa_get_ext( $file ); //strtolower( substr( strrchr( $file, "." ), 1 ) );
+									$meta =	wppa_strip_ext( $file ).'.PMF';
+									if ( ! is_file( $meta ) ) {
+										$meta =	wppa_strip_ext( $file ).'.pmf';
+									}
 									if ( in_array( $ext, $wppa_supported_photo_extensions ) ) { ?>
 										<td id="td-file-<?php echo( $idx ) ?>" >
 											<input type="checkbox" id="file-<?php echo( $idx ) ?>" name="file-<?php echo( $idx ) ?>" title="<?php echo $file ?>" class= "wppa-pho" <?php if ( $is_sub_depot ) echo( 'checked="checked"' ) ?> />
@@ -1632,7 +1635,11 @@ global $wppa_supported_audio_extensions;
 			if ( in_array( $ext, $wppa_supported_photo_extensions ) ) {
 			
 				// See if a metafile exists
-				$meta = substr( $file, 0, strlen( $file ) - 3 ).'pmf';
+				//$meta = substr( $file, 0, strlen( $file ) - 3 ).'pmf';
+				$meta = wppa_strip_ext( $unsanitized_path_name ) . '.PMF';
+				if ( ! is_file( $meta ) ) {
+					$meta = wppa_strip_ext( $unsanitized_path_name ) . '.pmf';
+				}
 				
 				// find all data: name, desc, porder form metafile
 				if ( is_file( $meta ) ) {

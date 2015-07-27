@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 6.2.4
+* Version 6.2.5
 *
 */
 
@@ -250,9 +250,9 @@ global $wppa_tags;
 	$need_cloud = wppa_switch( 'wppa_cdn_service_update' ); 
 	global $blog_id;
 	if ( $need_cloud ) { 
-		switch ( wppa_opt( 'wppa_cdn_service' ) ) {
+		$cdn = wppa_cdn( 'admin' );
+		switch ( $cdn ) {
 			case 'cloudinary':
-			case 'cloudinarymaintenance':
 				if ( ! function_exists( 'wppa_upload_to_cloudinary' ) ) {
 					wppa_error_message('Trying to upload to Cloudinary, but it is not configured');
 					exit;

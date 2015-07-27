@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 6.2.4
+* version 6.2.5
 *
 */
 
@@ -991,8 +991,8 @@ global $wppa_session;
 			$photo = $_REQUEST['photo-id'];
 			$nonce = $_REQUEST['wppa-nonce'];
 			$item  = $_REQUEST['item'];
-			$value = $_REQUEST['value'];
-			$value  = wppa_decode( $value );
+			$value = isset( $_REQUEST['value'] ) ? $_REQUEST['value'] : '';
+			$value = wppa_decode( $value );
 
 			// Check validity
 			if ( ! wp_verify_nonce( $nonce, 'wppa_nonce_'.$photo ) ) {
@@ -1347,8 +1347,8 @@ global $wppa_session;
 				case 'file':
 
 					// Check on upload error
-					if ( $_FILES[photo][error] ) {
-						echo '||'.$_FILES[photo][error].'||'.__( '<b>Error during upload.</b>', 'wppa');
+					if ( $_FILES['photo']['error'] ) {
+						echo '||'.$_FILES['photo']['error'].'||'.__( '<b>Error during upload.</b>', 'wppa');
 						exit;
 					}
 					
@@ -1360,6 +1360,7 @@ global $wppa_session;
 					if ( $bret ) {
 					
 						// Update timestamps and sizes
+						$alb = wppa_get_photo_item( $photo, 'album' );
 						wppa_update_album( array( 	'id' => $alb, 
 													'timestamp' => time(),
 													) );
@@ -1620,7 +1621,7 @@ global $wppa_session;
 					break;
 				case 'wppa_jpeg_quality':
 					wppa_ajax_check_range( $value, false, '20', '100', __( 'JPG Image quality', 'wppa' ) );
-					if ( wppa_opt( 'wppa_cdn_service' ) == 'cloudinary' && ! $wppa['out'] ) {
+					if ( wppa_cdn( 'admin' ) == 'cloudinary' && ! $wppa['out'] ) {
 						wppa_delete_derived_from_cloudinary();
 					}
 					break;
