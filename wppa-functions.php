@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 6.2.4
+* Version 6.2.6
 *
 */
 
@@ -1831,7 +1831,7 @@ static $user;
 	$dellink = '';
 	if ( ! $wppa['is_filmonly'] && ! $wppa['is_slideonly'] ) {
 		if ( ! wppa_is_user_blacklisted() ) {
-			if ( ( wppa_user_is( 'administrator' ) ) || ( wppa_get_user() == wppa_get_photo_owner( $id ) && wppa_switch( 'upload_edit' ) ) ) {
+			if ( ( wppa_user_is( 'administrator' ) ) || ( current_user_can( 'wppa_moderate' ) ) || ( wppa_get_user() == wppa_get_photo_owner( $id ) && wppa_switch( 'upload_edit' ) ) ) {
 				$editlink = '
 					<div style="float:right; margin-right:6px;" >' .
 						'<a' .

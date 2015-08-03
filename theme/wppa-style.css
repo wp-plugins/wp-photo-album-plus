@@ -8,7 +8,7 @@
 /*
 /* You may always look into a newer version of this file to see what new classes and id's come with an upgrade
 /*
-/* This is version 6.1.0
+/* This is version 6.2.6
 */
 
 .wppa-container, .wppa-cover-box, .wppa-thumb-area {
@@ -140,6 +140,7 @@
 	margin:0 !important;
 	padding:0 !important;
 	border:none !important;
+	width: 105%;
 }
 
 /* The popup small image, here is still a problem with IE6 */

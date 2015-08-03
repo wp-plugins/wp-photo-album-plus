@@ -2,7 +2,7 @@
 //
 // conatins common vars and functions
 // 
-var wppaJsVersion = '6.1.14';
+var wppaJsVersion = '6.2.6';
 
 // Important notice:
 // All external vars that may be given a value in wppa-non-admin.php must be declared here and not in other front-end js files!!
@@ -476,6 +476,26 @@ function _wppaDoAutocol( mocc ) {
 		row++;
 		rowHeightPerc = jQuery( '#wppa-mas-h-'+row+'-'+mocc ).attr( 'data-height-perc' );
 	}
+	
+	// For IE and Chrome there is the class .wppa-mas-h-{mocc} 
+	// Set widths of frames for IE and Chrome. These browsers interprete width:auto 
+	// sometimes not in relation to the specified height, but to the available space.
+	var frames = jQuery( '.wppa-mas-h-'+mocc );
+	var tnm = wppaMinThumbSpace;
+	for ( var i=0;i<frames.length;i++ ) {
+
+		var img = wppaGetChildI( frames[i] );
+		if ( img ) {
+			if ( img.nodeName == 'IMG' ) {
+				if ( ! img.complete ) {
+					setTimeout( '_wppaDoAutocol( '+mocc+' )', 400 ); // Try again after 400 ms.
+					return;
+				}
+			}
+			var wd = ( ( img.naturalWidth ) / ( img.naturalHeight ) * ( img.height ) ) + tnm;
+			jQuery( frames[i] ).css( {'width': wd } );
+		}
+	}
 
 	// User upload
 	jQuery( ".wppa-file-"+mocc ).css( 'width',w - 16 ); 
@@ -527,6 +547,28 @@ function _wppaDoAutocol( mocc ) {
 	jQuery( ".wppa-mimg-"+mocc ).css( 'width',w );
 	jQuery( ".wppa-mimg-"+mocc ).css( 'height', '' );
 
+}
+
+// get (grand)child of parent with id like i-...
+function wppaGetChildI( parent ) {
+
+	var children = parent.childNodes;
+	var img = false;
+	var i;
+
+	for ( i=0; i<children.length; i++ ) {
+		var child = children[i];
+		if ( child.id ) {
+			if ( child.id.substr( 0, 2 ) == 'i-' ) {
+				return child;
+			}
+		}
+		var grandChild = wppaGetChildI( child );
+		if ( grandChild ) {
+			return grandChild;
+		}
+	}
+	return false;
 }
 
 // Fotomoto

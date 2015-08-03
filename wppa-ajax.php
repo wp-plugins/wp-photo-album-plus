@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 6.2.5
+* version 6.2.6
 *
 */
 
@@ -236,7 +236,7 @@ global $wppa_session;
 			
 		case 'remove':
 			if ( isset( $_REQUEST['photo-id'] ) ) {	// Remove photo
-				if ( ( wppa_user_is( 'administrator' ) ) || ( wppa_get_user() == wppa_get_photo_owner( $_REQUEST['photo-id'] ) && wppa_switch( 'wppa_upload_edit' ) ) ) { // Frontend delete?
+				if ( ( wppa_user_is( 'administrator' ) ) || ( current_user_can( 'wppa_moderate' ) ) || ( wppa_get_user() == wppa_get_photo_owner( $_REQUEST['photo-id'] ) && wppa_switch( 'wppa_upload_edit' ) ) ) { // Frontend delete?
 					wppa_delete_photo( $_REQUEST['photo-id'] );
 					echo 'OK||'.__( 'Photo removed', 'wppa' );
 					exit;

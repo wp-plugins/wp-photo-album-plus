@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 6.2.4
+* Version 6.2.6
 *
 *
 */
@@ -2361,7 +2361,7 @@ global $wppa_first_comment_html;
 
 								// Find the avatar
 								$avt = '';
-								$usr = get_user_by( 'login', $comment['user'] );
+								$usr = get_user_by( 'email', $comment['email'] );
 								if ( $usr ) {	// Local Avatar ?
 									$avt = str_replace( "'", "\"", get_avatar( $usr->ID, wppa_opt( 'wppa_gravatar_size' ), $default ) );
 								}

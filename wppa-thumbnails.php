@@ -5,7 +5,7 @@
 * Various funcions to display a thumbnail image
 * Contains all possible frontend thumbnail types
 *
-* Version 6.2.5
+* Version 6.2.6
 *
 */
 
@@ -577,7 +577,7 @@ global $wpdb;
 
 		// Delete and Edit links
 		if ( wppa_switch( 'edit_thumb' ) && ! wppa_is_user_blacklisted() ) {
-			if ( ( wppa_user_is( 'administrator' ) ) || ( wppa_get_user() == wppa_get_photo_owner( $id ) && wppa_switch( 'upload_edit' ) ) ) {
+			if ( ( wppa_user_is( 'administrator' ) ) || ( current_user_can( 'wppa_moderate' ) ) || ( wppa_get_user() == wppa_get_photo_owner( $id ) && wppa_switch( 'upload_edit' ) ) ) {
 				$result .= 	'<div' .
 								' class="wppa-thumb-text"' .
 								' style="' . __wcs( 'wppa-thumb-text' ) . '"' .
@@ -970,8 +970,19 @@ global $wpdb;
 	else {
 		$imgheight 		= wppa_opt( 'thumbsize' );
 		$imgwidth 		= $imgheight * wppa_get_thumbratioxy( $id );
-		$imgstyle  		= 'height:100%; width:auto; margin:0; position:relative; box-sizing:border-box;';
+		$imgstyle  		= 	'height:100%;' .
+							'width:auto;' .
+							'margin:0;' .
+							'position:relative;' .
+							'box-sizing:border-box;' .
+							'';
 		$frame_h 		= 'height:100%; ';
+	}
+	
+	// Mouseover effect?
+	if ( wppa_switch( 'use_thumb_opacity' ) ) {
+		$opac = wppa_opt( 'wppa_thumb_opacity' );
+		$imgstyle .= ' opacity:' . $opac/100 . '; filter:alpha( opacity=' . $opac . ' );';
 	}
 
 	// Padding
@@ -1038,9 +1049,12 @@ global $wpdb;
 	else $link = wppa_get_imglnk_a( 'thumb', $id ); // voor parent uplr
 
 	// Open the thumbframe
+	// Add class wppa-mas-h-{mocc} for ie
+	$is_ie_or_chrome = strpos( $_SERVER["HTTP_USER_AGENT"], 'Trident' ) || strpos( $_SERVER["HTTP_USER_AGENT"], 'Chrome' );
 	$result .= '
 				<div' .
 					' id="thumbnail_frame_masonry_' . $id . '_' . wppa( 'mocc' ) . '"' .
+					( $is_ie_or_chrome ? ' class="wppa-mas-h-' . wppa( 'mocc' ) . '"' : '' ) .
 					' style="' .
 						$frame_h .
 						'position:static;' .
@@ -1048,6 +1062,7 @@ global $wpdb;
 						'font-size:12px;' .
 						'line-height:8px;' .
 						'overflow:hidden;' .
+						'box-sizing:content-box;' .
 					'" >';
 
 	// The medals
@@ -1214,7 +1229,7 @@ global $wpdb;
 		else {
 
 			// The div img
-			$result .= '<div onclick="'.$link['url'].'" class="thumb-img" id="x-'.$id.'-'.wppa( 'mocc' ).'">';
+			$result .= '<div onclick="'.$link['url'].'" class="thumb-img" id="x-'.$id.'-'.wppa( 'mocc' ).'" style="height:100%;" >';
 
 			// Video?
 			if ( $is_video ) {
@@ -1260,9 +1275,8 @@ global $wpdb;
 	}
 	else {	// no link
 		if ( wppa_switch( 'use_thumb_popup' ) ) {
-			$result .= '<div id="x-'.$id.'-'.wppa( 'mocc' ).'">';
+			$result .= '<div id="x-'.$id.'-'.wppa( 'mocc' ).'" style="height:100%" >';
 				if ( $is_video ) {
-//					$result .= '<video preload="metadata" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.'" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
 					$result .= wppa_get_video_html( array(
 							'id'			=> $id,
 					//		'width'			=> $imgwidth,
@@ -1284,6 +1298,7 @@ global $wpdb;
 				}
 				else {
 					$result .= 	'<img' .
+									' id="i-'.$id.'-'.wppa( 'mocc' ).'"' .
 									' src="' . $imgurl . '"' .
 									' ' . $imgalt .
 									( $title ? ' title="' . $title . '"' : '' ) .
@@ -1319,6 +1334,7 @@ global $wpdb;
 			}
 			else {
 				$result .= 	'<img' .
+								' id="i-'.$id.'-'.wppa( 'mocc' ).'"' .
 								' src="' . $imgurl . '"' .
 								' ' . $imgalt .
 								( $title ? ' title="' . $title . '"' : '' ) .

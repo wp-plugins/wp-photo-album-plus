@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 6.2.5
+* Version 6.2.6
 * 
 */
  
@@ -2534,6 +2534,9 @@ function wppa_explode_csv( $txt ) {
 
 	// Make local copy
 	$temp = $txt;
+	
+	// Convert latin/iso to utf-8
+	$temp = utf8_encode( $temp );
 	
 	// Replace double double quotes
 	$temp = str_replace( '""', '&ddquote;', $temp );
