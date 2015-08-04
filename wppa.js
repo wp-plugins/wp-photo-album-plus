@@ -2,7 +2,7 @@
 //
 // conatins common vars and functions
 // 
-var wppaJsVersion = '6.2.6';
+var wppaJsVersion = '6.2.7';
 
 // Important notice:
 // All external vars that may be given a value in wppa-non-admin.php must be declared here and not in other front-end js files!!
@@ -477,25 +477,8 @@ function _wppaDoAutocol( mocc ) {
 		rowHeightPerc = jQuery( '#wppa-mas-h-'+row+'-'+mocc ).attr( 'data-height-perc' );
 	}
 	
-	// For IE and Chrome there is the class .wppa-mas-h-{mocc} 
-	// Set widths of frames for IE and Chrome. These browsers interprete width:auto 
-	// sometimes not in relation to the specified height, but to the available space.
-	var frames = jQuery( '.wppa-mas-h-'+mocc );
-	var tnm = wppaMinThumbSpace;
-	for ( var i=0;i<frames.length;i++ ) {
-
-		var img = wppaGetChildI( frames[i] );
-		if ( img ) {
-			if ( img.nodeName == 'IMG' ) {
-				if ( ! img.complete ) {
-					setTimeout( '_wppaDoAutocol( '+mocc+' )', 400 ); // Try again after 400 ms.
-					return;
-				}
-			}
-			var wd = ( ( img.naturalWidth ) / ( img.naturalHeight ) * ( img.height ) ) + tnm;
-			jQuery( frames[i] ).css( {'width': wd } );
-		}
-	}
+	// Fix bug in ie and chrome
+	wppaSetMasHorFrameWidthsForIeAndChrome(mocc);
 
 	// User upload
 	jQuery( ".wppa-file-"+mocc ).css( 'width',w - 16 ); 
@@ -549,6 +532,28 @@ function _wppaDoAutocol( mocc ) {
 
 }
 
+// Fix bug in IE and Chrome
+function wppaSetMasHorFrameWidthsForIeAndChrome(mocc) {
+	// For IE and Chrome there is the class .wppa-mas-h-{mocc} 
+	// Set widths of frames for IE and Chrome. These browsers interprete width:auto 
+	// sometimes not in relation to the specified height, but to the available space.
+	var frames = jQuery( '.wppa-mas-h-'+mocc );
+	var tnm = wppaMinThumbSpace;
+	for ( var i=0;i<frames.length;i++ ) {
+
+		var img = wppaGetChildI( frames[i] );
+		if ( img ) {
+			if ( img.nodeName == 'IMG' ) {
+				if ( ! img.complete ) {
+					setTimeout( 'wppaSetMasHorFrameWidthsForIeAndChrome( '+mocc+' )', 400 ); // Try again after 400 ms.
+					return;
+				}
+			}
+			var wd = ( ( img.naturalWidth ) / ( img.naturalHeight ) * ( img.height ) ) + tnm;
+			jQuery( frames[i] ).css( {'width': wd } );
+		}
+	}
+}
 // get (grand)child of parent with id like i-...
 function wppaGetChildI( parent ) {
 

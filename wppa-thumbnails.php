@@ -5,7 +5,7 @@
 * Various funcions to display a thumbnail image
 * Contains all possible frontend thumbnail types
 *
-* Version 6.2.6
+* Version 6.2.7
 *
 */
 
@@ -1049,12 +1049,12 @@ global $wpdb;
 	else $link = wppa_get_imglnk_a( 'thumb', $id ); // voor parent uplr
 
 	// Open the thumbframe
-	// Add class wppa-mas-h-{mocc} for ie
+	// Add class wppa-mas-h-{mocc} for ie if horizontal
 	$is_ie_or_chrome = strpos( $_SERVER["HTTP_USER_AGENT"], 'Trident' ) || strpos( $_SERVER["HTTP_USER_AGENT"], 'Chrome' );
 	$result .= '
 				<div' .
 					' id="thumbnail_frame_masonry_' . $id . '_' . wppa( 'mocc' ) . '"' .
-					( $is_ie_or_chrome ? ' class="wppa-mas-h-' . wppa( 'mocc' ) . '"' : '' ) .
+					( $is_ie_or_chrome && wppa_opt( 'thumbtype' ) == 'masonry-h' ? ' class="wppa-mas-h-' . wppa( 'mocc' ) . '"' : '' ) .
 					' style="' .
 						$frame_h .
 						'position:static;' .

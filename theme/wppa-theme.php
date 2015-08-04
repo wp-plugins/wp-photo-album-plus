@@ -3,11 +3,11 @@
 * Package: wp-photo-album-plus
 *
 * display the albums/photos/slideshow in a page or post
-* Version 6.1.15
+* Version 6.2.7
 */
 function wppa_theme() {
 
-global $wppa_version; $wppa_version = '6-1-15-000';		// The version number of this file
+global $wppa_version; $wppa_version = '6-2-7-000';		// The version number of this file
 global $wppa;
 global $wppa_show_statistics;						// Can be set to true by a custom page template
 
@@ -199,7 +199,7 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 				$correction = wppa_opt( 'wppa_tn_margin' );
 
 				// Init the table
-				wppa_out( '<table class="wppa-masonry" style="margin-top:3px;" ><tbody class="wppa-masonry" >' );
+				wppa_out( '<table class="wppa-masonry wppa-masonry-h" style="margin-top:3px;" ><tbody class="wppa-masonry" >' );
 				
 				// Process the thumbnails
 				$row_content 		= '';
@@ -223,7 +223,7 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 					$last 			= $done_count == count( $thumbs );
 					if ( $row_width > $cont_width || $last ) {
 						$tot_marg 		= $rw_count * $correction;
-						$row_height 	= $row_width ? ( ( $target_row_height - $correction ) * ( $cont_width - '3' - $tot_marg ) / ( $row_width ) + $correction )  : '0';
+						$row_height 	= $row_width ? ( ( $target_row_height - $correction ) * ( $cont_width - $tot_marg ) / ( $row_width ) + $correction )  : '0';
 						if ( ! $last ) {
 							$max_row_height = max( $max_row_height, $row_height );
 						}
@@ -253,6 +253,9 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 				// The footer
 				wppa_album_name( 'bottom' );										// Optionally display album name
 				wppa_album_desc( 'bottom' );										// Optionally display album description
+				wppa_out( 	'<script type="text/javascript" >' .					// Fix bug in IE and Chrome
+								'wppaSetMasHorFrameWidthsForIeAndChrome(' . wppa( 'mocc' ) . ');' .
+							'</script>' );
 				wppa_thumb_area( 'close' );											// Close Thumbarea sub-container
 				
 			}	// Masonry-h
