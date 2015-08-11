@@ -3,7 +3,9 @@
 // Conatins lightbox modules
 // Dependancies: wppa.js and default wp jQuery library
 // 
-var wppaLightboxVersion = '6.1.15';
+var wppaLightboxVersion = '6.2.8';
+
+var wppaNormsBtnOpac = 1;
 
 // Initial initialization
 jQuery( document ).ready(function( e ) {
@@ -61,32 +63,48 @@ function wppaOvlKeyboardHandler( e ) {
 			wppaShowLegenda = 'hidden';
 			break;
 		case 'f':
-			var oldMode = wppaOvlMode;
-			wppaOvlStepMode();
-			var elem = document.getElementById('wppa-overlay-ic');
-			if ( ! elem ) return;
-			if ( oldMode == 'normal' ) {
-				if (elem.requestFullscreen) {
-					elem.requestFullscreen();
-				} else if (elem.mozRequestFullScreen) {
-					elem.mozRequestFullScreen();
-				} else if (elem.webkitRequestFullscreen) {
-					elem.webkitRequestFullscreen();
-				}
-				setTimeout( 'wppaOvlShow( '+wppaOvlIdx+' )', 1000 );
-			}
-			if ( wppaOvlMode == 'normal' ) {
-				if (document.cancelFullScreen) {
-					document.cancelFullScreen();
-				} else if (document.mozCancelFullScreen) {
-					document.mozCancelFullScreen();
-				} else if (document.webkitCancelFullScreen) {
-					document.webkitCancelFullScreen();
-				}
-			}
-			jQuery('#wppa-ovl-legenda-1').html('');
+			wppaOvlFull();
 			break;
 	}
+}
+
+function wppaOvlFull() {
+	var oldMode = wppaOvlMode;
+	wppaOvlStepMode();
+	var elem = document.getElementById('wppa-overlay-ic');
+	if ( ! elem ) return;
+	if ( oldMode == 'normal' ) {
+		if (elem.requestFullscreen) {
+			elem.requestFullscreen();
+		} else if (elem.mozRequestFullScreen) {
+			elem.mozRequestFullScreen();
+		} else if (elem.webkitRequestFullscreen) {
+			elem.webkitRequestFullscreen();
+		}
+		setTimeout( 'wppaOvlShow( '+wppaOvlIdx+' )', 1000 );
+	}
+	if ( wppaOvlMode == 'normal' ) {
+		if (document.cancelFullScreen) {
+			document.cancelFullScreen();
+		} else if (document.mozCancelFullScreen) {
+			document.mozCancelFullScreen();
+		} else if (document.webkitCancelFullScreen) {
+			document.webkitCancelFullScreen();
+		}
+	}
+	jQuery('#wppa-ovl-legenda-1').html('');
+}
+
+function wppaOvlNorm() {
+	wppaOvlMode = 'normal';
+	if (document.cancelFullScreen) {
+		document.cancelFullScreen();
+	} else if (document.mozCancelFullScreen) {
+		document.mozCancelFullScreen();
+	} else if (document.webkitCancelFullScreen) {
+		document.webkitCancelFullScreen();
+	}
+	setTimeout( 'wppaOvlShow( '+wppaOvlIdx+' )', 1000 );
 }
 
 // Show the lightbox overlay.
@@ -299,6 +317,17 @@ wppaConsoleLog( 'wppaOvlShow arg='+arg );
 				'</div>';
 			'</div>';
 		}
+		
+		// The 'back to normal' icon
+		html += '<img' +
+					' id="wppa-norms-btn"' +
+					' src="' + wppaImageDirectory + 'norms.png"' +
+					' style="height:32px;z-index:100092;position:fixed;top:0;right:0;opacity:'+wppaNormsBtnOpac+'"' +
+					' onclick="wppaOvlNorm()"' +
+					' ontouchstart="wppaOvlNorm()"' +
+					' onmouseover="jQuery(this).fadeTo(600,1);"' +
+					' onmouseout="jQuery(this).fadeTo(600,0);wppaNormsBtnOpac=0;"' +
+					' >';
 
 		// Replacing the html stops a running video,
 		// so we only replace html on a new id, or a photo without audio

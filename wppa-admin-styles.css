@@ -1,7 +1,7 @@
 /* admin-styles.css 
 *
 * wp-photo-album-plus
-* version 5.4.19
+* version 6.2.8
 */
 #files_list, #files_list2
 {
@@ -144,70 +144,12 @@ ul.wppa_nav
 	line-height: 15px;
 }
 
-/**/
-
 .photoitem, .albumtable, .table_wrapper {
 	margin: 7px 0;
 	padding: 5px;
 	border: 1px #ccc solid;
 }
-/*
-.phototable a, .albumtable a {
-	font-weight:bold;
-}
 
-.phototable a:hover, .albumtable a:hover, .phototable a:active, .albumtable a:active {
-	color: #d54e21 !important;
-	cursor: pointer;
-}
-
-.phototable, .albumtable {
-	margin-bottom: 0px;
-	margin-top: 0.5em;
-	float: left;
-/*	width: 45%;*/
-/*
-}
-
-.phototable td, .albumtable td {
-	font-size: 11px;
-	line-height: 20px;
-	text-align:left;
-	vertical-align:top;
-	padding:4px 0;
-}
-
-.phototable th, .albumtable th {
-	width: 150px;
-	text-align:left;
-	vertical-align:top;
-	padding:4px 0;
-}
-
-.albumtable label, .phototable label { 
-	font-weight: bold; 
-	cursor: default;
-	text-align:left;
-	vertical-align:top;
-	padding:4px 0;
-}
-
-/* .photoitem img { float: right; } 
-.photoitem .clear { clear: both; }
-.photoitem .details { float: left; }
-.photoitem .details label {float: left; }
-
-.photoitem td {
-	margin-left: 10px;
-}
-/*
-.photoitem .desc
-{
-	float: left;
-	margin-left: 10px;
-	font-weight: bold;
-}
-*/
 .photoitem .deletelink
 {
 	text-decoration: none;
@@ -328,3 +270,7 @@ border:1px solid black;
 #phpinfo .vr {background-color: #cccccc; text-align: right; color: #000000;}
 #phpinfo img {float: right; border: 0px;}
 #phpinfo hr {width: 600px; background-color: #cccccc; border: 0px; height: 1px; color: #000000;}
+
+.wppa-links table { border-top:1px solid #ccc; margin:0; padding:0; }
+.wppa-links td { margin:0 !important; padding:0 10px !important; }
+

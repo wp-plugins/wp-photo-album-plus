@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 6.1.14
+* Version 6.2.8
 * 
 */
 
@@ -315,6 +315,16 @@ global $wppa_session;
 		</div>';
 	}
 	echo '
+		<img' .
+			' id="wppa-fulls-btn"' .
+			' src="'.wppa_get_imgdir().'fulls.png"' .
+			' style="height:32px;z-index:100091;position:fixed;top:0;right:0;"' .
+			' onclick="wppaOvlFull()"' .
+			' ontouchstart="wppaOvlFull()"' .
+			' onmouseover="jQuery(this).fadeTo(600,1);"' .
+			' onmouseout="jQuery(this).fadeTo(600,0);"' .
+			' >';
+	echo '
 	</div>
 	<div id="wppa-overlay-ic" style="position:fixed; top:0; padding-top:10px; z-index:100095; opacity:1; box-shadow:none;" >
 	</div>
@@ -483,8 +493,11 @@ global $wppa_dynamic_css_data;
 	if ( wppa_switch('wppa_inline_css') ) {
 		echo '
 <!-- WPPA+ Custom styles -->
-<style type="text/css" >
-'.wppa_opt( 'wppa_custom_style' ).'
+<style type="text/css" >';
+		if ( ! wppa_switch( 'ovl_fs_icons' ) ) {
+			echo '#wppa-norms-btn, #wppa-fulls-btn { display:none; }';
+		}
+		echo wppa_opt( 'wppa_custom_style' ).'
 </style>';
 	}
 

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 6.2.4
+* Version 6.2.8
 * 
 */
 
@@ -731,6 +731,7 @@ Hide Camera info
 						'wppa_ovl_show_startstop' 			=> 'yes',
 						'wppa_ovl_show_legenda' 			=> 'yes',
 						'wppa_show_zoomin'					=> 'yes',
+						'wppa_ovl_fs_icons' 				=> 'yes',
 						
 						'wppa_owner_on_new_line' 			=> 'no',
 						

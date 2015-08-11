@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 6.2.6
+* Version 6.2.8
 * 
 */
  
@@ -714,7 +714,8 @@ global $wppa_opt;
 									'wppa_bcolor_search',
 									'wppa_arrow_color',
 									'wppa_cover_minheight',
-									'wppa_head_and_text_frame_height'
+									'wppa_head_and_text_frame_height',
+									'wppa_ovl_fs_icons',
 		);
 	if ( in_array( $option, $dynamic_css_critical ) ) {
 		@ unlink ( WPPA_PATH.'/wppa-dynamic.css' );		// Will be auto re-created

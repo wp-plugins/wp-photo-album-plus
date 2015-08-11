@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 6.2.5
+* version 6.2.8
 * 
 */
 
@@ -374,7 +374,7 @@ global $wppa;
 							</tr>
 							<?php } ?>
 							<!-- Insert code -->
-							<?php if ( current_user_can( 'edit_posts' ) || current_user_can( 'edit_pages' ) ) { ?>
+							<?php /* if ( current_user_can( 'edit_posts' ) || current_user_can( 'edit_pages' ) ) { ?>
 							<tr  >
 								<th  style="padding-top:0; padding-bottom:4px;">
 									<label>
@@ -385,7 +385,7 @@ global $wppa;
 									<?php echo esc_js( '[wppa type="photo" photo="'.$photo['id'].'" size="'.wppa_opt( 'wppa_fullsize' ).'"][/wppa]' ) ?>
 								</td>
 							</tr>
-							<?php } ?>
+							<?php } */ ?>
 							
 							<!-- Auto Page -->
 							<?php if ( wppa_switch( 'wppa_auto_page' ) && ( current_user_can( 'edit_posts' ) || current_user_can( 'edit_pages' ) ) ) { ?>
@@ -894,6 +894,44 @@ global $wppa;
 				</div>
 
 				<div style="clear:both;"></div>
+				
+				<?php if ( ! isset( $_REQUEST['quick'] ) ) { ?>
+				<div class="wppa-links" >
+					<table style="width:100%" >
+						<tbody>
+							<?php if ( current_user_can( 'edit_posts' ) || current_user_can( 'edit_pages' ) ) { ?>
+							<tr>
+								<td><?php _e( 'Single image shortcode', 'wppa' ) ?>:</td>
+								<td><?php echo esc_js( '[wppa type="photo" photo="'.$photo['id'].'" size="'.wppa_opt( 'wppa_fullsize' ).'"][/wppa]' ) ?></td>
+							</tr>
+							<?php } ?>
+							<?php if ( is_file( wppa_get_source_path( $photo['id'] ) ) ) { ?>
+							<tr>
+								<td><?php _e( 'Permalink', 'wppa' ) ?>:</td>
+								<td><?php echo wppa_get_source_pl( $photo['id'] ) ?></td>
+							</tr>
+							<?php } ?>
+							<tr>
+								<td><?php _e( 'Hi resolution url', 'wppa' ) ?>:</td>
+								<td><?php echo wppa_get_hires_url( $photo['id'] ) ?></td>
+							</tr>
+							<?php if ( is_file( wppa_get_photo_path( $photo['id'] ) ) ) { ?>
+							<tr>
+								<td><?php _e( 'Display file url', 'wppa' ) ?>:</td>
+								<td><?php echo wppa_get_lores_url( $photo['id'] ) ?></td>
+							</tr>
+							<?php } ?>
+							<?php if ( is_file( wppa_get_thumb_path( $photo['id'] ) ) ) { ?>
+							<tr>
+								<td><?php _e( 'Thumbnail file url', 'wppa' ) ?>:</td>
+								<td><?php echo wppa_get_tnres_url( $photo['id'] ) ?></td>
+							</tr>
+							<?php } ?>
+						</tbody>
+					</table>
+				</div>
+				<?php } ?>
+				
 </div>				
 				<!-- Comments -->
 				<?php 

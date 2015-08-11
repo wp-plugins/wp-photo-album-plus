@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 6.2.7
+* Version 6.2.8
 *
 */
 
@@ -3983,6 +3983,7 @@ global $wpdb;
 		wppa_save_source( $file['tmp_name'], $filename, $alb );
 		wppa_update_album( array( 'id' => $alb, 'timestamp' => time() ) );
 		wppa_flush_treecounts( $alb );
+		wppa_flush_upldr_cache( 'photoid', $id );
 	}
 	if ( wppa_make_the_photo_files( $file['tmp_name'], $id, $ext ) ) {
 	

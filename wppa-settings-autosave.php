@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 6.2.5
+* Version 6.2.8
 *
 */
 
@@ -2424,6 +2424,15 @@ global $wppa_tags;
 							$tags = 'lightbox,layout';
 							wppa_setting($slug, '19', $name, $desc, $html, $help, $clas, $tags);
 						
+							$name = __('Show fullscreen icons', 'wppa');
+							$desc = __('Shows fullscreen and back to normal icon buttons on upper right corner', 'wppa');
+							$help = '';
+							$slug = 'wppa_ovl_fs_icons';
+							$html = wppa_checkbox($slug);
+							$clas = '';
+							$tags = 'lightbox,layout';
+							wppa_setting($slug, '20', $name, $desc, $html, $help, $clas, $tags);
+							
 							$name = __('Overlay show counter', 'wppa');
 							$desc = __('Show the x/y counter below the image.', 'wppa');
 							$help = '';
@@ -2441,6 +2450,7 @@ global $wppa_tags;
 							$clas = '';
 							$tags = 'lightbox,meta,layout';
 							wppa_setting($slug, '91', $name, $desc, $html, $help, $clas, $tags);
+							
 							}
 						wppa_setting_subheader( 'H', '1', __( 'Frontend upload configuration settings', 'wppa' ) );
 							{							

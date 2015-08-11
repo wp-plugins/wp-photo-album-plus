@@ -3,7 +3,7 @@
 /* Package: wp-photo-album-plus
 /*
 /* Various style computation routines
-/* Version 6.2.2
+/* Version 6.2.8
 /*
 */
 
@@ -250,6 +250,13 @@ global $wppa_dynamic_css_data;
 	' . ( wppa_opt( 'wppa_arrow_color' ) ? 'color:' . wppa_opt( 'wppa_arrow_color' ) . '; ' : '' ) . '
 }';
 
+	// Add miscellaneous styles
+	if ( ! wppa_switch( 'ovl_fs_icons' ) ) {
+		$content .= '
+#wppa-norms-btn, #wppa-fulls-btn { display:none; }';
+	}
+	
+	// Add custom style
 	$content .= wppa_opt( 'wppa_custom_style' );
 
 	// Open file
