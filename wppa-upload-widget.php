@@ -6,7 +6,7 @@
 *
 * A wppa widget to upload photos
 *
-* Version 6.2.0
+* Version 6.2.9
 */
 
 class WppaUploadWidget extends WP_Widget {
@@ -46,16 +46,13 @@ class WppaUploadWidget extends WP_Widget {
 		$wppa['in_widget'] = 'upload';
 				
 		$wppa['mocc']++;
-		$wppa['out'] = '';
 
-		if ( wppa_switch('wppa_user_upload_login') && ! is_user_logged_in() ) return;	// Not logged in while login req'd for upload, no create also
-
-		wppa_user_create_html( $album, $wppa_opt['wppa_widget_width'], 'widget' );
-		wppa_user_upload_html( $album, $wppa_opt['wppa_widget_width'], 'widget' );
-		if ( ! $wppa['out'] ) return;	// No possibility to upload or create, skip the widget
+		$create = wppa_get_user_create_html( $album, $wppa_opt['wppa_widget_width'], 'widget' );
+		$upload = wppa_get_user_upload_html( $album, $wppa_opt['wppa_widget_width'], 'widget' );
 		
-		$text = '<div class="wppa-upload-widget" style="margin-top:2px; margin-left:2px;" >'.$wppa['out'].'</div>';
-		$wppa['out'] = '';
+		if ( ! $create && ! $upload ) return;	// Nothing to do 
+		
+		$text = '<div class="wppa-upload-widget" style="margin-top:2px; margin-left:2px;" >'.$create.$upload.'</div>';
 
 		echo $before_widget;
 		if ( ! empty( $title ) ) { echo $before_title . $title . $after_title; } 

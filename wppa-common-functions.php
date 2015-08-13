@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 6.2.5
+* version 6.2.9
 * 
 */
 
@@ -655,7 +655,7 @@ function wppa_get_time_since( $oldtime ) {
 }
 
 // See if an album or any album is accessable for the current user
-function wppa_have_access( $alb ) {
+function wppa_have_access( $alb = '0' ) {
 global $wpdb;
 global $current_user;
 

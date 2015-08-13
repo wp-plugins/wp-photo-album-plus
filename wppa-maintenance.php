@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains (not yet, but in the future maybe) all the maintenance routines
-* Version 6.2.2
+* Version 6.2.9
 *
 */
 
@@ -50,6 +50,7 @@ global $wppa_supported_audio_extensions;
 							'wppa_comp_sizes',
 							'wppa_edit_tag',
 							'wppa_sync_cloud',
+							'wppa_test_proc',
 
 						);
 		foreach ( array_keys( $all_slugs ) as $key ) {
@@ -186,6 +187,7 @@ global $wppa_supported_audio_extensions;
 		case 'wppa_comp_sizes':
 		case 'wppa_edit_tag':
 		case 'wppa_sync_cloud':
+		case 'wppa_test_proc':
 		
 			// Process photos
 			$table 		= WPPA_PHOTOS;
@@ -496,7 +498,20 @@ global $wppa_supported_audio_extensions;
 						if ( ! $is_old && $is_in_cloud ) {
 							$wppa_session[$slug.'_skipped']++;
 						}
-
+						break;
+						
+					case 'wppa_test_proc':
+						$tags 	= '';
+						$albid 	= $photo['album'];
+						$albnam = wppa_get_album_item( $albid, 'name' );
+						$tags .= $albnam;
+						while ( $albid > '0' ) {
+							$albid = wppa_get_album_item( $albid, 'a_parent' );
+							if ( $albid > '0' ) {
+								$tags .= ',' . wppa_get_album_item( $albid, 'name' );
+							}
+						}
+						wppa_update_photo( array( 'id' => $photo['id'], 'tags' => wppa_sanitize_tags( $tags ) ) );
 						break;
 		
 				}
@@ -550,7 +565,7 @@ global $wppa_supported_audio_extensions;
 			break;
 	}
 								
-	// Fiond togo
+	// Find togo
 	if ( $slug == 'wppa_cleanup' ) {
 		$togo 	= $topid - $lastid;
 	}
@@ -620,6 +635,9 @@ global $wppa_supported_audio_extensions;
 			case 'wppa_edit_tag':
 				wppa_clear_taglist();
 				$reload = 'reload';
+				break;
+			case 'wppa_test_proc':
+				wppa_clear_taglist();
 				break;
 		}
 	}

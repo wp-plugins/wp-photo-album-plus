@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 6.2.8
+* Version 6.2.9
 *
 */
 
@@ -1176,24 +1176,49 @@ global $wppa_session;
 	}
 	// Tagcloud or multitag? Tags do not look at album
 	elseif ( $wppa['is_tag'] ) {
+	
+		// Init
+		$andor = 'AND';
+		if ( strpos( $wppa['is_tag'], ';' ) ) $andor = 'OR';
+		
+		// Compute status clause for query
 		$status = "`status` <> 'pending' AND `status` <> 'scheduled'";
 		if ( ! is_user_logged_in() ) $status .= " AND `status` <> 'private'";
+		
+		// Define a pre-selection on tags clause for query. This fixes a capacity issue
+		$seltags = explode( ',', wppa_sanitize_tags( $wppa['is_tag'] ) );
+		$tags_like = '';
+		$first = true;
+		foreach ( $seltags as $tag ) {
+			if ( ! $first ) {
+				$tags_like .= " " . $andor;
+			}
+			$tags_like .= " `tags` LIKE '%".$tag."%'";
+			$first = false;
+		}
 
+		// Prepare final query
 		if ( current_user_can( 'wppa_moderate' ) ) {
-			$temp = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `tags` <> '' ".wppa_get_photo_order( '0' ), ARRAY_A ); 
+			$query = "SELECT * FROM `".WPPA_PHOTOS."` WHERE (".$tags_like.") ".wppa_get_photo_order( '0' ); 
 		}
 		else {
-			$temp = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE ".$status." AND `tags` <> '' ".wppa_get_photo_order( '0' ), ARRAY_A ); 
+			$query = "SELECT * FROM `".WPPA_PHOTOS."` WHERE (".$tags_like.") AND ".$status." ".wppa_get_photo_order( '0' ); 
 		}
+		
+		// Do query
+		$temp = $wpdb->get_results( $query, ARRAY_A );
+		
+		// Log query
 		wppa_dbg_q( 'Q-TG' );
-		$tags = wppa_get_taglist();
+		
+		// The resulrt may contain photos with tags that contain tags searched for, e.g. 'Nature' where 'Nat' was searched for
+		// To remove these, all found photos are compared with the tags requested, i.e. their ids are being compared with the taglist
+		$tags 	= wppa_get_taglist();
 		$thumbs = false;
-		$andor = 'and';
-		if ( strpos( $wppa['is_tag'], ';' ) ) $andor = 'or';
 
 		foreach ( array_keys( $temp ) as $index ) {
-			if ( $andor == 'and' ) {	// and
-				$seltags = explode( ',',$wppa['is_tag'] );
+			if ( $andor == 'AND' ) {	// and
+//				$seltags = explode( ',',$wppa['is_tag'] );
 				$in = true;
 				if ( $seltags ) foreach ( $seltags as $seltag ) {
 					if ( $seltag && ! @in_array( $temp[$index]['id'], $tags[$seltag]['ids'] ) ) {
@@ -1202,7 +1227,7 @@ global $wppa_session;
 				}
 			}
 			else {	// or
-				$seltags = explode( ';',$wppa['is_tag'] );
+//				$seltags = explode( ';',$wppa['is_tag'] );
 				$in = false;
 				if ( $seltags ) foreach ( $seltags as $seltag ) {
 					if ( $seltag && @in_array( $temp[$index]['id'], $tags[$seltag]['ids'] ) ) {
@@ -2923,14 +2948,7 @@ global $wppa;
 		if ( $wppa['is_cover'] == '1' ) {		// Cover has no thumbs: 0 pages
 			$result = '0';
 		} 
-		elseif ( $arraycount <= wppa_opt( 'min_thumbs' ) 
-					&& ! $wppa['src'] 
-					&& ! $wppa['is_tag'] 
-					&& ! $wppa['is_related']
-					&& ! $wppa['is_upldr']
-					&& ! $wppa['supersearch']
-					&& ! $wppa['calendar']
-				 ) {	// Less than treshold and not searching and not from tagcloud: 0
+		elseif ( $arraycount <= wppa_get_mincount() ) {
 			$result = '0';
 		}
 		elseif ( $tps != '0' ) {
@@ -2943,18 +2961,10 @@ global $wppa;
 	return $result;
 }
 
+// Get the minimum number of photos to display ( photocount treshold if not virtuel )
 function wppa_get_mincount() {
-global $wppa;
 
-	if ( $wppa['src'] ) return '0';
-	if ( $wppa['is_topten'] ) return '0';
-	if ( $wppa['is_lasten'] ) return '0';
-	if ( $wppa['is_comten'] ) return '0';
-	if ( $wppa['is_featen'] ) return '0';
-	if ( $wppa['is_tag'] ) return '0';
-	if ( $wppa['is_upldr'] ) return '0';
-	if ( $wppa['supersearch'] ) return '0';
-	if ( $wppa['calendar'] ) return '0';
+	if ( wppa_is_virtual() ) return '0';
 
 	return wppa_opt( 'min_thumbs' );
 }

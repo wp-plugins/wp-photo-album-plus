@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, gallery, slideshow, video, audio, lightbox, iptc, exif, cloudinary, fotomoto
-Version: 6.2.8
+Version: 6.2.9
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -188,6 +188,20 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 6.2.9 =
+
+= Bug Fixes =
+
+* In certain virtual albums, when the number of photos was less than the photocount treshold value, they did not show up where they should. Fixed.
+* Local avatars now also work when the users email address is not required in coments.
+* Fixed a capacity problem in search on tags ( multitag and tagcloud widgets ).
+* If there is an album selection box in the frontend upload dialog and the submit button is pressed, it is now checked if an album has been selected before the upload is started.
+
+= Other Changes =
+
+* To create albums at the frontend, the pre-existance of any album that the user can upload to, is no longer required.
+* The submit button and the ajax progression bar in the frontend upload dialog are moved to the bottom of the box.
 
 = 6.2.8 =
 

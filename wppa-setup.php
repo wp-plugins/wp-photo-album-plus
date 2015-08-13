@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 6.2.8
+* Version 6.2.9
 * 
 */
 
@@ -1162,7 +1162,8 @@ Hide Camera info
 						'wppa_tag_to_edit' 			=> '',
 						'wppa_new_tag_value' 		=> '',
 						'wppa_edit_tag' 			=> '',
-						'wppa_sync_cloud' 	=> '',
+						'wppa_sync_cloud' 			=> '',
+						'wppa_test_proc' 			=> '',
 						
 						'wppa_maint_ignore_concurrency_error' 	=> 'no',
 

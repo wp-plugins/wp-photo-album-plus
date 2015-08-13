@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 6.2.8
+* Version 6.2.9
 *
 */
 
@@ -6414,7 +6414,21 @@ global $wppa_tags;
 							$clas = 'cloudinary';
 							$tags = 'system';
 							wppa_setting(false, '15', $name, $desc, $html, $help, $clas, $tags);
-
+/*							
+							$name = __('Test proc', 'wppa');
+							$desc = __('For OpaJaap only', 'wppa');
+							$help = '';
+							$slug2 = 'wppa_test_proc';
+							$html1 = '';
+							$html2 = wppa_maintenance_button( $slug2 );
+							$html3 = wppa_status_field( $slug2 );
+							$html4 = wppa_togo_field( $slug2 );
+							$html = array($html1, $html2, $html3, $html4);
+							$clas = '';
+							$tags = 'system';
+							wppa_setting(false, '99', $name, $desc, $html, $help, $clas, $tags);
+							
+*/
 						wppa_setting_subheader('C', '4', __('Listings', 'wppa'));
 
 							$name = __('List Logfile', 'wppa');
