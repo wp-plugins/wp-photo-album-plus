@@ -56,7 +56,7 @@ global $wpdb;
 			$count = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` " );
 		}
 		else {
-			$count = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_PHOTOS,"` WHERE ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR owner = %s )", wppa_get_user() );
+			$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR `owner` = %s )", wppa_get_user() ) );
 		}
 	}
 	else {
