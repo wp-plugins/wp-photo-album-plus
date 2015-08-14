@@ -2975,7 +2975,7 @@ global $wppa;
 	$wppa['out'] .= wppa_nltab() . 	'<div' .
 										' id="wppa-popup-'.wppa( 'mocc' ).'"' .
 										' class="wppa-popup-frame wppa-thumb-text"' .
-										' style="'.__wcs( 'wppa-thumb-text' ).'" onmouseout="wppaPopDown( '.wppa( 'mocc' ).' );"' .
+										' style="max-width:2048px;'.__wcs( 'wppa-thumb-text' ).'" onmouseout="wppaPopDown( '.wppa( 'mocc' ).' );"' .
 										' >' .
 									'</div>';
 	$wppa['out'] .= wppa_nltab() . 	'<div style="clear:both;"></div>';

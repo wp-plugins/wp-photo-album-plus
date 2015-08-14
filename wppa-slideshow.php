@@ -703,7 +703,7 @@ global $thumb;
 			$wppa['out'] .= wppa_nltab().'<a class="wppa-next-'.$wppa['mocc'].' wppa-arrow" style="'.__wcs('wppa-arrow').'" id="next-film-arrow-'.$wppa['mocc'].'" onclick="wppaLast('.$wppa['mocc'].');" title="'.__a('Last', 'wppa_theme').'" >&raquo;</a>';
 		$wppa['out'] .= wppa_nltab().'</div>';
 		$wppa['out'] .= wppa_nltab().'<div id="filmwindow-'.$wppa['mocc'].'" class="filmwindow" style="'.$IE6.' position:absolute; display: block; height:'.$height.'px; margin: 0 0 0 '.$marg.'px; overflow:hidden;">';
-			$wppa['out'] .= wppa_nltab('+').'<div id="wppa-filmstrip-'.$wppa['mocc'].'" style="height:'.$height1.'px; width:'.$width.'px; margin-left: -100px;">';
+			$wppa['out'] .= wppa_nltab('+').'<div id="wppa-filmstrip-'.$wppa['mocc'].'" style="height:'.$height1.'px; width:'.$width.'px; max-width:'.$width.'px;margin-left: -100px;">';
 	}
 	
 	$cnt = count($thumbs);
