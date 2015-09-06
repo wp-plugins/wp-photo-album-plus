@@ -3,48 +3,48 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 6.2.5
+* Version 6.2.10
 *
 */
 
 if ( ! defined( 'WPPA_ABSPATH' ) )
     die( "Can't load this file directly" );
- 
+
 class wppaGallery
 {
     function __construct() {
 		add_action( 'init', array( $this, 'action_admin_init' ) ); // 'admin_init'
 	}
-	 
+
 	function action_admin_init() {
 		// only hook up these filters if we're in the admin panel, and the current user has permission
 		// to edit posts or pages
 		if ( current_user_can( 'edit_posts' ) || current_user_can( 'edit_pages' ) ) {
 			add_filter( 'mce_buttons', array( $this, 'filter_mce_button' ) );
-			add_filter( 'mce_external_plugins', array( $this, 'filter_mce_plugin' ) );	
+			add_filter( 'mce_external_plugins', array( $this, 'filter_mce_plugin' ) );
 		}
 	}
-	 
+
 	function filter_mce_button( $buttons ) {
 		// add a separation before our button.
 		array_push( $buttons, '|', 'mygallery_button' );
 		return $buttons;
 	}
-	 
+
 	function filter_mce_plugin( $plugins ) {
 		// this plugin file will work the magic of our button
-		if ( wppa_switch( 'wppa_use_scripts_in_tinymce' ) ) {
-			$file = 'wppa-tinymce-scripts.js';
-		}
-		else {
-			$file = 'wppa-tinymce-shortcodes.js';
-		}
+//		if ( wppa_switch( 'wppa_use_scripts_in_tinymce' ) ) {
+//			$file = 'js/wppa-tinymce-scripts.js';
+//		}
+//		else {
+			$file = 'js/wppa-tinymce-shortcodes.js';
+//		}
 		$plugins['wppagallery'] = plugin_dir_url( __FILE__ ) . $file;
 		return $plugins;
 	}
- 
+
 }
- 
+
 $wppagallery = new wppaGallery();
 
 add_action('admin_head', 'wppa_inject_js');
@@ -79,16 +79,16 @@ global $wpdb;
 		$albums = wppa_add_paths( $albums );
 		$albums = wppa_array_sort( $albums, 'name' );
 	}
-	
+
 	// Prepare photoinfo
 	$photos = $wpdb->get_results( "SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` ORDER BY `timestamp` DESC LIMIT 100", ARRAY_A );
-	
+
 	// Get Tags/cats
 	$tags 	= wppa_get_taglist();
 	$cats 	= wppa_get_catlist();
 
 	// Make the html
-	$result = 
+	$result =
 	'<div id="wppagallery-form">'.
 		'<style type="text/css">'.
 			'#wppagallery-table tr, #wppagallery-table th, #wppagallery-table td {'.
@@ -96,7 +96,7 @@ global $wpdb;
 			'}'.
 		'</style>'.
 		'<table id="wppagallery-table" class="form-table">'.
-		
+
 			// Top type selection
 			'<tr >'.
 				'<th><label for="wppagallery-top-type">'.__('Type of WPPA display:', 'wppa').'</label></th>'.
@@ -111,7 +111,7 @@ global $wpdb;
 					'</select>'.
 				'</td>'.
 			'</tr>'.
-						
+
 			// Top type I: gallery sub type
 			'<tr id="wppagallery-galery-type-tr" style="display:none;" >'.
 				'<th><label for="wppagallery-galery-type">'.__('Type of gallery display:', 'wppa').'</label></th>'.
@@ -125,13 +125,13 @@ global $wpdb;
 					'</select>'.
 				'</td>'.
 			'</tr>'.
-			
+
 			// Top type II: slide sub type
 			'<tr id="wppagallery-slides-type-tr" style="display:none;" >'.
 				'<th><label for="wppagallery-slides-type">'.__('Type of slideshow:', 'wppa').'</label></th>'.
 				'<td>'.
 					'<select id="wppagallery-slides-type" name="type" onchange="wppaGalleryEvaluate()">'.
-						'<option value="" selected="selected" disabled="disabled" style="color:#700" >-- '.__('Please select a slideshow type', 'wppa').' --</option>'.					
+						'<option value="" selected="selected" disabled="disabled" style="color:#700" >-- '.__('Please select a slideshow type', 'wppa').' --</option>'.
 						'<option value="slide" style="color:#070" >'.__('A fully featured slideshow', 'wppa').'</option>'.
 						'<option value="slideonly" style="color:#070" >'.__('A slideshow without supporting boxes', 'wppa').'</option>'.
 						'<option value="slideonlyf" style="color:#070" >'.__('A slideshow with a filmstrip only', 'wppa').'</option>'.
@@ -145,7 +145,7 @@ global $wpdb;
 				'<th><label for="wppagallery-single-type">'.__('Type of single image:', 'wppa').'</label></th>'.
 				'<td>'.
 					'<select id="wppagallery-single-type" name="type" onchange="wppaGalleryEvaluate()">'.
-						'<option value="" selected="selected" disabled="disabled" style="color:#700" >-- '.__('Please select a single image type', 'wppa').' --</option>'.					
+						'<option value="" selected="selected" disabled="disabled" style="color:#700" >-- '.__('Please select a single image type', 'wppa').' --</option>'.
 						'<option value="photo" style="color:#070" >'.__('A plain single photo', 'wppa').'</option>'.
 						'<option value="mphoto" style="color:#070" >'.__('A single photo with caption', 'wppa').'</option>'.
 						'<option value="slphoto" style="color:#070" >'.__('A single photo in the style of a slideshow', 'wppa').'</option>'.
@@ -168,13 +168,13 @@ global $wpdb;
 					'</select>'.
 				'</td>'.
 			'</tr>'.
-			
+
 			// Top type V: other sub type
 			'<tr id="wppagallery-miscel-type-tr" style="display:none;" >'.
 				'<th><label for="wppagallery-miscel-type">'.__('Type miscellaneous:', 'wppa').'</label></th>'.
 				'<td>'.
 					'<select id="wppagallery-miscel-type" name="type" onchange="wppaGalleryEvaluate()">'.
-						'<option value="" selected="selected" disabled="disabled" style="color:#700" >-- '.__('Please select a miscellaneous display', 'wppa').' --</option>'.					
+						'<option value="" selected="selected" disabled="disabled" style="color:#700" >-- '.__('Please select a miscellaneous display', 'wppa').' --</option>'.
 						'<option value="generic">'.__('A generic albums display', 'wppa').'</option>'.
 						'<option value="upload">'.__('An upload box', 'wppa').'</option>'.
 						'<option value="landing">'.__('A landing page shortcode', 'wppa').'</option>'.
@@ -193,7 +193,7 @@ global $wpdb;
 					'</select>'.
 				'</td>'.
 			'</tr>'.
-			
+
 			// Virtual albums
 			'<tr id="wppagallery-album-virt-tr" style="display:none;" >'.
 				'<th><label for="wppagallery-album-virt">'.__('The selection to be used:', 'wppa').'</label></th>'.
@@ -213,7 +213,7 @@ global $wpdb;
 					'</select>'.
 				'</td>'.
 			'</tr>'.
-			
+
 			// Virtual albums that have covers
 			'<tr id="wppagallery-album-virt-cover-tr" style="display:none;" >'.
 				'<th><label for="wppagallery-album-virt-cover">'.__('The selection to be used:', 'wppa').'</label></th>'.
@@ -227,7 +227,7 @@ global $wpdb;
 					'</select>'.
 				'</td>'.
 			'</tr>'.
-			
+
 			// Real albums
 			'<tr id="wppagallery-album-real-tr" style="display:none;" >'.
 				'<th><label for="wppagallery-album-real">'.__('The Album(s) to be used:', 'wppa').'</label></th>'.
@@ -299,10 +299,10 @@ global $wpdb;
 				'<td>'.
 					'<select id="wppagallery-owner-parent" style="color:#070;max-width:400px;" name="parentalbum" multiple="multiple" onchange="wppaGalleryEvaluate()">';
 						if ( $albums ) {
-						
+
 							// Please select
 							$result .= '<option value="" selected="selected" >-- '.__('No parent specification', 'wppa').' --</option>';
-							
+
 							// Generic
 							$result .= '<option value="0" >-- '.__('The generic parent', 'wppa').' --</option>';
 
@@ -316,9 +316,9 @@ global $wpdb;
 							$result .= '<option value="0" >'.__('There are no albums yet', 'wppa').'</option>';
 						}
 					$result .= '</select>'.
-				'</td>'.				
+				'</td>'.
 			'</tr>'.
-			
+
 			// Album parent
 			'<tr id="wppagallery-album-parent-tr" style="display:none;" >'.
 				'<th><label for="wppagallery-album-parent">'.__('Parent album:', 'wppa').'</label></th>'.
@@ -339,7 +339,7 @@ global $wpdb;
 							$result .= '<option value="0" >'.__('There are no albums yet', 'wppa').'</option>';
 						}
 					$result .= '</select>'.
-				'</td>'.				
+				'</td>'.
 			'</tr>'.
 
 			// Album count
@@ -367,7 +367,7 @@ global $wpdb;
 						if ( $cats ) foreach ( array_keys( $cats ) as $cat ) {
 							$result .= '<option value="'.$cat.'" >'.$cat.'</option>';
 						}
-						$result .= 					
+						$result .=
 					'</select>'.
 				'</td>'.
 			'</tr>'.
@@ -378,10 +378,10 @@ global $wpdb;
 				'<td>'.
 					'<select id="wppagallery-photo" name="photo" class="wppagallery-photo" onchange="wppaGalleryEvaluate()" >';
 						if ( $photos ) {
-							
+
 							// Please select
 							$result .= '<option value="" disabled="disabled" selected="selected" style="color:#700" >-- '.__('Please select a photo', 'wppa').' --</option>';
-							
+
 							// Most recent 100 photos
 							foreach ( $photos as $photo ) {
 								$name = stripslashes(__($photo['name']));
@@ -408,7 +408,7 @@ global $wpdb;
 					'</small>'.
 				'</td>'.
 			'</tr>'.
-			
+
 			// Photo preview
 			'<tr id="wppagallery-photo-preview-tr" style="display:none;" >'.
 				'<th><label for="wppagallery-photo-preview" >'.__('Preview image:', 'wppa').'</label></th>'.
@@ -425,11 +425,11 @@ global $wpdb;
 						if ( $tags ) foreach ( array_keys($tags) as $tag ) {
 							$result .= '<option class="wppagallery-phototags" value="'.$tag.'" >'.$tag.'</option>';
 						}
-						$result .= 					
+						$result .=
 					'</select>'.
 				'</td>'.
 			'</tr>'.
-			
+
 			// Search additional settings
 			'<tr id="wppagallery-search-tr" style="display:none;" >'.
 				'<th><label>'.__('Additional features:', 'wppa').'</label></th>'.
@@ -438,7 +438,7 @@ global $wpdb;
 					'<input id="wppagallery-root" type="checkbox" name="root" onchange="wppaGalleryEvaluate()"/>'.__('Enable Rootsearch', 'wppa').
 				'</td>'.
 			'</tr>'.
-			
+
 			// Tagcloud/list additional settings
 			'<tr id="wppagallery-taglist-tr" style="display:none;" >'.
 				'<th><label>'.__('Additional features:', 'wppa').'</label></th>'.
@@ -457,7 +457,7 @@ global $wpdb;
 						$result .= '</select>'.
 				'</td>'.
 			'</tr>'.
-			
+
 			// Superview additional settings: optional parent
 			'<tr id="wppagallery-album-super-tr" style="display:none;" >'.
 				'<th><label for="wppagallery-album-super">'.__('Parent album:', 'wppa').'</label></th>'.
@@ -478,9 +478,9 @@ global $wpdb;
 							$result .= '<option value="0" >'.__('There are no albums yet', 'wppa').'</option>';
 						}
 					$result .= '</select>'.
-				'</td>'.				
+				'</td>'.
 			'</tr>'.
-			
+
 			// Calendar
 			'<tr id="wppagallery-calendar-tr" style="display:none;" >'.
 				'<th><label for="wppagallery-calendar">'.__('Calendar type:', 'wppa').'</lable></th>'.
@@ -508,7 +508,7 @@ global $wpdb;
 						__('Leave this blank for default size', 'wppa').'</small>'.
 				'</td>'.
 			'</tr>'.
-			
+
 			// Align
 			'<tr>'.
 				'<th><label for="wppagallery-align">'.__('Horizontal alignment:', 'wppa').'</label></th>'.

@@ -1,19 +1,18 @@
-<?php 
+<?php
 /* wppa-maintenance.php
 * Package: wp-photo-album-plus
 *
 * Contains (not yet, but in the future maybe) all the maintenance routines
-* Version 6.2.9
+* Version 6.2.10
 *
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
-	
+
 // Main maintenace module
 // Must return a string like: errormesssage||$slug||status||togo
 function wppa_do_maintenance_proc( $slug ) {
 global $wpdb;
-global $thumb;
 global $wppa_opt;
 global $wppa_session;
 global $wppa_supported_video_extensions;
@@ -21,8 +20,8 @@ global $wppa_supported_audio_extensions;
 
 	// Check for multiple maintenance procs
 	if ( ! wppa_switch( 'wppa_maint_ignore_concurrency_error' ) ) {
-		$all_slugs = array( 'wppa_remake_index_albums', 
-							'wppa_remove_empty_albums', 
+		$all_slugs = array( 'wppa_remake_index_albums',
+							'wppa_remove_empty_albums',
 							'wppa_remake_index_photos',
 							'wppa_apply_new_photodesc_all',
 							'wppa_append_to_photodesc',
@@ -44,12 +43,15 @@ global $wppa_supported_audio_extensions;
 							'wppa_exif_clear',
 							'wppa_watermark_all',
 							'wppa_create_all_autopages',
+							'wppa_delete_all_autopages',
 							'wppa_leading_zeros',
 							'wppa_add_gpx_tag',
 							'wppa_optimize_ewww',
 							'wppa_comp_sizes',
 							'wppa_edit_tag',
 							'wppa_sync_cloud',
+							'wppa_sanitize_tags',
+							'wppa_sanitize_cats',
 							'wppa_test_proc',
 
 						);
@@ -60,14 +62,14 @@ global $wppa_supported_audio_extensions;
 				}
 			}
 		}
-	}	
+	}
 
 	// Lock this proc
 	update_option( $slug.'_user', wppa_get_user() );
-	
+
 	// Extend session
 	wppa_extend_session();
-	
+
 	// Initialize
 	$endtime 	= time() + '5';	// Allow for 5 seconds
 	$chunksize 	= '1000';
@@ -77,19 +79,19 @@ global $wppa_supported_audio_extensions;
 	$topid 		= '0';
 	$reload 	= '';
 	$to_delete_from_cloudinary = array();
-	
+
 	if ( ! isset( $wppa_session ) ) $wppa_session = array();
 	if ( ! isset( $wppa_session[$slug.'_fixed'] ) )   $wppa_session[$slug.'_fixed'] = '0';
 	if ( ! isset( $wppa_session[$slug.'_added'] ) )   $wppa_session[$slug.'_added'] = '0';
 	if ( ! isset( $wppa_session[$slug.'_deleted'] ) ) $wppa_session[$slug.'_deleted'] = '0';
 	if ( ! isset( $wppa_session[$slug.'_skipped'] ) ) $wppa_session[$slug.'_skipped'] = '0';
-	
+
 	if ( $lastid == '0' ) {
 		$wppa_session[$slug.'_fixed'] = '0';
 		$wppa_session[$slug.'_deleted'] = '0';
 		$wppa_session[$slug.'_skipped'] = '0';
 	}
-	
+
 	// Pre-processing needed?
 	if ( $lastid == '0' ) {
 		switch ( $slug ) {
@@ -117,33 +119,34 @@ global $wppa_supported_audio_extensions;
 					update_option( 'wppa_orphan_album', $orphan_album );
 				}
 				break;
-				
+
 		}
 	}
-	
+
 	// Dispatch on albums / photos / single actions
-	
+
 	switch ( $slug ) {
-	
+
 		case 'wppa_remake_index_albums':
 		case 'wppa_remove_empty_albums':
+		case 'wppa_sanitize_cats':
 
 			// Process albums
 			$table 		= WPPA_ALBUMS;
 			$topid 		= $wpdb->get_var( "SELECT `id` FROM `".WPPA_ALBUMS."` ORDER BY `id` DESC LIMIT 1" );
 			$albums 	= $wpdb->get_results( "SELECT * FROM `".WPPA_ALBUMS."` WHERE `id` > ".$lastid." ORDER BY `id` LIMIT 100", ARRAY_A );
 			wppa_cache_album( 'add', $albums );
-			
-			if ( $albums ) foreach ( $albums as $album ) { 	
-			
+
+			if ( $albums ) foreach ( $albums as $album ) {
+
 				$id = $album['id'];
-				
+
 				switch ( $slug ) {
-				
+
 					case 'wppa_remake_index_albums':
 						wppa_index_add( 'album', $id );
 						break;
-						
+
 					case 'wppa_remove_empty_albums':
 						$p = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `album` = %s", $id ) );
 						$a = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `a_parent` = %s", $id ) );
@@ -154,7 +157,14 @@ global $wppa_supported_audio_extensions;
 							wppa_index_remove( 'album', $id );
 						}
 						break;
-						
+
+					case 'wppa_sanitize_cats':
+						$cats = $album['cats'];
+						if ( $cats ) {
+							wppa_update_album( array( 'id' => $album['id'], 'cats' => wppa_sanitize_tags( $cats ) ) );
+						}
+						break;
+
 				}
 				// Test for timeout / ready
 				$lastid = $id;
@@ -165,7 +175,7 @@ global $wppa_supported_audio_extensions;
 				$lastid = $topid;
 			}
 			break;	// End process albums
-			
+
 		case 'wppa_remake_index_photos':
 			$chunksize = '100';
 		case 'wppa_apply_new_photodesc_all':
@@ -181,17 +191,19 @@ global $wppa_supported_audio_extensions;
 		case 'wppa_remake':
 		case 'wppa_watermark_all':
 		case 'wppa_create_all_autopages':
+		case 'wppa_delete_all_autopages':
 		case 'wppa_leading_zeros':
 		case 'wppa_add_gpx_tag':
 		case 'wppa_optimize_ewww':
 		case 'wppa_comp_sizes':
 		case 'wppa_edit_tag':
 		case 'wppa_sync_cloud':
+		case 'wppa_sanitize_tags':
 		case 'wppa_test_proc':
-		
+
 			// Process photos
 			$table 		= WPPA_PHOTOS;
-			
+
 			if ( $slug == 'wppa_cleanup' ) {
 				$topid 		= get_option( 'wppa_'.WPPA_PHOTOS.'_lastkey', '1' ) * 10;
 				$photos 	= array();
@@ -203,7 +215,7 @@ global $wppa_supported_audio_extensions;
 				$topid 		= $wpdb->get_var( "SELECT `id` FROM `".WPPA_PHOTOS."` ORDER BY `id` DESC LIMIT 1" );
 				$photos 	= $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` > ".$lastid." ORDER BY `id` LIMIT ".$chunksize, ARRAY_A );
 			}
-			
+
 			if ( $slug == 'wppa_edit_tag' ) {
 				$edit_tag 	= get_option( 'wppa_tag_to_edit' );
 				$new_tag 	= get_option( 'wppa_new_tag_value' );
@@ -221,18 +233,18 @@ global $wppa_supported_audio_extensions;
 					$to = $fs;
 				}
 			}
-			
+
 			if ( $photos ) foreach ( $photos as $photo ) {
 				$thumb = $photo;	// Make globally known
-				
+
 				$id = $photo['id'];
-				
+
 				switch ( $slug ) {
-				
+
 					case 'wppa_remake_index_photos':
 						wppa_index_add( 'photo', $id );
 						break;
-						
+
 					case 'wppa_apply_new_photodesc_all':
 						$value = $wppa_opt['wppa_newphoto_description'];
 						$description = trim( $value );
@@ -240,7 +252,7 @@ global $wppa_supported_audio_extensions;
 							$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `description` = %s WHERE `id` = %s", $description, $id ) );
 						}
 						break;
-						
+
 					case 'wppa_append_to_photodesc':
 						$value = trim( $wppa_opt['wppa_append_text'] );
 						if ( ! $value ) return 'Unexpected error: missing text to append||'.$slug.'||Error||0';
@@ -249,7 +261,7 @@ global $wppa_supported_audio_extensions;
 							$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `description` = %s WHERE `id` = %s", $description, $id ) );
 						}
 						break;
-						
+
 					case 'wppa_remove_from_photodesc':
 						$value = trim( $wppa_opt['wppa_remove_text'] );
 						if ( ! $value ) return 'Unexpected error: missing text to remove||'.$slug.'||Error||0';
@@ -258,7 +270,7 @@ global $wppa_supported_audio_extensions;
 							$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `description` = %s WHERE `id` = %s", $description, $id ) );
 						}
 						break;
-						
+
 					case 'wppa_remove_file_extensions':
 						if ( ! wppa_is_video( $id ) ) {
 							$name = str_replace( array( '.jpg', '.png', '.gif', '.JPG', '.PNG', '.GIF' ), '', $photo['name'] );
@@ -267,7 +279,7 @@ global $wppa_supported_audio_extensions;
 							}
 						}
 						break;
-						
+
 					case 'wppa_readd_file_extensions':
 						if ( ! wppa_is_video( $id ) ) {
 							$name = str_replace( array( '.jpg', '.png', 'gif', '.JPG', '.PNG', '.GIF' ), '', $photo['name'] );
@@ -276,23 +288,23 @@ global $wppa_supported_audio_extensions;
 							}
 						}
 						break;
-						
+
 					case 'wppa_regen_thumbs':
 						if ( ! wppa_is_video( $id ) || file_exists( str_replace( 'xxx', 'jpg', wppa_get_photo_path( $id ) ) ) ) {
 							wppa_create_thumbnail( $id );
 						}
 						break;
-						
+
 					case 'wppa_rerate':
 						wppa_rate_photo( $id );
 						break;
-						
+
 					case 'wppa_recup':
 						$a_ret = wppa_recuperate( $id );
 						if ( $a_ret['iptcfix'] ) $wppa_session[$slug.'_fixed']++;
 						if ( $a_ret['exiffix'] ) $wppa_session[$slug.'_fixed']++;
 						break;
-						
+
 					case 'wppa_file_system':
 						$fs = get_option('wppa_file_system');
 						if ( $fs == 'to-tree' || $fs == 'to-flat' ) {
@@ -304,7 +316,7 @@ global $wppa_supported_audio_extensions;
 								$from = 'tree';
 								$to = 'flat';
 							}
-							
+
 							// Media files
 							if ( wppa_is_multi( $id ) ) {	// Can NOT use wppa_has_audio() or wppa_is_video(), they use wppa_get_photo_path() without fs switch!!
 								$exts 		= array_merge( $wppa_supported_video_extensions, $wppa_supported_audio_extensions );
@@ -315,7 +327,7 @@ global $wppa_supported_audio_extensions;
 									if ( is_file( str_replace( '.xxx', '.'.$ext, $pathfrom ) ) ) {
 									//	wppa_log( 'dbg',  str_replace( '.xxx', '.'.$ext, $pathfrom ).' -> '.str_replace( '.xxx', '.'.$ext, $pathto ));
 										@ rename ( str_replace( '.xxx', '.'.$ext, $pathfrom ), str_replace( '.xxx', '.'.$ext, $pathto ) );
-									}									
+									}
 								}
 							}
 
@@ -323,15 +335,15 @@ global $wppa_supported_audio_extensions;
 							if ( file_exists( wppa_fix_poster_ext( wppa_get_photo_path( $id, $from ), $id ) ) ) {
 								@ rename ( wppa_fix_poster_ext( wppa_get_photo_path( $id, $from ), $id ), wppa_fix_poster_ext( wppa_get_photo_path( $id, $to ), $id ) );
 							}
-							
+
 							// Thumbnail
 							if ( file_exists( wppa_fix_poster_ext( wppa_get_thumb_path( $id, $from ), $id ) ) ) {
 								@ rename ( wppa_fix_poster_ext( wppa_get_thumb_path( $id, $from ), $id ), wppa_fix_poster_ext( wppa_get_thumb_path( $id, $to ), $id ) );
 							}
-							
+
 						}
 						break;
-						
+
 					case 'wppa_cleanup':
 						$photo_files = glob( WPPA_UPLOAD_PATH.'/'.$id.'.*' );
 						// Remove dirs
@@ -362,7 +374,7 @@ global $wppa_supported_audio_extensions;
 							}
 						}
 						break;
-						
+
 					case 'wppa_remake':
 						if ( wppa_remake_files( '', $id ) ) {
 							$wppa_session[$slug.'_fixed']++;
@@ -371,7 +383,7 @@ global $wppa_supported_audio_extensions;
 							$wppa_session[$slug.'_skipped']++;
 						}
 						break;
-						
+
 					case 'wppa_watermark_all':
 						if ( ! wppa_is_video( $id ) ) {
 							if ( wppa_add_watermark( $id ) ) {
@@ -386,11 +398,15 @@ global $wppa_supported_audio_extensions;
 							$wppa_session[$slug.'_skipped']++;
 						}
 						break;
-						
+
 					case 'wppa_create_all_autopages':
 						wppa_get_the_auto_page( $id );
 						break;
 						
+					case 'wppa_delete_all_autopages':
+						wppa_remove_the_auto_page( $id );
+						break;
+
 					case 'wppa_leading_zeros':
 						$name = $photo['name'];
 						if ( wppa_is_int( $name ) ) {
@@ -402,7 +418,7 @@ global $wppa_supported_audio_extensions;
 							$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `name` = %s WHERE `id` = %s", $name, $id ) );
 						}
 						break;
-						
+
 					case 'wppa_add_gpx_tag':
 						$tags 	= $photo['tags'];
 						$temp 	= explode( '/', $photo['location'] );
@@ -427,18 +443,18 @@ global $wppa_supported_audio_extensions;
 							wppa_clear_taglist();
 						}
 						break;
-						
+
 					case 'wppa_optimize_ewww':
 						$file = wppa_get_photo_path( $photo['id'] );
 						if ( is_file( $file ) ) {
-							ewww_image_optimizer( $file, 4, false, false, false ); 
+							ewww_image_optimizer( $file, 4, false, false, false );
 						}
 						$file = wppa_get_thumb_path( $photo['id'] );
 						if ( is_file( $file ) ) {
-							ewww_image_optimizer( $file, 4, false, false, false ); 
+							ewww_image_optimizer( $file, 4, false, false, false );
 						}
 						break;
-						
+
 					case 'wppa_comp_sizes':
 						$tx = 0; $ty = 0; $px = 0; $py = 0;
 						$file = wppa_get_photo_path( $photo['id'] );
@@ -459,7 +475,7 @@ global $wppa_supported_audio_extensions;
 						}
 						wppa_update_photo( array( 'id' => $photo['id'], 'thumbx' => $tx, 'thumby' => $ty, 'photox' => $px, 'photoy' => $py ) );
 						break;
-						
+
 					case 'wppa_edit_tag':
 						$phototags = explode( ',', wppa_get_photo_item( $photo['id'], 'tags' ) );
 						if ( in_array( $edit_tag, $phototags ) ) {
@@ -476,7 +492,7 @@ global $wppa_supported_audio_extensions;
 							$wppa_session[$slug.'_skipped']++;
 						}
 						break;
-						
+
 					case 'wppa_sync_cloud':
 						$is_old 	 = ( wppa_opt( 'wppa_max_cloud_life' ) ) && ( time() > ( $photo['timestamp'] + wppa_opt( 'wppa_max_cloud_life' ) ) );
 						$is_in_cloud = is_array( @ getimagesize( wppa_get_cloudinary_url( $photo['id'], 'test_only' ) ) );
@@ -499,7 +515,14 @@ global $wppa_supported_audio_extensions;
 							$wppa_session[$slug.'_skipped']++;
 						}
 						break;
-						
+
+					case 'wppa_sanitize_tags':
+						$tags = $photo['tags'];
+						if ( $tags ) {
+							wppa_update_photo( array( 'id' => $photo['id'], 'tags' => wppa_sanitize_tags( $tags ) ) );
+						}
+						break;
+
 					case 'wppa_test_proc':
 						$tags 	= '';
 						$albid 	= $photo['album'];
@@ -513,7 +536,7 @@ global $wppa_supported_audio_extensions;
 						}
 						wppa_update_photo( array( 'id' => $photo['id'], 'tags' => wppa_sanitize_tags( $tags ) ) );
 						break;
-		
+
 				}
 				// Test for timeout / ready
 				$lastid = $id;
@@ -525,46 +548,46 @@ global $wppa_supported_audio_extensions;
 				wppa_log( 'Debug', 'Maintenance proc '.$slug.': Done!');
 			}
 			break;	// End process photos
-			
+
 		// Single action maintenance modules
-		
+
 //		case 'wppa_list_index':
 //			break;
-						
+
 //		case 'wppa_blacklist_user':
 //			break;
-						
+
 //		case 'wppa_un_blacklist_user':
 //			break;
-						
+
 //		case 'wppa_rating_clear':
 //			break;
-						
+
 //		case 'wppa_viewcount_clear':
 //			break;
-						
+
 //		case 'wppa_iptc_clear':
 //			break;
-						
+
 //		case 'wppa_exif_clear':
 //			break;
-			
+
 		default:
 			$errtxt = 'Unimplemented maintenance slug: '.strip_tags( $slug );
 	}
-	
+
 	// either $albums / $photos has been exhousted ( for this try ) or time is up
-	
+
 	// Post proc this try:
 	switch ( $slug ) {
-	
+
 		case 'wppa_sync_cloud':
 			if ( count( $to_delete_from_cloudinary ) > 0 ) {
 				wppa_delete_from_cloudinary( $to_delete_from_cloudinary );
 			}
 			break;
 	}
-								
+
 	// Find togo
 	if ( $slug == 'wppa_cleanup' ) {
 		$togo 	= $topid - $lastid;
@@ -572,19 +595,19 @@ global $wppa_supported_audio_extensions;
 	else {
 		$togo 	= $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".$table."` WHERE `id` > %s ", $lastid ) );
 	}
-	
+
 	// Find status
 	$status = $togo ? 'Pending' : 'Ready';
-	
+
 	// Not done yet?
 	if ( $togo ) {
 		update_option( $slug.'_togo', $togo );
 		update_option( $slug.'_status', $status );
 	}
-	
+
 	// Really done
-	else {	
-	
+	else {
+
 		// Report fixed/skipped/deleted
 		if ( $wppa_session[$slug.'_fixed'] ) {
 			$status .= ' fixed:'.$wppa_session[$slug.'_fixed'];
@@ -602,13 +625,13 @@ global $wppa_supported_audio_extensions;
 			$status .= ' skipped:'.$wppa_session[$slug.'_skipped'];
 			unset ( $wppa_session[$slug.'_skipped'] );
 		}
-		
+
 		// Re-Init options
 		delete_option( $slug.'_togo', '' );
 		delete_option( $slug.'_status', '' );
 		delete_option( $slug.'_last', '0' );
 		delete_option( $slug.'_user', '' );
-		
+
 		// Post-processing needed?
 		switch ( $slug ) {
 			case 'wppa_remake_index_albums':
@@ -619,7 +642,7 @@ global $wppa_supported_audio_extensions;
 			case 'wppa_apply_new_photodesc_all':
 			case 'wppa_append_to_photodesc':
 			case 'wppa_remove_from_photodesc':
-				update_option( 'wppa_remake_index_photos_status', __('Required', 'wppa') ); 
+				update_option( 'wppa_remake_index_photos_status', __('Required', 'wppa') );
 				break;
 			case 'wppa_regen_thumbs':
 				wppa_bump_thumb_rev();
@@ -636,6 +659,12 @@ global $wppa_supported_audio_extensions;
 				wppa_clear_taglist();
 				$reload = 'reload';
 				break;
+			case 'wppa_sanitize_tags':
+				wppa_clear_taglist();
+				break;
+			case 'wppa_sanitize_cats':
+				wppa_clear_catlist();
+				break;
 			case 'wppa_test_proc':
 				wppa_clear_taglist();
 				break;
@@ -646,10 +675,9 @@ global $wppa_supported_audio_extensions;
 
 function wppa_do_maintenance_popup( $slug ) {
 global $wpdb;
-global $thumb;
 
 	$result = '';
-	
+
 	switch ( $slug ) {
 		case 'wppa_list_index':
 			$start = get_option( 'wppa_list_index_display_start', '' );
@@ -672,7 +700,7 @@ global $thumb;
 						<tr><td colspan="3"><hr /></td></tr>
 					</thead>
 					<tbody>';
-						
+
 				foreach ( $indexes as $index ) {
 					$result .= '
 						<tr>
@@ -681,7 +709,7 @@ global $thumb;
 							<td>'.$index['photos'].'</td>
 						</tr>';
 				}
-		
+
 				$result .= '
 					</tbody>
 				</table>';
@@ -693,7 +721,7 @@ global $thumb;
 				</div><div style="clear:both;"></div>';
 
 			break;
-			
+
 		case 'wppa_list_errorlog':
 			$filename = WPPA_CONTENT_PATH.'/wppa-depot/admin/error.log';
 			$result .= '
@@ -716,7 +744,7 @@ global $thumb;
 					$idx--;
 				}
 			}
-			
+
 			$result .= '
 				</div><div style="clear:both;"></div>
 				';
@@ -748,9 +776,9 @@ global $thumb;
 						<tr><td colspan="10"><hr /></td></tr>
 					</thead>
 					<tbody>';
-								
+
 				foreach ( $ratings as $rating ) {
-					wppa_cache_thumb( $rating['photo'] );
+					$thumb = wppa_cache_thumb( $rating['photo'] );
 					$result .= '
 						<tr>
 							<td>'.$rating['id'].'</td>
@@ -760,15 +788,15 @@ global $thumb;
 							<td>'.$rating['user'].'</td>
 							<td>'.$rating['value'].'</td>
 							<td>'.$rating['photo'].'</td>
-							<td style="width:250px; text-align:center;"><img src="'.wppa_get_thumb_url($rating['photo']).'" 
-								style="height: 40px;" 
+							<td style="width:250px; text-align:center;"><img src="'.wppa_get_thumb_url($rating['photo']).'"
+								style="height: 40px;"
 								onmouseover="jQuery(this).stop().animate({height:this.naturalHeight}, 200);"
 								onmouseout="jQuery(this).stop().animate({height:\'40px\'}, 200);" /></td>
 							<td>'.$thumb['rating_count'].'</td>
 							<td>'.$thumb['mean_rating'].'</td>
 						</tr>';
 				}
-				
+
 				$result .= '
 					</tbody>
 				</table>';
@@ -779,7 +807,7 @@ global $thumb;
 			$result .= '
 				</div><div style="clear:both;"></div>';
 			break;
-			
+
 		case 'wppa_list_session':
 			$total = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_SESSION."` WHERE `status` = 'valid'" );
 			$sessions = $wpdb->get_results( "SELECT * FROM `".WPPA_SESSION."` WHERE `status` = 'valid' ORDER BY `id` DESC LIMIT 1000", ARRAY_A );
@@ -795,7 +823,7 @@ global $thumb;
 							<th>Id</th>
 							<th>Session id</th>
 							<th>User</th>
-						
+
 							<th>Started</th>
 							<th>Count</th>
 							<th>Page</th>
@@ -817,7 +845,7 @@ global $thumb;
 								<td>'.$session['id'].'</td>
 								<td>'.$session['session'].'</td>
 								<td>'.$session['user'].'</td>
-								
+
 								<td style="text-wrap:none;" >'.wppa_local_date(get_option('date_format', "F j, Y,").' '.get_option('time_format', "g:i a"), $session['timestamp']).'</td>
 								<td>'.$session['count'].'</td>
 								<td>'.( isset( $data['page'] ) ? $data['page'] : '' ).'</td>
@@ -841,19 +869,18 @@ global $thumb;
 				</div><div style="clear:both;"></div>';
 
 			break;
-			
+
 		default:
 			$result = 'Error: Unimplemented slug: '.$slug.' in wppa_do_maintenance_popup()';
 	}
-	
+
 	return $result;
 }
 
 function wppa_recuperate( $id ) {
-global $thumb;
 global $wpdb;
-	
-	wppa_cache_thumb( $id );
+
+	$thumb = wppa_cache_thumb( $id );
 	$iptcfix = false;
 	$exiffix = false;
 	$file = wppa_get_source_path( $id );
@@ -870,10 +897,10 @@ global $wpdb;
 						if ( ! $is_iptc ) { 				// No IPTC yet and there is: Recuperate
 							wppa_import_iptc($id, $info, 'nodelete');
 							$iptcfix = true;
-						}						
+						}
 					}
 				}
-				
+
 				if ( wppa_switch('wppa_save_exif') ) {		// Save exif
 					$image_type = exif_imagetype( $file );
 					if ( $image_type == IMAGETYPE_JPEG ) {	// EXIF supported by server
@@ -884,23 +911,23 @@ global $wpdb;
 								wppa_import_exif($id, $file, 'nodelete');
 								$exiffix = true;
 							}
-						}						
-					}	
-				}				
-			}					
+						}
+					}
+				}
+			}
 		}
 	}
 	return array( 'iptcfix' => $iptcfix, 'exiffix' => $exiffix );
 }
-				
+
 // Fix erroneous source path in case of migration to an other host
 function wppa_fix_source_path() {
 global $wppa_opt;
 
 	if ( strpos( $wppa_opt['wppa_source_dir'], ABSPATH ) === 0 ) return; 					// Nothing to do here
-	
+
 	$wp_content = trim( str_replace( home_url(), '', content_url() ), '/' );
-	
+
 	// The source path should be: ( default ) WPPA_ABSPATH.WPPA_UPLOAD.'/wppa-source',
 	// Or at least below WPPA_ABSPATH
 	if ( strpos( $wppa_opt['wppa_source_dir'], WPPA_ABSPATH ) === false ) {

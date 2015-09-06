@@ -2,7 +2,7 @@
 //
 // conatins common vars and functions
 // 
-var wppaJsVersion = '6.2.7';
+var wppaJsVersion = '6.2.10';
 
 // Important notice:
 // All external vars that may be given a value in wppa-non-admin.php must be declared here and not in other front-end js files!!
@@ -740,14 +740,6 @@ function wppaPushStateSlide( mocc, slide, url ) {
 				}
 			}
 		}
-	}
-}
-
-// Console logging
-function wppaConsoleLog( arg, force ) {
-//wppaDebug=true;//diagnostic
-	if ( typeof( console ) != 'undefined' && ( wppaDebug || force == 'force' ) ) {
-		console.log( arg );
 	}
 }
 

@@ -1,9 +1,9 @@
-<?php 
+<?php
 /* wppa-admin.php
 * Package: wp-photo-album-plus
 *
 * Contains the admin menu and startups the admin pages
-* Version 5.4.3
+* Version 6.2.10
 *
 */
 
@@ -21,7 +21,7 @@ function wppa_add_admin() {
 	global $wpdb;
 
 	// Make sure admin has access rights
-	if ( current_user_can( 'administrator' ) ) {	
+	if ( current_user_can( 'administrator' ) ) {
 		$wp_roles->add_cap( 'administrator', 'wppa_admin' );
 		$wp_roles->add_cap( 'administrator', 'wppa_upload' );
 		$wp_roles->add_cap( 'administrator', 'wppa_import' );
@@ -32,7 +32,7 @@ function wppa_add_admin() {
 		$wp_roles->add_cap( 'administrator', 'wppa_comments' );
 		$wp_roles->add_cap( 'administrator', 'wppa_help' );
 	}
-	
+
 	// See if there are comments pending moderation
 	$com_pending = '';
 	$com_pending_count = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_COMMENTS."` WHERE `status` = 'pending'" );
@@ -45,14 +45,14 @@ function wppa_add_admin() {
 	$tot_pending = '';
 	$tot_pending_count = '0';
 	if ( current_user_can('wppa_comments') || current_user_can('wppa_moderate') ) $tot_pending_count += $com_pending_count;
-	if ( current_user_can('wppa_admin') || current_user_can('wppa_moderate') ) $tot_pending_count+= $upl_pending_count;	
+	if ( current_user_can('wppa_admin') || current_user_can('wppa_moderate') ) $tot_pending_count+= $upl_pending_count;
 	if ( $tot_pending_count ) $tot_pending = '<span class="update-plugins"><span class="plugin-count">'.'<b>'.$tot_pending_count.'</b>'.'</span></span>';
 
 	$icon_url = WPPA_URL . '/images/camera16.png';
-	
+
 	// 				page_title        menu_title                                      capability    menu_slug          function      icon_url    position
 	add_menu_page( 'WP Photo Album', __('Photo&thinsp;Albums', 'wppa').$tot_pending, 'wppa_admin', 'wppa_admin_menu', 'wppa_admin', $icon_url ); //,'10' );
-	
+
 	//                 parent_slug        page_title                             menu_title                             capability            menu_slug               function
 	add_submenu_page( 'wppa_admin_menu',  __('Album Admin', 'wppa'),			 __('Album Admin', 'wppa').$upl_pending,'wppa_admin',        'wppa_admin_menu',      'wppa_admin' );
     add_submenu_page( 'wppa_admin_menu',  __('Upload Photos', 'wppa'),           __('Upload Photos', 'wppa'),          'wppa_upload',        'wppa_upload_photos',   'wppa_page_upload' );
@@ -83,12 +83,16 @@ add_action( 'admin_init', 'wppa_admin_scripts' );
 
 function wppa_admin_scripts() {
 global $wppa_api_version;
-	wp_register_script( 'wppa_upload_script', WPPA_URL.'/wppa-multifile-compressed.js', '', $wppa_api_version );
+	wp_register_script( 'wppa_upload_script', WPPA_URL.'/js/wppa-multifile-compressed.js', '', $wppa_api_version );
 	wp_enqueue_script( 'wppa_upload_script' );
-	wp_register_script( 'wppa_admin_script', WPPA_URL.'/wppa-admin-scripts.js', '', $wppa_api_version );
+	wp_register_script( 'wppa_admin_script', WPPA_URL.'/js/wppa-admin-scripts.js', '', $wppa_api_version );
 	wp_enqueue_script( 'wppa_admin_script' );
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'jquery-ui-sortable' );
+//	wp_register_script( 'wppa_utils_script', WPPA_URL.'/wppa-utils.js', '', $wppa_api_version );
+//	wp_enqueue_script( 'wppa_utils_script' );
+
+ 	wp_enqueue_script( 'wppa-utils', WPPA_URL . '/js/wppa-utils.js', array(), $wppa_api_version );
 }
 
 /* ADMIN PAGE PHP's */
@@ -132,7 +136,7 @@ function wppa_page_export() {
 	_wppa_page_export();
 }
 // Settings admin page
-function wppa_page_options() {	
+function wppa_page_options() {
 	require_once 'wppa-settings-autosave.php';
 	_wppa_page_options();
 }
@@ -143,12 +147,12 @@ function wppa_sidebar_page_options() {
 	_wppa_sidebar_page_options();
 }
 // Comments admin page
-function wppa_comment_admin() { 
+function wppa_comment_admin() {
 	require_once 'wppa-comment-admin.php';
 	_wppa_comment_admin();
 }
 // Help admin page
-function wppa_page_help() {	
+function wppa_page_help() {
 	require_once 'wppa-help.php';
 	_wppa_page_help();
 }

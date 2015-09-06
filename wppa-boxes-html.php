@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 6.2.9
+* Version 6.2.12
 *
 *
 */
@@ -595,33 +595,35 @@ global $wppa_session;
 		</select>';
 
 		// photo tag
-		$id = 'wppa-ss-phototag-'.wppa('mocc');
-		$result .= '
-		<select'.
-			' id="' . $id . '"' .
-			' name="wppa-ss-phototag"' .
-			' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
-			' onchange="wppaSuperSearchSelect( '.wppa('mocc').' );"' .
-			' size="' . ( min( count( $taglist ), '6' ) ) . '"' .
-			' multiple' .
-			' title="' .
-				esc_attr( __a( 'CTRL+Click to add/remove option.' ) ) . "\n" .
-				esc_attr( __a( 'Items must meet all selected options.' ) ) .
-				'"' .
-			' >';
-			foreach ( array_keys( $taglist ) as $tag ) {
-				$sel = in_array ( $tag, $ss_tags );
-				$result .=
-				'<option' .
-					' value="'.$tag.'"' .
-					' class="' . $id . '"' .
-					( $sel ? ' selected="selected"' : '' ) .
-					' >' .
-						$tag .
-				'</option>';
-			}
-		$result .=
-		'</select>';
+		if ( ! empty( $taglist ) ) {
+			$id = 'wppa-ss-phototag-'.wppa('mocc');
+			$result .= '
+			<select'.
+				' id="' . $id . '"' .
+				' name="wppa-ss-phototag"' .
+				' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
+				' onchange="wppaSuperSearchSelect( '.wppa('mocc').' );"' .
+				' size="' . ( min( count( $taglist ), '6' ) ) . '"' .
+				' multiple' .
+				' title="' .
+					esc_attr( __a( 'CTRL+Click to add/remove option.' ) ) . "\n" .
+					esc_attr( __a( 'Items must meet all selected options.' ) ) .
+					'"' .
+				' >';
+				foreach ( array_keys( $taglist ) as $tag ) {
+					$sel = in_array ( $tag, $ss_tags );
+					$result .=
+					'<option' .
+						' value="'.$tag.'"' .
+						' class="' . $id . '"' .
+						( $sel ? ' selected="selected"' : '' ) .
+						' >' .
+							$tag .
+					'</option>';
+				}
+			$result .=
+			'</select>';
+		}
 
 		// photo text
 		$id = 'wppa-ss-phototext-'.wppa('mocc');
@@ -1092,7 +1094,7 @@ global $wppa_locale;
 			$share_url = get_permalink( wppa_get_the_landing_page( 'wppa_widget_sm_linkpage', __a( 'Social media landing page' ) ) );
 			$alb = wppa_get_photo_item( $id, 'album' );
 			$oc = wppa_opt( 'wppa_widget_sm_linkpage_oc' );
-			$share_url .= '?wppa-album='.$alb.'&wppa-photo='.$id.'&wppa-cover=0&wppa-occur='.$oc;	
+			$share_url .= '?wppa-album='.$alb.'&wppa-photo='.$id.'&wppa-cover=0&wppa-occur='.$oc;
 			if ( wppa_switch( 'wppa_share_single_image' ) ) {
 				$share_url .= '&wppa-single=1';
 			}
@@ -1416,9 +1418,9 @@ function wppa_upload_box() {
 	// Do the dirty work
 	$create = wppa_get_user_create_html( $alb, wppa_get_container_width( 'netto' ), 'uploadbox' );
 	$upload = wppa_get_user_upload_html( $alb, wppa_get_container_width( 'netto' ), 'uploadbox' );
-	
+
 	if ( ! $create && ! $upload ) return; 	// Nothing to do
-	
+
 	// Open container
 	wppa_container( 'open' );
 
@@ -1432,7 +1434,7 @@ function wppa_upload_box() {
 
 	// The html
 	wppa_out( $create );
-	wppa_out( $upload );		
+	wppa_out( $upload );
 
 	// Clear and close div
 	wppa_out( '<div style="clear:both;"></div></div>' );
@@ -1652,7 +1654,7 @@ function wppa_get_user_create_html( $alb, $width, $where = '', $mcr = false ) {
 				' />' .
 			'</form>' .
 		'</div>';
-		
+
 	return $result;
 }
 
@@ -1690,7 +1692,7 @@ static $seqno;
 			return '';
 		}
 	}
-	
+
 	// Any album available for upload? ( $alb = 0 )
 	else {
 		if ( ! wppa_have_access() ) {
@@ -1882,8 +1884,8 @@ static $seqno;
 			' />';
 	}
 
-/* start submit section 
-	
+/* start submit section
+
 	// Onclick submit verify album is known
 	if ( $alb ) {
 		$onclick = 	' onclick="if ( document.getElementById( \'wppa-upload-album-'.$mocc.'-'.$seqno.'\' ).value == 0 )' .
@@ -1918,7 +1920,7 @@ static $seqno;
 			'</div>' .
 			'<div id="message-'.$alb.'-'.$mocc.'" class="wppa-message" ></div>';
 	}
-	
+
 /* End submit section */
 
 	// Explanation
@@ -2147,7 +2149,7 @@ static $seqno;
 	}
 
 /* start submit section */
-	
+
 	// Onclick submit verify album is known
 	if ( ! $alb ) {
 		$onclick = 	' onclick="if ( document.getElementById( \'wppa-upload-album-'.$mocc.'-'.$seqno.'\' ).value == 0 )' .
@@ -2182,10 +2184,10 @@ static $seqno;
 			'</div>' .
 			'<div id="message-'.$alb.'-'.$mocc.'" class="wppa-message" ></div>';
 	}
-	
+
 /* End submit section */
 
-	
+
 	// Done
 	$result .= '</form></div>';
 
@@ -2229,7 +2231,7 @@ static $seqno;
 				});
 			</script>';
 	}
-	
+
 	return $result;
 }
 
@@ -2330,7 +2332,7 @@ global $wppa_first_comment_html;
 	if ( wppa( 'in_widget' ) ) return $result;		// NOT in a widget
 
 	// Find out who we are either logged in or not
-	$vis = is_user_logged_in() ? $vis = 'display:none; ' : '';
+	$vis = is_user_logged_in() ? 'display:none; ' : '';
 	if ( ! $wppa_first_comment_html ) {
 		$wppa_first_comment_html = true;
 
@@ -2352,7 +2354,7 @@ global $wppa_first_comment_html;
 	$com_count = count( $comments );
 	$color = 'darkgrey';
 	if ( wppa_opt( 'wppa_fontcolor_box' ) ) $color = wppa_opt( 'wppa_fontcolor_box' );
-	if ( $comments ) {
+	if ( $comments && ( is_user_logged_in() || ! wppa_switch( 'wppa_comment_view_login' ) ) ) {
 		$result .= '
 			<div' .
 			' id="wppa-comtable-wrap-'.wppa( 'mocc' ).'"' .
@@ -2407,29 +2409,29 @@ global $wppa_first_comment_html;
 								// Find the avatar, init
 								$avt = false;
 								$usr = false;
-								
+
 								// First try to find the user by email address ( works only if email required on comments )
 								if ( $comment['email'] ) {
 									$usr = get_user_by( 'email', $comment['email'] );
 								}
-								
+
 								// If not found, try to find the user by login name ( works only if login name is equal to display name )
 								if ( ! $usr ) {
 									$usr = get_user_by( 'login', $comment['user'] );
 								}
-								
+
 								// Still no user, try to find him by display name
 								if ( ! $usr ) {
 									$usr = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $wpdb->users WHERE `display_name` = %s", $comment['user'] ) );
-									
+
 									// Accept this user if he is the only one with this display name
 									if ( count( $usr ) != 1 ) {
 										$usr = false;
 									}
 								}
-								
+
 								// If a user is found, see for local Avatar ?
-								if ( $usr ) {	
+								if ( $usr ) {
 									$avt = str_replace( "'", "\"", get_avatar( $usr->ID, wppa_opt( 'wppa_gravatar_size' ), $default ) );
 								}
 
@@ -3040,7 +3042,7 @@ function wppa_bestof_box ( $args ) {
 					wppa_bestof_html( $args, false ) .
 					'<div style="clear:both; height:4px;">' .
 					'</div>' .
-				'</div>' 
+				'</div>'
 			);
 	wppa_container ( 'close' );
 }
@@ -3230,11 +3232,11 @@ function wppa_calendar_box() {
 	wppa_out( 	'<div' .
 					' id="wppa-calendar-' . wppa( 'mocc' ) . '"' .
 					' class="wppa-box wppa-calendar"' .
-					' style="' . 
+					' style="' .
 						'font-size:10px;' .
 						'line-height:12px;' .
-						__wcs( 'wppa-box' ) . 
-						__wcs( 'wppa-calendar' ) . 
+						__wcs( 'wppa-box' ) .
+						__wcs( 'wppa-calendar' ) .
 						'"' .
 					' >' .
 					'<div style="overflow:auto;" >' .
@@ -3246,16 +3248,16 @@ function wppa_calendar_box() {
 			);
 
 	wppa_container( 'close' );
-	
+
 	// Bump occurrances
 	wppa( 'occur', wppa( 'occur' ) + '1' );
 	wppa( 'mocc', wppa( 'mocc' ) + '1' );
-	
-	// The Display container. 
+
+	// The Display container.
 	// Note: the display container ocurrance is one higher than the calendar occurrance.
 	wppa_container( 'open' );
 	wppa_container( 'close' );
-	
+
 }
 
 // The calendar html
@@ -3271,7 +3273,7 @@ global $wpdb;
 	$alb_clause 	= $albums ? ' AND `album` IN ( ' . str_replace( '.', ',' , $albums ) . ' ) ' : '';
 	$alb_arg 		= wppa( 'start_album' ) ? 'wppa-album=' . wppa_alb_to_enum_children( wppa( 'start_album' ) ) . '&' : '';
 	$reverse 		= wppa( 'reverse' ) ? ' DESC ' : '';
-	
+
 	// Get todays daynumber and range
 	$today 	= floor( time() / $secinday );
 
@@ -3299,7 +3301,7 @@ global $wpdb;
 			$from 	= 0;
 			$to 	= count( $dates );
 			break;
-			
+
 		case 'timestamp':
 		case 'modified':
 			$photos = $wpdb->get_results( 	"SELECT `id`, `" . $calendar_type . "` " .
@@ -3323,7 +3325,7 @@ global $wpdb;
 			$to 	= count( $dates );
 			break;
 	}
-	
+
 	// Display minicovers
 	$result .= 	'<div' .
 					' style="' .
@@ -3331,7 +3333,7 @@ global $wpdb;
 						'position:relative;' .
 						'"' .
 					' >';
-					
+
 	$result .= 	'<style type="text/css" scoped >' .
 					'.wppa-minicover-current div {' .
 						'color:blue;' .
@@ -3340,19 +3342,19 @@ global $wpdb;
 						'box-sizing:content-box;' .
 					'}' .
 				'</style>';
-				
+
 	$result .= 	'<script type="text/javascript" >' .
 					'wppaWaitForCounter = 0;' .
 				'</script>';
-					
+
 	switch( $calendar_type ) {
 		case 'exifdtm':
-		
+
 			$keys = array_keys( $dates );
-			
+
 			for ( $day = $from; $day < $to; $day++ ) {
 				$date 		= date_create_from_format( 'Y:m:d', $keys[$day] );
-				
+
 				if ( is_object( $date ) ) {
 
 					$ajaxurl 	= wppa_get_ajaxlink('', '1') .
@@ -3360,7 +3362,7 @@ global $wpdb;
 												'wppa-caldate=' . $keys[$day] . '&' .
 												$alb_arg .
 												'wppa-occur=1';
-					
+
 					if ( $autoall ) {
 						$onclick 	= 	'';
 					}
@@ -3369,7 +3371,7 @@ global $wpdb;
 										'jQuery( this ).addClass( \'wppa-minicover-current\' );' .
 										'wppaDoAjaxRender( ' . ( wppa( 'mocc' ) + '1' ) . ', \'' . $ajaxurl . '\', \'\' );';
 					}
-					
+
 					$result .= 	'<a' .
 									( $autoall ? ' href="#wppa-' . $day . '"' : '' ) .
 									' class="wppa-minicover-' . wppa( 'mocc' ) . '"' .
@@ -3389,38 +3391,38 @@ global $wpdb;
 										$date->format( 'd' ) . '<br />' .
 										$date->format( 'D' ) . '<br />' .
 										$date->format( 'Y' ) . '<br />' .
-										'(' . $dates[$keys[$day]] . ')' . 
+										'(' . $dates[$keys[$day]] . ')' .
 									'</div>' .
 								'</a>';
-								
+
 					if ( $autoall ) {
 						$addlabel =	'<a id=\"wppa-' . $day . '\" ></a>';
-						
+
 						$result .= 	'<script type="text/javascript" >' .
-										'wppaDoAjaxRender( ' . 
-											( wppa( 'mocc' ) + '1' ) . 
-											', \'' . str_replace( '&amp;', '&', $ajaxurl ) . 
+										'wppaDoAjaxRender( ' .
+											( wppa( 'mocc' ) + '1' ) .
+											', \'' . str_replace( '&amp;', '&', $ajaxurl ) .
 											'\', \'\', \'' . $addlabel . '\', ' . ( $day + '1' ) .' );' .
 									'</script>';
 					}
 				}
 			}
 			break;
-	
+
 		case 'timestamp':
 		case 'modified':
 			$keys = array_keys( $dates );
-			
+
 			for ( $day = $from; $day < $to; $day++ ) {
-			
+
 				$date 		= $keys[$day];
 
 				$ajaxurl 	= wppa_get_ajaxlink('', '1') .
 											'wppa-calendar='.$calendar_type.'&' .
 											'wppa-caldate=' . $keys[$day] . '&' .
-											$alb_arg . 
+											$alb_arg .
 											'wppa-occur=1';
-				
+
 				if ( $autoall ) {
 					$onclick 	= 	'';
 				}
@@ -3429,7 +3431,7 @@ global $wpdb;
 									'jQuery( this ).addClass( \'wppa-minicover-current\' );' .
 									'wppaDoAjaxRender( ' . ( wppa( 'mocc' ) + '1' ) . ', \'' . $ajaxurl . '\', \'\' );';
 				}
-			
+
 				$result .= 	'<a' .
 								' class="wppa-minicover-' . wppa( 'mocc' ) . '"' .
 								' onclick="' . $onclick . '"' .
@@ -3448,30 +3450,30 @@ global $wpdb;
 									date( 'd', $date * $secinday ) . '<br />' .
 									date( 'D', $date * $secinday ) . '<br />' .
 									date( 'Y', $date * $secinday ) . '<br />' .
-									'(' . $dates[$keys[$day]] . ')' . 
+									'(' . $dates[$keys[$day]] . ')' .
 								'</div>' .
 							'</a>';
-							
+
 				if ( $autoall ) {
 					$addlabel =	'<a id=\"wppa-' . $day . '\" ></a>';
-					
+
 					$result .= 	'<script type="text/javascript" >' .
-									'wppaDoAjaxRender( ' . 
-										( wppa( 'mocc' ) + '1' ) . 
-										', \'' . str_replace( '&amp;', '&', $ajaxurl ) . 
+									'wppaDoAjaxRender( ' .
+										( wppa( 'mocc' ) + '1' ) .
+										', \'' . str_replace( '&amp;', '&', $ajaxurl ) .
 										'\', \'\', \'' . $addlabel . '\', ' . ( $day + '1' ) .' );' .
 								'</script>';
 				}
 			}
 			break;
 	}
-	
+
 	$result .= 	'<script type="text/javascript" >' .
 					'jQuery(document).ready(function(){ wppaWaitForCounter = 1; });' .
 				'</script>';
 
 	$result .= 	'</div>';
-	
+
 	return $result;
 }
 

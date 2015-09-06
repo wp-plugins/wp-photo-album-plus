@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa_theme-zh_CN\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-12 12:30+0100\n"
-"PO-Revision-Date: 2015-07-12 12:33+0100\n"
+"POT-Creation-Date: 2015-08-28 11:26+0200\n"
+"PO-Revision-Date: 2015-08-28 11:26+0200\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: delthink <delthink@gmail.com>\n"
 "Language: zh_CN\n"
@@ -18,19 +18,19 @@ msgstr ""
 "X-Poedit-KeywordsList: __a\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 1.8.1\n"
+"X-Generator: Poedit 1.8.4\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: theme\n"
 
-#: theme/wppa-theme.php:320 theme/wppa-theme.php:339
+#: theme/wppa-theme.php:323 theme/wppa-theme.php:342
 msgid "No photos found matching your search criteria."
 msgstr "没有照片找到符合搜索条件。"
 
-#: theme/wppa-theme.php:323
+#: theme/wppa-theme.php:326
 msgid "No albums found matching your search criteria."
 msgstr "没有相册找到符合搜索条件。"
 
-#: theme/wppa-theme.php:326
+#: theme/wppa-theme.php:329
 msgid "No albums or photos found matching your search criteria."
 msgstr "没有找到符合搜索条件的相册或照片。"
 
@@ -78,7 +78,7 @@ msgstr "帮助＆信息"
 msgid "Docs & Demos"
 msgstr "文档和演示"
 
-#: wppa-adminbar.php:118 wppa-album-navigator-widget.php:44
+#: wppa-adminbar.php:118 wppa-album-navigator-widget.php:42
 #: wppa-album-widget.php:48
 msgid "Photo Albums"
 msgstr "照片相册"
@@ -100,63 +100,62 @@ msgstr "退出并刷新"
 msgid "Photo rated"
 msgstr "照片额定"
 
-#: wppa-album-covers.php:1036
+#: wppa-album-covers.php:1035
 msgid "Link to"
 msgstr "链接到"
 
-#: wppa-album-covers.php:1066 wppa-album-covers.php:1127
-#: wppa-album-covers.php:1134
+#: wppa-album-covers.php:1065 wppa-album-covers.php:1126
+#: wppa-album-covers.php:1133
 msgid "View the album"
 msgstr "查看相册"
 
-#: wppa-album-covers.php:1086
+#: wppa-album-covers.php:1085
 msgid "View the cover photo"
 msgstr "查看封面照片"
 
-#: wppa-album-covers.php:1087
+#: wppa-album-covers.php:1086
 msgid "View the cover photos"
 msgstr "查看相册封面"
 
-#: wppa-album-covers.php:1140
+#: wppa-album-covers.php:1139
 msgid "View"
 msgstr "查看"
 
-#: wppa-album-covers.php:1143
+#: wppa-album-covers.php:1142
 msgid "album"
 msgstr "相册"
 
-#: wppa-album-covers.php:1146
+#: wppa-album-covers.php:1145
 msgid "albums"
 msgstr "相簿"
 
-#: wppa-album-covers.php:1155 wppa-boxes-html.php:1112 wppa-breadcrumb.php:148
-#: wppa-breadcrumb.php:154 wppa-breadcrumb.php:161 wppa-breadcrumb.php:324
-#: wppa-breadcrumb.php:329 wppa-functions.php:4155 wppa-utils.php:1428
+#: wppa-album-covers.php:1154 wppa-boxes-html.php:1116 wppa-breadcrumb.php:148
+#: wppa-breadcrumb.php:154 wppa-breadcrumb.php:161 wppa-breadcrumb.php:362
+#: wppa-breadcrumb.php:367 wppa-functions.php:4253 wppa-utils.php:1480
 msgid "and"
 msgstr "和"
 
-#: wppa-album-covers.php:1160
+#: wppa-album-covers.php:1159
 msgid "photo"
 msgstr "相片"
 
-#: wppa-album-covers.php:1163 wppa-album-covers.php:1167
+#: wppa-album-covers.php:1162 wppa-album-covers.php:1166
 msgid "photos"
 msgstr "照片"
 
-#: wppa-album-covers.php:1211
+#: wppa-album-covers.php:1210
 msgid "New!"
 msgstr "新!"
 
-#: wppa-album-covers.php:1212 wppa-thumbnails.php:1827
-#: wppa-thumbnails.php:1828
+#: wppa-album-covers.php:1211 wppa-thumbnails.php:1875 wppa-thumbnails.php:1876
 msgid "New"
 msgstr "新建"
 
-#: wppa-album-covers.php:1234 wppa-boxes-html.php:818 wppa-non-admin.php:565
+#: wppa-album-covers.php:1233 wppa-boxes-html.php:821 wppa-non-admin.php:580
 msgid "Slideshow"
 msgstr "幻灯片"
 
-#: wppa-album-covers.php:1235
+#: wppa-album-covers.php:1234
 msgid "Browse photos"
 msgstr "浏览照片"
 
@@ -164,7 +163,7 @@ msgstr "浏览照片"
 msgid "Categories:"
 msgstr "分类："
 
-#: wppa-album-covers.php:1271 wppa-breadcrumb.php:336 wppa-breadcrumb.php:341
+#: wppa-album-covers.php:1271 wppa-breadcrumb.php:374 wppa-breadcrumb.php:379
 msgid "Category:"
 msgstr "分类："
 
@@ -179,231 +178,223 @@ msgid ""
 "support html5 audio"
 msgstr "有您的浏览器没有可用的文件类型，或者你的浏览器不支持HTML5音频"
 
-#: wppa-bestof-widget.php:52
+#: wppa-bestof-widget.php:50
 msgid "Best Of Photos"
 msgstr "最好的照片"
 
-#: wppa-boxes-html.php:129 wppa-boxes-html.php:219
+#: wppa-boxes-html.php:130 wppa-boxes-html.php:220
 msgid "Photo search results"
 msgstr "照片搜索结果"
 
-#: wppa-boxes-html.php:168
+#: wppa-boxes-html.php:169
 msgid "Search"
 msgstr "搜索"
 
-#: wppa-boxes-html.php:179
+#: wppa-boxes-html.php:180
 msgid "Search in current section"
 msgstr "在本栏目搜索"
 
-#: wppa-boxes-html.php:184
+#: wppa-boxes-html.php:185
 msgid "Search in current results"
 msgstr "在目前的搜索结果"
 
-#: wppa-boxes-html.php:352 wppa-breadcrumb.php:136
+#: wppa-boxes-html.php:353 wppa-breadcrumb.php:136
 msgid "Albums"
 msgstr "专辑"
 
-#: wppa-boxes-html.php:358 wppa-breadcrumb.php:151
+#: wppa-boxes-html.php:359 wppa-breadcrumb.php:151
 msgid "Photos"
 msgstr "照片"
 
-#: wppa-boxes-html.php:377
+#: wppa-boxes-html.php:378
 msgid "Category"
 msgstr "分类"
 
-#: wppa-boxes-html.php:384 wppa-boxes-html.php:499
+#: wppa-boxes-html.php:385 wppa-boxes-html.php:500
 msgid "Name"
 msgstr "姓名"
 
-#: wppa-boxes-html.php:390 wppa-boxes-html.php:524
+#: wppa-boxes-html.php:391 wppa-boxes-html.php:525
 msgid "Text"
 msgstr "文本"
 
-#: wppa-boxes-html.php:406 wppa-boxes-html.php:460 wppa-boxes-html.php:607
-#: wppa-boxes-html.php:636
+#: wppa-boxes-html.php:407 wppa-boxes-html.php:461 wppa-boxes-html.php:609
+#: wppa-boxes-html.php:639
 msgid "CTRL+Click to add/remove option."
 msgstr "CTRL  单击添加/删除选项。"
 
-#: wppa-boxes-html.php:407 wppa-boxes-html.php:461 wppa-boxes-html.php:608
-#: wppa-boxes-html.php:637
+#: wppa-boxes-html.php:408 wppa-boxes-html.php:462 wppa-boxes-html.php:610
+#: wppa-boxes-html.php:640
 msgid "Items must meet all selected options."
 msgstr "项目必须满足所有选择的选项。"
 
-#: wppa-boxes-html.php:507
+#: wppa-boxes-html.php:508
 msgid "Owner"
 msgstr "所有者"
 
-#: wppa-boxes-html.php:516
+#: wppa-boxes-html.php:517
 msgid "Tag"
 msgstr "标签"
 
-#: wppa-boxes-html.php:532
+#: wppa-boxes-html.php:533
 msgid "Iptc"
 msgstr "IPTC"
 
-#: wppa-boxes-html.php:541
+#: wppa-boxes-html.php:542
 msgid "Exif"
 msgstr "EXIF"
 
-#: wppa-boxes-html.php:739 wppa-boxes-html.php:822
+#: wppa-boxes-html.php:742 wppa-boxes-html.php:825
 msgid "Submit"
 msgstr "提交"
 
-#: wppa-boxes-html.php:780
+#: wppa-boxes-html.php:783
 msgid "Super View Photos"
 msgstr "超级查看照片"
 
-#: wppa-boxes-html.php:794 wppa-breadcrumb.php:242 wppa-breadcrumb.php:260
-#: wppa-breadcrumb.php:278 wppa-breadcrumb.php:296 wppa-breadcrumb.php:351
-#: wppa-breadcrumb.php:376
+#: wppa-boxes-html.php:797 wppa-breadcrumb.php:280 wppa-breadcrumb.php:298
+#: wppa-breadcrumb.php:316 wppa-breadcrumb.php:334 wppa-breadcrumb.php:389
+#: wppa-breadcrumb.php:414
 msgid "Album:"
 msgstr "专辑"
 
-#: wppa-boxes-html.php:810
+#: wppa-boxes-html.php:813
 msgid "Thumbnails"
 msgstr "缩略图"
 
-#: wppa-boxes-html.php:855
+#: wppa-boxes-html.php:858
 msgid "Tagged photos"
 msgstr "标记的照片"
 
-#: wppa-boxes-html.php:868
+#: wppa-boxes-html.php:871
 msgid "Please select a tagcloud landing page in Table VI-C3b"
 msgstr "请选择表VI-C3b的一个标签云登陆页面"
 
-#: wppa-boxes-html.php:925
+#: wppa-boxes-html.php:928
 msgid "Multi Tagged photos"
 msgstr "多标记照片"
 
-#: wppa-boxes-html.php:938
+#: wppa-boxes-html.php:941
 msgid "Please select a multitag landing page in Table VI-C4b"
 msgstr "请选择表VI-C4b的一个多标签登陆页面"
 
-#: wppa-boxes-html.php:976
+#: wppa-boxes-html.php:979
 msgid "Please check the tag(s) that the photos must have"
 msgstr "请检查照片必须有标签"
 
-#: wppa-boxes-html.php:1005
+#: wppa-boxes-html.php:1008
 msgid "And"
 msgstr "还有"
 
-#: wppa-boxes-html.php:1016
+#: wppa-boxes-html.php:1019
 msgid "Or"
 msgstr "或"
 
-#: wppa-boxes-html.php:1066
+#: wppa-boxes-html.php:1069
 msgid "Find!"
 msgstr "寻找"
 
-#: wppa-boxes-html.php:1091
+#: wppa-boxes-html.php:1094
 msgid "Social media landing page"
 msgstr "社会化媒体的目标网页"
 
-#: wppa-boxes-html.php:1113 wppa-utils.php:1428
+#: wppa-boxes-html.php:1117 wppa-utils.php:1480
 #, php-format
 msgid "See this image on %s"
 msgstr "查看 %s 的这一形象"
 
-#: wppa-boxes-html.php:1138 wppa-qr-widget.php:40
+#: wppa-boxes-html.php:1142 wppa-qr-widget.php:40
 msgid "QR code"
 msgstr "QR码"
 
-#: wppa-boxes-html.php:1183
+#: wppa-boxes-html.php:1187
 #, php-format
 msgid "Tweet %s on Twitter"
 msgstr "鸣叫 %s 上微博"
 
-#: wppa-boxes-html.php:1190
+#: wppa-boxes-html.php:1194
 msgid "Share on Twitter"
 msgstr "在Twitter上分享"
 
-#: wppa-boxes-html.php:1203
+#: wppa-boxes-html.php:1207
 #, php-format
 msgid "Share %s on Google+"
 msgstr "在Google 分享 %s"
 
-#: wppa-boxes-html.php:1211
+#: wppa-boxes-html.php:1215
 msgid "Share on Google+"
 msgstr "在Google+上分享"
 
-#: wppa-boxes-html.php:1226
+#: wppa-boxes-html.php:1230
 #, php-format
 msgid "Share %s on Pinterest"
 msgstr "在Pinterest的份额 %s"
 
-#: wppa-boxes-html.php:1235
+#: wppa-boxes-html.php:1239
 msgid "Share on Pinterest"
 msgstr "分享到 Pinterest"
 
-#: wppa-boxes-html.php:1370
+#: wppa-boxes-html.php:1374
 msgid "Comment on Facebook:"
 msgstr "评论在Facebook上："
 
-#: wppa-boxes-html.php:1470
+#: wppa-boxes-html.php:1475
 msgid "Working..."
 msgstr "处理中..."
 
-#: wppa-boxes-html.php:1472 wppa-boxes-html.php:1475
+#: wppa-boxes-html.php:1477 wppa-boxes-html.php:1480
 msgid "Delete album"
 msgstr "删除相簿"
 
-#: wppa-boxes-html.php:1556
+#: wppa-boxes-html.php:1565
 msgid "Create Album"
 msgstr "创建专辑"
 
-#: wppa-boxes-html.php:1602 wppa-boxes-html.php:2244
+#: wppa-boxes-html.php:1610 wppa-boxes-html.php:2293
 msgid "Enter album name."
 msgstr "输入相册名称。"
 
-#: wppa-boxes-html.php:1604 wppa-boxes-html.php:2244
+#: wppa-boxes-html.php:1612 wppa-boxes-html.php:2293
 msgid "Don't leave this blank!"
 msgstr "不要留空！"
 
-#: wppa-boxes-html.php:1623
+#: wppa-boxes-html.php:1631
 msgid "Enter album description"
 msgstr "进入专辑介绍"
 
-#: wppa-boxes-html.php:1645
+#: wppa-boxes-html.php:1653
 msgid "Create album"
 msgstr "创建专辑"
 
-#: wppa-boxes-html.php:1687 wppa-boxes-html.php:1701 wppa-functions.php:3873
+#: wppa-boxes-html.php:1709 wppa-boxes-html.php:1722 wppa-functions.php:3970
 msgid "Max uploads reached"
 msgstr "最大上传达到"
 
-#: wppa-boxes-html.php:1764
+#: wppa-boxes-html.php:1784
 msgid "Upload Photo"
 msgstr "上傳照片"
 
-#: wppa-boxes-html.php:1875
-msgid "Please select an album and try again"
-msgstr "请选择一个专辑，然后再试一次"
-
-#: wppa-boxes-html.php:1889
-msgid "Upload photo"
-msgstr "上傳照片"
-
-#: wppa-boxes-html.php:1914
+#: wppa-boxes-html.php:1931
 #, php-format
 msgid ""
 "You may upload up to %s photos at once if your browser supports HTML-5 "
 "multiple file upload"
 msgstr "高达你可以上传到 %s 的照片一次，如果您的浏览器支持HTML-5多文件上传"
 
-#: wppa-boxes-html.php:1922
+#: wppa-boxes-html.php:1938
 #, php-format
 msgid "Max photo size: %d x %d (%2.1f MegaPixel)"
 msgstr "最大照片尺寸：%d x %d（%2.1f 万像素）"
 
-#: wppa-boxes-html.php:1951
+#: wppa-boxes-html.php:1965
 msgid "Apply watermark file:"
 msgstr "应用水印的文件："
 
-#: wppa-boxes-html.php:1973
+#: wppa-boxes-html.php:1987
 msgid "Position:"
 msgstr "职位："
 
-#: wppa-boxes-html.php:2002
+#: wppa-boxes-html.php:2015
 msgid ""
 "If you leave this blank, iptc tag 005 (Graphic name) will be used as "
 "photoname if available, else the original filename will be used as photo "
@@ -412,7 +403,7 @@ msgstr ""
 "如果你离开这个空白，IPTC标签005（图形名）将用作photoname如果可用，否则原来的"
 "文件名会被作为照片的名称。"
 
-#: wppa-boxes-html.php:2005
+#: wppa-boxes-html.php:2018
 msgid ""
 "If you leave this blank, iptc tag 120 (Caption) will be used as photoname if "
 "available, else the original filename will be used as photo name."
@@ -420,166 +411,174 @@ msgstr ""
 "如果你离开这个空白，IPTC标签120（标题）将被用作photoname如果可用，否则原来的"
 "文件名会被作为照片的名称。"
 
-#: wppa-boxes-html.php:2008
+#: wppa-boxes-html.php:2021
 msgid ""
 "If you leave this blank, the original filename will be used as photo name."
 msgstr "如果你离开这个空白，原来的文件名会被作为照片的名称。"
 
-#: wppa-boxes-html.php:2012
+#: wppa-boxes-html.php:2025
 msgid "Enter photo name."
 msgstr "输入照片的名称。"
 
-#: wppa-boxes-html.php:2031
+#: wppa-boxes-html.php:2043
 msgid "Enter/modify photo description"
 msgstr "输入/修改照片描述"
 
-#: wppa-boxes-html.php:2064
+#: wppa-boxes-html.php:2074
 msgid "hidden"
 msgstr "隐藏"
 
-#: wppa-boxes-html.php:2135
+#: wppa-boxes-html.php:2143
 msgid "Preview tags:"
 msgstr "预览标签："
 
-#: wppa-boxes-html.php:2178
+#: wppa-boxes-html.php:2156
+msgid "Please select an album and try again"
+msgstr "请选择一个专辑，然后再试一次"
+
+#: wppa-boxes-html.php:2170
+msgid "Upload photo"
+msgstr "上傳照片"
+
+#: wppa-boxes-html.php:2226
 msgid "ERROR: unable to upload files."
 msgstr "错误：无法上传文件。"
 
-#: wppa-boxes-html.php:2226
+#: wppa-boxes-html.php:2275
 msgid "Edit albuminfo"
 msgstr "编辑albuminfo"
 
-#: wppa-boxes-html.php:2254
+#: wppa-boxes-html.php:2303
 msgid "Album description:"
 msgstr "专辑介绍："
 
-#: wppa-boxes-html.php:2269
+#: wppa-boxes-html.php:2318
 msgid "Update album"
 msgstr "最新专辑"
 
-#: wppa-boxes-html.php:2343
+#: wppa-boxes-html.php:2392
 msgid "wrote:"
 msgstr "寫作"
 
-#: wppa-boxes-html.php:2375
+#: wppa-boxes-html.php:2446
 msgid "Avatar"
 msgstr "头像"
 
-#: wppa-boxes-html.php:2418 wppa-links.php:745
+#: wppa-boxes-html.php:2489 wppa-links.php:768
 msgid "Awaiting moderation"
 msgstr "等待审核"
 
-#: wppa-boxes-html.php:2421
+#: wppa-boxes-html.php:2492
 msgid "Marked as spam"
 msgstr "标记为垃圾邮件"
 
-#: wppa-boxes-html.php:2446
+#: wppa-boxes-html.php:2516
 msgid "Edit!"
 msgstr "退出!"
 
-#: wppa-boxes-html.php:2450
+#: wppa-boxes-html.php:2520
 msgid "Send!"
 msgstr "发送！"
 
-#: wppa-boxes-html.php:2511
+#: wppa-boxes-html.php:2581
 msgid "Your name:"
 msgstr "你的名字："
 
-#: wppa-boxes-html.php:2526
+#: wppa-boxes-html.php:2596
 msgid "Your email:"
 msgstr "您的电子邮件："
 
-#: wppa-boxes-html.php:2542
+#: wppa-boxes-html.php:2612
 msgid "Your comment:"
 msgstr "您的评论："
 
-#: wppa-boxes-html.php:2586
+#: wppa-boxes-html.php:2656
 #, php-format
 msgid "You must <a href=\"%s\">login</a> to enter a comment"
 msgstr "你必须<a href=\"%s\">登录</a>进入评论"
 
-#: wppa-boxes-html.php:2589
+#: wppa-boxes-html.php:2659
 msgid "You must login to enter a comment"
 msgstr "你必须登录进入评论"
 
-#: wppa-boxes-html.php:2601
+#: wppa-boxes-html.php:2671
 #, php-format
 msgid "%d comments"
 msgstr "%d  評論"
 
-#: wppa-boxes-html.php:2605
+#: wppa-boxes-html.php:2675
 msgid "Leave a comment"
 msgstr "发表评论"
 
-#: wppa-boxes-html.php:2646
+#: wppa-boxes-html.php:2716
 msgid "Smilies are not available"
 msgstr "表情符号不可用"
 
-#: wppa-boxes-html.php:2691
+#: wppa-boxes-html.php:2761
 msgid "Show IPTC data"
 msgstr "显示IPTC数据"
 
-#: wppa-boxes-html.php:2696
+#: wppa-boxes-html.php:2766
 msgid "Hide IPTC data"
 msgstr "隐藏IPTC数据"
 
-#: wppa-boxes-html.php:2735
+#: wppa-boxes-html.php:2805
 msgid "No IPTC data"
 msgstr "无IPTC数据"
 
-#: wppa-boxes-html.php:2782
+#: wppa-boxes-html.php:2852
 msgid "Show EXIF data"
 msgstr "显示EXIF数据"
 
-#: wppa-boxes-html.php:2788
+#: wppa-boxes-html.php:2858
 msgid "Hide EXIF data"
 msgstr "隐藏EXIF数据"
 
-#: wppa-boxes-html.php:2824
+#: wppa-boxes-html.php:2894
 msgid "No EXIF data"
 msgstr "无EXIF数据"
 
-#: wppa-boxes-html.php:2940 wppa-boxes-html.php:2944
+#: wppa-boxes-html.php:3009 wppa-boxes-html.php:3014
 msgid "< Previous"
 msgstr "< 上一張"
 
-#: wppa-boxes-html.php:2949 wppa-boxes-html.php:2953
+#: wppa-boxes-html.php:3020 wppa-boxes-html.php:3025
 msgid "Next >"
 msgstr "下一个 >"
 
-#: wppa-boxes-html.php:3044 wppa-boxes-html.php:3103
+#: wppa-boxes-html.php:3122 wppa-boxes-html.php:3181
 msgid "See the authors albums"
 msgstr "见笔者专辑"
 
-#: wppa-boxes-html.php:3048 wppa-boxes-html.php:3107
+#: wppa-boxes-html.php:3126 wppa-boxes-html.php:3185
 msgid "See the authors photos"
 msgstr "看到照片的作者"
 
-#: wppa-boxes-html.php:3052 wppa-boxes-html.php:3111
+#: wppa-boxes-html.php:3130 wppa-boxes-html.php:3189
 msgid "See all the authors photos"
 msgstr "查看所有作家的照片"
 
-#: wppa-boxes-html.php:3075
+#: wppa-boxes-html.php:3153
 #, php-format
 msgid "Photo by: %s"
 msgstr "攝影：%s"
 
-#: wppa-boxes-html.php:3076 wppa-boxes-html.php:3130
+#: wppa-boxes-html.php:3154 wppa-boxes-html.php:3208
 #, php-format
 msgid "Max ratings: %s."
 msgstr "最大額定值：%s 的。"
 
-#: wppa-boxes-html.php:3077 wppa-boxes-html.php:3131
+#: wppa-boxes-html.php:3155 wppa-boxes-html.php:3209
 #, php-format
 msgid "Votes: %s."
 msgstr "票：%s。"
 
-#: wppa-boxes-html.php:3078 wppa-boxes-html.php:3132
+#: wppa-boxes-html.php:3156 wppa-boxes-html.php:3210
 #, php-format
 msgid "Mean value: %4.2f."
 msgstr "平均值：%4.2f。"
 
-#: wppa-boxes-html.php:3085
+#: wppa-boxes-html.php:3163
 #, php-format
 msgid "Photo %s not found."
 msgstr "照片%s未找到。"
@@ -616,10 +615,10 @@ msgstr "与标签："
 msgid "of owner:"
 msgstr "：主人"
 
-#: wppa-breadcrumb.php:183 wppa-breadcrumb.php:211 wppa-breadcrumb.php:230
-#: wppa-breadcrumb.php:248 wppa-breadcrumb.php:266 wppa-breadcrumb.php:284
-#: wppa-breadcrumb.php:302 wppa-breadcrumb.php:314 wppa-breadcrumb.php:326
-#: wppa-breadcrumb.php:338 wppa-breadcrumb.php:357
+#: wppa-breadcrumb.php:183 wppa-breadcrumb.php:211 wppa-breadcrumb.php:268
+#: wppa-breadcrumb.php:286 wppa-breadcrumb.php:304 wppa-breadcrumb.php:322
+#: wppa-breadcrumb.php:340 wppa-breadcrumb.php:352 wppa-breadcrumb.php:364
+#: wppa-breadcrumb.php:376 wppa-breadcrumb.php:395
 msgid "View the thumbnails"
 msgstr "查看缩略图"
 
@@ -632,455 +631,460 @@ msgstr "從相冊 %s 和其子相冊的SearchResult"
 msgid "Searchstring:"
 msgstr "搜寻字串："
 
-#: wppa-breadcrumb.php:223 wppa-breadcrumb.php:233
+#: wppa-breadcrumb.php:223 wppa-breadcrumb.php:241
+msgid "Photos by EXIF date"
+msgstr "照片的 EXIF 日期"
+
+#: wppa-breadcrumb.php:227 wppa-breadcrumb.php:245
+msgid "Photos by date of upload"
+msgstr "按日期上传照片"
+
+#: wppa-breadcrumb.php:231 wppa-breadcrumb.php:249
+msgid "Photos by date last modified"
+msgstr "照片由上次修改日期"
+
+#: wppa-breadcrumb.php:261 wppa-breadcrumb.php:271
 #, php-format
 msgid "Photos by %s"
 msgstr "攝影 %s"
 
-#: wppa-breadcrumb.php:240 wppa-breadcrumb.php:258 wppa-breadcrumb.php:276
-#: wppa-breadcrumb.php:294 wppa-breadcrumb.php:372
+#: wppa-breadcrumb.php:278 wppa-breadcrumb.php:296 wppa-breadcrumb.php:314
+#: wppa-breadcrumb.php:332 wppa-breadcrumb.php:410
 msgid "Various albums"
 msgstr "各种专辑"
 
-#: wppa-breadcrumb.php:242 wppa-breadcrumb.php:260 wppa-breadcrumb.php:278
-#: wppa-breadcrumb.php:296 wppa-breadcrumb.php:376
+#: wppa-breadcrumb.php:280 wppa-breadcrumb.php:298 wppa-breadcrumb.php:316
+#: wppa-breadcrumb.php:334 wppa-breadcrumb.php:414
 msgid "Albums:"
 msgstr "相册"
 
-#: wppa-breadcrumb.php:246 wppa-breadcrumb.php:251
+#: wppa-breadcrumb.php:284 wppa-breadcrumb.php:289
 msgid "Top rated photos"
 msgstr "评分最高的照片"
 
-#: wppa-breadcrumb.php:264 wppa-breadcrumb.php:269
+#: wppa-breadcrumb.php:302 wppa-breadcrumb.php:307
 msgid "Recently uploaded photos"
 msgstr "最近上传的照片"
 
-#: wppa-breadcrumb.php:282 wppa-breadcrumb.php:287 wppa-comment-widget.php:36
+#: wppa-breadcrumb.php:320 wppa-breadcrumb.php:325 wppa-comment-widget.php:41
 msgid "Recently commented photos"
 msgstr "最近评论照片"
 
-#: wppa-breadcrumb.php:300 wppa-breadcrumb.php:305 wppa-featen-widget.php:37
+#: wppa-breadcrumb.php:338 wppa-breadcrumb.php:343 wppa-featen-widget.php:37
 msgid "Featured photos"
 msgstr "所有图片"
 
-#: wppa-breadcrumb.php:312 wppa-breadcrumb.php:317
+#: wppa-breadcrumb.php:350 wppa-breadcrumb.php:355
 msgid "Related photos"
 msgstr "相关照片"
 
-#: wppa-breadcrumb.php:324 wppa-breadcrumb.php:329
+#: wppa-breadcrumb.php:362 wppa-breadcrumb.php:367
 msgid "Tagged photos:"
 msgstr "标记的照片："
 
-#: wppa-breadcrumb.php:324 wppa-breadcrumb.php:329
+#: wppa-breadcrumb.php:362 wppa-breadcrumb.php:367
 msgid "or"
 msgstr "或"
 
-#: wppa-breadcrumb.php:355 wppa-breadcrumb.php:360
+#: wppa-breadcrumb.php:393 wppa-breadcrumb.php:398
 msgid "Recently updated albums"
 msgstr "最近更新的相册"
 
-#: wppa-breadcrumb.php:370
+#: wppa-breadcrumb.php:408
 #, php-format
 msgid "Various albums by %s"
 msgstr "不同的專輯將由 %s"
 
-#: wppa-breadcrumb.php:395 wppa-breadcrumb.php:410
+#: wppa-breadcrumb.php:435 wppa-breadcrumb.php:450
 msgid "Thumbnail view"
 msgstr "缩略图视图"
 
-#: wppa-breadcrumb.php:399 wppa-breadcrumb.php:400 wppa-breadcrumb.php:415
-#: wppa-breadcrumb.php:416
+#: wppa-breadcrumb.php:439 wppa-breadcrumb.php:440 wppa-breadcrumb.php:455
+#: wppa-breadcrumb.php:456
 msgid "Thumbs"
 msgstr "缩略图"
 
-#: wppa-breadcrumb.php:521
+#: wppa-breadcrumb.php:561
 msgid "Unpublished"
 msgstr "未发布"
 
-#: wppa-cart.php:25
+#: wppa-cart.php:26
 msgid "Buy now"
 msgstr "现在购买"
 
-#: wppa-cart.php:89
+#: wppa-cart.php:90
 #, php-format
 msgid "Unit Price: %s each"
 msgstr "单价：%s 的每个"
 
-#: wppa-cart.php:93
+#: wppa-cart.php:94
 msgid "Qty:"
 msgstr "数量："
 
-#: wppa-comment-widget.php:67 wppa-thumbnails.php:484
+#: wppa-comment-widget.php:74 wppa-thumbnails.php:493
 msgid "wrote"
 msgstr "寫作"
 
-#: wppa-comment-widget.php:80 wppa-featen-widget.php:97
+#: wppa-comment-widget.php:88 wppa-featen-widget.php:96
 #: wppa-lasten-widget.php:120 wppa-potd-widget.php:134
-#: wppa-thumbnail-widget.php:117 wppa-topten-widget.php:154
+#: wppa-thumbnail-widget.php:116 wppa-topten-widget.php:154
 msgid "Photo not found."
 msgstr "照片没有找到。"
 
-#: wppa-common-functions.php:187
+#: wppa-common-functions.php:194
 msgid "Default photo album for"
 msgstr "默认照片专辑"
 
-#: wppa-common-functions.php:617
+#: wppa-common-functions.php:624
 msgid "1 second"
 msgstr "1秒"
 
-#: wppa-common-functions.php:618 wppa-functions.php:4156
+#: wppa-common-functions.php:625 wppa-functions.php:4254
 msgid "seconds"
 msgstr "秒"
 
-#: wppa-common-functions.php:622
+#: wppa-common-functions.php:629
 msgid "1 minute"
 msgstr "1分钟"
 
-#: wppa-common-functions.php:623 wppa-functions.php:4155
+#: wppa-common-functions.php:630 wppa-functions.php:4253
 msgid "minutes"
 msgstr "分钟"
 
-#: wppa-common-functions.php:627
+#: wppa-common-functions.php:634
 msgid "1 hour"
 msgstr "1小时"
 
-#: wppa-common-functions.php:628 wppa-functions.php:4154
+#: wppa-common-functions.php:635 wppa-functions.php:4252
 msgid "hours"
 msgstr "小时"
 
-#: wppa-common-functions.php:632
+#: wppa-common-functions.php:639
 msgid "1 day"
 msgstr "1天"
 
-#: wppa-common-functions.php:633 wppa-functions.php:4153
+#: wppa-common-functions.php:640 wppa-functions.php:4251
 msgid "days"
 msgstr "天"
 
-#: wppa-common-functions.php:637
+#: wppa-common-functions.php:644
 msgid "1 week"
 msgstr "1星期"
 
-#: wppa-common-functions.php:638 wppa-functions.php:4152
+#: wppa-common-functions.php:645 wppa-functions.php:4250
 msgid "weeks"
 msgstr "星期"
 
-#: wppa-common-functions.php:642
+#: wppa-common-functions.php:649
 msgid "1 month"
 msgstr "1个月"
 
-#: wppa-common-functions.php:643
+#: wppa-common-functions.php:650
 msgid "months"
 msgstr "月"
 
-#: wppa-common-functions.php:646
+#: wppa-common-functions.php:653
 msgid "1 year"
 msgstr "一年"
 
-#: wppa-common-functions.php:647
+#: wppa-common-functions.php:654
 msgid "years"
 msgstr "年"
 
-#: wppa-common-functions.php:1963
+#: wppa-common-functions.php:1984
 msgid "- select an album -"
 msgstr "- 选择专辑 -"
 
-#: wppa-common-functions.php:1969 wppa-items.php:350
+#: wppa-common-functions.php:1990 wppa-items.php:362
 msgid "--- none ---"
 msgstr "---无---"
 
-#: wppa-common-functions.php:1975 wppa-items.php:358
+#: wppa-common-functions.php:1996 wppa-items.php:370
 msgid "--- all ---"
 msgstr "---所有---"
 
-#: wppa-common-functions.php:1981
+#: wppa-common-functions.php:2002
 msgid "--- generic ---"
 msgstr "---通用---"
 
-#: wppa-common-functions.php:1992
+#: wppa-common-functions.php:2013
 msgid "--- multiple see below ---"
 msgstr "---多见下文---"
 
-#: wppa-common-functions.php:1998
+#: wppa-common-functions.php:2019
 msgid "--- a selection box ---"
 msgstr "---选择框---"
 
-#: wppa-common-functions.php:2032 wppa-items.php:354
+#: wppa-common-functions.php:2053 wppa-items.php:366
 msgid "--- separate ---"
 msgstr "---独立---"
 
-#: wppa-exif-iptc-common.php:63 wppa-exif-iptc-common.php:122
+#: wppa-exif-iptc-common.php:70 wppa-exif-iptc-common.php:136
 msgid "n.a."
 msgstr "呐"
 
-#: wppa-exif-iptc-common.php:200 wppa-utils.php:2175
+#: wppa-exif-iptc-common.php:214 wppa-utils.php:2249
 msgid "Not Defined"
 msgstr "未定義"
 
-#: wppa-exif-iptc-common.php:201 wppa-utils.php:2176
+#: wppa-exif-iptc-common.php:215 wppa-utils.php:2250
 msgid "Manual"
 msgstr "管理器"
 
-#: wppa-exif-iptc-common.php:202 wppa-utils.php:2177
+#: wppa-exif-iptc-common.php:216 wppa-utils.php:2251
 msgid "Program AE"
 msgstr "程序自动曝光"
 
-#: wppa-exif-iptc-common.php:203 wppa-utils.php:2178
+#: wppa-exif-iptc-common.php:217 wppa-utils.php:2252
 msgid "Aperture-priority AE"
 msgstr "光圈优先自动曝光"
 
-#: wppa-exif-iptc-common.php:204 wppa-utils.php:2179
+#: wppa-exif-iptc-common.php:218 wppa-utils.php:2253
 msgid "Shutter speed priority AE"
 msgstr "快门速度优先AE"
 
-#: wppa-exif-iptc-common.php:205 wppa-utils.php:2180
+#: wppa-exif-iptc-common.php:219 wppa-utils.php:2254
 msgid "Creative (Slow speed)"
 msgstr "创意（慢速）"
 
-#: wppa-exif-iptc-common.php:206 wppa-utils.php:2181
+#: wppa-exif-iptc-common.php:220 wppa-utils.php:2255
 msgid "Action (High speed)"
 msgstr "动作（高速）"
 
-#: wppa-exif-iptc-common.php:207 wppa-utils.php:2182
+#: wppa-exif-iptc-common.php:221 wppa-utils.php:2256
 msgid "Portrait"
 msgstr "纵向"
 
-#: wppa-exif-iptc-common.php:208 wppa-utils.php:2183
+#: wppa-exif-iptc-common.php:222 wppa-utils.php:2257
 msgid "Landscape"
 msgstr "横向"
 
-#: wppa-exif-iptc-common.php:209 wppa-utils.php:2184
+#: wppa-exif-iptc-common.php:223 wppa-utils.php:2258
 msgid "Bulb"
 msgstr "燈泡"
 
-#: wppa-exif-iptc-common.php:231 wppa-utils.php:2185
+#: wppa-exif-iptc-common.php:245 wppa-utils.php:2259
 msgid "Average"
 msgstr "一般"
 
-#: wppa-exif-iptc-common.php:232 wppa-utils.php:2186
+#: wppa-exif-iptc-common.php:246 wppa-utils.php:2260
 msgid "Center-weighted average"
 msgstr "中央重点平均测光"
 
-#: wppa-exif-iptc-common.php:233 wppa-utils.php:2187
+#: wppa-exif-iptc-common.php:247 wppa-utils.php:2261
 msgid "Spot"
 msgstr "现场"
 
-#: wppa-exif-iptc-common.php:234 wppa-utils.php:2188
+#: wppa-exif-iptc-common.php:248 wppa-utils.php:2262
 msgid "Multi-spot"
 msgstr "多点"
 
-#: wppa-exif-iptc-common.php:235 wppa-utils.php:2189
+#: wppa-exif-iptc-common.php:249 wppa-utils.php:2263
 msgid "Multi-segment"
 msgstr "多段"
 
-#: wppa-exif-iptc-common.php:236 wppa-utils.php:2190
+#: wppa-exif-iptc-common.php:250 wppa-utils.php:2264
 msgid "Partial"
 msgstr "部分"
 
-#: wppa-exif-iptc-common.php:237 wppa-utils.php:2191
+#: wppa-exif-iptc-common.php:251 wppa-utils.php:2265
 msgid "Other"
 msgstr "其他"
 
-#: wppa-exif-iptc-common.php:273 wppa-utils.php:2192
+#: wppa-exif-iptc-common.php:287 wppa-utils.php:2266
 msgid "No Flash"
 msgstr "閃光燈:"
 
-#: wppa-exif-iptc-common.php:275 wppa-utils.php:2193
+#: wppa-exif-iptc-common.php:289 wppa-utils.php:2267
 msgid "Fired"
 msgstr "已解除"
 
-#: wppa-exif-iptc-common.php:277 wppa-utils.php:2194
+#: wppa-exif-iptc-common.php:291 wppa-utils.php:2268
 msgid "Fired, Return not detected"
 msgstr "开除，回到未检出"
 
-#: wppa-exif-iptc-common.php:279 wppa-utils.php:2195
+#: wppa-exif-iptc-common.php:293 wppa-utils.php:2269
 msgid "Fired, Return detected"
 msgstr "解雇，返回检测"
 
-#: wppa-exif-iptc-common.php:281 wppa-utils.php:2196
+#: wppa-exif-iptc-common.php:295 wppa-utils.php:2270
 msgid "On, Did not fire"
 msgstr "对，没有火"
 
-#: wppa-exif-iptc-common.php:283 wppa-utils.php:2197
+#: wppa-exif-iptc-common.php:297 wppa-utils.php:2271
 msgid "On, Fired"
 msgstr "上，被解雇"
 
-#: wppa-exif-iptc-common.php:285 wppa-utils.php:2198
+#: wppa-exif-iptc-common.php:299 wppa-utils.php:2272
 msgid "On, Return not detected"
 msgstr "时，返回未检出"
 
-#: wppa-exif-iptc-common.php:287 wppa-utils.php:2199
+#: wppa-exif-iptc-common.php:301 wppa-utils.php:2273
 msgid "On, Return detected"
 msgstr "上，检测到返回"
 
-#: wppa-exif-iptc-common.php:289 wppa-utils.php:2200
+#: wppa-exif-iptc-common.php:303 wppa-utils.php:2274
 msgid "Off, Did not fire"
 msgstr "关，没有火"
 
-#: wppa-exif-iptc-common.php:291 wppa-utils.php:2201
+#: wppa-exif-iptc-common.php:305 wppa-utils.php:2275
 msgid "Off, Did not fire, Return not detected"
 msgstr "关，没有火，返回未检出"
 
-#: wppa-exif-iptc-common.php:293 wppa-utils.php:2202
+#: wppa-exif-iptc-common.php:307 wppa-utils.php:2276
 msgid "Auto, Did not fire"
 msgstr "自动，没有火"
 
-#: wppa-exif-iptc-common.php:295 wppa-utils.php:2203
+#: wppa-exif-iptc-common.php:309 wppa-utils.php:2277
 msgid "Auto, Fired"
 msgstr "汽车，燃"
 
-#: wppa-exif-iptc-common.php:297 wppa-utils.php:2204
+#: wppa-exif-iptc-common.php:311 wppa-utils.php:2278
 msgid "Auto, Fired, Return not detected"
 msgstr "汽车，燃煤，返回未检出"
 
-#: wppa-exif-iptc-common.php:299 wppa-utils.php:2205
+#: wppa-exif-iptc-common.php:313 wppa-utils.php:2279
 msgid "Auto, Fired, Return detected"
 msgstr "汽车，燃煤，检测到返回"
 
-#: wppa-exif-iptc-common.php:301 wppa-utils.php:2206
+#: wppa-exif-iptc-common.php:315 wppa-utils.php:2280
 msgid "No flash function"
 msgstr "无闪光灯功能"
 
-#: wppa-exif-iptc-common.php:303 wppa-utils.php:2207
+#: wppa-exif-iptc-common.php:317 wppa-utils.php:2281
 msgid "Off, No flash function"
 msgstr "关，无闪光灯功能"
 
-#: wppa-exif-iptc-common.php:305 wppa-utils.php:2208
+#: wppa-exif-iptc-common.php:319 wppa-utils.php:2282
 msgid "Fired, Red-eye reduction"
 msgstr "解雇，减轻红眼"
 
-#: wppa-exif-iptc-common.php:307 wppa-utils.php:2209
+#: wppa-exif-iptc-common.php:321 wppa-utils.php:2283
 msgid "Fired, Red-eye reduction, Return not detected"
 msgstr "解雇，减轻红眼，返回未检出"
 
-#: wppa-exif-iptc-common.php:309 wppa-utils.php:2210
+#: wppa-exif-iptc-common.php:323 wppa-utils.php:2284
 msgid "Fired, Red-eye reduction, Return detected"
 msgstr "解雇，减轻红眼，检测到返回"
 
-#: wppa-exif-iptc-common.php:311 wppa-utils.php:2211
+#: wppa-exif-iptc-common.php:325 wppa-utils.php:2285
 msgid "On, Red-eye reduction"
 msgstr "开，防红眼"
 
-#: wppa-exif-iptc-common.php:313 wppa-utils.php:2212
+#: wppa-exif-iptc-common.php:327 wppa-utils.php:2286
 msgid "Red-eye reduction, Return not detected"
 msgstr "减轻红眼，返回未检出"
 
-#: wppa-exif-iptc-common.php:315 wppa-utils.php:2213
+#: wppa-exif-iptc-common.php:329 wppa-utils.php:2287
 msgid "On, Red-eye reduction, Return detected"
 msgstr "开，防红眼，返回检测"
 
-#: wppa-exif-iptc-common.php:317 wppa-utils.php:2214
+#: wppa-exif-iptc-common.php:331 wppa-utils.php:2288
 msgid "Off, Red-eye reduction"
 msgstr "关闭，防红眼"
 
-#: wppa-exif-iptc-common.php:319 wppa-utils.php:2215
+#: wppa-exif-iptc-common.php:333 wppa-utils.php:2289
 msgid "Auto, Did not fire, Red-eye reduction"
 msgstr "自动，没有火，防红眼"
 
-#: wppa-exif-iptc-common.php:321 wppa-utils.php:2216
+#: wppa-exif-iptc-common.php:335 wppa-utils.php:2290
 msgid "Auto, Fired, Red-eye reduction"
 msgstr "汽车，燃烧，减轻红眼"
 
-#: wppa-exif-iptc-common.php:323 wppa-utils.php:2217
+#: wppa-exif-iptc-common.php:337 wppa-utils.php:2291
 msgid "Auto, Fired, Red-eye reduction, Return not detected"
 msgstr "汽车，燃烧，减轻红眼，返回未检出"
 
-#: wppa-exif-iptc-common.php:325 wppa-utils.php:2218
+#: wppa-exif-iptc-common.php:339 wppa-utils.php:2292
 msgid "Auto, Fired, Red-eye reduction, Return detected"
 msgstr "汽车，燃烧，减轻红眼，检测到返回"
 
-#: wppa-featen-widget.php:75
+#: wppa-featen-widget.php:74
 msgid "View the featured photos"
 msgstr "查看所有图片"
 
-#: wppa-functions.php:536
+#: wppa-functions.php:539
 msgid "No related photos found."
 msgstr "没有相关的照片找到。"
 
-#: wppa-functions.php:915
+#: wppa-functions.php:932
 #, php-format
 msgid ""
 "There are %s albums found. Only the first %s will be shown. Please refine "
 "your search criteria."
 msgstr "找到 %s 的相冊。只有第一個 %s 將會顯示。請改進搜索標準。"
 
-#: wppa-functions.php:1514
-#, php-format
-msgid ""
-"There are %s photos found. Only the first %s will be shown. Please refine "
-"your search criteria."
-msgstr "找到 %s 的照片。只有第一個 %s 將會顯示。請改進搜索標準。"
-
-#: wppa-functions.php:1794 wppa-thumbnails.php:587
+#: wppa-functions.php:1904 wppa-thumbnails.php:596
 msgid "Edit"
 msgstr "编辑"
 
-#: wppa-functions.php:1803 wppa-links.php:694 wppa-links.php:711
-#: wppa-thumbnails.php:578
+#: wppa-functions.php:1913 wppa-links.php:717 wppa-links.php:734
+#: wppa-thumbnails.php:587
 msgid "Are you sure you want to remove this photo?"
 msgstr "你确定要移除这个项目？"
 
-#: wppa-functions.php:1806 wppa-links.php:701 wppa-links.php:719
-#: wppa-thumbnails.php:580
+#: wppa-functions.php:1916 wppa-links.php:724 wppa-links.php:742
+#: wppa-thumbnails.php:589
 msgid "Delete"
 msgstr "删除"
 
-#: wppa-functions.php:1963
+#: wppa-functions.php:2073
 msgid "Comment edited"
 msgstr "编辑评论"
 
-#: wppa-functions.php:1968
+#: wppa-functions.php:2078
 msgid "Photo comment"
 msgstr "照片评论"
 
-#: wppa-functions.php:1972
+#: wppa-functions.php:2082
 msgid "Comment on photo:"
 msgstr "评论照片："
 
-#: wppa-functions.php:1983
+#: wppa-functions.php:2093
 msgid "wrote on photo"
 msgstr "写在照片上"
 
-#: wppa-functions.php:1985
+#: wppa-functions.php:2095
 msgid "Reply"
 msgstr "回复"
 
-#: wppa-functions.php:1986
+#: wppa-functions.php:2096
 msgid "Moderate comment admin"
 msgstr "中度评论管理"
 
-#: wppa-functions.php:1987 wppa-functions.php:4004 wppa-upload.php:1424
+#: wppa-functions.php:2097 wppa-functions.php:4102 wppa-upload.php:1427
 msgid "Moderate manage photo"
 msgstr "适度管理照片"
 
-#: wppa-functions.php:1988
+#: wppa-functions.php:2098
 msgid "Edit photo"
 msgstr "编辑照片"
 
-#: wppa-functions.php:1998
+#: wppa-functions.php:2108
 msgid "You receive this email as you are assigned to moderate"
 msgstr "你收到这封电子邮件，你被分配到适度"
 
-#: wppa-functions.php:2010
+#: wppa-functions.php:2120
 msgid "You receive this email as administrator of the site"
 msgstr "你收到这封电子邮件作为网站管理员"
 
-#: wppa-functions.php:2027
+#: wppa-functions.php:2137
 msgid "You receive this email as uploader of the photo"
 msgstr "您收到此邮件的照片上传"
 
-#: wppa-functions.php:2044
+#: wppa-functions.php:2154
 msgid "You receive this email as owner of the album"
 msgstr "你收到这封电子邮件作为专辑的主人"
 
-#: wppa-functions.php:2061
+#: wppa-functions.php:2171
 msgid "You receive this email because you commented this photo earlier."
 msgstr "你收到这封电子邮件，因为你这张照片早些时候评论。"
 
-#: wppa-functions.php:2087
+#: wppa-functions.php:2197
 msgid "Comment added"
 msgstr "添加评论"
 
-#: wppa-functions.php:2092
+#: wppa-functions.php:2202
 msgid ""
 "Sorry, you gave a wrong answer.\\n\\nPlease try again to solve the "
 "computation."
@@ -1089,198 +1093,198 @@ msgstr ""
 "\n"
 " 请再次尝试解决计算。"
 
-#: wppa-functions.php:2102
+#: wppa-functions.php:2212
 msgid "Could not process comment.\\nProbably timed out."
 msgstr ""
 "无法处理意见。\n"
 " Probably超时。"
 
-#: wppa-functions.php:2185
+#: wppa-functions.php:2295
 msgid "1 Comment"
 msgstr "1條評論"
 
-#: wppa-functions.php:2186
+#: wppa-functions.php:2296
 #, php-format
 msgid "%s Comments"
 msgstr "%s 的评论"
 
-#: wppa-functions.php:2222 wppa-links.php:1377
+#: wppa-functions.php:2332 wppa-links.php:1405
 msgid "A video can not be printed or downloaded"
 msgstr "视频不能打印或下载"
 
-#: wppa-functions.php:2657
+#: wppa-functions.php:2767
 msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
 msgstr "<b>错误：试图非法进入评级。</b>"
 
-#: wppa-functions.php:2670
+#: wppa-functions.php:2780
 msgid "<b>ERROR: Illegal attempt to enter a comment.</b>"
 msgstr "<b>错误：试图非法进入评论。</b>"
 
-#: wppa-functions.php:3755
+#: wppa-functions.php:3851
 msgid "New Album"
 msgstr "添加新相册"
 
-#: wppa-functions.php:3758
+#: wppa-functions.php:3854
 msgid "<b>ERROR: Illegal attempt to create an album.</b>"
 msgstr "<b>错误：非法尝试创建一个相册。</b>"
 
-#: wppa-functions.php:3762
+#: wppa-functions.php:3858
 msgid "Wrong captcha, please try again"
 msgstr "验证码错误，请重试"
 
-#: wppa-functions.php:3775
+#: wppa-functions.php:3871
 #, php-format
 msgid "Album #%s created"
 msgstr "專輯＃%s 創建"
 
-#: wppa-functions.php:3780
+#: wppa-functions.php:3876
 msgid "Could not create album"
 msgstr "无法创建相册"
 
-#: wppa-functions.php:3791
+#: wppa-functions.php:3887
 msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
 msgstr "<b>错误：试图非法上传的文件。</b>"
 
-#: wppa-functions.php:3831
+#: wppa-functions.php:3927
 msgid "Photo upload"
 msgstr "上传照片"
 
-#: wppa-functions.php:3833
+#: wppa-functions.php:3929
 msgid "Photo successfully uploaded."
 msgstr "照片上传成功。"
 
-#: wppa-functions.php:3833
+#: wppa-functions.php:3929
 #, php-format
 msgid "%s photos successfully uploaded."
 msgstr "%s 的照片上传成功。"
 
-#: wppa-functions.php:3834
+#: wppa-functions.php:3930
 #, php-format
 msgid "%s points added."
 msgstr "添加 %s 指向。"
 
-#: wppa-functions.php:3838
+#: wppa-functions.php:3934
 msgid "Upload failed"
 msgstr "上传失败"
 
-#: wppa-functions.php:3841
+#: wppa-functions.php:3937
 msgid "1 Upload failed"
 msgstr "上传失败"
 
-#: wppa-functions.php:3841
+#: wppa-functions.php:3937
 #, php-format
 msgid "%s uploads failed."
 msgstr "%s 的上傳失敗。"
 
-#: wppa-functions.php:3877
+#: wppa-functions.php:3974
 msgid "Error during upload"
 msgstr "上传时出错"
 
-#: wppa-functions.php:3882
+#: wppa-functions.php:3979
 msgid "Uploaded file is not an image"
 msgstr "上传的文件不是图片"
 
-#: wppa-functions.php:3886
+#: wppa-functions.php:3983
 #, php-format
 msgid ""
 "Only gif, jpg and png image files are supported. Returned filetype = %d."
 msgstr "只有GIF，JPG和PNG图像文件的支持。返回文件类型= %d 个。"
 
-#: wppa-functions.php:3892
+#: wppa-functions.php:3989
 #, php-format
 msgid "Uploaded file is larger than the allowed maximum of %d x %d pixels."
 msgstr "上載的文件大於允許最大值的 %d x %d 像素。"
 
-#: wppa-functions.php:3898
+#: wppa-functions.php:3995
 #, php-format
 msgid "Uploaded file %s already exists in this album."
 msgstr "上傳的文件 %s 已經存在在這張專輯中。"
 
-#: wppa-functions.php:3906
+#: wppa-functions.php:4003
 #, php-format
 msgid "The image is too big. Max photo size: %d x %d (%2.1f MegaPixel)"
 msgstr "该图片太大。最大照片尺寸：%d x %d（%2.1f 万像素）"
 
-#: wppa-functions.php:3929
+#: wppa-functions.php:4026
 msgid "Could not insert photo into db."
 msgstr "无法将照片变成分贝。"
 
-#: wppa-functions.php:4000 wppa-upload.php:1420
+#: wppa-functions.php:4098 wppa-upload.php:1423
 #, php-format
 msgid "New photo uploaded: %s"
 msgstr "新的照片上传：%s 的"
 
-#: wppa-functions.php:4001 wppa-upload.php:1421
+#: wppa-functions.php:4099 wppa-upload.php:1424
 #, php-format
 msgid "User %s uploaded photo %s into album %s"
 msgstr "%s 用户上传的照片 %s 转换的专辑 %s"
 
-#: wppa-functions.php:4003 wppa-upload.php:1423
+#: wppa-functions.php:4101 wppa-upload.php:1426
 msgid "This upload requires moderation"
 msgstr "这上传需要节制"
 
-#: wppa-functions.php:4007 wppa-upload.php:1427
+#: wppa-functions.php:4105 wppa-upload.php:1430
 msgid "Details:"
 msgstr "详细信息 ："
 
-#: wppa-functions.php:4008 wppa-upload.php:1428
+#: wppa-functions.php:4106 wppa-upload.php:1431
 msgid "Manage photo"
 msgstr "管理照片"
 
-#: wppa-functions.php:4150
+#: wppa-functions.php:4248
 msgid "You can upload after"
 msgstr "您可以上传后，"
 
-#: wppa-functions.php:4181 wppa-functions.php:4192 wppa-links.php:1008
-#: wppa-non-admin.php:629
+#: wppa-functions.php:4278 wppa-functions.php:4289 wppa-links.php:1034
+#: wppa-non-admin.php:644
 msgid "Download"
 msgstr "下载"
 
-#: wppa-functions.php:4185 wppa-functions.php:4196
+#: wppa-functions.php:4282 wppa-functions.php:4293
 msgid "Download:"
 msgstr "下載:"
 
-#: wppa-functions.php:4219
+#: wppa-functions.php:4316
 msgid "Zoom in"
 msgstr "放大"
 
-#: wppa-items.php:214 wppa-thumbnails.php:1786
+#: wppa-items.php:226 wppa-thumbnails.php:1834
 msgid "Gold medal"
 msgstr "金牌"
 
-#: wppa-items.php:214
+#: wppa-items.php:226
 msgid "Gold"
 msgstr "金色"
 
-#: wppa-items.php:215 wppa-thumbnails.php:1787
+#: wppa-items.php:227 wppa-thumbnails.php:1835
 msgid "Silver medal"
 msgstr "银牌"
 
-#: wppa-items.php:215
+#: wppa-items.php:227
 msgid "Silver"
 msgstr "银色"
 
-#: wppa-items.php:216 wppa-thumbnails.php:1788
+#: wppa-items.php:228 wppa-thumbnails.php:1836
 msgid "Bronze medal"
 msgstr "铜牌"
 
-#: wppa-items.php:216
+#: wppa-items.php:228
 msgid "Bronze"
 msgstr "青铜"
 
-#: wppa-items.php:262 wppa-items.php:416
+#: wppa-items.php:274 wppa-items.php:428
 msgid "none"
 msgstr "无"
 
-#: wppa-items.php:292 wppa-items.php:427
+#: wppa-items.php:304 wppa-items.php:439
 msgid "unknown"
 msgstr "未知"
 
-#: wppa-items.php:362 wppa-items.php:383
+#: wppa-items.php:374 wppa-items.php:395
 msgid "--- deleted ---"
 msgstr "--- 已删除 ---"
 
-#: wppa-items.php:372
+#: wppa-items.php:384
 msgid "All Albums"
 msgstr "所有相册"
 
@@ -1292,170 +1296,170 @@ msgstr "近十年来上传照片"
 msgid "View the most recent uploaded photos"
 msgstr "查看最近上传的照片"
 
-#: wppa-links.php:682
+#: wppa-links.php:705
 msgid "App"
 msgstr "批准"
 
-#: wppa-links.php:683
+#: wppa-links.php:706
 msgid "Mod"
 msgstr "温和型"
 
-#: wppa-links.php:684
+#: wppa-links.php:707
 msgid "Del"
 msgstr "删除"
 
-#: wppa-links.php:688 wppa-links.php:705
+#: wppa-links.php:711 wppa-links.php:728
 msgid "Are you sure you want to publish this photo?"
 msgstr "你确定你要发布这张照片么？"
 
-#: wppa-links.php:699 wppa-links.php:716
+#: wppa-links.php:722 wppa-links.php:739
 msgid "Approve"
 msgstr "批准"
 
-#: wppa-links.php:700
+#: wppa-links.php:723
 msgid "Moderate"
 msgstr "温和型"
 
-#: wppa-links.php:717
+#: wppa-links.php:740
 msgid "PhotoAdmin"
 msgstr "PhotoAdmin"
 
-#: wppa-links.php:718
+#: wppa-links.php:741
 msgid "CommentAdmin"
 msgstr "CommentAdmin"
 
-#: wppa-links.php:722
+#: wppa-links.php:745
 msgid "Are you sure you want to publish this comment?"
 msgstr "你确定要发布此评论吗？"
 
-#: wppa-links.php:734
+#: wppa-links.php:757
 msgid "Are you sure you want to remove this comment?"
 msgstr "你确定要移除这个项目？"
 
-#: wppa-links.php:748
+#: wppa-links.php:771
 #, php-format
 msgid "Scheduled for %s"
 msgstr "定於%s"
 
-#: wppa-links.php:949 wppa-links.php:952 wppa-slideshow.php:699
+#: wppa-links.php:975 wppa-links.php:978 wppa-slideshow.php:698
 msgid "Previous"
 msgstr "上一个"
 
-#: wppa-links.php:959 wppa-links.php:962 wppa-non-admin.php:575
-#: wppa-slideshow.php:702
+#: wppa-links.php:985 wppa-links.php:988 wppa-non-admin.php:590
+#: wppa-slideshow.php:701
 msgid "Next"
 msgstr "下一页"
 
-#: wppa-links.php:1008
+#: wppa-links.php:1034
 msgid "Download album"
 msgstr "下载专辑"
 
-#: wppa-links.php:1145
+#: wppa-links.php:1171
 msgid "View thumbnails"
 msgstr "查看缩略图"
 
-#: wppa-non-admin.php:314
+#: wppa-non-admin.php:316
 msgid "Press f for fullscreen."
 msgstr "按F全屏。"
 
-#: wppa-non-admin.php:338
+#: wppa-non-admin.php:350
 msgid ""
 "Keys: f = next mode; escape = exit; p = previous, n = next, s = start/stop, "
 "d = dismiss this notice."
 msgstr ""
 "键：F =下一模式;逃生=退出; P =前，N =下一个，S =启动/停止，D =关闭此通知。"
 
-#: wppa-non-admin.php:339
+#: wppa-non-admin.php:351
 msgid "Keys: f = next mode; escape = exit; d = dismiss this notice."
 msgstr "键：F =下一模式;逃生=退出; D =关闭此通知。"
 
-#: wppa-non-admin.php:566 wppa-slideshow.php:232
+#: wppa-non-admin.php:581 wppa-slideshow.php:232
 msgid "Start"
 msgstr "开始"
 
-#: wppa-non-admin.php:567
+#: wppa-non-admin.php:582
 msgid "Stop"
 msgstr "停止"
 
-#: wppa-non-admin.php:568 wppa-slideshow.php:231
+#: wppa-non-admin.php:583 wppa-slideshow.php:231
 msgid "Slower"
 msgstr "较慢"
 
-#: wppa-non-admin.php:569 wppa-slideshow.php:233
+#: wppa-non-admin.php:584 wppa-slideshow.php:233
 msgid "Faster"
 msgstr "较快"
 
-#: wppa-non-admin.php:570
+#: wppa-non-admin.php:585
 msgid "Photo"
 msgstr "相片"
 
-#: wppa-non-admin.php:571
+#: wppa-non-admin.php:586
 msgid "of"
 msgstr "于"
 
-#: wppa-non-admin.php:572
+#: wppa-non-admin.php:587
 msgid "Previous photo"
 msgstr "一张照片"
 
-#: wppa-non-admin.php:573
+#: wppa-non-admin.php:588
 msgid "Next photo"
 msgstr "下一张照片"
 
-#: wppa-non-admin.php:574
+#: wppa-non-admin.php:589
 msgid "Prev."
 msgstr "上一页。"
 
-#: wppa-non-admin.php:576 wppa-slideshow.php:540 wppa-slideshow.php:544
+#: wppa-non-admin.php:591 wppa-slideshow.php:540 wppa-slideshow.php:544
 #: wppa-slideshow.php:590
 msgid "Average&nbsp;rating"
 msgstr "平均评级"
 
-#: wppa-non-admin.php:577 wppa-slideshow.php:565 wppa-slideshow.php:570
+#: wppa-non-admin.php:592 wppa-slideshow.php:565 wppa-slideshow.php:570
 #: wppa-slideshow.php:575
 msgid "My&nbsp;rating"
 msgstr "我的评分"
 
-#: wppa-non-admin.php:578
+#: wppa-non-admin.php:593
 msgid "Avg."
 msgstr "平均"
 
-#: wppa-non-admin.php:579
+#: wppa-non-admin.php:594
 msgid "Mine"
 msgstr "矿"
 
-#: wppa-non-admin.php:580
+#: wppa-non-admin.php:595
 msgid "You marked this image as inappropriate."
 msgstr "你这个标记的图像作为不恰当的。"
 
-#: wppa-non-admin.php:582
+#: wppa-non-admin.php:597
 msgid "No dislikes"
 msgstr "没有不喜欢"
 
-#: wppa-non-admin.php:583
+#: wppa-non-admin.php:598
 msgid "1 dislike"
 msgstr "1反感"
 
-#: wppa-non-admin.php:584
+#: wppa-non-admin.php:599
 msgid "dislikes"
 msgstr "不喜欢"
 
-#: wppa-non-admin.php:585
+#: wppa-non-admin.php:600
 msgid "including mine"
 msgstr "包括我"
 
-#: wppa-non-admin.php:588
+#: wppa-non-admin.php:603
 msgid "Please enter your name"
 msgstr "请输入您的姓名"
 
-#: wppa-non-admin.php:589
+#: wppa-non-admin.php:604
 msgid "Please enter a valid email address"
 msgstr "请输入一个有效的的电子邮件地址"
 
-#: wppa-non-admin.php:590
+#: wppa-non-admin.php:605
 msgid "Please enter a comment"
 msgstr "请输入评论"
 
-#: wppa-non-admin.php:624
+#: wppa-non-admin.php:639
 msgid "Double click to start/stop slideshow running"
 msgstr "双击启动/停止幻灯片运行"
 
@@ -1472,31 +1476,31 @@ msgstr "来自"
 msgid "QR Widget"
 msgstr "QR控件"
 
-#: wppa-settings-autosave.php:2664
+#: wppa-settings-autosave.php:2687
 msgid "Abort"
 msgstr "放弃"
 
-#: wppa-settings-autosave.php:2664
+#: wppa-settings-autosave.php:2687
 msgid "Cancel"
 msgstr "取消"
 
-#: wppa-settings-autosave.php:2664
+#: wppa-settings-autosave.php:2687
 msgid "Close"
 msgstr "关闭 [X]"
 
-#: wppa-settings-autosave.php:2664
+#: wppa-settings-autosave.php:2687
 msgid "Exit"
 msgstr "退出"
 
-#: wppa-settings-autosave.php:2664
+#: wppa-settings-autosave.php:2687
 msgid "Quit"
 msgstr "退出"
 
-#: wppa-setup.php:906
+#: wppa-setup.php:911
 msgid "Vote for me!"
 msgstr "投我一票！"
 
-#: wppa-setup.php:907
+#: wppa-setup.php:912
 msgid "Voted for me"
 msgstr "投票给我"
 
@@ -1575,32 +1579,32 @@ msgstr "标记照片作为inapprpriate谁人数"
 msgid "My rating:"
 msgstr "我的评价："
 
-#: wppa-slideshow.php:698
+#: wppa-slideshow.php:697
 msgid "First"
 msgstr "名"
 
-#: wppa-slideshow.php:703
+#: wppa-slideshow.php:702
 msgid "Last"
 msgstr "姓"
 
-#: wppa-slideshow.php:819
+#: wppa-slideshow.php:818
 #, php-format
 msgid "Photo %s of %s"
 msgstr "%s 的照片 %s"
 
-#: wppa-slideshow.php:850
+#: wppa-slideshow.php:849
 msgid "Click to start/stop"
 msgstr "单击开始/停止"
 
-#: wppa-slideshow.php:862
+#: wppa-slideshow.php:861
 msgid "- - - Comments box activated - - -"
 msgstr "-   -   - 意见栏中激活 -   -   -"
 
-#: wppa-slideshow.php:883
+#: wppa-slideshow.php:882
 msgid "- - - IPTC box activated - - -"
 msgstr "-   -   -  IPTC箱激活 -   -   -"
 
-#: wppa-slideshow.php:903
+#: wppa-slideshow.php:902
 msgid "- - - EXIF box activated - - -"
 msgstr "-   -   -  EXIF​​箱激活 -   -   -"
 
@@ -1620,15 +1624,19 @@ msgstr "，子专辑"
 msgid "Thumbnail photos"
 msgstr "缩略图"
 
-#: wppa-thumbnails.php:174 wppa-thumbnails.php:1026 wppa-topten-widget.php:109
+#: wppa-thumbnails.php:174 wppa-thumbnails.php:1058 wppa-topten-widget.php:109
 msgid "View the top rated photos"
 msgstr "看最精彩的照片"
 
-#: wppa-thumbnails.php:623 wppa-thumbnails.php:1372
+#: wppa-thumbnails.php:634
+msgid "Comments:"
+msgstr "评论："
+
+#: wppa-thumbnails.php:644 wppa-thumbnails.php:1419
 msgid "Views:"
 msgstr "浏览次数:"
 
-#: wppa-thumbnails.php:944
+#: wppa-thumbnails.php:965
 #, php-format
 msgid "Missing thumbnail image #%s"
 msgstr "缺少缩略图＃%s"
@@ -1665,22 +1673,22 @@ msgstr "有太多的注册用户在系统中为这个小部件"
 msgid "Photos uploaded by"
 msgstr "由照片上传"
 
-#: wppa-utils.php:263
+#: wppa-utils.php:259
 #, php-format
 msgid "Rating: %s"
 msgstr "评分：%s"
 
-#: wppa-utils.php:819
+#: wppa-utils.php:860
 #, php-format
 msgid "The visitors email address is: <a href=\"mailto:%s\">%s</a>"
 msgstr "游客的电子邮件地址是： <a href=\"mailto:%s\">%s</a>"
 
-#: wppa-utils.php:825
+#: wppa-utils.php:866
 #, php-format
 msgid "The visitor says his email address is: <a href=\"mailto:%s\">%s</a>"
 msgstr "游客说，他的电子邮件地址是： <a href=\"mailto:%s\">%s</a>"
 
-#: wppa-utils.php:831
+#: wppa-utils.php:872
 #, php-format
 msgid ""
 "This message is automaticly generated at %s. It is useless to respond to it."
@@ -1691,6 +1699,11 @@ msgid ""
 "There is no filetype available for your browser, or your browser does not "
 "support html5 video"
 msgstr "有您的浏览器没有可用的文件类型，或者你的浏览器不支持HTML5视频"
+
+#~ msgid ""
+#~ "There are %s photos found. Only the first %s will be shown. Please refine "
+#~ "your search criteria."
+#~ msgstr "找到 %s 的照片。只有第一個 %s 將會顯示。請改進搜索標準。"
 
 #~ msgid "Click to add/remove option."
 #~ msgstr "点击添加/删除选项。"

@@ -2,7 +2,7 @@
 /* wppa-widget-functions.php
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.5.2
+/* Version 6.2.10
 /*
 */
 
@@ -11,7 +11,7 @@ function wppa_get_widgetphotos( $alb, $option = '' ) {
 global $wpdb;
 
 	$photos = false;
-	
+
 	// Is it a single album?
 	if ( is_numeric( $alb ) ) {
 		$query = $wpdb->prepare( "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `album` = %s " . $option, $alb );
@@ -19,7 +19,7 @@ global $wpdb;
 		wppa_dbg_q( 'Q-WidP1' );
 		wppa_cache_photo( 'add', $photos );
 	}
-	
+
 	// Is it an enumeration of album ids?
 	elseif ( strchr( $alb, ',' ) ) {
 		$albs = explode( ',', $alb );
@@ -32,7 +32,7 @@ global $wpdb;
 		wppa_dbg_q( 'Q-WidP2' );
 		wppa_cache_photo( 'add', $photos );
 	}
-	
+
 	// Is it ALL?
 	elseif ( $alb == 'all' ) {
 		$query = "SELECT * FROM `" . WPPA_PHOTOS . "` " . $option;
@@ -40,7 +40,7 @@ global $wpdb;
 		wppa_dbg_q( 'Q-WidP3' );
 		wppa_cache_photo( 'add', $photos );
 	}
-	
+
 	// Is it SEP?
 	elseif ( $alb == 'sep' ) {
 		$albs = $wpdb->get_results( "SELECT `id`, `a_parent` FROM `" . WPPA_ALBUMS . "`", ARRAY_A );
@@ -56,7 +56,7 @@ global $wpdb;
 		wppa_dbg_q( 'Q-WidP4' );
 		wppa_cache_photo( 'add', $photos );
 	}
-	
+
 	// Is it ALL-SEP?
 	elseif ( $alb == 'all-sep' ) {
 		$albs = $wpdb->get_results( "SELECT `id`, `a_parent` FROM `" . WPPA_ALBUMS . "`", ARRAY_A );
@@ -71,10 +71,10 @@ global $wpdb;
 		wppa_dbg_q( 'Q-WidP5' );
 		wppa_cache_photo( 'add', $photos );
 	}
-	
+
 	// Is it Topten?
 	elseif ( $alb == 'topten' ) {
-	
+
 		// Find the 'top' policy
 		switch ( wppa_opt( 'wppa_topten_sortby' ) ) {
 			case 'mean_rating':
@@ -97,7 +97,7 @@ global $wpdb;
 		wppa_dbg_q( 'Q-WidP6' );
 		wppa_cache_photo( 'add', $photos );
 	}
-	
+
 	// Is is Featured?
 	elseif ( $alb == 'featured' ) {
 		$query = "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `status` = 'featured' " . $option;
@@ -109,14 +109,14 @@ global $wpdb;
 	return $photos;
 }
 
-// get select form element listing albums 
+// get select form element listing albums
 // Special version for widget
 function wppa_walbum_select( $sel = '' ) {
 	global $wpdb;
 	$albums = $wpdb->get_results( "SELECT * FROM `" . WPPA_ALBUMS . "` ORDER BY `name`", ARRAY_A );
 	wppa_dbg_q( 'Q-Asel' );
 	wppa_cache_album( 'add', $albums );
-	
+
 	if ( is_numeric( $sel ) ) $type = 1;		// Single number
 	elseif ( strchr( $sel, ',' ) ) {
 		$type = 2;							// Array
@@ -128,9 +128,9 @@ function wppa_walbum_select( $sel = '' ) {
 	elseif ( $sel == 'topten' ) $type = 6;	// Topten
 	elseif ( $sel == 'featured' ) $type = 7;	// Featured
 	else $type = 0;							// Nothing yet
-    
+
     $result = '<option value="" >' . __( '- select (another) album or a set -', 'wppa' ) . '</option>';
-    
+
 	foreach ( $albums as $album ) {
 		switch ( $type ) {
 			case 1:
@@ -183,20 +183,20 @@ function wppa_walbum_sanitize( $walbum ) {
 
 	$result = strtolower( $walbum );
 	$result = strip_tags( $result );
-	
+
 	if ( strstr( $result, 'all-sep' ) ) $result = 'all-sep';
 	elseif ( strstr( $result, 'all' ) ) $result = 'all';
 	elseif ( strstr( $result, 'sep' ) ) $result = 'sep';
 	elseif ( strstr( $result, 'topten' ) ) $result = 'topten';
 	elseif ( strstr( $result, 'clr' ) ) $result = '';
 	else {
-	
+
 		// Change multiple commas to one
 		while ( substr_count( $result, ',,' ) ) $result = str_replace( ',,', ',', $result );
-		
+
 		// remove leading and trailing commas
 		$result = trim( $result, ',' );
-		
+
 		// Check for illegal chars
 		$temp = str_replace( ',', '', $result );
 		if ( $temp && ! wppa_is_int( $temp ) ) {
@@ -210,15 +210,14 @@ function wppa_walbum_sanitize( $walbum ) {
 // get the photo of the day
 function wppa_get_potd() {
 global $wpdb;
-global $thumb;
 
 	$image = '';
 	switch ( wppa_opt( 'wppa_widget_method' ) ) {
 		case '1':	// Fixed photo
 			$id = wppa_opt( 'wppa_widget_photo' );
 			if ( $id != '' ) {
-				$image = $wpdb->get_row( $wpdb->prepare( 
-					"SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `id` = %s LIMIT 0,1", $id 
+				$image = $wpdb->get_row( $wpdb->prepare(
+					"SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `id` = %s LIMIT 0,1", $id
 					), ARRAY_A );
 				wppa_dbg_q( 'Q-Potd' );
 				wppa_cache_photo( 'add', $image );
@@ -296,7 +295,7 @@ global $thumb;
 					$u /= $per;
 					$u = floor( $u );
 					if ( $photos ) {
-						$p = count( $photos ); 
+						$p = count( $photos );
 						$idn = fmod( $u, $p );
 						$image = $photos[$idn];
 					}
@@ -308,13 +307,11 @@ global $thumb;
 				$image = '';
 			}
 			break;
-							
+
 		default:
 			$image = '';
 	}
 
-	$thumb = $image;
-	
 	return $image;
 }
 

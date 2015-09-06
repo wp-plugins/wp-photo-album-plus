@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 6.2.3
+* Version 6.2.10
 *
 */
 
@@ -14,12 +14,12 @@ function wppa_get_permalink( $key = '', $plain = false ) {
 global $wppa_lang;
 
 	if ( ! $key && is_search() ) $key = wppa_opt( 'wppa_search_linkpage' );
-	
+
 	switch ( $key ) {
 		case '0':
 		case '':	// normal permalink
 			if ( wppa( 'in_widget' ) ) {
-//				$pl = esc_url( ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ); // 
+//				$pl = esc_url( ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ); //
 				$pl = get_permalink(); // home_url();
 				if ( $plain ) return $pl;
 				if ( strpos( $pl, '?' ) ) $pl .= '&amp;';
@@ -84,17 +84,17 @@ global $wppa_lang;
 			else $pl .= 'lang=' . $wppa_lang . '&amp;';
 		}
 	}
-	
+
 	if ( wppa( 'is_rootsearch' ) ) {
 		if ( $key == 'js' ) $pl .= 'rootsearch=1&';
 		else $pl .= 'rootsearch=1&amp;';
 	}
-	
+
 	if ( wppa( 'debug' ) ) {
 		if ( $key == 'js' ) $pl .= 'debug='.wppa( 'debug' ).'&';
 		else $pl .= 'debug='.wppa( 'debug' ).'&amp;';
 	}
-	
+
 	return $pl;
 }
 
@@ -108,7 +108,7 @@ global $wppa_lang;
 	else {
 		$al = admin_url( 'admin-ajax.php' ).'?action=wppa&amp;wppa-action=render';
 	}
-	
+
 	// See if this call is from an ajax operation or...
 	if ( wppa( 'ajax' ) ) {
 		if ( wppa_get_get( 'size' ) ) $al .= '&amp;wppa-size=' . wppa_get_get( 'size' );
@@ -134,7 +134,7 @@ global $wppa_lang;
 		}
 		$al .= '&amp;wppa-fromp=' . get_the_ID();
 	}
-	
+
 	if ( wppa_get_get( 'lang' ) ) {	// If lang in querystring: keep it
 		if ( strpos($al, 'lang=') === false ) { 	// Not yet
 			if ( $key == 'js' ) $al .= '&lang=' . $wppa_lang;
@@ -156,42 +156,40 @@ global $wppa_lang;
 
 // get page url of current album image
 function wppa_get_image_page_url_by_id( $id, $single = false, $alb = false ) {
-global $thumb;
-	
+
 	if ( ! is_numeric( $id ) || $id < '1' ) wppa_dbg_msg( 'Invalid arg wppa_get_image_page_url_by_id(' . $id . ')', 'red' );
 
-	wppa_cache_thumb( $id );
-	
+	$thumb = wppa_cache_thumb( $id );
+
 	$occur = wppa( 'in_widget' ) ? wppa( 'widget_occur' ) : wppa( 'occur' );
 	$w = wppa( 'in_widget' ) ? 'w' : '';
 
 	if ( ! $alb ) $alb = $thumb['album'];
-	
+
 	if ( ! $occur ) $occur = '1';
-	
-	$result = wppa_get_permalink().'wppa-album='.$alb.'&amp;wppa-photo='.$thumb['id'].'&amp;wppa-cover=0&amp;wppa-'.$w.'occur='.$occur;	
+
+	$result = wppa_get_permalink().'wppa-album='.$alb.'&amp;wppa-photo='.$thumb['id'].'&amp;wppa-cover=0&amp;wppa-'.$w.'occur='.$occur;
 	if ( $single ) $result .= '&amp;wppa-single=1';
-	
+
 	return $result;
 }
 
 // get page url of current album image, ajax version
 function wppa_get_image_url_ajax_by_id($id) {
-global $thumb;
-	
+
 	if ( ! is_numeric($id) || $id < '1' ) wppa_dbg_msg('Invalid arg wppa_get_image_url_ajax_by_id('.$id.')', 'red');
 
-	wppa_cache_thumb($id);
-	
+	$thumb = wppa_cache_thumb($id);
+
 	$occur = wppa( 'in_widget' ) ? wppa( 'widget_occur' ) : wppa( 'occur' );
 	$w = wppa( 'in_widget' ) ? 'w' : '';
-	
-	return wppa_get_ajaxlink().'wppa-album='.$thumb['album'].'&amp;wppa-photo='.$thumb['id'].'&amp;wppa-cover=0&amp;wppa-'.$w.'occur='.$occur;	
+
+	return wppa_get_ajaxlink().'wppa-album='.$thumb['album'].'&amp;wppa-photo='.$thumb['id'].'&amp;wppa-cover=0&amp;wppa-'.$w.'occur='.$occur;
 }
 
 // get link to album by id or in loop
 function wppa_get_album_url( $id, $pag = '', $type = 'content', $occur = '0' ) {
-	
+
 	// Use forced occur ?
 	if ( $occur ) {
 		$w = '';
@@ -200,7 +198,7 @@ function wppa_get_album_url( $id, $pag = '', $type = 'content', $occur = '0' ) {
 		$occur = wppa( 'in_widget' ) ? wppa( 'widget_occur' ) : wppa( 'occur' );
 		$w = wppa( 'in_widget' ) ? 'w' : '';
 	}
-	
+
 	if ( $id ) {
 		$link = wppa_get_permalink($pag).'wppa-album='.$id.'&amp;wppa-cover=0&amp;wppa-'.$w.'occur='.$occur;
 		if ( $type == 'thumbs' ) {
@@ -216,10 +214,10 @@ function wppa_get_album_url( $id, $pag = '', $type = 'content', $occur = '0' ) {
 
 // get link to album by id or in loop ajax version
 function wppa_get_album_url_ajax( $id, $pag = '', $type = 'content' ) {
-	
+
 	$occur = wppa( 'in_widget' ) ? wppa( 'widget_occur' ) : wppa( 'occur' );
 	$w = wppa( 'in_widget' ) ? 'w' : '';
-	
+
 	if ( $id ) {
 		$link = wppa_get_ajaxlink($pag).'wppa-album='.$id.'&amp;wppa-cover=0&amp;wppa-'.$w.'occur='.$occur;
 		if ( $type == 'thumbs' ) {
@@ -235,7 +233,7 @@ function wppa_get_album_url_ajax( $id, $pag = '', $type = 'content' ) {
 
 // get link to slideshow (in loop)
 function wppa_get_slideshow_url($id, $page = '', $pid = '') {
-	
+
 	if ($id) {
 		$occur = wppa( 'in_widget' ) ? wppa( 'widget_occur' ) : wppa( 'occur' );
 		$w = wppa( 'in_widget' ) ? 'w' : '';
@@ -250,13 +248,13 @@ function wppa_get_slideshow_url($id, $page = '', $pid = '') {
 	else {
 		$link = '';
 	}
-	
-	return $link;	
+
+	return $link;
 }
 
 // get link to slideshow (in loop) ajax version
 function wppa_get_slideshow_url_ajax($id, $page = '') {
-	
+
 	if ($id) {
 		$occur = wppa( 'in_widget' ) ? wppa( 'widget_occur' ) : wppa( 'occur' );
 		$w = wppa( 'in_widget' ) ? 'w' : '';
@@ -266,7 +264,7 @@ function wppa_get_slideshow_url_ajax($id, $page = '') {
 	}
 	elseif ( wppa( 'calendar') ) {
 		$link = wppa_get_ajaxlink( $page ) .
-					'&amp;wppa-calendar=' . wppa( 'calendar' ) . 
+					'&amp;wppa-calendar=' . wppa( 'calendar' ) .
 					'&amp;wppa-caldate=' . wppa( 'caldate' ) .
 					'&amp;wppa-slide' .
 					( wppa( 'start_album' ) ? '&amp; wppa-album=' . wppa( 'start_album' ) : '' ) .
@@ -275,8 +273,8 @@ function wppa_get_slideshow_url_ajax($id, $page = '') {
 	else {
 		$link = '';
 	}
-	
-	return $link;	
+
+	return $link;
 }
 
 // Pretty links decode
@@ -287,13 +285,13 @@ function wppa_convert_from_pretty( $uri ) {
 	$wppapos = stripos($uri, '/wppaspec/');
 	if ( ! $wppapos ) return $uri;	// Is not a pretty link
 	if ( ! get_option('permalink_structure') ) return $uri;
-	
+
 	// copy start up to including slash before wppaspec
-	$newuri = substr($uri, 0, $wppapos+1);				
-	
+	$newuri = substr($uri, 0, $wppapos+1);
+
 	// explode part after wppaspec/
-	$args = explode('/', substr($uri, $wppapos+10));	
-	
+	$args = explode('/', substr($uri, $wppapos+10));
+
 	// process 'arguments'
 	if ( count($args > 0) ) {
 		$first = true;
@@ -385,16 +383,16 @@ function wppa_convert_from_pretty( $uri ) {
 				case 'cd':
 					$deltauri = 'wppa-caldate=';
 					break;
-					
+
 				default:
 					$deltauri = '';
 			}
-			
+
 //			if ( wppa_switch( 'wppa_use_short_qargs' ) ) {
 //				if ( ! in_array( $deltauri, $possible_conflicts ) ) {
 //					$deltauri = str_replace( 'wppa-', '', $deltauri );
 //				}
-				
+
 //			}
 			if ( $deltauri ) {
 				$newuri .= $deltauri;
@@ -415,15 +413,15 @@ function wppa_convert_to_pretty( $xuri ) {
 
 	// Make local copy
 	$uri = $xuri;
-	
+
 	// Only when permalink structure is not default
 	if ( ! get_option('permalink_structure') ) return $uri;
-	
+
 	// Any querystring?
 	if ( strpos( $uri, '?' ) === false ) {
 		return $uri;
 	}
-	
+
 	// Re-order
 	if ( strpos( $uri, '&amp;' ) !== false ) {
 		$amps = true;
@@ -434,19 +432,19 @@ function wppa_convert_to_pretty( $xuri ) {
 	}
 	$parts = explode( '?', $uri );
 	$args = explode( '&', $parts[1] );
-	$order = array( 'occur', 'woccur', 
-					'searchstring', 
+	$order = array( 'occur', 'woccur',
+					'searchstring',
 					'supersearch',
 					'topten', 'lasten', 'comten', 'featen',
-					'lang', 
-					'single', 
-					'tag', 
-					'photos-only', 
+					'lang',
+					'single',
+					'tag',
+					'photos-only',
 					'albums-only',
-					'rel', 
-					'relcount', 
-					'upldr', 
-					'owner', 
+					'rel',
+					'relcount',
+					'upldr',
+					'owner',
 					'rootsearch',
 					'slide', 'cover', 'page',
 					'album', 'photo', 'hilite',
@@ -471,7 +469,7 @@ function wppa_convert_to_pretty( $xuri ) {
 	}
 	if ( $amps ) {
 		$uri = str_replace( '&', '&amp;', $uri );
-	} 
+	}
 
 	// First filter for short query args
 	$uri = wppa_trim_wppa_( $uri );
@@ -508,7 +506,7 @@ function wppa_convert_to_pretty( $xuri ) {
 			}
 		}
 	}
-	
+
 	// Now filter for photo names in urls
 	if ( wppa_switch( 'wppa_use_photo_names_in_urls' ) ) {
 		$start 	= 0;
@@ -537,18 +535,18 @@ function wppa_convert_to_pretty( $xuri ) {
 			}
 		}
 	}
-	
+
 	// Now urlencode for funny chars
 	$uri = str_replace( array( ' ', '[', ']' ), array( '%20', '%5B', '%5D' ), $uri );
-	
+
 	// Now the actual conversion to pretty links
 	if ( ! wppa_switch('wppa_use_pretty_links') ) return $uri;
 	if ( ! get_option('permalink_structure') ) return $uri;
-	
-	// Leaving the next line out gives 404 on pretty links under certain circumstances. 
+
+	// Leaving the next line out gives 404 on pretty links under certain circumstances.
 	// Can not reproduce and also do not understand why, and do not remember why i have put it in.
 	//
-	// nov 5 2014: changed add_action to test on redirection form init to pplugins_loaded. 
+	// nov 5 2014: changed add_action to test on redirection form init to pplugins_loaded.
 	// also skipped if ( ! isset($_ENV["SCRIPT_URI"]) ) return; in redirect test. See wpp-non-admin.php. Seems to work now
 //	if ( ! isset($_ENV["SCRIPT_URI"]) ) return $uri;
 
@@ -564,33 +562,33 @@ function wppa_convert_to_pretty( $xuri ) {
 	// Make sure we end without '/'
 	$newuri = trim(substr($uri, 0, $qpos), '/');
 	$newuri .= '/wppaspec';
-	
+
 	// explode querystring
 	$args = explode('&', substr($uri, $qpos+1));
-	$support = array(	'album', 
-						'photo', 
-						'slide', 
-						'cover', 
-						'occur', 
-						'woccur', 
-						'page', 
-						'searchstring', 
+	$support = array(	'album',
+						'photo',
+						'slide',
+						'cover',
+						'occur',
+						'woccur',
+						'page',
+						'searchstring',
 						'supersearch',
-						'topten', 
-						'lasten', 
-						'comten', 
-						'featen', 
-						'lang', 
-						'single', 
-						'tag', 
-						'photos-only', 
-						'albums-only', 
-						'debug', 
-						'rel', 
-						'relcount', 
-						'upldr', 
-						'owner', 
-						'rootsearch', 
+						'topten',
+						'lasten',
+						'comten',
+						'featen',
+						'lang',
+						'single',
+						'tag',
+						'photos-only',
+						'albums-only',
+						'debug',
+						'rel',
+						'relcount',
+						'upldr',
+						'owner',
+						'rootsearch',
 						'hilite',
 						'calendar',
 						'caldate',
@@ -692,15 +690,14 @@ function wppa_convert_to_pretty( $xuri ) {
 			}
 		}
 	}
-	
+
 	return $newuri;
 }
 
 // Moderate links
 function wppa_moderate_links( $type, $id, $comid = '' ) {
-global $thumb;
 
-	wppa_cache_thumb( $id );
+	$thumb = wppa_cache_thumb( $id );
 
 	if ( current_user_can('wppa_moderate') || ( current_user_can('wppa_comments') && $type == 'comment' ) ) {
 		switch ( $type ) {
@@ -753,7 +750,7 @@ global $thumb;
 					'.$mod1.
 				'</a>';
 				if ( current_user_can('wppa_comments') ) $result .= '
-				<a class="wppa-approve-'.$comid.'" style="font-weight:bold; color:blue; cursor:pointer;" onclick="document.location=\''.get_admin_url().'admin.php?page=wppa_manage_comments&amp;commentid='.$comid.'\'" > 
+				<a class="wppa-approve-'.$comid.'" style="font-weight:bold; color:blue; cursor:pointer;" onclick="document.location=\''.get_admin_url().'admin.php?page=wppa_manage_comments&amp;commentid='.$comid.'\'" >
 					'.$mod2.
 				'</a>';
 				$result .= '
@@ -806,7 +803,7 @@ function wppa_get_slide_callback_url( $id ) {
 	$url .= 'wppa-photo=' . $id;
 //	if ( wppa( 'is_owner' ) ) $url .= 'wppa-owner=' . wppa( 'is_owner' ) . '&amp;';
 	if ( wppa( 'is_upldr' ) ) $url .= 'wppa-upldr=' . wppa( 'is_upldr' ) . '&amp;';
-		
+
 	return $url;
 }
 
@@ -828,7 +825,7 @@ function wppa_get_thumb_callback_url() {
 	if ( wppa( 'is_upldr' ) ) $url .= 'wppa-upldr=' . wppa( 'is_upldr' ) . '&amp;';
 
 	$url = substr($url, 0, strlen($url) - 5);	// remove last '&amp;'
-		
+
 	return $url;
 }
 
@@ -839,19 +836,19 @@ function wppa_get_upldr_link( $user ) {
 	$result .= 'wppa-cover=0&amp;';
 	$result .= 'wppa-occur=1';
 	$result = str_replace( ' ', '%20', wppa_trim_wppa_( $result ) );
-	
+
 	return $result;
 }
 
 function wppa_page_links( $npages = '1', $curpage = '1', $slide = false ) {
-	
+
 	if ( $npages < '2' ) return;	// Nothing to display
 	if ( is_feed() ) {
 		return;
 	}
 
 	// Compose the Previous and Next Page urls
-	
+
 	// Get the main link
 	$link_url = wppa_get_permalink();
 	$ajax_url = wppa_get_ajaxlink();
@@ -862,11 +859,11 @@ function wppa_page_links( $npages = '1', $curpage = '1', $slide = false ) {
 		if ( wppa( 'is_cover' ) == '1' ) $ic = '1'; else $ic = '0';
 	}
 	$extra_url = 'wppa-cover='.$ic;
-	
+
 	// occur
 	$occur = wppa( 'in_widget' ) ? wppa_get_get('woccur') : wppa_get_get('occur');
 	$ref_occur = wppa( 'in_widget' ) ? wppa( 'widget_occur' ) : wppa( 'occur' );
-	
+
 	// album
 	if ( ( $occur == $ref_occur || wppa( 'ajax' ) ) && wppa_get_get('album') ) {
 			$alb = wppa_get_get( 'album' );
@@ -878,7 +875,7 @@ function wppa_page_links( $npages = '1', $curpage = '1', $slide = false ) {
 		$alb = '0';
 	}
 	$extra_url .= '&amp;wppa-album='.$alb;
-	
+
 	// slide or photo
 	if ( $slide ) {
 		$extra_url .= '&amp;wppa-slide=1';
@@ -886,7 +883,7 @@ function wppa_page_links( $npages = '1', $curpage = '1', $slide = false ) {
 	elseif ( wppa_get_get( 'photo' ) ) {
 		$extra_url .= '&amp;wppa-photo=' . wppa_get_get( 'photo' );
 	}
-	
+
 	// occur
 	if ( ! wppa( 'ajax' ) ) {
 		$occur = wppa( 'in_widget' ) ? wppa( 'widget_occur' ) : wppa( 'occur' );
@@ -906,47 +903,47 @@ function wppa_page_links( $npages = '1', $curpage = '1', $slide = false ) {
 			$extra_url .= '&amp;wppa-occur=' . wppa( 'occur' );	// Should never get here?
 		}
 	}
-	
+
 	// Topten?
 	if ( wppa( 'is_topten' ) ) $extra_url .= '&amp;wppa-topten='.wppa( 'topten_count' );
-	
+
 	// Lasten?
 	if ( wppa( 'is_lasten' ) ) $extra_url .= '&amp;wppa-lasten='.wppa( 'lasten_count' );
-	
+
 	// Comten?
 	if ( wppa( 'is_comten' ) ) $extra_url .= '&amp;wppa-comten='.wppa( 'comten_count' );
-	
+
 	// Featen?
 	if ( wppa( 'is_featen' ) ) $extra_url .= '&amp;wppa-featen='.wppa( 'featen_count' );
-	
+
 	// Tag?
 	if ( wppa( 'is_tag' ) && ! wppa( 'is_related' ) ) $extra_url .= '&amp;wppa-tag='.wppa( 'is_tag' );
-	
+
 	// Search?
 	if ( wppa( 'src' ) && ! wppa( 'is_related' ) ) $extra_url .= '&amp;wppa-searchstring='.urlencode( wppa( 'searchstring' ) );
-	
+
 	// Supersearch?
 	if ( wppa( 'supersearch' ) ) $extra_url .= '&amp;wppa-supersearch=' . urlencode( wppa( 'supersearch' ) );
-	
+
 	// Related
 	if ( wppa( 'is_related' ) ) $extra_url .= '&amp;wppa-rel='.wppa( 'is_related' ).'&amp;wppa-relcount='.wppa( 'related_count' );
-	
+
 	// Uploader?
 	if ( wppa( 'is_upldr' ) ) $extra_url .= '&amp;wppa-upldr='.wppa( 'is_upldr' );
-	
+
 	// Calendar ?
 	if ( wppa( 'calendar' ) ) $extra_url .= '&amp;wppa-calendar='.wppa( 'calendar' ).'&amp;wppa-caldate='.wppa( 'caldate' );
-	
+
 	// Photos only?
 	if ( wppa( 'photos_only' ) ) $extra_url .= '&amp;wppa-photos-only=1';
-	
+
 	// Albums only?
 	if ( wppa( 'albums_only' ) ) $extra_url .= '&amp;wppa-albums-only=1';
-	
+
 	// Almost ready
 	$link_url .= $extra_url;
 	$ajax_url .= $extra_url;
-	
+
 	// Compress
 	$link_url = wppa_trim_wppa_( $link_url );
 	$ajax_url = wppa_trim_wppa_( $ajax_url );
@@ -970,7 +967,7 @@ function wppa_page_links( $npages = '1', $curpage = '1', $slide = false ) {
 
 	// Doit
 	wppa_out( "\n".'<div class="wppa-nav-text wppa-box wppa-nav" style="clear:both; text-align:center; '.__wcs('wppa-box').__wcs('wppa-nav').'" >' );
-	
+
 		$vis = $curpage == '1' ? 'visibility: hidden;' : '';
 		wppa_out( '<div style="float:left; text-align:left; '.$vis.'">' );
 			wppa_out( '<span class="wppa-arrow" style="'.__wcs('wppa-arrow').'cursor: default;">&laquo;&nbsp;</span>' );
@@ -981,7 +978,7 @@ function wppa_page_links( $npages = '1', $curpage = '1', $slide = false ) {
 				wppa_out( wppa_nltab().'<a style="cursor:pointer;" href="'.$link_url.'&amp;wppa-page='.($curpage - 1).'" >'.__a('Previous').'</a>' );
 			}
 		wppa_out( '</div><!-- #prev-page -->' );
-		
+
 		$vis = $curpage == $npages ? 'visibility: hidden;' : '';
 		wppa_out( '<div style="float:right; text-align:right; '.$vis.'">' );
 			if ( wppa_switch('wppa_allow_ajax') ) {
@@ -992,19 +989,19 @@ function wppa_page_links( $npages = '1', $curpage = '1', $slide = false ) {
 			}
 			wppa_out( '<span class="wppa-arrow" style="'.__wcs('wppa-arrow').'cursor: default;">&nbsp;&raquo;</span>' );
 		wppa_out( '</div><!-- #next-page -->' );
-		
+
 		// The numbered pagelinks ?
 		if ( wppa_opt( 'wppa_pagelinks_max' ) ) {
 			if ($from > '1') {
 				wppa_out( '.&nbsp;.&nbsp;.&nbsp;' );
 			}
 			for ($i=$from; $i<=$to; $i++) {
-				if ($curpage == $i) { 
+				if ($curpage == $i) {
 					wppa_out( '<div class="wppa-mini-box wppa-alt wppa-black" style="display:inline; text-align:center; '.__wcs('wppa-mini-box').__wcs('wppa-alt').__wcs('wppa-black').' text-decoration: none; cursor: default; font-weight:normal; " >' );
 						wppa_out( '&nbsp;'.$i.'&nbsp;' );
 					wppa_out( '</div>' );
 				}
-				else { 
+				else {
 					wppa_out( '<div class="wppa-mini-box wppa-even" style="display:inline; text-align:center; '.__wcs('wppa-mini-box').__wcs('wppa-even').'" >' );
 						if ( ( ! $slide && wppa_switch('wppa_allow_ajax') ) || ( $slide && wppa_switch('wppa_slideshow_page_allow_ajax') ) ) {
 							wppa_out( '<a style="cursor:pointer;" onclick="wppaDoAjaxRender('.wppa( 'mocc' ).', \''.$ajax_url.'&amp;wppa-page='.$i.'\', \''.wppa_convert_to_pretty($link_url.'&amp;wppa-page='.$i).'\')">&nbsp;'.$i.'&nbsp;</a>' );
@@ -1012,27 +1009,27 @@ function wppa_page_links( $npages = '1', $curpage = '1', $slide = false ) {
 						else {
 							wppa_out( '<a style="cursor:pointer;" href="'.$link_url.'&amp;wppa-page='.$i.'">&nbsp;'.$i.'&nbsp;</a>' );
 						}
-					wppa_out( '</div>' );	
+					wppa_out( '</div>' );
 				}
 			}
 			if ( $to < $npages ) {
 				wppa_out( '&nbsp;.&nbsp;.&nbsp;.' );
 			}
 		}
-		
+
 		// The 3/17 indicator
 		else {
 			wppa_out( $curpage . '/' . $npages );
 		}
-		
-		
+
+
 	wppa_out( '</div><!-- #prevnext-a-'.wppa( 'mocc' ).' -->' );
 }
 
 function wppa_album_download_link( $albumid ) {
 
 	if ( ! wppa_switch( 'wppa_allow_download_album' ) ) return;	// Not enabled
-	
+
 	wppa_out( '<div style="clear:both;" ></div>' );
 	wppa_out( '<a onclick="wppaAjaxDownloadAlbum('.wppa( 'mocc' ).', '.$albumid.' );" style="cursor:pointer;" title="'.__a('Download').'">'.__a('Download album').'</a>' );
 	wppa_out( '<img id="dwnspin-'.wppa( 'mocc' ).'-'.$albumid.'" src="'.wppa_get_imgdir().'wpspin.gif" style="margin-left:6px; display:none;" alt="spin" />' );
@@ -1045,10 +1042,10 @@ global $wpdb;
 	// make sure the photo data ia available
 	$thumb = wppa_cache_thumb( $id );
 	if ( ! $thumb ) return false;
-	
+
 	// Is it a video?
 	$is_video = wppa_is_video( $id, true );
-	
+
 	// Photo Specific Overrule?
 	if ( ( $wich == 'sphoto'     && wppa_switch( 'wppa_sphoto_overrule' ) ) ||
 		 ( $wich == 'mphoto'     && wppa_switch( 'wppa_mphoto_overrule' ) ) ||
@@ -1062,7 +1059,7 @@ global $wpdb;
 		 ( $wich == 'comten'	 && wppa_switch( 'wppa_comment_overrule' ) ) ||
 		 ( $wich == 'slideshow'  && wppa_switch( 'wppa_slideshow_overrule' ) ) ||
 		 ( $wich == 'tnwidget' 	 && wppa_switch( 'wppa_thumbnail_widget_overrule' ) ) ) {
-		 
+
 		// Look for a photo specific link
 		if ( $thumb ) {
 			// If it is there...
@@ -1078,7 +1075,7 @@ global $wpdb;
 			}
 		}
 	}
-	
+
 	$result['target'] = '_self';
 	$result['title'] = '';
 	$result['onclick'] = '';
@@ -1130,7 +1127,7 @@ global $wpdb;
 			if ( $page == '0' ) $page = '-1';
 			if ( wppa_switch( 'wppa_sswidget_blank' ) ) $result['target'] = '_blank';
 			$result['url'] = '';
-			if ( $type == 'lightbox' || $type == 'lightboxsingle' || $type == 'file' ) { 
+			if ( $type == 'lightbox' || $type == 'lightboxsingle' || $type == 'file' ) {
 				$result['title'] = wppa_zoom_in( $id );
 				$result['target'] = '';
 				return $result;
@@ -1164,7 +1161,7 @@ global $wpdb;
 			$type = wppa_opt( 'wppa_slideshow_linktype' );	//'';
 			$page = wppa_opt( 'wppa_slideshow_linkpage' );
 			$result['url'] = '';
-			if ( $type == 'lightbox' || $type == 'lightboxsingle' || $type == 'file' ) { 
+			if ( $type == 'lightbox' || $type == 'lightboxsingle' || $type == 'file' ) {
 				$result['title'] = wppa_zoom_in( $id );
 				$result['target'] = '';
 				return $result;
@@ -1178,7 +1175,7 @@ global $wpdb;
 				return $result;
 			}
 			if ( $type == 'none' ) return;
-			// Continue for 'single' 
+			// Continue for 'single'
 			break;
 		case 'albwidget':
 			$type = wppa_opt( 'wppa_album_widget_linktype' );
@@ -1190,7 +1187,7 @@ global $wpdb;
 			return false;
 			break;
 	}
-	
+
 	if ( ! $album ) {
 		$album = wppa( 'start_album' );
 	}
@@ -1201,33 +1198,33 @@ global $wpdb;
 		$album_name = wppa_get_album_name( $album );
 	}
 	else $album_name = '';
-	
+
 	if ( ! $album ) $album = '0';
 	if ( $wich == 'comten' ) $album = '0';
 
 	if ( wppa( 'is_tag' ) ) $album = '0';
-	
+
 	if ( wppa( 'supersearch' ) ) $album = '0';
-	
+
 	if ( wppa( 'calendar' ) ) $album = wppa( 'start_album' ) ? wppa( 'start_album' ) : '0';
-	
+
 //	if ( wppa( 'is_upldr' ) ) $album = '0';	// probeersel upldr parent
-	
+
 	if ( $id ) {
 		$photo_name = wppa_get_photo_name( $id );
 	}
 	else $photo_name = '';
-	
+
 	$photo_name_js = esc_js( $photo_name );
 	$photo_name = esc_attr( $photo_name );
-	
+
 	if ( $id ) {
 		$photo_desc = esc_attr( wppa_get_photo_desc( $id ) );
 	}
 	else $photo_desc = '';
 
 	$title = __( $photo_name );
-	
+
 	$result['onclick'] = '';	// Init
 	switch ( $type ) {
 		case 'none':		// No link at all
@@ -1244,7 +1241,7 @@ global $wpdb;
 				$siz = array( wppa_get_photox( $id ), wppa_get_photoy( $id ) );
 				$result['url'] = wppa_get_photo_url( $id, '', $siz['0'], $siz['1'] );
 			}
-			$result['title'] = $title; 
+			$result['title'] = $title;
 			$result['is_url'] = true;
 			$result['is_lightbox'] = false;
 			return $result;
@@ -1265,7 +1262,7 @@ global $wpdb;
 					$result['url'] = wppa_get_photo_url( $id, '', $siz['0'], $siz['1'] );
 				}
 			}
-			$result['title'] = $title; 
+			$result['title'] = $title;
 			$result['is_url'] = false;
 			$result['is_lightbox'] = true;
 			$result['url'] = wppa_fix_poster_ext( $result['url'], $id );
@@ -1422,7 +1419,7 @@ global $wpdb;
 				}
 				*/
 				$url = wppa_fix_poster_ext( wppa_get_photo_url( $id, '', $wid, $hig ), $id );
-				
+
 				$result['url'] = esc_attr( 'wppaFullPopUp( ' . wppa( 'mocc' ) . ', ' . $id . ', "' . $url . '", ' . $wid . ', ' . $hig . ' )' );
 			}
 			$result['title'] = $title;
@@ -1469,18 +1466,18 @@ global $wpdb;
 			return false;
 			break;
 	}
-	
+
 	if ( $type != 'thumbalbum' ) {
-	
+
 		if ( wppa( 'calendar' ) ) {
 			$result['url'] .= '&amp;wppa-calendar=' . wppa( 'calendar' ) . '&amp;wppa-caldate=' . wppa( 'caldate' );
 		}
-		
+
 		if ( wppa( 'supersearch' ) ) {
 			$result['url'] .= '&amp;wppa-supersearch=' . urlencode( wppa( 'supersearch' ) );
 		}
-		
-		if ( wppa( 'src' ) && ! wppa( 'is_related' ) && ! wppa( 'in_widget' ) ) { 
+
+		if ( wppa( 'src' ) && ! wppa( 'is_related' ) && ! wppa( 'in_widget' ) ) {
 			$result['url'] .= '&amp;wppa-searchstring=' . urlencode( wppa( 'searchstring' ) );
 		}
 
@@ -1490,7 +1487,7 @@ global $wpdb;
 		elseif ( wppa( 'is_topten' ) ) {
 			$result['url'] .= '&amp;wppa-topten=' . wppa( 'topten_count' );
 		}
-		
+
 		if ( $wich == 'lasten' ) {
 			$result['url'] .= '&amp;wppa-lasten=' . wppa_opt( 'wppa_lasten_count' );
 		}
@@ -1511,19 +1508,19 @@ global $wpdb;
 		elseif ( wppa( 'is_featen' ) ) {
 			$result['url'] .= '&amp;wppa-featen=' . wppa( 'featen_count' );
 		}
-		
+
 		if ( wppa( 'is_related' ) ) {
 			$result['url'] .= '&amp;wppa-rel=' . wppa( 'is_related' ) . '&amp;wppa-relcount=' . wppa( 'related_count' );
 		}
 		elseif ( wppa( 'is_tag' ) ) {
 			$result['url']  .= '&amp;wppa-tag=' . wppa( 'is_tag' );
 		}
-		
+
 		if ( wppa( 'is_upldr' ) ) {
 			$result['url'] .= '&amp;wppa-upldr=' . wppa( 'is_upldr' );
 		}
 	}
-	
+
 	if ( $page != '0' ) {	// on a different page
 		$occur = '1';
 		$w = '';
@@ -1534,9 +1531,9 @@ global $wpdb;
 	}
 	$result['url'] .= '&amp;wppa-' . $w . 'occur=' . $occur;
 	$result['url'] = wppa_convert_to_pretty( $result['url'] );
-	
+
 	if ( $result['title'] == '' ) $result['title'] = $tit;	// If still nothing, try arg
-	
+
 	return $result;
 }
 
@@ -1547,7 +1544,7 @@ static $trimmable;
 	$trimmable = array('album', 'photo', 'slide', 'cover', 'occur', 'woccur', 'searchstring', 'topten', 'lasten', 'comten', 'featen', 'single', 'photos-only', 'albums-only', 'debug', 'relcount', 'upldr', 'owner', 'rootsearch', 'hilite' );
 
 	$result = $link;
-	
+
 	// In wppa_redirect() is $wppa_opt not yet initialized, do not use wppa_switch() to avoid error
 	// if ( wppa_switch( 'wppa_use_short_qargs' ) ) {
 	if ( get_option( 'wppa_use_short_qargs' ) == 'yes' ) {
@@ -1555,7 +1552,7 @@ static $trimmable;
 			$result = str_replace( 'wppa-'.$item, $item, $result );
 		}
 	}
-	
+
 	return $result;
 }
 
@@ -1564,7 +1561,7 @@ function wppa_get_ss_to_tn_link( $page = '0', $id = '0' ) {
 global $wppa;
 global $thumbs;
 global $thumbs_ids;
-	
+
 	// Search ?
 	if ( wppa( 'src' ) && wppa( 'mocc' ) == '1' && ! wppa( 'is_related' ) ) {
 		$thumbhref = wppa_get_permalink( $page ).'wppa-cover=0&amp;wppa-occur='.wppa( 'occur' ).'&amp;wppa-searchstring='.stripslashes( wppa( 'searchstring' ) );
@@ -1579,7 +1576,7 @@ global $thumbs_ids;
 		}
 	}
 	// Topten ?
-	elseif ( wppa( 'is_topten' ) ) {	
+	elseif ( wppa( 'is_topten' ) ) {
 		$thumbhref = wppa_get_permalink( $page ).'wppa-cover=0&amp;wppa-occur='.wppa( 'occur' ).'&amp;wppa-topten='.wppa( 'topten_count' ).'&amp;wppa-album='.wppa( 'start_album' );
 	}
 	// Lasten ?
@@ -1614,7 +1611,7 @@ global $thumbs_ids;
 	else {
 		$thumbhref = wppa_get_permalink( $page ).'wppa-cover=0&amp;wppa-occur='.wppa( 'occur' ).'&amp;wppa-album='.wppa( 'start_album' );
 	}
-	
+
 	// $id is the id. See to what page we have to go
 	$page = '1';
 	$p = wppa_opt( 'wppa_thumb_page_size' );
@@ -1630,10 +1627,10 @@ global $thumbs_ids;
 			$thumbhref .= '&amp;wppa-page='.$page;
 		}
 	}
-	
+
 	// Make sure the clicked photos thumb is highligted
 	$thumbhref .='&amp;wppa-hilite='.$id;
-	
+
 	$thumbhref = wppa_convert_to_pretty( wppa_trim_wppa_( $thumbhref ) );
 
 	return $thumbhref;

@@ -5,7 +5,7 @@
 * Various funcions to display a thumbnail image
 * Contains all possible frontend thumbnail types
 *
-* Version 6.2.7
+* Version 6.2.10
 *
 */
 
@@ -201,14 +201,14 @@ global $wpdb;
 
 				// The a img ajax
 				$p =  wppa( 'calendar') ? '' : '&amp;wppa-photo=' . $id;
-				$onclick = 'wppaDoAjaxRender( ' . 
-								wppa( 'mocc' ) . ', \'' . 
-								wppa_get_slideshow_url_ajax( wppa( 'start_album' ), '0' ) . 
-								'&amp;wppa-photo=' . $id . 
-								'\', \'' . 
+				$onclick = 'wppaDoAjaxRender( ' .
+								wppa( 'mocc' ) . ', \'' .
+								wppa_get_slideshow_url_ajax( wppa( 'start_album' ), '0' ) .
+								'&amp;wppa-photo=' . $id .
+								'\', \'' .
 								wppa_convert_to_pretty( wppa_get_slideshow_url( wppa( 'start_album' ), '0' ) . $p ) .
 								'\' )';
-								
+
 				$result .= '<a style="position:static;" class="thumb-img" id="x-'.$id.'-'.wppa( 'mocc' ).'">';
 
 				// Video?
@@ -592,7 +592,7 @@ global $wpdb;
 								'<a' .
 									' style="color:green;cursor:pointer;"' .
 									' onclick="wppaEditPhoto( '.wppa( 'mocc' ).', '.$id.' ); return false;"' .
-									' >' . 
+									' >' .
 									__a( 'Edit' ) .
 								'</a>' .
 							'</div>';
@@ -622,6 +622,18 @@ global $wpdb;
 							' style="'.__wcs( 'wppa-thumb-text' ).'"' .
 							' >' . $rating .
 						'</div>';
+		}
+
+		// Comcount
+		if ( wppa_switch( 'thumb_text_comcount' ) ) {
+			$comcount = $wpdb->get_var( "SELECT COUNT(*) FROM `" . WPPA_COMMENTS ."` WHERE `photo` = " . $id );
+			if ( $comcount ) {
+				$result .= 	'<div' .
+								' class="wppa-thumb-text"' .
+								' style="'.__wcs( 'wppa-thumb-text' ).'"' .
+								' >' . __a( 'Comments:' ) . ' ' . $comcount .
+							'</div>';
+			}
 		}
 
 		// Viewcount
@@ -978,7 +990,7 @@ global $wpdb;
 							'';
 		$frame_h 		= 'height:100%; ';
 	}
-	
+
 	// Mouseover effect?
 	if ( wppa_switch( 'use_thumb_opacity' ) ) {
 		$opac = wppa_opt( 'wppa_thumb_opacity' );
@@ -1088,14 +1100,14 @@ global $wpdb;
 				&& ( wppa_is_int( wppa( 'start_album' ) ) || wppa( 'start_album' ) == '' )	// no set of albums
 				 )
 			{ 	// Ajax	possible
-			
+
 				// The a img ajax
 				$p =  wppa( 'calendar') ? '' : '&amp;wppa-photo=' . $id;
-				$onclick = 'wppaDoAjaxRender( ' . 
-								wppa( 'mocc' ) . ', \'' . 
-								wppa_get_slideshow_url_ajax( wppa( 'start_album' ), '0' ) . 
-								'&amp;wppa-photo=' . $id . 
-								'\', \'' . 
+				$onclick = 'wppaDoAjaxRender( ' .
+								wppa( 'mocc' ) . ', \'' .
+								wppa_get_slideshow_url_ajax( wppa( 'start_album' ), '0' ) .
+								'&amp;wppa-photo=' . $id .
+								'\', \'' .
 								wppa_convert_to_pretty( wppa_get_slideshow_url( wppa( 'start_album' ), '0' ) . $p ) .
 								'\' )';
 // old			$onclick = "wppaDoAjaxRender( ".wppa( 'mocc' ).", '".wppa_get_slideshow_url_ajax( wppa( 'start_album' ), '0' ).'&amp;wppa-photo='.$id."', '".wppa_convert_to_pretty( wppa_get_slideshow_url( wppa( 'start_album' ), '0' )."&amp;wppa-photo=".$id )."' )";
@@ -1632,8 +1644,9 @@ function wppa_get_the_widget_thumb( $type, $image, $album, $display, $link, $tit
 // $idx = index in filmstrip
 // $do_for_feed = bool, true if for feed
 // $glue = bool, Set to true only at thumbs where the right border should be the glue line.
-function wppa_do_filmthumb( $idx, $do_for_feed = false, $glue = false ) {
-global $thumb;
+function wppa_do_filmthumb( $id, $idx, $do_for_feed = false, $glue = false ) {
+
+	$thumb 		= wppa_cache_thumb( $id );
 
 	$result 	= '';
 	$src 		= wppa_fix_poster_ext( wppa_get_thumb_path( $thumb['id'] ), $thumb['id'] );

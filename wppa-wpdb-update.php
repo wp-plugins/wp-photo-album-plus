@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level wpdb routines that update records
-* Version 6.1.6
+* Version 6.2.10
 *
 */
 
@@ -17,11 +17,11 @@ global $wpdb;
 	if ( ! $args['id'] ) return false;
 	if ( ! wppa_cache_album( $args['id'] ) ) return false;
 	$id = $args['id'];
-	
+
 	foreach ( array_keys( $args ) as $itemname ) {
 		$itemvalue = $args[$itemname];
 		$doit = false;
-		
+
 		// Sanitize input
 		switch( $itemname ) {
 			case 'id':
@@ -41,6 +41,10 @@ global $wpdb;
 				}
 				$doit = true;
 				break;
+			case 'cats':
+				$itemvalue = wppa_sanitize_tags( $itemvalue );
+				$doit = true;
+				break;
 			case 'scheduledtm':
 				$doit = true;
 				break;
@@ -49,12 +53,12 @@ global $wpdb;
 					$doit = true;
 				}
 				break;
-				
+
 			default:
 				wppa_log( 'Error', 'Not implemented in wppa_update_album(): '.$itemname );
 				return false;
 		}
-		
+
 		if ( $doit ) {
 			if ( $wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_ALBUMS."` SET `".$itemname."` = %s WHERE `id` = %s LIMIT 1", $itemvalue, $id ) ) ) {
 				wppa_cache_album( 'invalidate' );
@@ -62,19 +66,19 @@ global $wpdb;
 		}
 	}
 	return true;
-					
+
 /*
-		`a_order`, 
-		`main_photo`, 
-		`a_parent`, 
-		`p_order_by`, 
-		`cover_linktype`, 
-		`cover_linkpage`, 
-		`owner`, 
-		`upload_limit`, 
-		`alt_thumbsize`, 
-		`default_tags`, 
-		`cover_type`, 
+		`a_order`,
+		`main_photo`,
+		`a_parent`,
+		`p_order_by`,
+		`cover_linktype`,
+		`cover_linkpage`,
+		`owner`,
+		`upload_limit`,
+		`alt_thumbsize`,
+		`default_tags`,
+		`cover_type`,
 		`suba_order_by`,
 		`views`,
 		`cats`
@@ -84,17 +88,17 @@ global $wpdb;
 // Photo
 function wppa_update_photo( $args ) {
 global $wpdb;
-global $thumb;
 
 	if ( ! is_array( $args ) ) return false;
 	if ( ! $args['id'] ) return false;
-	if ( ! wppa_cache_thumb( $args['id'] ) ) return false;
+	$thumb = wppa_cache_thumb( $args['id'] );
+	if ( ! $thumb ) return false;
 	$id = $args['id'];
-	
+
 	foreach ( array_keys( $args ) as $itemname ) {
 		$itemvalue = $args[$itemname];
 		$doit = false;
-		
+
 		// Sanitize input
 		switch( $itemname ) {
 			case 'id':
@@ -117,6 +121,7 @@ global $thumb;
 				break;
 			case 'scheduledtm':
 			case 'exifdtm':
+			case 'page_id':
 				$doit = true;
 				break;
 			case 'status':
@@ -150,7 +155,7 @@ global $thumb;
 				wppa_log( 'Error', 'Not implemented in wppa_update_photo(): '.$itemname );
 				return false;
 		}
-		
+
 		if ( $doit ) {
 			if ( $wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `".$itemname."` = %s WHERE `id` = %s LIMIT 1", $itemvalue, $id ) ) ) {
 				wppa_cache_photo( 'invalidate', $id );

@@ -1,22 +1,23 @@
-<?php 
+<?php
 /* wppa-cart.php
 * Package: wp-photo-album-plus
 *
 * Contains the interface to SCABN
-* Version 5.3.0
+* Version 6.2.10
 *
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
-// Displays the 'add to cart' button on photo description. 
-// Contains both the visual data and the form submission 
-// for adding items to the cart.	
-// $thumb MUST contain the current photo info	
-function wppa_add_to_cart($atts) {
+// Displays the 'add to cart' button on photo description.
+// Contains both the visual data and the form submission
+// for adding items to the cart.
+// $thumb MUST contain the current photo info
+function wppa_add_to_cart( $atts ) {
 global $post;
-global $thumb;
 global $wppa;
+
+	$thumb = $wppa['current_photo'];
 
 	extract( shortcode_atts( array(
 		'name'  		=> wppa_get_photo_name($thumb['id']),
@@ -29,11 +30,11 @@ global $wppa;
 		'fshipping'		=> '',
 		'weight'		=> ''
 	), $atts ) );
-	
+
 	$cart =& $_SESSION['wfcart']; // load the cart from the session
-	$scabn_options = get_option('scabn_options');	
+	$scabn_options = get_option('scabn_options');
 	$currency = apply_filters('scabn_display_currency_symbol',NULL);
-   
+
 	// Slideshow?
 	if ( $wppa['is_slide'] ) {
 		$action_url = wppa_get_slide_callback_url($thumb['id']);
@@ -65,12 +66,12 @@ global $wppa;
 	if ( $weight ) $output .= '
 			<input type="hidden" class="item_weight" value="'.$weight.'" name="item_weight" />';
 	if ( $options ) {
-		if ( $options_name ) { 
-			$output .= $options_name.': '; 
-		} 		
+		if ( $options_name ) {
+			$output .= $options_name.': ';
+		}
 		$output .= '
 			<input type="hidden" value="'.$options_name.'" name="item_options_name" class="item_options_name" />';
-		$item_options = explode(',',$options);			
+		$item_options = explode(',',$options);
 		$output .= '
 			<select style="max-width:200px; margin:0" name="item_options" class="item_options" >';
 		foreach ( $item_options as $option ){
@@ -90,7 +91,7 @@ global $wppa;
 	}
 
 	if ( $qty_field ) {
-		$output .= __a('Qty:').' <input type="text" style="max-width:50px; margin:0;" class="item_qty" value="1" size="2" name="item_qty" />';		
+		$output .= __a('Qty:').' <input type="text" style="max-width:50px; margin:0;" class="item_qty" value="1" size="2" name="item_qty" />';
 	} else {
 		$output .= '<input type="hidden" class="item_qty" value="1" size="2" name="item_qty" />';
 	}

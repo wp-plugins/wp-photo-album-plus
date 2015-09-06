@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, gallery, slideshow, video, audio, lightbox, iptc, exif, cloudinary, fotomoto
-Version: 6.2.9
+Version: 6.2.14
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -15,7 +15,7 @@ This plugin is designed to easily manage and display your photos, photo albums, 
 
 == Description ==
 
-This plugin is designed to easily manage and display your photo albums and slideshows within your WordPress site. 
+This plugin is designed to easily manage and display your photo albums and slideshows within your WordPress site.
 
 * You can create various albums that contain photos as well as sub albums at the same time.
 * You can mix photos and videos throughout the system.
@@ -63,7 +63,7 @@ You can find the plugin admin section under Menu Photo Albums on the admin scree
 
 Translations:
 
-There are translations in many languages. The frontend and admin sides are separately translatable. 
+There are translations in many languages. The frontend and admin sides are separately translatable.
 <ul>
 <li>Dutch translation by OpaJaap himself (<a href="http://www.opajaap.nl">Opa Jaap's Weblog</a>) (both)</li>
 <li>Slovak translation by Branco Radenovich (<a href="http://webhostinggeeks.com/user-reviews/">WebHostingGeeks.com</a>) (frontend)</li>
@@ -77,11 +77,11 @@ There are translations in many languages. The frontend and admin sides are separ
 = Requirements =
 
 * The plugin requires at least wp version 3.1.
-* The theme should have a call to wp_head() in its header.php file and wp_footer() in its footer.php file. 
-* The theme should load enqueued scripts in the header if the scripts are enqueued without the $in_footer switch (like wppa.js and jQuery). 
-* The theme should not prevent this plugin from loading the jQuery library in its default wp manner, i.e. the library jQuery in safe mode (uses jQuery() and not $()). 
+* The theme should have a call to wp_head() in its header.php file and wp_footer() in its footer.php file.
+* The theme should load enqueued scripts in the header if the scripts are enqueued without the $in_footer switch (like wppa.js and jQuery).
+* The theme should not prevent this plugin from loading the jQuery library in its default wp manner, i.e. the library jQuery in safe mode (uses jQuery() and not $()).
 * The theme should not use remove_action() or remove_all_actions() when it affects actions added by wppa+.
-Most themes comply with these requirements. 
+Most themes comply with these requirements.
 However, check these requirements in case of problems with new installations with themes you never had used before with wppa+ or when you modifies your theme.
 * The server should have at least 64MB of memory.
 
@@ -96,12 +96,12 @@ If you are upgrading from a previous Major or Minor version, note that:
 * Unzip and upload the wppa plugin folder to wp-content/plugins/
 * Make sure that the folder wp-content/uploads/ exists and is writable by the server (CHMOD 755, some systems need CHMOD 777)
 * Activate the plugin in WP Admin -> Plugins.
-* If, after installation, you are unable to upload photos, check the existance and rights (CHMOD 755, some systems need CHMOD 777) of: 
-for the single site mode installation: the folders .../wp-content/uploads/wppa/ and .../wp-content/uploads/wppa/thumbs/, 
+* If, after installation, you are unable to upload photos, check the existance and rights (CHMOD 755, some systems need CHMOD 777) of:
+for the single site mode installation: the folders .../wp-content/uploads/wppa/ and .../wp-content/uploads/wppa/thumbs/,
 and for the multisite mode installation (example for blog id 92): the folders path: .../wp-content/blogs.dir/92/wppa/ and .../wp-content/blogs.dir/92/wppa/thumbs/.
 In rare cases you will need to create them manually. You can see the actual pathnames and urls in the lowest table of the Photo Albums -> Settings page.
-* If you upgraded from WP Photo Album (without plus) and you had copied wppa_theme.php and/or wppa_style.css 
-to your theme directory, you must remove them or replace them with the newly supplied versions. The fullsize will be reset to 640 px. 
+* If you upgraded from WP Photo Album (without plus) and you had copied wppa_theme.php and/or wppa_style.css
+to your theme directory, you must remove them or replace them with the newly supplied versions. The fullsize will be reset to 640 px.
 See Table I-A1 and Table I-B1,2 of the Photo Albums -> Settings admin page.
 
 == Frequently Asked Questions ==
@@ -123,7 +123,7 @@ to the new multisite standards, do the following:
 1. Perform the network migration utility from the network admin which moves all the files from wp-content/blogs.dir/xx to wp-content/uploads/sites/xx
 1. **Add** to wp-config.php: **define( 'WPPA_MULTISITE_INDIVIDUAL', true );**
 1. If it is there, **Remove** from wp-config.php: **define( 'WPPA_MULTISITE_BLOGSDIR', true );**
-	
+
 = Which other plugins do you recommand to use with WPPA+, and which not? =
 
 * Recommanded plugins: qTranslate, WP Super Cache, Cube Points, Simple Cart & Buy Now, Google-Maps-GPX-Viewer.
@@ -144,17 +144,17 @@ to the new multisite standards, do the following:
 = After update, many things seem to go wrong =
 
 * After an update, always clear your browser cache (CTRL+F5) and clear your temp internetfiles, this will ensure the new versions of js files will be loaded.
-* And - most important - if you use a server side caching program (like WP Total Cavhe) clear its cache. 
+* And - most important - if you use a server side caching program (like WP Total Cavhe) clear its cache.
 * Make sure any minifying plugin (like W3 Total Cache) is also reset to make sure the new version files are used.
 * Visit the Photo Albums -> Settings page -> Table VII-A1 and press Do it!
-* When upload fails after an upgrade, one or more columns may be added to one of the db tables. In rare cases this may have been failed. 
-Unfortunately this is hard to determine. 
+* When upload fails after an upgrade, one or more columns may be added to one of the db tables. In rare cases this may have been failed.
+Unfortunately this is hard to determine.
 If this happens, make sure (ask your hosting provider) that you have all the rights to modify db tables and run action Table VII-A1 again.
 
 = How does the search widget work? =
 
 * A space between words means AND, a comma between words means OR.
-Example: search for 'one two, three four, five' gives a result when either 'one' AND 'two' appears in the same (combination of) name and description. 
+Example: search for 'one two, three four, five' gives a result when either 'one' AND 'two' appears in the same (combination of) name and description.
 If it matches the name and description of an album, you get the album, and photo vice versa.
 OR this might apply for ('three' AND 'four') OR 'five'.
 If you use indexed search, the tokens must be at least 3 characters in length.
@@ -170,16 +170,16 @@ If you use indexed search, the tokens must be at least 3 characters in length.
 = What to do if i get errors during upload or import photos? =
 
 * It is always the best to downsize your photos to the Full Size before uploading. It is the fastest and safest way to add photos tou your photo albums.
-Photos that are way too large take unnessesary long time to download, so your visitors will expierience a slow website. 
+Photos that are way too large take unnessesary long time to download, so your visitors will expierience a slow website.
 Therefor the photos should not be larger (in terms of pixelsizes) than the largest size you are going to display them on the screen.
-WP-photo-album-plus is capable to downsize the photos for you, but very often this fails because of configuration problems. 
+WP-photo-album-plus is capable to downsize the photos for you, but very often this fails because of configuration problems.
 Here is explained why:
 Modern cameras produce photos of 7 megapixels or even more. To downsize the photos to either an automaticly downsized photo or
 even a thumbnail image, the server has to create internally a fullsize fullcolor image of the photo you are uploading/importing.
-This will require one byte of memory for each color (Red, Green, Blue) and for every pixel. 
+This will require one byte of memory for each color (Red, Green, Blue) and for every pixel.
 So, apart form the memory required for the server's program and the resized image, you will need 21 MB (or even more) of memory just for the intermediate image.
 As most hosting providers do not allow you more than 64 MB, you will get 'Out of memory' errormessages when you try to upload large pictures.
-You can configure WP to use 128 MB (That would be enough in most cases) by specifying *define('WP_MEMORY_LIMIT', '128M');* in wp-config.php, 
+You can configure WP to use 128 MB (That would be enough in most cases) by specifying *define('WP_MEMORY_LIMIT', '128M');* in wp-config.php,
 but, as explained earlier, this does not help when your hosting provider does not allows the use of that much memory.
 If you have control over the server yourself: configure it to allow the use of enough memory.
 Oh, just Google on 'picture resizer' and you will find a bunch of free programs that will easily perform the resizing task for you.
@@ -188,6 +188,57 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 6.2.14 =
+
+= Bug Fixes +
+
+* In shortcode: album="#cat,Category" stopped working. Fixed.
+* In shortcode: album="#upldr" ( without album spec ) now also works.
+
+= 6.2.12 =
+
+= Bug Fixes =
+
+* # was removed from tags, but also when it was needed for untranslated exif and iptc tags. Fixed.
+
+= New Features =
+
+* Table IV-F1.1: Comments view login. If set, existing comments are only visible for logged in visitors.
+
+= 6.2.11 =
+
+= Bug Fixes =
+
+* If no tags or cats were used, the 'need conversion' message kept re-appearing. Fixed.
+* Fixed a potential server error message in import files that occurred when the default upload album was deleted.
+* Fixed an error in SuperSearch box when there are no phototags in the system.
+
+= 6.2.10 =
+
+= Bug Fixes =
+
+* Added missing images for fullsize lightbox display buttons.
+* The author of last comment given is now shown in the subtext on the comment widget and the last comment in its tooltip.
+* Superview photos now shows photos only.
+
+= New Features =
+
+* Checkbox in Table VII-B11: Home after upload. After successfull upload, go to the home page.
+* Table II-D4.1 Display Comment count under default Thumbnail.
+* After ajax replaces wppa container content, the page will scroll to the right position.
+* Table VIII-B10.1. Delete all auto pages.
+* Table IX-B16: Confirm create ( album ). Asks if you really want to create an album on album admin page. Default on.
+
+= Other Changes =
+
+* The way photo tags and album cats are stored has changed, and the characters #, @ and & are added to the list of illegal characters in tags and cats.
+If you use tags, you will be requested to run the update procedure Fix tags in Table VIII-B16, and Fix cats in Table VIII-B17.
+* Improved way to find the origin sitename in notifiction emails.
+* All js files are now in subdirectory js/
+* Lifted the limitation that having more than approx 20.000 photos in an album or in the results of a search action on systems with 128 Mb caused an Memory exhausted server error.
+You can now have 40.000 photos in an album or as a search result ( simple search, supersearch or tag(s) ) on systems with only 32 Mb available server memory without getting the error.
+However, it is still recommended to have at least 64Mb memory available.
 
 = 6.2.9 =
 
@@ -280,7 +331,7 @@ For administrators or for anybody that sees the edit photo screen when Table VII
 
 = New Features =
 
-* New shortcode type calendar. Calendar types: exifdtm, timestamp, modified. Optional argument: all="1" to initially display all. 
+* New shortcode type calendar. Calendar types: exifdtm, timestamp, modified. Optional argument: all="1" to initially display all.
 examples: [wppa type="calendar" calendar="exifdtm"][/wppa], [wppa type="calendar" calendar="modified" all="1"][/wppa].
 This feature requires Ajax active ( Table IV-A1.0 ).
 
@@ -349,7 +400,7 @@ To remove them from Cloudinary, run Table VIII-B15 on a regular basis.
 
 * Improved compatibility with lightbox plugin prettyPhoto. Slideshows work on it ( but still no videos or audios ).
 * There are no loger empty titles or titles with only a space on images.
-* If the WPPA+ embedded lightbox is used, the subtitles are now transferred to lightbox by data-lbtitle="..", 
+* If the WPPA+ embedded lightbox is used, the subtitles are now transferred to lightbox by data-lbtitle="..",
 to prevent hughe tooltip boxes while hovering over the image that links to lightbox while Table II-G1 is unticked.
 If you use a non-default lightbox, make sure the liughtbox titles are empty, or Table II-G91 is ticked.
 
@@ -364,13 +415,13 @@ If you use a non-default lightbox, make sure the liughtbox titles are empty, or 
 
 * For browsers that display empty tooltip boxes: there are no longer empty title attributes generated.
 * wppa lightbox now uses data-rel="wppa" to meet w3c standards.
-* Table II-G19: Overlay show legenda. Regardless of this setting, it will not show up on mobile devices, 
+* Table II-G19: Overlay show legenda. Regardless of this setting, it will not show up on mobile devices,
 but the keyboard handler will be installed to facillitate tablet/laptop converable devices.
-* There was a serious performance problem with the new smilies: emoji. 
-Especially on firefox and using ajax On one of my testsites a slideshow with 15 slides and comments enabled and the smiley picker displayed 
+* There was a serious performance problem with the new smilies: emoji.
+Especially on firefox and using ajax On one of my testsites a slideshow with 15 slides and comments enabled and the smiley picker displayed
 used to take 4 seconds to load. Now it takes up to a minute; the browser even does not respond for over 50 seconds.
-As a work around for this, i coded my own convert_smilies() function: wppa_convert_smilies(), located in wppa_utils.php, 
-just for the creation of the html for the smileypicker and the smilies in the comments on photos. 
+As a work around for this, i coded my own convert_smilies() function: wppa_convert_smilies(), located in wppa_utils.php,
+just for the creation of the html for the smileypicker and the smilies in the comments on photos.
 It still uses the emoji images, but by direct coding and not through a character code.
 
 = 6.1.13 =
@@ -383,7 +434,7 @@ It still uses the emoji images, but by direct coding and not through a character
 
 * Rotating an image will always produce a rotated thumbnail created out of the display file, regardless of setting Table IX-F12.
 If you have rotated images and you want to remake all thumbnails and you have source files saved, tick Table IX-F12 to make sure all thumbnails will have the right orientation.
-* Thumbnail type *masonry style rows* is now usable on static themes. There still is a problem with Thumbnail type ( Table IV-C3 ) *masonry style rows.* 
+* Thumbnail type *masonry style rows* is now usable on static themes. There still is a problem with Thumbnail type ( Table IV-C3 ) *masonry style rows.*
 On static themes: untick Table IV-C6: *Thumb mouseover* to fix the behaviour in Internet Explorer.
 On responsive themes, in Internet Explorer and Google Chrome show odd layouts. Do not use *masonry style rows* on responive themes until this issue is fixed.
 *masonry style columns* works as expected in all browsers, both in responsive and static themes.
@@ -559,7 +610,7 @@ See the <a href="http://wppa.opajaap.nl/video-support/">documentation.</a>
 * Tags system is updated when a photo status changes ( e.g. from pending to publish ).
 * Fixed a bug in lightbox on cover images.
 * The import dir to album stopped at the first duplicate found. Fixed.
- 
+
 = 5.5.5 =
 
 = Bug Fixes =
@@ -670,7 +721,7 @@ If the box is UNticked, the album sequence is by descemding timestamp ( i.e. lat
 
 = New Features =
 
-* Table VII-C6: Extended status is restricted. If Checked, setting photo status other than Publish or Pending requires administrator rights. 
+* Table VII-C6: Extended status is restricted. If Checked, setting photo status other than Publish or Pending requires administrator rights.
 If the user has moderate rights he can only set status to Publish or Pending.
 * New album title link types: 'the sub-albums' and 'the thumbnails'. Selectable on the edit album information admin screen.
 Also works on the cover photo if Table VI-B1 is set to 'same as title'.
@@ -696,7 +747,7 @@ The View link is not affected and will still link to the 'content' i.e. sub-albu
 
 = Other Changes =
 
-* Top search for edit photos at the backend, it is no longer required to be administrator. 
+* Top search for edit photos at the backend, it is no longer required to be administrator.
 Album admin access combined with moderate access is sufficient to search all photos ( Table VII-A ).
 Album admin access combined with Uploader edit ( Table VII-D2.1 ) enables the search for own photos only.
 
@@ -712,7 +763,7 @@ Album admin access combined with Uploader edit ( Table VII-D2.1 ) enables the se
 
 = Other Changes =
 
-* When Fotomoto is enabled, the source files are used for display if available, not the standard files. 
+* When Fotomoto is enabled, the source files are used for display if available, not the standard files.
 This enables the use of print resolution files in the cloud in combination with the Auto Pickup feature of Fotomoto.
 
 = 5.4.22 =
@@ -742,7 +793,7 @@ This enables the use of print resolution files in the cloud in combination with 
 
 = New Features =
 
-* On the Album Admin page, a virtual album has been added with a search edit box. 
+* On the Album Admin page, a virtual album has been added with a search edit box.
 Enter (a) search token(s) and edit the photo(s) that match the search criteria. Search tokens must be seperated by commas: ','.
 This works for administrators always, non-admins need the switch in Table VII-D2: Uploader edit, and can edit their own photos only.
 This feature requires indexed search, if not activated already, Tick Table IX-E7 and run Table VIII-A8 and A9.
@@ -766,9 +817,9 @@ This feature requires indexed search, if not activated already, Tick Table IX-E7
 
 = New Features =
 
-* Support for plugin CM Tooltip Glossary. 
-Enable to act on album and photo descriptions in Table IX-J8. 
-If you have this plugin active, you have to tick the box in Table IV-A13: Defer javascript, 
+* Support for plugin CM Tooltip Glossary.
+Enable to act on album and photo descriptions in Table IX-J8.
+If you have this plugin active, you have to tick the box in Table IV-A13: Defer javascript,
 even if you do not want to let this plugin act on album and photo descriptions!
 
 = Other Changes =
@@ -968,14 +1019,14 @@ It is still not a guarantee but a reasonable attempt to keep the page content in
 = Other Changes =
 
 * Album name may not be empty. This has always been a rule. You can no longer clear the album name, or change it into a (series of) dot(s).
-* If your provider moved your installation to a different filesystem location, 
+* If your provider moved your installation to a different filesystem location,
 the sourcepath ( Table IX-H3 ) will now be corrected automaticly on entering the settings page.
 * Table II-B5 and II-B5.1 ( Show photo name and add owner on slideshow ) now work independantly.
 If only the owner is displayed, it will be without parenthesis.
 * Table II-D1 and II-D1.1 ( Show photo name and add owner on thumbnails ) now work independantly.
 If only the owner is displayed, it will be without parenthesis.
-* On the Import screen you can now set a maximum number of photos to be found on remote locations. 
-If the remote location is an imagefile and the filename exclusive extension is numeric, 
+* On the Import screen you can now set a maximum number of photos to be found on remote locations.
+If the remote location is an imagefile and the filename exclusive extension is numeric,
 an assumption is made that - at a maximum of the max setting - the successive numbers may also be imagefiles.
 
 = 5.4.6 =
@@ -1054,14 +1105,14 @@ This is to prevent the effect working down to wppa/ from other plugins .htaccess
 * Link from cover image to slideshow starting at cover image, see Table VI-B1: a slideshow starting at the photo.
 * If Table IV-A3 ( Photo names in urls ) is checked, wppa+ will generate urls with the photo names in all places now.
 * Added Table IV-A4 ( Album names in urls ). Works like IV-A2.
-* Added Table IV-A5 ( Use short query args ). Omits the wppa- prefix in query string arguments. 
+* Added Table IV-A5 ( Use short query args ). Omits the wppa- prefix in query string arguments.
 Use only when there are no conflicting plugins, like music plugins, that interprete &album= etc.
 Note on using names in urls: Avoid duplicate album names and duplicate photo names within the same album!
 
 = Other Changes =
 
 * Removed the 'Create new style shortcode' checkbox from the TinyMce shortcode generator. It is replaced by the setting in Table IX-B13: We use scripts, with default being off.
-It is highly recommended to use shortcodes only ( no scripts ) as the development of scripted shortcode features is frozen and only maintained for backward compatibility. 
+It is highly recommended to use shortcodes only ( no scripts ) as the development of scripted shortcode features is frozen and only maintained for backward compatibility.
 New features will only be available in new style shortcodes.
 * Shortcode generator for new style shortcodes has been rewritten and is now capable of generating all possible shortcodes.
 * Table IV-A has been renumbered.
@@ -1087,7 +1138,7 @@ New features will only be available in new style shortcodes.
 
 * New shortcode type: type="thumbs" will display the thumbnails only of an album that also contains sub-albums.
 * New shortcode type: type="covers" will display the covers of the sub-albums of the given album. Do not confuse with type"cover"!!
-* You can now set the minimum height of album covers ( Table I-D2 ) and of the text including the header ( Table I-D3 ) 
+* You can now set the minimum height of album covers ( Table I-D2 ) and of the text including the header ( Table I-D3 )
 to make it easier to size the covers verically equally.
 * Table VII-D10: Photo owner change. If checked, administrators can change the owner of the photo on the Album Admin -> Manage Photos screen.
 * Download link on lightbox displays ( Table VI-C1.4 ).
@@ -1112,10 +1163,10 @@ to make it easier to size the covers verically equally.
 
 * Many changes to reduce server load ( less db queries ) and client load ( improved responsive algorithm ) and to improve stability.
 * Moved admin language files to separate plugin: <a href="http://wordpress.org/plugins/wppa-admin-language-pack/" >Wppa Admin Language Pack</a>
-* The use of a modified wppa-theme.php file is strongly discouraged. 
-The old version of this file is NOT compatible with this release. 
+* The use of a modified wppa-theme.php file is strongly discouraged.
+The old version of this file is NOT compatible with this release.
 If you want to use a modified version, you will have to tick Table IV-A12
-* The use of a modified wppa-style.css file is strongly discouraged. 
+* The use of a modified wppa-style.css file is strongly discouraged.
 You should enter your custom css in Table IV-A10
 If you want to use a modified version, you will have to tick Table IV-A11
 
@@ -1224,7 +1275,7 @@ If you want to use a modified version, you will have to tick Table IV-A11
 
 = Other Changes =
 
-* If a line of text for the textual watermark is too long to fit on the photo, an attempt will be made to break it into two lines. 
+* If a line of text for the textual watermark is too long to fit on the photo, an attempt will be made to break it into two lines.
 There should be a space character in the right-hand half of the line. This also works on multiline watermark texts and texts that contain keywords.
 * All listing actions are now in Table VIII-C.
 
@@ -1234,7 +1285,7 @@ There should be a space character in the right-hand half of the line. This also 
 
 * WPPA+ is now fullly compatible with WP 3.9. Use 5.3.3 for WP 3.8.x
 
-= 5.3.3 = 
+= 5.3.3 =
 
 = Bug Fixes =
 

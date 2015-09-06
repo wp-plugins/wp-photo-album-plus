@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * exif and iptc common functions
-* version 6.1.12
+* version 6.2.14
 *
 * 
 */
@@ -13,12 +13,19 @@ if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 // Translate iptc tags into  photo dependant data inside a text
 function wppa_filter_iptc($desc, $photo) {
 global $wpdb;
+static $iptclabels;
 
 	if ( strpos($desc, '2#') === false ) return $desc;	// No tags in desc: Nothing to do
 	
-	$iptclabels = $wpdb->get_results( "SELECT * FROM `" . WPPA_IPTC . "` WHERE `photo` = '0' ORDER BY `id`", ARRAY_A );
+	// Get te labels if not yet present
+	if ( ! $iptclabels ) {
+		$iptclabels = $wpdb->get_results( "SELECT * FROM `" . WPPA_IPTC . "` WHERE `photo` = '0' ORDER BY `id`", ARRAY_A );
+		wppa_dbg_q('Q-IptcLabel');
+	}
+	
+	// Get the photos iptc data
 	$iptcdata 	= $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `" . WPPA_IPTC . "` WHERE `photo` = %s ORDER BY `id`", $photo ), ARRAY_A );
-	wppa_dbg_q('Q60');
+	wppa_dbg_q('Q-IptcData');
 	
 	// Init
 	$temp = $desc;
@@ -71,12 +78,19 @@ global $wpdb;
 // Translate exif tags into  photo dependant data inside a text
 function wppa_filter_exif( $desc, $photo ) {
 global $wpdb;
+static $exiflabels;
 
 	if ( strpos($desc, 'E#') === false ) return $desc;	// No tags in desc: Nothing to do
 	
-	$exiflabels = $wpdb->get_results( "SELECT * FROM `" . WPPA_EXIF . "` WHERE `photo` = '0' ORDER BY `id`", ARRAY_A );
+	// Get tha labels if not yet present
+	if ( ! $exiflabels ) {
+		$exiflabels = $wpdb->get_results( "SELECT * FROM `" . WPPA_EXIF . "` WHERE `photo` = '0' ORDER BY `id`", ARRAY_A );
+		wppa_dbg_q('Q-ExifLabel');
+	}
+	
+	// Get the photos exif data
 	$exifdata 	= $wpdb->get_results($wpdb->prepare("SELECT * FROM `".WPPA_EXIF."` WHERE `photo`=%s ORDER BY `id`", $photo), ARRAY_A);
-	wppa_dbg_q('Q61v');
+	wppa_dbg_q('Q-ExifData');
 		
 	// Init
 	$temp = $desc;
