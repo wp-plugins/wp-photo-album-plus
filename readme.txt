@@ -191,7 +191,7 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
 = 6.2.14 =
 
-= Bug Fixes +
+= Bug Fixes =
 
 * In shortcode: album="#cat,Category" stopped working. Fixed.
 * In shortcode: album="#upldr" ( without album spec ) now also works.
