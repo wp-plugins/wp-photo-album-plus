@@ -3,10 +3,10 @@
 * Package: wp-photo-album-plus
 *
 * Contains all video routines
-* Version 6.1.0
+* Version 6.1.10
 *
 */
- 
+
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
 // Video files support. Define supported filetypes.
@@ -19,10 +19,10 @@ function wppa_is_video( $id ) {
 global $wppa_supported_video_extensions;
 
 	if ( ! $id ) return false;					// No id
-	
-	$ext = wppa_get_photo_item( $id, 'ext' );	
+
+	$ext = wppa_get_photo_item( $id, 'ext' );
 	if ( $ext != 'xxx' ) return false;	// This is not a video
-	
+
 	$result = array();
 	$path = wppa_get_photo_path( $id );
 	$raw_path = wppa_strip_ext( $path );
@@ -34,7 +34,7 @@ global $wppa_supported_video_extensions;
 	if ( empty( $result ) ) {
 		return false;	// Its multimedia but not video
 	}
-	
+
 	return $result;
 }
 
@@ -61,13 +61,13 @@ global $wppa;
 					'use_thumb' 	=> false,
 					'autoplay' 		=> false
 					) ) );
-					
+
 	// No id? no go
 	if ( ! $id ) return '';
-	
+
 	// Not a video? no go
 	if ( ! wppa_is_video( $id ) ) return '';
-	
+
 	extract( wp_parse_args( (array) wppa_is_video( $id ), array (
 					'mp4' 	=> false,
 					'ogv' 	=> false,
@@ -85,14 +85,14 @@ global $wppa;
 	$cls 	= $class ? ' class="'.$class.'"' : '';
 	$style 	= $style ? rtrim( trim( $style ), ';' ) . ';' : '';
 	$play 	= $autoplay ? ' autoplay' : '';
-	
+
 	// See if there is a poster image
 	$poster_photo_path = wppa_fix_poster_ext( wppa_get_photo_path( $id ), $id );
 	$poster_thumb_path = wppa_fix_poster_ext( wppa_get_thumb_path( $id ), $id );
 	$poster_photo = is_file ( $poster_photo_path ) ? ' poster="' . wppa_fix_poster_ext( wppa_get_photo_url( $id ), $id ) . '"' : '';
 	$poster_thumb = is_file ( $poster_thumb_path ) ? ' poster="' . wppa_fix_poster_ext( wppa_get_thumb_url( $id ), $id ) . '"' : '';
 	$poster = '';	// Init to none
-	
+
 	// Thumbnail?
 	if ( $use_thumb ) {
 		$poster = $poster_thumb;
@@ -101,15 +101,15 @@ global $wppa;
 	else {
 		$poster = $poster_photo;
 	}
-	
+
 	// If the poster exists and no controls, we need no preload at all.
 	if ( $poster && ! $controls ) {
 		$preload = 'none';
 	}
-	
+
 	// Do we have html5 video tag supported filetypes on board?
 	if ( $mp4 || $ogv || $webm ) {
-	
+
 		// Assume the browser supports html5
 		$result = '<video id="'.$tagid.'" '.$ctrl.$play.' style="'.$style.$w.$h.$t.$b.$cursor.'" '.$events.' '.$tit.$onc.$poster.' preload="'.$preload.'"'.$cls.' >';
 
@@ -127,31 +127,31 @@ global $wppa;
 function wppa_get_video_body( $id, $for_lb = false, $w = '0', $h = '0' ) {
 
 	$is_video = wppa_is_video( $id, true );
-	
+
 	// Not a video? no go
 	if ( ! $is_video ) return '';
-	
+
 	// See what file types are present
 	extract( wp_parse_args( $is_video, array( 	'mp4' => false,
 												'ogv' => false,
 												'webm' => false
-											) 
-							) 
+											)
+							)
 			);
-	
+
 	// Collect other data
 	$width 		= $w ? $w : wppa_get_videox( $id );
 	$height 	= $h ? $h : wppa_get_videoy( $id );
 	$source 	= wppa_get_photo_url( $id );
 	$source 	= substr( $source, 0, strrpos( $source, '.' ) );
 	$class 		= $for_lb ? ' class="wppa-overlay-img"' : '';
-	
+
 	$is_opera 	= strpos( $_SERVER["HTTP_USER_AGENT"], 'OPR' );
 	$is_ie 		= strpos( $_SERVER["HTTP_USER_AGENT"], 'Trident' );
 	$is_safari 	= strpos( $_SERVER["HTTP_USER_AGENT"], 'Safari' );
-	
-	wppa_dbg_msg('Mp4:'.$mp4.', Opera:'.$is_opera.', Ie:'.$is_ie.', Saf:'.$is_safari);	
-	
+
+	wppa_dbg_msg('Mp4:'.$mp4.', Opera:'.$is_opera.', Ie:'.$is_ie.', Saf:'.$is_safari);
+
 	// Assume the browser supports html5
 	$ext = '';
 	if ( $is_opera ) {
@@ -181,13 +181,13 @@ function wppa_get_video_body( $id, $for_lb = false, $w = '0', $h = '0' ) {
 			$ext = 'ogv';
 		}
 	}
-	
+
 	if ( $ext ) {
 		$mime = str_replace( 'ogv', 'ogg', 'video/'.$ext );
 		$result = '<source src="'.$source.'.'.$ext.'" type="'.$mime.'">';
 	}
 	$result .= __a('There is no filetype available for your browser, or your browser does not support html5 video', 'wppa');
-	
+
 	return $result;
 }
 
@@ -203,50 +203,48 @@ global $wppa_supported_video_extensions;
 	$raw_from_path 	= wppa_strip_ext( $from_path );
 	$to_path 		= wppa_get_photo_path( $toid );
 	$raw_to_path 	= wppa_strip_ext( $to_path );
-	
+
 	// Copy the media files
 	foreach ( $wppa_supported_video_extensions as $ext ) {
 		$file = $raw_from_path . '.' . $ext;
 		if ( is_file( $file ) ) {
 			if ( ! copy( $file, $raw_to_path . '.' . $ext ) ) return false;
-		}		
+		}
 	}
-	
+
 /*
 	// Copy the poster file
 	$poster = wppa_fix_poster_ext( $from_path, $fromid );
 	if ( is_file( $poster ) ) {
 		if ( ! copy( $poster,  $raw_to_path . '.' . wppa_get_ext( $from_path ) ) ) return false;
 	}
-	
+
 	// Copy the poster thumb
 	$poster_thumb 		= wppa_fix_poster_ext( wppa_get_thumb_path( $fromid ) );
 	$poster_thumb_to 	= wppa_strip_ext( wppa_get_thumb_path( $toid ) ) . '.' . wppa_get_ext( $poster_thumb );
 	if ( is_file( $poster_thumb ) ) {
 		if ( ! copy( $poster_thumb, $poster_thumb_to ) ) return false;
 	}
-	
+
 */
 	// Done!
 	return true;
 }
 
 function wppa_get_videox( $id ) {
-global $thumb;
 
 	if ( ! wppa_is_video( $id ) ) return '0';
-	
-	wppa_cache_thumb( $id );
+
+	$thumb = wppa_cache_thumb( $id );
 	if ( $thumb['videox'] ) return $thumb['videox'];
 	return wppa_opt( 'wppa_video_width' );
 }
 
 function wppa_get_videoy( $id ) {
-global $thumb;
 
 	if ( ! wppa_is_video( $id ) ) return '0';
-	
-	wppa_cache_thumb( $id );
+
+	$thumb = wppa_cache_thumb( $id );
 	if ( $thumb['videoy'] ) return $thumb['videoy'];
 	return wppa_opt( 'wppa_video_height' );
 }

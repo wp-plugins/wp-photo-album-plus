@@ -1,10 +1,10 @@
-<?php 
+<?php
 /* wppa-non-admin.php
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 6.2.8
-* 
+* Version 6.2.10
+*
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -20,7 +20,7 @@ require_once 'wppa-boxes-html.php';
 require_once 'wppa-styles.php';
 require_once 'wppa-cart.php';
 require_once 'wppa-thumbnails.php';
-	
+
 /* LOAD STYLESHEET */
 add_action('wp_print_styles', 'wppa_add_style');
 
@@ -37,7 +37,7 @@ global $wppa_api_version;
 			wp_enqueue_style('wppa_style');
 			return;
 		}
-		
+
 		// In theme?
 		$userstyle = get_theme_root() . '/' . get_option('template') . '/wppa-style.css';
 		if ( is_file($userstyle) ) {
@@ -46,11 +46,11 @@ global $wppa_api_version;
 			return;
 		}
 	}
-	
+
 	// Use standard
 	wp_register_style('wppa_style', WPPA_URL.'/theme/wppa-style.css', array(), $wppa_api_version);
 	wp_enqueue_style('wppa_style');
-	
+
 	// Dynamic css
 	if ( ! wppa_switch( 'wppa_inline_css' ) ) {
 		if ( ! file_exists( WPPA_PATH.'/wppa-dynamic.css' ) ) {
@@ -68,7 +68,6 @@ add_action('wp_head', 'wppa_add_metatags', 5);
 
 function wppa_add_metatags() {
 global $wpdb;
-global $thumb;
 
 	// Share info for sm that uses og
 	$id = wppa_get_get( 'photo' );
@@ -83,7 +82,7 @@ global $thumb;
 	}
 	if ( $id ) {
 		if ( wppa_switch( 'wppa_og_tags_on' ) ) {
-			wppa_cache_thumb( $id );
+			$thumb = wppa_cache_thumb( $id );
 			if ( $thumb ) {
 				$title  = wppa_get_photo_name( $id );
 				$desc 	= wppa_get_og_desc( $id );
@@ -104,7 +103,7 @@ global $thumb;
 		}
 	}
 
-	// To make sure we are on a page that contains at least %%wppa%% we check for Get var 'wppa-album'. 
+	// To make sure we are on a page that contains at least %%wppa%% we check for Get var 'wppa-album'.
 	// This also narrows the selection of featured photos to those that exist in the current album.
 	$done = array();
 	if ( wppa_get_get( 'album' ) ) {
@@ -116,7 +115,6 @@ global $thumb;
 			if ( $photos ) {
 				echo("\n<!-- WPPA+ BEGIN Featured photos on this page -->");
 				foreach ( $photos as $photo ) {
-					$thumb 		= $photo;	// Set to global to reduce queries when getting the name
 					$id 		= $photo['id'];
 					$content 	= esc_attr( sanitize_text_field( wppa_get_keywords( $id ) ) );
 					if ( $content && ! in_array( $content, $done ) ) {
@@ -129,7 +127,7 @@ global $thumb;
 			}
 		}
 	}
-	
+
 	// No photo and no album, give the plain photo links of all featured photos
 	elseif ( wppa_switch( 'wppa_meta_all' ) ) {
 		$photos = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `status` = 'featured'", ARRAY_A);
@@ -150,9 +148,9 @@ global $thumb;
 			echo("\n<!-- WPPA+ END Featured photos on this site -->\n");
 		}
 	}
-	
+
 	// Facebook Admin and App
-	if ( ( wppa_switch( 'wppa_share_on' ) ||  wppa_switch( 'wppa_share_on_widget' ) ) && 
+	if ( ( wppa_switch( 'wppa_share_on' ) ||  wppa_switch( 'wppa_share_on_widget' ) ) &&
 		( wppa_switch( 'wppa_facebook_comments' ) || wppa_switch( 'wppa_facebook_like' ) || wppa_switch( 'wppa_share_facebook' ) ) ) {
 		echo("\n<!-- WPPA+ BEGIN Facebook meta tags -->");
 		if ( wppa_opt( 'wppa_facebook_admin_id' ) ) {
@@ -173,7 +171,7 @@ global $thumb;
 
 /* LOAD SLIDESHOW, THEME, AJAX and LIGHTBOX js, all in one file nowadays */
 add_action('init', 'wppa_add_javascripts', '101');
-	
+
 function wppa_add_javascripts() {
 global $wppa_api_version;
 global $wppa_lang;
@@ -188,7 +186,7 @@ global $wppa_opt;
 		$tempdir 	= WPPA_UPLOAD_PATH.'/temp';
 		if ( ! is_dir( $tempdir ) ) @ wppa_mktree( $tempdir );
 		wppa_delete_obsolete_tempfiles();
-		
+
 		$wppa_js_page_data_file = WPPA_UPLOAD_PATH.'/temp/wppa.'.$_SERVER['REMOTE_ADDR'].'.js';
 		$handle = fopen ( $wppa_js_page_data_file, 'wb' );
 
@@ -208,46 +206,50 @@ global $wppa_opt;
 	// If you want to debug js, just delete the minified version; this will cause the normal
 	// - readable - version to be loaded.
 	$any_lightbox = ( wppa_opt( 'lightbox_name' ) == 'wppa' ) && ( wppa_switch( 'lightbox_global' ) || in_array( 'lightbox', $wppa_opt ) );
-					
-	$js_files = array ( 'wppa', 
-						'wppa-slideshow', 
-						'wppa-ajax-front', 
+
+	$js_files = array ( 'wppa',
+						'wppa-slideshow',
+						'wppa-ajax-front',
 						'wppa-lightbox',
 						'wppa-popup',
-						'wppa-touch'
+						'wppa-touch',
+						'wppa-utils',
 					);
-					
-	$js_depts = array ( array( 'jquery', 'jquery-form' ), 
+
+	$js_depts = array ( array( 'jquery', 'jquery-form', 'wppa-utils' ),
 						array( 'jquery', 'wppa' ),
 						array( 'jquery', 'wppa' ),
 						array( 'jquery', 'wppa' ),
 						array( 'jquery', 'wppa' ),
-						array( 'jquery', 'wppa' )
+						array( 'jquery', 'wppa' ),
+						array( 'jquery' ),
 					);
-					
+
 	$js_doits = array ( true,
 						true,
 						true,
 						$any_lightbox,
 						true,
-						wppa_switch('wppa_slide_swipe') || $any_lightbox
+						wppa_switch('wppa_slide_swipe') || $any_lightbox,
+						true,
 					);
-					
+
 	$js_footer = array ( $footer,
 						 $footer,
 						 $footer,
 						 $footer,
 						 $footer,
-						 $footer
+						 $footer,
+						 $footer,
 					);
-					
+
 	foreach ( array_keys( $js_files ) as $idx ) {
 		if ( $js_doits[$idx] ) {
-			if ( is_file( dirname( __FILE__ ) . '/' . $js_files[$idx] . '.min.js' ) ) {
-				wp_enqueue_script( $js_files[$idx], WPPA_URL . '/' . $js_files[$idx] . '.min.js', $js_depts[$idx], $wppa_api_version, $js_footer[$idx] );
+			if ( is_file( dirname( __FILE__ ) . '/js/' . $js_files[$idx] . '.min.js' ) ) {
+				wp_enqueue_script( $js_files[$idx], WPPA_URL . '/js/' . $js_files[$idx] . '.min.js', $js_depts[$idx], $wppa_api_version, $js_footer[$idx] );
 			}
 			else {
-				wp_enqueue_script( $js_files[$idx], WPPA_URL . '/' . $js_files[$idx] . '.js', $js_depts[$idx], $wppa_api_version, $js_footer[$idx] );
+				wp_enqueue_script( $js_files[$idx], WPPA_URL . '/js/' . $js_files[$idx] . '.js', $js_depts[$idx], $wppa_api_version, $js_footer[$idx] );
 			}
 		}
 	}
@@ -274,10 +276,10 @@ global $wppa_opt;
 		wp_enqueue_script( 'wppa-pagedata', WPPA_UPLOAD_URL.'/temp/wppa.'.$_SERVER['REMOTE_ADDR'].'.js', array('wppa-init'), rand(0,4711), $footer );
 	}
 }
-	
+
 /* LOAD WPPA+ THEME */
 add_action('init', 'wppa_load_theme');
-	
+
 function wppa_load_theme() {
 
 	// Are we allowed to look in theme?
@@ -291,7 +293,7 @@ function wppa_load_theme() {
 	}
 	require_once 'theme/wppa-theme.php';
 }
-	
+
 /* LOAD FOOTER REQD DATA */
 add_action('wp_footer', 'wppa_load_footer');
 
@@ -367,7 +369,7 @@ global $wppa_session;
 <!-- end WPPA+ Footer data -->
 ';
 	}
-	
+
 	wppa_dbg_q('print');
 	if ( $wppa['debug'] ) {
 		$plugins = get_option('active_plugins');
@@ -377,7 +379,7 @@ global $wppa_session;
 		}
 		wppa_dbg_msg('End Active Plugins');
 	}
-	
+
 	echo '
 <!-- Do user upload -->';
 	wppa_user_upload();	// Do the upload if required and not yet done
@@ -390,8 +392,8 @@ add_action('wp_footer', 'wppa_fbc_setup', 100);
 
 function wppa_fbc_setup() {
 	if ( wppa_switch( 'wppa_load_facebook_sdk' ) &&  			// Facebook sdk requested
-		( 	wppa_switch( 'wppa_share_on' ) || 
-			wppa_switch( 'wppa_share_on_widget' ) || 
+		( 	wppa_switch( 'wppa_share_on' ) ||
+			wppa_switch( 'wppa_share_on_widget' ) ||
 			wppa_switch( 'wppa_share_on_thumbs' ) ||
 			wppa_switch( 'wppa_share_on_lightbox' ) ||
 			wppa_switch( 'wppa_share_on_mphoto' ) ) &&
@@ -412,7 +414,7 @@ function wppa_fbc_setup() {
 		  fjs.parentNode.insertBefore(js, fjs);
 		}(document, 'script', 'facebook-jssdk'));
 		</script>
-	<?php 
+	<?php
 	}
 }
 
@@ -422,10 +424,10 @@ add_action( 'plugins_loaded', 'wppa_redirect' );
 function wppa_redirect() {
 
 	if ( ! isset( $_SERVER["REQUEST_URI"] ) ) return;
-	
+
 	$uri = $_SERVER["REQUEST_URI"];
 	$wppapos = stripos($uri, '/wppaspec/');
-	
+
 	if ( $wppapos && get_option('permalink_structure') ) {
 		$newuri = wppa_convert_from_pretty($uri);
 		if ( $newuri == $uri ) return;
@@ -455,7 +457,7 @@ function wppa_add_page_specific_urls() {
 	if ( wppa_switch( 'relative_urls' ) ) {
 		$result = str_replace( site_url(), '', $result );
 	}
-	
+
 	echo $result;
 
 }
@@ -472,23 +474,23 @@ global $wppa_dynamic_css_data;
 
 	// init.css failed?
 	if ( $wppa_dynamic_css_data ) echo $wppa_dynamic_css_data;
-	
+
 	// init.js failed?
 	if ( $wppa_init_js_data ) echo $wppa_init_js_data;
-	
+
 	// Patch for chrome?
 	if ( isset($_SERVER["HTTP_USER_AGENT"]) && isset($_SERVER["HTTP_USER_AGENT"]) ) {
 		echo '
-		
+
 <!-- WPPA+ Kickoff -->
 <!-- Browser detected = '.wppa_decode_uri_component(strip_tags($_SERVER["HTTP_USER_AGENT"])).' -->';
 		if ( strstr($_SERVER["HTTP_USER_AGENT"], 'Chrome') && wppa_switch('wppa_ovl_chrome_at_top') ) echo '
 <style type="text/css">
-	#wppa-overlay-ic { padding-top: 5px !important; } 
+	#wppa-overlay-ic { padding-top: 5px !important; }
 	#wppa-overlay-qt-txt, #wppa-overlay-qt-img { top: 5px !important; }
 </style>';
 	}
-	
+
 	// Inline styles?
 	if ( wppa_switch('wppa_inline_css') ) {
 		echo '
@@ -517,7 +519,7 @@ global $wppa_dynamic_css_data;
 	wppaDebug = true;
 </script>';
 	}
-	
+
 	$wppa['rendering_enabled'] = true;
 	echo '
 <!-- Rendering enabled -->
@@ -544,9 +546,9 @@ global $wppa_init_js_data;
 
 	// Init
 	if ( is_numeric(wppa_opt( 'wppa_fullimage_border_width' )) ) $fbw = wppa_opt( 'wppa_fullimage_border_width' ) + '1'; else $fbw = '0';
-		
+
 	// Make content
-	$content = 
+	$content =
 '/* -- WPPA+ Runtime parameters
 /*
 /* Dynamicly Created on '.date('c').'
@@ -559,7 +561,7 @@ global $wppa_init_js_data;
 	if (typeof(_wppaSlides) == \'undefined\') alert(\'There is a problem with your theme. The file wppa.js is not loaded when it is expected (Errloc = wppa_kickoff).\');
 	if (typeof(jQuery) == \'undefined\') alert(\'There is a problem with your theme. The jQuery library is not loaded when it is expected (Errloc = wppa_kickoff).\');
 ';	}
-	/* This goes into wppa.js */ 
+	/* This goes into wppa.js */
 	/* If you add something that uses an element from $wppa_opt[], */
 	/* or a function that uses an element from $wppa_opt[], */
 	/* add the optionslug to $init_js_critical[] in wppa_update_option in wppa-utils.php !!!!! */
@@ -640,7 +642,7 @@ global $wppa_init_js_data;
 	wppaSlideSwipe = '.( wppa_switch('wppa_slide_swipe') ? 'true' : 'false' ).';
 	wppaMaxCoverWidth = '.wppa_opt( 'wppa_max_cover_width' ).';
 	wppaDownLoad = "'.__a('Download').'";
-	wppaSlideToFullpopup = '.( wppa_opt( 'wppa_slideshow_linktype' ) == 'fullpopup' ? 'true' : 'false' ).'; 
+	wppaSlideToFullpopup = '.( wppa_opt( 'wppa_slideshow_linktype' ) == 'fullpopup' ? 'true' : 'false' ).';
 	wppaComAltSize = '.wppa_opt( 'wppa_comten_alt_thumbsize' ).';
 	wppaBumpViewCount = '.( wppa_switch('wppa_track_viewcounts') ? 'true' : 'false' ).';
 	wppaShareHideWhenRunning = '.( wppa_switch('wppa_share_hide_when_running') ? 'true' : 'false' ).';
@@ -653,7 +655,7 @@ global $wppa_init_js_data;
 	wppaOvlHires = '.( wppa_switch( 'wppa_lb_hres' ) ? 'true' : 'false' ).';
 	wppaSlideVideoStart = '.( wppa_switch( 'start_slide_video' ) ? 'true' : 'false' ).';
 	wppaSlideAudioStart = '.( wppa_switch( 'start_slide_audio' ) ? 'true' : 'false' ).';
-	wppaAudioHeight = '.wppa_get_audio_control_height().'; 
+	wppaAudioHeight = '.wppa_get_audio_control_height().';
 	wppaRel = "'.( wppa_opt( 'lightbox_name' ) == 'wppa' ? 'data-rel' : 'rel' ).'";
 	';
 
@@ -667,7 +669,7 @@ global $wppa_init_js_data;
 		$wppa_init_js_data = '';
 	}
 	else {
-		$wppa_init_js_data = 
+		$wppa_init_js_data =
 '<script type="text/javascript">
 /* Warning: file wppa-init.'.$wppa_lang.'.js could not be created */
 /* The content is therefor output here */
@@ -681,10 +683,10 @@ global $wppa_init_js_data;
 add_action( 'init', 'wppa_set_shortcode_priority', 100 );
 
 function wppa_set_shortcode_priority() {
-	
+
 	$newpri = wppa_opt( 'wppa_shortcode_priority' );
 	if ( $newpri == '11' ) return;	// Default, do not change
-	
+
 	$oldpri = has_filter( 'the_content', 'do_shortcode' );
 	if ( $oldpri ) {
 		remove_filter( 'the_content', 'do_shortcode', $oldpri );

@@ -363,7 +363,7 @@ global $wppa_supported_audio_extensions;
 	}
 	
 	// Verify last albums still exist
-	$alb = strval( intval( get_option( 'wppa-photo-album-import-'.wppa_get_user(), '0' ) ) );
+	$alb = get_option( 'wppa-photo-album-import-'.wppa_get_user(), '0' );
 	if ( $alb ) {
 		$exists = $wpdb->get_var( "SELECT COUNT(*) FROM `" . WPPA_ALBUMS ."`  WHERE `id` = ".$alb );
 		if ( ! $exists ) update_option( 'wppa-photo-album-import-'.wppa_get_user(), '0' );

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the best rated photos
-* Version 6.2.0
+* Version 6.2.10
 *
 */
 
@@ -17,11 +17,9 @@ class BestOfWidget extends WP_Widget {
     }
 
 	/** @see WP_Widget::widget */
-    function widget( $args, $instance ) {		
+    function widget( $args, $instance ) {
 		global $wpdb;
 		global $wppa;
-		global $widget_content;
-		global $thumb;
 
 		require_once(dirname(__FILE__) . '/wppa-links.php');
 		require_once(dirname(__FILE__) . '/wppa-styles.php');
@@ -33,21 +31,21 @@ class BestOfWidget extends WP_Widget {
 
         $wppa['in_widget'] = 'bestof';
 		$wppa['mocc']++;
-		
+
 		extract( $args );
 
-		$instance 		= wp_parse_args( (array) $instance, array( 
+		$instance 		= wp_parse_args( (array) $instance, array(
 														'title' 	=> '',
 														'count' 	=> '1',
-														'sortby' 	=> 'maxratingcount', 
+														'sortby' 	=> 'maxratingcount',
 														'display' 	=> 'photo',
 														'period' 	=> 'thisweek',
 														'maxratings'=> 'yes',
 														'meanrat' 	=> 'yes',
 														'ratcount' 	=> 'yes',
 														'linktype' 	=> 'none',
-														) );	
-												
+														) );
+
  		$widget_title 	= apply_filters('widget_title', $instance['title'] );
 		$page 			= in_array( $instance['linktype'], $wppa['links_no_page'] ) ? '' : wppa_get_the_landing_page('wppa_bestof_widget_linkpage', __a('Best Of Photos'));
 		$count 			= $instance['count'];
@@ -63,7 +61,7 @@ class BestOfWidget extends WP_Widget {
 		$lineheight 	= wppa_opt( 'wppa_fontsize_widget_thumb' ) * 1.5;
 
 		$widget_content = "\n".'<!-- WPPA+ BestOf Widget start -->';
-		
+
 		$widget_content .= wppa_bestof_html( array ( 	'page' 			=> $page,
 														'count' 		=> $count,
 														'sortby' 		=> $sortby,
@@ -85,9 +83,9 @@ class BestOfWidget extends WP_Widget {
 		if ( !empty( $widget_title ) ) { echo $before_title . $widget_title . $after_title; }
 		echo $widget_content . $after_widget;
     }
-	
+
     /** @see WP_Widget::update */
-    function update($new_instance, $old_instance) {				
+    function update($new_instance, $old_instance) {
 		$instance = $old_instance;
 		$instance['title'] 		= strip_tags($new_instance['title']);
 		$instance['count'] 		= $new_instance['count'];
@@ -98,18 +96,18 @@ class BestOfWidget extends WP_Widget {
 		$instance['meanrat']	= $new_instance['meanrat'];
 		$instance['ratcount'] 	= $new_instance['ratcount'];
 		$instance['linktype'] 	= $new_instance['linktype'];
-		
+
         return $instance;
     }
 
     /** @see WP_Widget::form */
-    function form($instance) {	
-	
+    function form($instance) {
+
 		//Defaults
-		$instance 		= wp_parse_args( (array) $instance, array( 
-														'title' 	=> __('Best Of Photos', 'wppa'), 
+		$instance 		= wp_parse_args( (array) $instance, array(
+														'title' 	=> __('Best Of Photos', 'wppa'),
 														'count' 	=> '1',
-														'sortby' 	=> 'maxratingcount', 
+														'sortby' 	=> 'maxratingcount',
 														'display' 	=> 'photo',
 														'period' 	=> 'thisweek',
 														'maxratings'=> 'yes',
@@ -129,11 +127,11 @@ class BestOfWidget extends WP_Widget {
 		$linktype		= $instance['linktype'];
 
 		?>
-		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> 
+		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $widget_title; ?>" />
 		</p>
 		<?php
-		
+
 		$count_html 	= '
 		<select id="'.$this->get_field_id('count').'" name="'.$this->get_field_name('count').'" >
 			<option value="1" '.( $count == '1' ? 'selected="selected"' : '' ).' >1</option>
@@ -171,11 +169,11 @@ class BestOfWidget extends WP_Widget {
 			<option value="ratingcount" '.( $sortby == 'ratingcount' ? 'selected="selected"' : '' ).' >'.__('Number of votes', 'wppa').'</option>
 		</select>
 		';
-		
+
 		_e( sprintf( 'Display the %1s best %2s based on ratings given during %3s and sorted by %4s', $count_html, $what_html, $period_html, $sort_html ) );
-		
-?>		
-	
+
+?>
+
 		<p><label ><?php _e('Subtitle:', 'wppa'); ?></label>
 			<br /><?php _e('No of max ratings:', 'wppa'); ?>
 			<select id="<?php echo $this->get_field_id('maxratings'); ?>" name="<?php echo $this->get_field_name('maxratings'); ?>" >
@@ -193,7 +191,7 @@ class BestOfWidget extends WP_Widget {
 				<option value="no" <?php if ( $ratcount == 'no' ) echo 'selected="selected"' ?>><?php _e('no', 'wppa') ?></option>
 			</select>
 		</p>
-		
+
 		<p><label><?php _e('Link to:', 'wppa') ?></label>
 			<select id="<?php echo $this->get_field_id('linktype'); ?>" name="<?php echo $this->get_field_name('linktype'); ?>" >
 				<option value="none" <?php if ( $linktype == 'none' ) echo 'selected="selected"' ?>><?php _e('--- none ---', 'wppa') ?></option>

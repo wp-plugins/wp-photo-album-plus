@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display album names linking to content
-* Version 6.2.0
+* Version 6.2.10
 */
 
 class AlbumNavigatorWidget extends WP_Widget {
@@ -14,11 +14,9 @@ class AlbumNavigatorWidget extends WP_Widget {
     }
 
 	/** @see WP_Widget::widget */
-    function widget($args, $instance) {		
-	//	global $widget_content;
+    function widget($args, $instance) {
 		global $wpdb;
 		global $wppa;
-		global $thumb;
 
 		require_once(dirname(__FILE__) . '/wppa-links.php');
 		require_once(dirname(__FILE__) . '/wppa-styles.php');
@@ -30,22 +28,22 @@ class AlbumNavigatorWidget extends WP_Widget {
 
 		$wppa['in_widget'] = 'albnav';
 		$wppa['mocc'] ++;
-	
+
         extract( $args );
-		
-		$instance = wp_parse_args( (array) $instance, array( 
+
+		$instance = wp_parse_args( (array) $instance, array(
 													'title' => '',		// Widget title
 													'parent' => '0',	// Parent album
 													'skip' => 'yes'		// Skip empty albums
 													) );
- 
+
 		$widget_title = apply_filters('widget_title', $instance['title']);
 
 		$page 	= wppa_get_the_landing_page('wppa_album_navigator_widget_linkpage', __a('Photo Albums'));
 		$parent = $instance['parent'];
 		$skip 	= $instance['skip'];
-		
-		
+
+
 		$widget_content = "\n".'<!-- WPPA+ Album Navigator Widget start -->';
 		$widget_content .= '<div style="width:100%; overflow:hidden; position:relative; left: -12px;" >';
 		if ( $parent == 'all' ) {
@@ -57,23 +55,23 @@ class AlbumNavigatorWidget extends WP_Widget {
 		}
 		$widget_content .= '</div>';
 		$widget_content .= '<div style="clear:both"></div>';
-		
+
 		$widget_content .= "\n".'<!-- WPPA+ Album Navigator Widget end -->';
 
 		echo "\n" . $before_widget;
 		if ( !empty( $widget_title ) ) { echo $before_title . $widget_title . $after_title; }
 		echo $widget_content . $after_widget;
-		
+
 		$wppa['in_widget'] = false;
     }
-	
+
     /** @see WP_Widget::update */
-    function update($new_instance, $old_instance) {				
+    function update($new_instance, $old_instance) {
 		$instance = $old_instance;
 		$instance['title'] = strip_tags($new_instance['title']);
 		$instance['parent'] = $new_instance['parent'];
 		$instance['skip'] = $new_instance['skip'];
-		
+
         return $instance;
     }
 
@@ -83,7 +81,7 @@ class AlbumNavigatorWidget extends WP_Widget {
 
 		//Defaults
 
-		$instance = wp_parse_args( (array) $instance, array( 
+		$instance = wp_parse_args( (array) $instance, array(
 															'title' 	=> __('Photo Albums', 'wppa'),
 															'parent' 	=> '0',
 															'skip' 		=> 'yes' ) );
@@ -92,7 +90,7 @@ class AlbumNavigatorWidget extends WP_Widget {
 		$widget_title 	= $instance['title'];
 ?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $widget_title; ?>" /></p>
-		<p><label for="<?php echo $this->get_field_id('parent'); ?>"><?php _e('Album selection or Parent album:', 'wppa'); ?></label> 
+		<p><label for="<?php echo $this->get_field_id('parent'); ?>"><?php _e('Album selection or Parent album:', 'wppa'); ?></label>
 			<select class="widefat" id="<?php echo $this->get_field_id('parent'); ?>" name="<?php echo $this->get_field_name('parent'); ?>" >
 
 				<option value="all" <?php if ($parent == 'all') echo 'selected="selected"' ?>><?php _e('--- all albums ---', 'wppa') ?></option>
@@ -100,9 +98,9 @@ class AlbumNavigatorWidget extends WP_Widget {
 				<option value="-1" <?php if ($parent == '-1') echo 'selected="selected"' ?>><?php _e('--- all separate albums ---', 'wppa') ?></option>
 				<?php $albs = $wpdb->get_results( "SELECT * FROM `".WPPA_ALBUMS."` ORDER BY `name`", ARRAY_A);
 				if ( $albs ) foreach( $albs as $alb ) {
-					echo '<option value="'.$alb['id'].'" '; 
-					if ( $parent == $alb['id'] ) echo 'selected="selected" '; 
-					if ( !wppa_has_children($alb['id']) ) echo 'disabled="disabled" '; 
+					echo '<option value="'.$alb['id'].'" ';
+					if ( $parent == $alb['id'] ) echo 'selected="selected" ';
+					if ( !wppa_has_children($alb['id']) ) echo 'disabled="disabled" ';
 					echo '>'.__(stripslashes($alb['name'])).'</option>';
 				} ?>
 
@@ -118,7 +116,7 @@ class AlbumNavigatorWidget extends WP_Widget {
 
 <?php
 	}
-	
+
 	function get_widget_id() {
 		$widgetid = substr( $this->get_field_name( 'txt' ), strpos( $this->get_field_name( 'txt' ), '[' ) + 1 );
 		$widgetid = substr( $widgetid, 0, strpos( $widgetid, ']' ) );
@@ -140,9 +138,9 @@ class AlbumNavigatorWidget extends WP_Widget {
 		else {
 			$level++;
 		}
-		
+
 		$slide = wppa_opt( 'wppa_album_navigator_widget_linktype' ) == 'slide' ? '&amp;wppa-slide=1' : '';
-		
+
 		$w = $this->get_widget_id();
 		$p = $parent;
 		$result = '';
@@ -151,7 +149,7 @@ class AlbumNavigatorWidget extends WP_Widget {
 		wppa_cache_album( 'add', $albums );
 		if ( $albums ) {
 			$result .= '<ul>';
-			foreach ( $albums as $album ) {	
+			foreach ( $albums as $album ) {
 				$a = $album['id'];
 				$treecount = wppa_treecount_a( $a );
 				if ( $treecount['albums'] || $treecount['photos'] > wppa_opt( 'wppa_min_thumbs' ) || $skip == 'no' ) {
@@ -183,7 +181,7 @@ class AlbumNavigatorWidget extends WP_Widget {
 		$level--;
 		return str_replace( '<ul></ul>', '', $result );
 	}
-	
+
 } // class AlbumNavigatorWidget
 // register AlbumNavigatorWidget widget
 add_action('widgets_init', create_function('', 'return register_widget("AlbumNavigatorWidget");'));

@@ -3,7 +3,7 @@
 // Contains frontend ajax modules
 // Dependancies: wppa.js and default wp jQuery library
 // 
-var wppaJsAjaxVersion = '6.2.3';
+var wppaJsAjaxVersion = '6.2.10';
 
 var wppaRenderAdd = false;
 var wppaWaitForCounter = 0;
@@ -101,6 +101,7 @@ function wppaDoAjaxRender( mocc, ajaxurl, newurl, add, waitfor ) {
 									},
 						complete: 	function( xhr, status, newurl ) {
 										wppaWaitForCounter++;
+										jQuery('html, body').animate({ scrollTop: jQuery("#wppa-container-"+mocc).offset().top - 32 }, 1000);
 									}
 					} );					
 	}
@@ -267,7 +268,8 @@ function wppaEditPhoto( mocc, id ) {
 											wnd.document.write( '<link rel="stylesheet" id="wppa_style-css"  href="'+wppaWppaUrl+'/wppa-admin-styles.css?ver='+wppaVersion+'" type="text/css" media="all" />'+
 																'<style>body {font-family: sans-serif; font-size: 12px; line-height: 1.4em;}a {color: #21759B;}</style>'+
 																'<script type="text/javascript" src="'+wppaIncludeUrl+'/js/jquery/jquery.js?ver='+wppaVersion+'"></script>'+
-																'<script type="text/javascript" src="'+wppaWppaUrl+'/wppa-admin-scripts.js?ver='+wppaVersion+'"></script>'+
+																'<script type="text/javascript" src="'+wppaWppaUrl+'/js/wppa-utils.js?ver='+wppaVersion+'"></script>'+
+																'<script type="text/javascript" src="'+wppaWppaUrl+'/js/wppa-admin-scripts.js?ver='+wppaVersion+'"></script>'+
 																'<title>'+name+'</title>'+
 																'<script type="text/javascript">wppaAjaxUrl="'+wppaAjaxUrl+'";</script>' );
 										wnd.document.write( '</head>' );
@@ -333,7 +335,7 @@ function wppaPrevTags( tagsSel, tagsEdit, tagsAlbum, tagsPrev ) {
 										jQuery( '#'+tagsPrev ).html( 'Working...' );
 									},
 						success: 	function( result, status, xhr ) {
-										jQuery( '#'+tagsPrev ).html( result );
+										jQuery( '#'+tagsPrev ).html( wppaTrim( result, ',' ) );
 									},
 						error: 		function( xhr, status, error ) {
 										jQuery( '#'+tagsPrev ).html( '<span style="color:red" >' + error + '</span>' );

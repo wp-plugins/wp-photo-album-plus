@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-12 12:42+0100\n"
-"PO-Revision-Date: 2015-07-12 12:42+0100\n"
+"POT-Creation-Date: 2015-08-28 11:48+0200\n"
+"PO-Revision-Date: 2015-08-28 11:48+0200\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: \n"
 "Language: fi\n"
@@ -17,22 +17,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: __a\n"
 "X-Poedit-Basepath: ..\n"
-"X-Generator: Poedit 1.8.1\n"
+"X-Generator: Poedit 1.8.4\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: theme\n"
 
-#: theme/wppa-theme.php:320 theme/wppa-theme.php:339
+#: theme/wppa-theme.php:323 theme/wppa-theme.php:342
 #, fuzzy
 msgid "No photos found matching your search criteria."
 msgstr "Yksikään albumi tai kuva ei vastaa hakukriteeriä."
 
-#: theme/wppa-theme.php:323
+#: theme/wppa-theme.php:326
 #, fuzzy
 msgid "No albums found matching your search criteria."
 msgstr "Yksikään albumi tai kuva ei vastaa hakukriteeriä."
 
-#: theme/wppa-theme.php:326
+#: theme/wppa-theme.php:329
 msgid "No albums or photos found matching your search criteria."
 msgstr "Yksikään albumi tai kuva ei vastaa hakukriteeriä."
 
@@ -91,7 +91,7 @@ msgstr "Hilfe & Info"
 msgid "Docs & Demos"
 msgstr "Dokumentationen & Beispiele"
 
-#: wppa-adminbar.php:118 wppa-album-navigator-widget.php:44
+#: wppa-adminbar.php:118 wppa-album-navigator-widget.php:42
 #: wppa-album-widget.php:48
 #, fuzzy
 msgid "Photo Albums"
@@ -117,65 +117,64 @@ msgstr "Erneuern"
 msgid "Photo rated"
 msgstr "Foto des Tages"
 
-#: wppa-album-covers.php:1036
+#: wppa-album-covers.php:1035
 msgid "Link to"
 msgstr "Linkitä"
 
-#: wppa-album-covers.php:1066 wppa-album-covers.php:1127
-#: wppa-album-covers.php:1134
+#: wppa-album-covers.php:1065 wppa-album-covers.php:1126
+#: wppa-album-covers.php:1133
 msgid "View the album"
 msgstr "Avaa albumi"
 
-#: wppa-album-covers.php:1086
+#: wppa-album-covers.php:1085
 msgid "View the cover photo"
 msgstr "Avaa kansikuva"
 
-#: wppa-album-covers.php:1087
+#: wppa-album-covers.php:1086
 msgid "View the cover photos"
 msgstr "Avaa kansikuvat"
 
-#: wppa-album-covers.php:1140
+#: wppa-album-covers.php:1139
 msgid "View"
 msgstr "Katso"
 
-#: wppa-album-covers.php:1143
+#: wppa-album-covers.php:1142
 msgid "album"
 msgstr "albumi"
 
-#: wppa-album-covers.php:1146
+#: wppa-album-covers.php:1145
 msgid "albums"
 msgstr "albumit"
 
-#: wppa-album-covers.php:1155 wppa-boxes-html.php:1112 wppa-breadcrumb.php:148
-#: wppa-breadcrumb.php:154 wppa-breadcrumb.php:161 wppa-breadcrumb.php:324
-#: wppa-breadcrumb.php:329 wppa-functions.php:4155 wppa-utils.php:1428
+#: wppa-album-covers.php:1154 wppa-boxes-html.php:1116 wppa-breadcrumb.php:148
+#: wppa-breadcrumb.php:154 wppa-breadcrumb.php:161 wppa-breadcrumb.php:362
+#: wppa-breadcrumb.php:367 wppa-functions.php:4253 wppa-utils.php:1480
 msgid "and"
 msgstr "ja"
 
-#: wppa-album-covers.php:1160
+#: wppa-album-covers.php:1159
 msgid "photo"
 msgstr "kuva"
 
-#: wppa-album-covers.php:1163 wppa-album-covers.php:1167
+#: wppa-album-covers.php:1162 wppa-album-covers.php:1166
 msgid "photos"
 msgstr "kuvaa"
 
-#: wppa-album-covers.php:1211
+#: wppa-album-covers.php:1210
 #, fuzzy
 msgid "New!"
 msgstr "Neues Album"
 
-#: wppa-album-covers.php:1212 wppa-thumbnails.php:1827
-#: wppa-thumbnails.php:1828
+#: wppa-album-covers.php:1211 wppa-thumbnails.php:1875 wppa-thumbnails.php:1876
 #, fuzzy
 msgid "New"
 msgstr "Neues Album"
 
-#: wppa-album-covers.php:1234 wppa-boxes-html.php:818 wppa-non-admin.php:565
+#: wppa-album-covers.php:1233 wppa-boxes-html.php:821 wppa-non-admin.php:580
 msgid "Slideshow"
 msgstr "Esitys"
 
-#: wppa-album-covers.php:1235
+#: wppa-album-covers.php:1234
 msgid "Browse photos"
 msgstr "Selaa kuvia"
 
@@ -183,7 +182,7 @@ msgstr "Selaa kuvia"
 msgid "Categories:"
 msgstr "Kategoriat:"
 
-#: wppa-album-covers.php:1271 wppa-breadcrumb.php:336 wppa-breadcrumb.php:341
+#: wppa-album-covers.php:1271 wppa-breadcrumb.php:374 wppa-breadcrumb.php:379
 msgid "Category:"
 msgstr "Kategoria:"
 
@@ -201,246 +200,236 @@ msgid ""
 "support html5 audio"
 msgstr ""
 
-#: wppa-bestof-widget.php:52
+#: wppa-bestof-widget.php:50
 #, fuzzy
 msgid "Best Of Photos"
 msgstr "kuvaa"
 
-#: wppa-boxes-html.php:129 wppa-boxes-html.php:219
+#: wppa-boxes-html.php:130 wppa-boxes-html.php:220
 #, fuzzy
 msgid "Photo search results"
 msgstr "Suchergebnisse für: %s"
 
-#: wppa-boxes-html.php:168
+#: wppa-boxes-html.php:169
 #, fuzzy
 msgid "Search"
 msgstr "Suche"
 
-#: wppa-boxes-html.php:179
+#: wppa-boxes-html.php:180
 #, fuzzy
 msgid "Search in current section"
 msgstr "Suche"
 
-#: wppa-boxes-html.php:184
+#: wppa-boxes-html.php:185
 #, fuzzy
 msgid "Search in current results"
 msgstr "Suchergebnisse für: %s"
 
-#: wppa-boxes-html.php:352 wppa-breadcrumb.php:136
+#: wppa-boxes-html.php:353 wppa-breadcrumb.php:136
 #, fuzzy
 msgid "Albums"
 msgstr "albumit"
 
-#: wppa-boxes-html.php:358 wppa-breadcrumb.php:151
+#: wppa-boxes-html.php:359 wppa-breadcrumb.php:151
 #, fuzzy
 msgid "Photos"
 msgstr "Kuva"
 
-#: wppa-boxes-html.php:377
+#: wppa-boxes-html.php:378
 #, fuzzy
 msgid "Category"
 msgstr "Kategoria:"
 
-#: wppa-boxes-html.php:384 wppa-boxes-html.php:499
+#: wppa-boxes-html.php:385 wppa-boxes-html.php:500
 msgid "Name"
 msgstr ""
 
-#: wppa-boxes-html.php:390 wppa-boxes-html.php:524
+#: wppa-boxes-html.php:391 wppa-boxes-html.php:525
 msgid "Text"
 msgstr ""
 
-#: wppa-boxes-html.php:406 wppa-boxes-html.php:460 wppa-boxes-html.php:607
-#: wppa-boxes-html.php:636
+#: wppa-boxes-html.php:407 wppa-boxes-html.php:461 wppa-boxes-html.php:609
+#: wppa-boxes-html.php:639
 msgid "CTRL+Click to add/remove option."
 msgstr ""
 
-#: wppa-boxes-html.php:407 wppa-boxes-html.php:461 wppa-boxes-html.php:608
-#: wppa-boxes-html.php:637
+#: wppa-boxes-html.php:408 wppa-boxes-html.php:462 wppa-boxes-html.php:610
+#: wppa-boxes-html.php:640
 msgid "Items must meet all selected options."
 msgstr ""
 
-#: wppa-boxes-html.php:507
+#: wppa-boxes-html.php:508
 msgid "Owner"
 msgstr ""
 
-#: wppa-boxes-html.php:516
+#: wppa-boxes-html.php:517
 msgid "Tag"
 msgstr ""
 
-#: wppa-boxes-html.php:532
+#: wppa-boxes-html.php:533
 msgid "Iptc"
 msgstr ""
 
-#: wppa-boxes-html.php:541
+#: wppa-boxes-html.php:542
 msgid "Exif"
 msgstr ""
 
-#: wppa-boxes-html.php:739 wppa-boxes-html.php:822
+#: wppa-boxes-html.php:742 wppa-boxes-html.php:825
 msgid "Submit"
 msgstr ""
 
-#: wppa-boxes-html.php:780
+#: wppa-boxes-html.php:783
 #, fuzzy
 msgid "Super View Photos"
 msgstr "Super View Fotos"
 
-#: wppa-boxes-html.php:794 wppa-breadcrumb.php:242 wppa-breadcrumb.php:260
-#: wppa-breadcrumb.php:278 wppa-breadcrumb.php:296 wppa-breadcrumb.php:351
-#: wppa-breadcrumb.php:376
+#: wppa-boxes-html.php:797 wppa-breadcrumb.php:280 wppa-breadcrumb.php:298
+#: wppa-breadcrumb.php:316 wppa-breadcrumb.php:334 wppa-breadcrumb.php:389
+#: wppa-breadcrumb.php:414
 #, fuzzy
 msgid "Album:"
 msgstr "albumi"
 
-#: wppa-boxes-html.php:810
+#: wppa-boxes-html.php:813
 #, fuzzy
 msgid "Thumbnails"
 msgstr "Miniaturbild Fotos"
 
-#: wppa-boxes-html.php:855
+#: wppa-boxes-html.php:858
 #, fuzzy
 msgid "Tagged photos"
 msgstr "kuvaa"
 
-#: wppa-boxes-html.php:868
+#: wppa-boxes-html.php:871
 #, fuzzy
 msgid "Please select a tagcloud landing page in Table VI-C3b"
 msgstr "Wähle die Zielseite für das Super View-Widget."
 
-#: wppa-boxes-html.php:925
+#: wppa-boxes-html.php:928
 #, fuzzy
 msgid "Multi Tagged photos"
 msgstr "Multi Bewertung"
 
-#: wppa-boxes-html.php:938
+#: wppa-boxes-html.php:941
 #, fuzzy
 msgid "Please select a multitag landing page in Table VI-C4b"
 msgstr "Wähle die Zielseite für das Super View-Widget."
 
-#: wppa-boxes-html.php:976
+#: wppa-boxes-html.php:979
 #, fuzzy
 msgid "Please check the tag(s) that the photos must have"
 msgstr "--- bitte wähle Tag(s) aus ---"
 
-#: wppa-boxes-html.php:1005
+#: wppa-boxes-html.php:1008
 #, fuzzy
 msgid "And"
 msgstr "ja"
 
-#: wppa-boxes-html.php:1016
+#: wppa-boxes-html.php:1019
 msgid "Or"
 msgstr "Tai"
 
-#: wppa-boxes-html.php:1066
+#: wppa-boxes-html.php:1069
 #, fuzzy
 msgid "Find!"
 msgstr "Finde Remote Fotos"
 
-#: wppa-boxes-html.php:1091
+#: wppa-boxes-html.php:1094
 msgid "Social media landing page"
 msgstr ""
 
-#: wppa-boxes-html.php:1113 wppa-utils.php:1428
+#: wppa-boxes-html.php:1117 wppa-utils.php:1480
 #, fuzzy, php-format
 msgid "See this image on %s"
 msgstr "Schau Dir das Bild an auf %s"
 
-#: wppa-boxes-html.php:1138 wppa-qr-widget.php:40
+#: wppa-boxes-html.php:1142 wppa-qr-widget.php:40
 msgid "QR code"
 msgstr "QR-koodi"
 
-#: wppa-boxes-html.php:1183
+#: wppa-boxes-html.php:1187
 #, fuzzy, php-format
 msgid "Tweet %s on Twitter"
 msgstr "Zeigt Twitter Button"
 
-#: wppa-boxes-html.php:1190
+#: wppa-boxes-html.php:1194
 #, fuzzy
 msgid "Share on Twitter"
 msgstr "Zeigt den Twitter-Button in der Share - Box an."
 
-#: wppa-boxes-html.php:1203
+#: wppa-boxes-html.php:1207
 #, fuzzy, php-format
 msgid "Share %s on Google+"
 msgstr "Zeigt den Google-Button in der Share - Box an."
 
-#: wppa-boxes-html.php:1211
+#: wppa-boxes-html.php:1215
 #, fuzzy
 msgid "Share on Google+"
 msgstr "Zeigt den Google-Button in der Share - Box an."
 
-#: wppa-boxes-html.php:1226
+#: wppa-boxes-html.php:1230
 #, fuzzy, php-format
 msgid "Share %s on Pinterest"
 msgstr "Share, Teilen"
 
-#: wppa-boxes-html.php:1235
+#: wppa-boxes-html.php:1239
 #, fuzzy
 msgid "Share on Pinterest"
 msgstr "Share, Teilen"
 
-#: wppa-boxes-html.php:1370
+#: wppa-boxes-html.php:1374
 #, fuzzy
 msgid "Comment on Facebook:"
 msgstr "Zeigen die Facebook Kommentar-Feld"
 
-#: wppa-boxes-html.php:1470
+#: wppa-boxes-html.php:1475
 msgid "Working..."
 msgstr "Suoritetaan muutoksia..."
 
-#: wppa-boxes-html.php:1472 wppa-boxes-html.php:1475
+#: wppa-boxes-html.php:1477 wppa-boxes-html.php:1480
 #, fuzzy
 msgid "Delete album"
 msgstr "Das Album konnte nicht erstellt werden."
 
-#: wppa-boxes-html.php:1556
+#: wppa-boxes-html.php:1565
 #, fuzzy
 msgid "Create Album"
 msgstr "Das Album konnte nicht erstellt werden."
 
-#: wppa-boxes-html.php:1602 wppa-boxes-html.php:2244
+#: wppa-boxes-html.php:1610 wppa-boxes-html.php:2293
 #, fuzzy
 msgid "Enter album name."
 msgstr ""
 "Trage hier Schriftnamen, Größe, Farbe und Breite für die Album Cover Titel "
 "ein."
 
-#: wppa-boxes-html.php:1604 wppa-boxes-html.php:2244
+#: wppa-boxes-html.php:1612 wppa-boxes-html.php:2293
 #, fuzzy
 msgid "Don't leave this blank!"
 msgstr "Hinterlasse einen Kommentar"
 
-#: wppa-boxes-html.php:1623
+#: wppa-boxes-html.php:1631
 #, fuzzy
 msgid "Enter album description"
 msgstr "Eintragen / ändern der Beschreibung des Albums"
 
-#: wppa-boxes-html.php:1645
+#: wppa-boxes-html.php:1653
 #, fuzzy
 msgid "Create album"
 msgstr "Das Album konnte nicht erstellt werden."
 
-#: wppa-boxes-html.php:1687 wppa-boxes-html.php:1701 wppa-functions.php:3873
+#: wppa-boxes-html.php:1709 wppa-boxes-html.php:1722 wppa-functions.php:3970
 #, fuzzy
 msgid "Max uploads reached"
 msgstr ""
 "Zeige wenn die Upload - Grenze erreicht ist.gegebenenfalls als Nachricht ."
 
-#: wppa-boxes-html.php:1764
+#: wppa-boxes-html.php:1784
 #, fuzzy
 msgid "Upload Photo"
 msgstr "Fotos hochladen"
 
-#: wppa-boxes-html.php:1875
-#, fuzzy
-msgid "Please select an album and try again"
-msgstr "Bitte wähle Album"
-
-#: wppa-boxes-html.php:1889
-#, fuzzy
-msgid "Upload photo"
-msgstr "Fotos hochladen"
-
-#: wppa-boxes-html.php:1914
+#: wppa-boxes-html.php:1931
 #, fuzzy, php-format
 msgid ""
 "You may upload up to %s photos at once if your browser supports HTML-5 "
@@ -449,22 +438,22 @@ msgstr ""
 "Du benötigst einen modernen Browser, der HTML-5 unterstützt, um mehrere "
 "Dateien auszuwählen"
 
-#: wppa-boxes-html.php:1922
+#: wppa-boxes-html.php:1938
 #, fuzzy, php-format
 msgid "Max photo size: %d x %d (%2.1f MegaPixel)"
 msgstr "(max %d)"
 
-#: wppa-boxes-html.php:1951
+#: wppa-boxes-html.php:1965
 #, fuzzy
 msgid "Apply watermark file:"
 msgstr "Wende eine Wasserzeichen-Datei an:"
 
-#: wppa-boxes-html.php:1973
+#: wppa-boxes-html.php:1987
 #, fuzzy
 msgid "Position:"
 msgstr "Position/Ort:"
 
-#: wppa-boxes-html.php:2002
+#: wppa-boxes-html.php:2015
 #, fuzzy
 msgid ""
 "If you leave this blank, iptc tag 005 (Graphic name) will be used as "
@@ -474,7 +463,7 @@ msgstr ""
 "Wenn das leer gelassen wird, wird der Originalname der Datei als Fotoname "
 "verwendet."
 
-#: wppa-boxes-html.php:2005
+#: wppa-boxes-html.php:2018
 #, fuzzy
 msgid ""
 "If you leave this blank, iptc tag 120 (Caption) will be used as photoname if "
@@ -483,7 +472,7 @@ msgstr ""
 "Wenn das leer gelassen wird, wird der Originalname der Datei als Fotoname "
 "verwendet."
 
-#: wppa-boxes-html.php:2008
+#: wppa-boxes-html.php:2021
 #, fuzzy
 msgid ""
 "If you leave this blank, the original filename will be used as photo name."
@@ -491,189 +480,199 @@ msgstr ""
 "Wenn das leer gelassen wird, wird der Originalname der Datei als Fotoname "
 "verwendet."
 
-#: wppa-boxes-html.php:2012
+#: wppa-boxes-html.php:2025
 #, fuzzy
 msgid "Enter photo name."
 msgstr "Bitte gibt den Fotonamen an."
 
-#: wppa-boxes-html.php:2031
+#: wppa-boxes-html.php:2043
 #, fuzzy
 msgid "Enter/modify photo description"
 msgstr "Hinzufügen/Bearbeiten der Foto Beschreibeung"
 
-#: wppa-boxes-html.php:2064
+#: wppa-boxes-html.php:2074
 msgid "hidden"
 msgstr ""
 
-#: wppa-boxes-html.php:2135
+#: wppa-boxes-html.php:2143
 msgid "Preview tags:"
 msgstr ""
 
-#: wppa-boxes-html.php:2178
+#: wppa-boxes-html.php:2156
+#, fuzzy
+msgid "Please select an album and try again"
+msgstr "Bitte wähle Album"
+
+#: wppa-boxes-html.php:2170
+#, fuzzy
+msgid "Upload photo"
+msgstr "Fotos hochladen"
+
+#: wppa-boxes-html.php:2226
 #, fuzzy
 msgid "ERROR: unable to upload files."
 msgstr "<b>FEHLER: Ungültiger Versuch eine Datei hochzuladen</b>"
 
-#: wppa-boxes-html.php:2226
+#: wppa-boxes-html.php:2275
 #, fuzzy
 msgid "Edit albuminfo"
 msgstr "Bearbeiten"
 
-#: wppa-boxes-html.php:2254
+#: wppa-boxes-html.php:2303
 #, fuzzy
 msgid "Album description:"
 msgstr "Unsymmetrische Tags in der Album Beschreibung!"
 
-#: wppa-boxes-html.php:2269
+#: wppa-boxes-html.php:2318
 #, fuzzy
 msgid "Update album"
 msgstr "Erneuere die Plugin Beschreibung"
 
-#: wppa-boxes-html.php:2343
+#: wppa-boxes-html.php:2392
 msgid "wrote:"
 msgstr ""
 
-#: wppa-boxes-html.php:2375
+#: wppa-boxes-html.php:2446
 msgid "Avatar"
 msgstr ""
 
-#: wppa-boxes-html.php:2418 wppa-links.php:745
+#: wppa-boxes-html.php:2489 wppa-links.php:768
 #, fuzzy
 msgid "Awaiting moderation"
 msgstr "Dieses Foto wartet nicht mehr auf Moderation."
 
-#: wppa-boxes-html.php:2421
+#: wppa-boxes-html.php:2492
 #, fuzzy
 msgid "Marked as spam"
 msgstr "Spam:"
 
-#: wppa-boxes-html.php:2446
+#: wppa-boxes-html.php:2516
 #, fuzzy
 msgid "Edit!"
 msgstr "Bearbeiten"
 
-#: wppa-boxes-html.php:2450
+#: wppa-boxes-html.php:2520
 msgid "Send!"
 msgstr "Lähetä!"
 
-#: wppa-boxes-html.php:2511
+#: wppa-boxes-html.php:2581
 msgid "Your name:"
 msgstr "Nimesi:"
 
-#: wppa-boxes-html.php:2526
+#: wppa-boxes-html.php:2596
 msgid "Your email:"
 msgstr "Sähköpostiosoitteesi:"
 
-#: wppa-boxes-html.php:2542
+#: wppa-boxes-html.php:2612
 msgid "Your comment:"
 msgstr "Kommenttisi:"
 
-#: wppa-boxes-html.php:2586
+#: wppa-boxes-html.php:2656
 #, fuzzy, php-format
 msgid "You must <a href=\"%s\">login</a> to enter a comment"
 msgstr ""
 "Du musst <a href=\"%s\">angemeldet</a> sein, um einen Kommentar zu "
 "hinterlassen."
 
-#: wppa-boxes-html.php:2589
+#: wppa-boxes-html.php:2659
 #, fuzzy
 msgid "You must login to enter a comment"
 msgstr ""
 "Du musst <a href=\"%s\">angemeldet</a> sein, um einen Kommentar zu "
 "hinterlassen."
 
-#: wppa-boxes-html.php:2601
+#: wppa-boxes-html.php:2671
 #, fuzzy, php-format
 msgid "%d comments"
 msgstr "%d Kommentare"
 
-#: wppa-boxes-html.php:2605
+#: wppa-boxes-html.php:2675
 msgid "Leave a comment"
 msgstr "Jätä kommentti"
 
-#: wppa-boxes-html.php:2646
+#: wppa-boxes-html.php:2716
 #, fuzzy
 msgid "Smilies are not available"
 msgstr "Sivu ei ole saatavilla."
 
-#: wppa-boxes-html.php:2691
+#: wppa-boxes-html.php:2761
 #, fuzzy
 msgid "Show IPTC data"
 msgstr "IPTC Daten"
 
-#: wppa-boxes-html.php:2696
+#: wppa-boxes-html.php:2766
 #, fuzzy
 msgid "Hide IPTC data"
 msgstr "IPTC Daten"
 
-#: wppa-boxes-html.php:2735
+#: wppa-boxes-html.php:2805
 #, fuzzy
 msgid "No IPTC data"
 msgstr "IPTC Daten"
 
-#: wppa-boxes-html.php:2782
+#: wppa-boxes-html.php:2852
 #, fuzzy
 msgid "Show EXIF data"
 msgstr "EXIF Daten"
 
-#: wppa-boxes-html.php:2788
+#: wppa-boxes-html.php:2858
 #, fuzzy
 msgid "Hide EXIF data"
 msgstr "EXIF Daten"
 
-#: wppa-boxes-html.php:2824
+#: wppa-boxes-html.php:2894
 #, fuzzy
 msgid "No EXIF data"
 msgstr "EXIF Daten"
 
-#: wppa-boxes-html.php:2940 wppa-boxes-html.php:2944
+#: wppa-boxes-html.php:3009 wppa-boxes-html.php:3014
 #, fuzzy
 msgid "< Previous"
 msgstr "Vorheriges Foto"
 
-#: wppa-boxes-html.php:2949 wppa-boxes-html.php:2953
+#: wppa-boxes-html.php:3020 wppa-boxes-html.php:3025
 #, fuzzy
 msgid "Next >"
 msgstr "Nächstes"
 
-#: wppa-boxes-html.php:3044 wppa-boxes-html.php:3103
+#: wppa-boxes-html.php:3122 wppa-boxes-html.php:3181
 #, fuzzy
 msgid "See the authors albums"
 msgstr "--- multiple siehe unten---"
 
-#: wppa-boxes-html.php:3048 wppa-boxes-html.php:3107
+#: wppa-boxes-html.php:3126 wppa-boxes-html.php:3185
 #, fuzzy
 msgid "See the authors photos"
 msgstr ""
 "Der Besucher kann sich eine Übersicht mit Miniaturbildern der Fotos im Album "
 "ansehen."
 
-#: wppa-boxes-html.php:3052 wppa-boxes-html.php:3111
+#: wppa-boxes-html.php:3130 wppa-boxes-html.php:3189
 #, fuzzy
 msgid "See all the authors photos"
 msgstr "Klicken um das Foto im Vollbild und alle Kommentare zu sehen"
 
-#: wppa-boxes-html.php:3075
+#: wppa-boxes-html.php:3153
 #, fuzzy, php-format
 msgid "Photo by: %s"
 msgstr "Foto %s gedreht %s"
 
-#: wppa-boxes-html.php:3076 wppa-boxes-html.php:3130
+#: wppa-boxes-html.php:3154 wppa-boxes-html.php:3208
 #, fuzzy, php-format
 msgid "Max ratings: %s."
 msgstr "auto selekt max %s zufällig"
 
-#: wppa-boxes-html.php:3077 wppa-boxes-html.php:3131
+#: wppa-boxes-html.php:3155 wppa-boxes-html.php:3209
 #, fuzzy, php-format
 msgid "Votes: %s."
 msgstr "%s Stimme(n)"
 
-#: wppa-boxes-html.php:3078 wppa-boxes-html.php:3132
+#: wppa-boxes-html.php:3156 wppa-boxes-html.php:3210
 #, fuzzy, php-format
 msgid "Mean value: %4.2f."
 msgstr "Mittelwert:"
 
-#: wppa-boxes-html.php:3085
+#: wppa-boxes-html.php:3163
 #, fuzzy, php-format
 msgid "Photo %s not found."
 msgstr "Kuvaa ei löytynyt"
@@ -714,10 +713,10 @@ msgstr ""
 msgid "of owner:"
 msgstr ""
 
-#: wppa-breadcrumb.php:183 wppa-breadcrumb.php:211 wppa-breadcrumb.php:230
-#: wppa-breadcrumb.php:248 wppa-breadcrumb.php:266 wppa-breadcrumb.php:284
-#: wppa-breadcrumb.php:302 wppa-breadcrumb.php:314 wppa-breadcrumb.php:326
-#: wppa-breadcrumb.php:338 wppa-breadcrumb.php:357
+#: wppa-breadcrumb.php:183 wppa-breadcrumb.php:211 wppa-breadcrumb.php:268
+#: wppa-breadcrumb.php:286 wppa-breadcrumb.php:304 wppa-breadcrumb.php:322
+#: wppa-breadcrumb.php:340 wppa-breadcrumb.php:352 wppa-breadcrumb.php:364
+#: wppa-breadcrumb.php:376 wppa-breadcrumb.php:395
 #, fuzzy
 msgid "View the thumbnails"
 msgstr "Katso"
@@ -732,797 +731,804 @@ msgstr ""
 msgid "Searchstring:"
 msgstr "Hakulauseke:"
 
-#: wppa-breadcrumb.php:223 wppa-breadcrumb.php:233
+#: wppa-breadcrumb.php:223 wppa-breadcrumb.php:241
+#, fuzzy
+msgid "Photos by EXIF date"
+msgstr "EXIF Daten"
+
+#: wppa-breadcrumb.php:227 wppa-breadcrumb.php:245
+#, fuzzy
+msgid "Photos by date of upload"
+msgstr "Fotos hochgeladen zu Album Nr"
+
+#: wppa-breadcrumb.php:231 wppa-breadcrumb.php:249
+msgid "Photos by date last modified"
+msgstr ""
+
+#: wppa-breadcrumb.php:261 wppa-breadcrumb.php:271
 #, fuzzy, php-format
 msgid "Photos by %s"
 msgstr "Mit insgesamt %s Fotos."
 
-#: wppa-breadcrumb.php:240 wppa-breadcrumb.php:258 wppa-breadcrumb.php:276
-#: wppa-breadcrumb.php:294 wppa-breadcrumb.php:372
+#: wppa-breadcrumb.php:278 wppa-breadcrumb.php:296 wppa-breadcrumb.php:314
+#: wppa-breadcrumb.php:332 wppa-breadcrumb.php:410
 #, fuzzy
 msgid "Various albums"
 msgstr ""
 "Du kannst verschiedene Alben erstellen, die Fotos und auch Unter-Alben zur "
 "gleichen Zeit enthalten."
 
-#: wppa-breadcrumb.php:242 wppa-breadcrumb.php:260 wppa-breadcrumb.php:278
-#: wppa-breadcrumb.php:296 wppa-breadcrumb.php:376
+#: wppa-breadcrumb.php:280 wppa-breadcrumb.php:298 wppa-breadcrumb.php:316
+#: wppa-breadcrumb.php:334 wppa-breadcrumb.php:414
 #, fuzzy
 msgid "Albums:"
 msgstr "albumit"
 
-#: wppa-breadcrumb.php:246 wppa-breadcrumb.php:251
+#: wppa-breadcrumb.php:284 wppa-breadcrumb.php:289
 msgid "Top rated photos"
 msgstr "Korkeimmat pisteet"
 
-#: wppa-breadcrumb.php:264 wppa-breadcrumb.php:269
+#: wppa-breadcrumb.php:302 wppa-breadcrumb.php:307
 #, fuzzy
 msgid "Recently uploaded photos"
 msgstr "--- Die zuletzt hochgeladenen Fotos---"
 
-#: wppa-breadcrumb.php:282 wppa-breadcrumb.php:287 wppa-comment-widget.php:36
+#: wppa-breadcrumb.php:320 wppa-breadcrumb.php:325 wppa-comment-widget.php:41
 #, fuzzy
 msgid "Recently commented photos"
 msgstr "--- Die zuletzt kommentierten Fotos ---"
 
-#: wppa-breadcrumb.php:300 wppa-breadcrumb.php:305 wppa-featen-widget.php:37
+#: wppa-breadcrumb.php:338 wppa-breadcrumb.php:343 wppa-featen-widget.php:37
 #, fuzzy
 msgid "Featured photos"
 msgstr "Ausgewählte Fotos"
 
-#: wppa-breadcrumb.php:312 wppa-breadcrumb.php:317
+#: wppa-breadcrumb.php:350 wppa-breadcrumb.php:355
 #, fuzzy
 msgid "Related photos"
 msgstr "Thumbnail Fotos verwandte Einstellungen"
 
-#: wppa-breadcrumb.php:324 wppa-breadcrumb.php:329
+#: wppa-breadcrumb.php:362 wppa-breadcrumb.php:367
 #, fuzzy
 msgid "Tagged photos:"
 msgstr "kuvaa"
 
-#: wppa-breadcrumb.php:324 wppa-breadcrumb.php:329
+#: wppa-breadcrumb.php:362 wppa-breadcrumb.php:367
 msgid "or"
 msgstr "tai"
 
-#: wppa-breadcrumb.php:355 wppa-breadcrumb.php:360
+#: wppa-breadcrumb.php:393 wppa-breadcrumb.php:398
 #, fuzzy
 msgid "Recently updated albums"
 msgstr "--- die zuletzt hinzugefügten Alben ---"
 
-#: wppa-breadcrumb.php:370
+#: wppa-breadcrumb.php:408
 #, fuzzy, php-format
 msgid "Various albums by %s"
 msgstr ""
 "Du kannst verschiedene Alben erstellen, die Fotos und auch Unter-Alben zur "
 "gleichen Zeit enthalten."
 
-#: wppa-breadcrumb.php:395 wppa-breadcrumb.php:410
+#: wppa-breadcrumb.php:435 wppa-breadcrumb.php:450
 #, fuzzy
 msgid "Thumbnail view"
 msgstr "Katso"
 
-#: wppa-breadcrumb.php:399 wppa-breadcrumb.php:400 wppa-breadcrumb.php:415
-#: wppa-breadcrumb.php:416
+#: wppa-breadcrumb.php:439 wppa-breadcrumb.php:440 wppa-breadcrumb.php:455
+#: wppa-breadcrumb.php:456
 #, fuzzy
 msgid "Thumbs"
 msgstr "Miniaturbild Widget "
 
-#: wppa-breadcrumb.php:521
+#: wppa-breadcrumb.php:561
 msgid "Unpublished"
 msgstr ""
 
-#: wppa-cart.php:25
+#: wppa-cart.php:26
 #, fuzzy
 msgid "Buy now"
 msgstr ""
 "Verwenden Sie die Schnittstelle zu WPPA Einfacher Warenkorb & Jetzt Kaufen "
 "Plugin."
 
-#: wppa-cart.php:89
+#: wppa-cart.php:90
 #, fuzzy, php-format
 msgid "Unit Price: %s each"
 msgstr ""
 "Die Argumente sind die gleichen, wie die Standardeinstellungen: name = "
 "photoname, Preis = 0,01."
 
-#: wppa-cart.php:93
+#: wppa-cart.php:94
 msgid "Qty:"
 msgstr ""
 
-#: wppa-comment-widget.php:67 wppa-thumbnails.php:484
+#: wppa-comment-widget.php:74 wppa-thumbnails.php:493
 msgid "wrote"
 msgstr ""
 
-#: wppa-comment-widget.php:80 wppa-featen-widget.php:97
+#: wppa-comment-widget.php:88 wppa-featen-widget.php:96
 #: wppa-lasten-widget.php:120 wppa-potd-widget.php:134
-#: wppa-thumbnail-widget.php:117 wppa-topten-widget.php:154
+#: wppa-thumbnail-widget.php:116 wppa-topten-widget.php:154
 msgid "Photo not found."
 msgstr "Kuvaa ei löytynyt"
 
-#: wppa-common-functions.php:187
+#: wppa-common-functions.php:194
 #, fuzzy
 msgid "Default photo album for"
 msgstr "Standardfotoalbum für"
 
-#: wppa-common-functions.php:617
+#: wppa-common-functions.php:624
 #, fuzzy
 msgid "1 second"
 msgstr "1 Sekunde"
 
-#: wppa-common-functions.php:618 wppa-functions.php:4156
+#: wppa-common-functions.php:625 wppa-functions.php:4254
 #, fuzzy
 msgid "seconds"
 msgstr "Sekunden"
 
-#: wppa-common-functions.php:622
+#: wppa-common-functions.php:629
 #, fuzzy
 msgid "1 minute"
 msgstr "1 Minute"
 
-#: wppa-common-functions.php:623 wppa-functions.php:4155
+#: wppa-common-functions.php:630 wppa-functions.php:4253
 #, fuzzy
 msgid "minutes"
 msgstr "Minuten"
 
-#: wppa-common-functions.php:627
+#: wppa-common-functions.php:634
 #, fuzzy
 msgid "1 hour"
 msgstr "1 Stunde"
 
-#: wppa-common-functions.php:628 wppa-functions.php:4154
+#: wppa-common-functions.php:635 wppa-functions.php:4252
 #, fuzzy
 msgid "hours"
 msgstr "Stunden"
 
-#: wppa-common-functions.php:632
+#: wppa-common-functions.php:639
 #, fuzzy
 msgid "1 day"
 msgstr "1 Tag"
 
-#: wppa-common-functions.php:633 wppa-functions.php:4153
+#: wppa-common-functions.php:640 wppa-functions.php:4251
 #, fuzzy
 msgid "days"
 msgstr "Tage"
 
-#: wppa-common-functions.php:637
+#: wppa-common-functions.php:644
 #, fuzzy
 msgid "1 week"
 msgstr "1 Woche"
 
-#: wppa-common-functions.php:638 wppa-functions.php:4152
+#: wppa-common-functions.php:645 wppa-functions.php:4250
 #, fuzzy
 msgid "weeks"
 msgstr "Wochen"
 
-#: wppa-common-functions.php:642
+#: wppa-common-functions.php:649
 #, fuzzy
 msgid "1 month"
 msgstr "1 Monat"
 
-#: wppa-common-functions.php:643
+#: wppa-common-functions.php:650
 #, fuzzy
 msgid "months"
 msgstr "Monate"
 
-#: wppa-common-functions.php:646
+#: wppa-common-functions.php:653
 #, fuzzy
 msgid "1 year"
 msgstr "1 Jahr"
 
-#: wppa-common-functions.php:647
+#: wppa-common-functions.php:654
 #, fuzzy
 msgid "years"
 msgstr "Jahr"
 
-#: wppa-common-functions.php:1963
+#: wppa-common-functions.php:1984
 #, fuzzy
 msgid "- select an album -"
 msgstr "Bitte wähle Album"
 
-#: wppa-common-functions.php:1969 wppa-items.php:350
+#: wppa-common-functions.php:1990 wppa-items.php:362
 msgid "--- none ---"
 msgstr "--- tyhjä ---"
 
-#: wppa-common-functions.php:1975 wppa-items.php:358
+#: wppa-common-functions.php:1996 wppa-items.php:370
 #, fuzzy
 msgid "--- all ---"
 msgstr "--- alle---"
 
-#: wppa-common-functions.php:1981
+#: wppa-common-functions.php:2002
 #, fuzzy
 msgid "--- generic ---"
 msgstr "--- tyhjä ---"
 
-#: wppa-common-functions.php:1992
+#: wppa-common-functions.php:2013
 msgid "--- multiple see below ---"
 msgstr ""
 
-#: wppa-common-functions.php:1998
+#: wppa-common-functions.php:2019
 #, fuzzy
 msgid "--- a selection box ---"
 msgstr "--- gelöscht ---"
 
-#: wppa-common-functions.php:2032 wppa-items.php:354
+#: wppa-common-functions.php:2053 wppa-items.php:366
 msgid "--- separate ---"
 msgstr "--- erillinen ---"
 
-#: wppa-exif-iptc-common.php:63 wppa-exif-iptc-common.php:122
+#: wppa-exif-iptc-common.php:70 wppa-exif-iptc-common.php:136
 msgid "n.a."
 msgstr ""
 
-#: wppa-exif-iptc-common.php:200 wppa-utils.php:2175
+#: wppa-exif-iptc-common.php:214 wppa-utils.php:2249
 #, fuzzy
 msgid "Not Defined"
 msgstr "Albumi määrittelemättä"
 
-#: wppa-exif-iptc-common.php:201 wppa-utils.php:2176
+#: wppa-exif-iptc-common.php:215 wppa-utils.php:2250
 msgid "Manual"
 msgstr ""
 
-#: wppa-exif-iptc-common.php:202 wppa-utils.php:2177
+#: wppa-exif-iptc-common.php:216 wppa-utils.php:2251
 #, fuzzy
 msgid "Program AE"
 msgstr ""
 "Fotos importieren: Sammelimport von Fotos, die mit einem Ftp Programm "
 "hochgeladen wurden."
 
-#: wppa-exif-iptc-common.php:203 wppa-utils.php:2178
+#: wppa-exif-iptc-common.php:217 wppa-utils.php:2252
 #, fuzzy
 msgid "Aperture-priority AE"
 msgstr "Filter Priorität"
 
-#: wppa-exif-iptc-common.php:204 wppa-utils.php:2179
+#: wppa-exif-iptc-common.php:218 wppa-utils.php:2253
 #, fuzzy
 msgid "Shutter speed priority AE"
 msgstr "Speed Ein-Ausblenden"
 
-#: wppa-exif-iptc-common.php:205 wppa-utils.php:2180
+#: wppa-exif-iptc-common.php:219 wppa-utils.php:2254
 #, fuzzy
 msgid "Creative (Slow speed)"
 msgstr "Speed Ein-Ausblenden"
 
-#: wppa-exif-iptc-common.php:206 wppa-utils.php:2181
+#: wppa-exif-iptc-common.php:220 wppa-utils.php:2255
 #, fuzzy
 msgid "Action (High speed)"
 msgstr "hyvä"
 
-#: wppa-exif-iptc-common.php:207 wppa-utils.php:2182
+#: wppa-exif-iptc-common.php:221 wppa-utils.php:2256
 #, fuzzy
 msgid "Portrait"
 msgstr "Nur Hochformat:"
 
-#: wppa-exif-iptc-common.php:208 wppa-utils.php:2183
+#: wppa-exif-iptc-common.php:222 wppa-utils.php:2257
 #, fuzzy
 msgid "Landscape"
 msgstr "4:5 Querformat abgeschnitten"
 
-#: wppa-exif-iptc-common.php:209 wppa-utils.php:2184
+#: wppa-exif-iptc-common.php:223 wppa-utils.php:2258
 msgid "Bulb"
 msgstr ""
 
-#: wppa-exif-iptc-common.php:231 wppa-utils.php:2185
+#: wppa-exif-iptc-common.php:245 wppa-utils.php:2259
 #, fuzzy
 msgid "Average"
 msgstr "keskinkertainen"
 
-#: wppa-exif-iptc-common.php:232 wppa-utils.php:2186
+#: wppa-exif-iptc-common.php:246 wppa-utils.php:2260
 #, fuzzy
 msgid "Center-weighted average"
 msgstr "keskinkertainen"
 
-#: wppa-exif-iptc-common.php:233 wppa-utils.php:2187
+#: wppa-exif-iptc-common.php:247 wppa-utils.php:2261
 msgid "Spot"
 msgstr ""
 
-#: wppa-exif-iptc-common.php:234 wppa-utils.php:2188
+#: wppa-exif-iptc-common.php:248 wppa-utils.php:2262
 #, fuzzy
 msgid "Multi-spot"
 msgstr "Multi Bewertung"
 
-#: wppa-exif-iptc-common.php:235 wppa-utils.php:2189
+#: wppa-exif-iptc-common.php:249 wppa-utils.php:2263
 #, fuzzy
 msgid "Multi-segment"
 msgstr "Multi Bewertung"
 
-#: wppa-exif-iptc-common.php:236 wppa-utils.php:2190
+#: wppa-exif-iptc-common.php:250 wppa-utils.php:2264
 msgid "Partial"
 msgstr ""
 
-#: wppa-exif-iptc-common.php:237 wppa-utils.php:2191
+#: wppa-exif-iptc-common.php:251 wppa-utils.php:2265
 #, fuzzy
 msgid "Other"
 msgstr "Andere"
 
-#: wppa-exif-iptc-common.php:273 wppa-utils.php:2192
+#: wppa-exif-iptc-common.php:287 wppa-utils.php:2266
 msgid "No Flash"
 msgstr ""
 
-#: wppa-exif-iptc-common.php:275 wppa-utils.php:2193
+#: wppa-exif-iptc-common.php:289 wppa-utils.php:2267
 msgid "Fired"
 msgstr ""
 
-#: wppa-exif-iptc-common.php:277 wppa-utils.php:2194
+#: wppa-exif-iptc-common.php:291 wppa-utils.php:2268
 msgid "Fired, Return not detected"
 msgstr ""
 
-#: wppa-exif-iptc-common.php:279 wppa-utils.php:2195
+#: wppa-exif-iptc-common.php:293 wppa-utils.php:2269
 msgid "Fired, Return detected"
 msgstr ""
 
-#: wppa-exif-iptc-common.php:281 wppa-utils.php:2196
+#: wppa-exif-iptc-common.php:295 wppa-utils.php:2270
 #, fuzzy
 msgid "On, Did not fire"
 msgstr ""
 "Wenn Sie die Option \"still at first norated\", wird das erste Foto, dass "
 "der Besucher kein Rating gegeben hat im Blättern-Modus angezeigt werden."
 
-#: wppa-exif-iptc-common.php:283 wppa-utils.php:2197
+#: wppa-exif-iptc-common.php:297 wppa-utils.php:2271
 msgid "On, Fired"
 msgstr ""
 
-#: wppa-exif-iptc-common.php:285 wppa-utils.php:2198
+#: wppa-exif-iptc-common.php:299 wppa-utils.php:2272
 msgid "On, Return not detected"
 msgstr ""
 
-#: wppa-exif-iptc-common.php:287 wppa-utils.php:2199
+#: wppa-exif-iptc-common.php:301 wppa-utils.php:2273
 msgid "On, Return detected"
 msgstr ""
 
-#: wppa-exif-iptc-common.php:289 wppa-utils.php:2200
+#: wppa-exif-iptc-common.php:303 wppa-utils.php:2274
 #, fuzzy
 msgid "Off, Did not fire"
 msgstr "--- aus ---"
 
-#: wppa-exif-iptc-common.php:291 wppa-utils.php:2201
+#: wppa-exif-iptc-common.php:305 wppa-utils.php:2275
 #, fuzzy
 msgid "Off, Did not fire, Return not detected"
 msgstr "--- aus ---"
 
-#: wppa-exif-iptc-common.php:293 wppa-utils.php:2202
+#: wppa-exif-iptc-common.php:307 wppa-utils.php:2276
 #, fuzzy
 msgid "Auto, Did not fire"
 msgstr "Automatisch Gespeichert"
 
-#: wppa-exif-iptc-common.php:295 wppa-utils.php:2203
+#: wppa-exif-iptc-common.php:309 wppa-utils.php:2277
 #, fuzzy
 msgid "Auto, Fired"
 msgstr "Automatisch Gespeichert"
 
-#: wppa-exif-iptc-common.php:297 wppa-utils.php:2204
+#: wppa-exif-iptc-common.php:311 wppa-utils.php:2278
 #, fuzzy
 msgid "Auto, Fired, Return not detected"
 msgstr "Automatisch Gespeichert"
 
-#: wppa-exif-iptc-common.php:299 wppa-utils.php:2205
+#: wppa-exif-iptc-common.php:313 wppa-utils.php:2279
 #, fuzzy
 msgid "Auto, Fired, Return detected"
 msgstr "Automatisch Gespeichert"
 
-#: wppa-exif-iptc-common.php:301 wppa-utils.php:2206
+#: wppa-exif-iptc-common.php:315 wppa-utils.php:2280
 #, fuzzy
 msgid "No flash function"
 msgstr ""
 ". </i>Dieses Plugin wird dazu führen, das wppa+ nicht richtig funktioniert ."
 
-#: wppa-exif-iptc-common.php:303 wppa-utils.php:2207
+#: wppa-exif-iptc-common.php:317 wppa-utils.php:2281
 #, fuzzy
 msgid "Off, No flash function"
 msgstr "--- aus ---"
 
-#: wppa-exif-iptc-common.php:305 wppa-utils.php:2208
+#: wppa-exif-iptc-common.php:319 wppa-utils.php:2282
 #, fuzzy
 msgid "Fired, Red-eye reduction"
 msgstr ""
 "<span style=\"color:red\" >Warnung: Laden Sie keine urheberrechtlich "
 "geschütztes Material!</span>"
 
-#: wppa-exif-iptc-common.php:307 wppa-utils.php:2209
+#: wppa-exif-iptc-common.php:321 wppa-utils.php:2283
 #, fuzzy
 msgid "Fired, Red-eye reduction, Return not detected"
 msgstr ""
 "<span style=\"color:red\" >Warnung: Laden Sie keine urheberrechtlich "
 "geschütztes Material!</span>"
 
-#: wppa-exif-iptc-common.php:309 wppa-utils.php:2210
+#: wppa-exif-iptc-common.php:323 wppa-utils.php:2284
 #, fuzzy
 msgid "Fired, Red-eye reduction, Return detected"
 msgstr ""
 "<span style=\"color:red\" >Warnung: Laden Sie keine urheberrechtlich "
 "geschütztes Material!</span>"
 
-#: wppa-exif-iptc-common.php:311 wppa-utils.php:2211
+#: wppa-exif-iptc-common.php:325 wppa-utils.php:2285
 #, fuzzy
 msgid "On, Red-eye reduction"
 msgstr ""
 "<span style=\"color:red\" >Warnung: Laden Sie keine urheberrechtlich "
 "geschütztes Material!</span>"
 
-#: wppa-exif-iptc-common.php:313 wppa-utils.php:2212
+#: wppa-exif-iptc-common.php:327 wppa-utils.php:2286
 #, fuzzy
 msgid "Red-eye reduction, Return not detected"
 msgstr ""
 "<span style=\"color:red\" >Warnung: Laden Sie keine urheberrechtlich "
 "geschütztes Material!</span>"
 
-#: wppa-exif-iptc-common.php:315 wppa-utils.php:2213
+#: wppa-exif-iptc-common.php:329 wppa-utils.php:2287
 #, fuzzy
 msgid "On, Red-eye reduction, Return detected"
 msgstr ""
 "<span style=\"color:red\" >Warnung: Laden Sie keine urheberrechtlich "
 "geschütztes Material!</span>"
 
-#: wppa-exif-iptc-common.php:317 wppa-utils.php:2214
+#: wppa-exif-iptc-common.php:331 wppa-utils.php:2288
 #, fuzzy
 msgid "Off, Red-eye reduction"
 msgstr "--- aus ---"
 
-#: wppa-exif-iptc-common.php:319 wppa-utils.php:2215
+#: wppa-exif-iptc-common.php:333 wppa-utils.php:2289
 #, fuzzy
 msgid "Auto, Did not fire, Red-eye reduction"
 msgstr "Automatisch Gespeichert"
 
-#: wppa-exif-iptc-common.php:321 wppa-utils.php:2216
+#: wppa-exif-iptc-common.php:335 wppa-utils.php:2290
 #, fuzzy
 msgid "Auto, Fired, Red-eye reduction"
 msgstr "Automatisch Gespeichert"
 
-#: wppa-exif-iptc-common.php:323 wppa-utils.php:2217
+#: wppa-exif-iptc-common.php:337 wppa-utils.php:2291
 #, fuzzy
 msgid "Auto, Fired, Red-eye reduction, Return not detected"
 msgstr "Automatisch Gespeichert"
 
-#: wppa-exif-iptc-common.php:325 wppa-utils.php:2218
+#: wppa-exif-iptc-common.php:339 wppa-utils.php:2292
 #, fuzzy
 msgid "Auto, Fired, Red-eye reduction, Return detected"
 msgstr "Automatisch Gespeichert"
 
-#: wppa-featen-widget.php:75
+#: wppa-featen-widget.php:74
 #, fuzzy
 msgid "View the featured photos"
 msgstr "Ausgewählte Fotos"
 
-#: wppa-functions.php:536
+#: wppa-functions.php:539
 #, fuzzy
 msgid "No related photos found."
 msgstr "Thumbnail Fotos verwandte Einstellungen"
 
-#: wppa-functions.php:915
+#: wppa-functions.php:932
 #, fuzzy, php-format
 msgid ""
 "There are %s albums found. Only the first %s will be shown. Please refine "
 "your search criteria."
 msgstr "Yksikään albumi tai kuva ei vastaa hakukriteeriä."
 
-#: wppa-functions.php:1514
-#, fuzzy, php-format
-msgid ""
-"There are %s photos found. Only the first %s will be shown. Please refine "
-"your search criteria."
-msgstr "Es wurde kein Album oder Foto mit Deinen Suchangaben gefunden."
-
-#: wppa-functions.php:1794 wppa-thumbnails.php:587
+#: wppa-functions.php:1904 wppa-thumbnails.php:596
 #, fuzzy
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: wppa-functions.php:1803 wppa-links.php:694 wppa-links.php:711
-#: wppa-thumbnails.php:578
+#: wppa-functions.php:1913 wppa-links.php:717 wppa-links.php:734
+#: wppa-thumbnails.php:587
 #, fuzzy
 msgid "Are you sure you want to remove this photo?"
 msgstr "Möchtest Du dieses Foto wirklich verschieben?"
 
-#: wppa-functions.php:1806 wppa-links.php:701 wppa-links.php:719
-#: wppa-thumbnails.php:580
+#: wppa-functions.php:1916 wppa-links.php:724 wppa-links.php:742
+#: wppa-thumbnails.php:589
 #, fuzzy
 msgid "Delete"
 msgstr "Löschen"
 
-#: wppa-functions.php:1963
+#: wppa-functions.php:2073
 #, fuzzy
 msgid "Comment edited"
 msgstr "Kommentar bearbeitet"
 
-#: wppa-functions.php:1968
+#: wppa-functions.php:2078
 #, fuzzy
 msgid "Photo comment"
 msgstr "Dein Kommentar:"
 
-#: wppa-functions.php:1972
+#: wppa-functions.php:2082
 #, fuzzy
 msgid "Comment on photo:"
 msgstr "Kommentar Widget Foto-Link."
 
-#: wppa-functions.php:1983
+#: wppa-functions.php:2093
 #, fuzzy
 msgid "wrote on photo"
 msgstr "kuva"
 
-#: wppa-functions.php:1985
+#: wppa-functions.php:2095
 msgid "Reply"
 msgstr ""
 
-#: wppa-functions.php:1986
+#: wppa-functions.php:2096
 #, fuzzy
 msgid "Moderate comment admin"
 msgstr "Moderiere Kommentare"
 
-#: wppa-functions.php:1987 wppa-functions.php:4004 wppa-upload.php:1424
+#: wppa-functions.php:2097 wppa-functions.php:4102 wppa-upload.php:1427
 #, fuzzy
 msgid "Moderate manage photo"
 msgstr "Moderiere Fotos"
 
-#: wppa-functions.php:1988
+#: wppa-functions.php:2098
 #, fuzzy
 msgid "Edit photo"
 msgstr "Foto bearbeiten"
 
-#: wppa-functions.php:1998
+#: wppa-functions.php:2108
 #, fuzzy
 msgid "You receive this email as you are assigned to moderate"
 msgstr ""
 "Gebe die Tags ein, die den neuen Fotos in diesem Album zugeordnet werden."
 
-#: wppa-functions.php:2010
+#: wppa-functions.php:2120
 #, fuzzy
 msgid "You receive this email as administrator of the site"
 msgstr ""
 "Wenn aktiviert, wird der Admin eine Benachrichtigung per E-Mail erhalten."
 
-#: wppa-functions.php:2027
+#: wppa-functions.php:2137
 #, fuzzy
 msgid "You receive this email as uploader of the photo"
 msgstr ""
 "Wenn aktiviert, wird der Admin eine Benachrichtigung per E-Mail erhalten."
 
-#: wppa-functions.php:2044
+#: wppa-functions.php:2154
 #, fuzzy
 msgid "You receive this email as owner of the album"
 msgstr ""
 "Wenn aktiviert, wird der Admin eine Benachrichtigung per E-Mail erhalten."
 
-#: wppa-functions.php:2061
+#: wppa-functions.php:2171
 #, fuzzy
 msgid "You receive this email because you commented this photo earlier."
 msgstr ""
 "Gebe die Tags ein, die den neuen Fotos in diesem Album zugeordnet werden."
 
-#: wppa-functions.php:2087
+#: wppa-functions.php:2197
 #, fuzzy
 msgid "Comment added"
 msgstr "Kommentar hinzugefügt"
 
-#: wppa-functions.php:2092
+#: wppa-functions.php:2202
 #, fuzzy
 msgid ""
 "Sorry, you gave a wrong answer.\\n\\nPlease try again to solve the "
 "computation."
 msgstr "Du können die Seite aktualisieren und es erneut versuchen."
 
-#: wppa-functions.php:2102
+#: wppa-functions.php:2212
 #, fuzzy
 msgid "Could not process comment.\\nProbably timed out."
 msgstr ""
 "Wenn aktiviert, wird der Versuch unternommen, einen Admin-Prozess neu zu "
 "starten, wenn die Zeit abgelaufen ist."
 
-#: wppa-functions.php:2185
+#: wppa-functions.php:2295
 #, fuzzy
 msgid "1 Comment"
 msgstr "Kommentar:"
 
-#: wppa-functions.php:2186
+#: wppa-functions.php:2296
 #, fuzzy, php-format
 msgid "%s Comments"
 msgstr "Kommentare"
 
-#: wppa-functions.php:2222 wppa-links.php:1377
+#: wppa-functions.php:2332 wppa-links.php:1405
 msgid "A video can not be printed or downloaded"
 msgstr ""
 
-#: wppa-functions.php:2657
+#: wppa-functions.php:2767
 #, fuzzy
 msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
 msgstr "<b>FEHLER: Ungültiger Versuch zu bewerten</b>"
 
-#: wppa-functions.php:2670
+#: wppa-functions.php:2780
 #, fuzzy
 msgid "<b>ERROR: Illegal attempt to enter a comment.</b>"
 msgstr "<b>FEHLER: Ungültiger Versuch zu kommentieren</b>"
 
-#: wppa-functions.php:3755
+#: wppa-functions.php:3851
 #, fuzzy
 msgid "New Album"
 msgstr "Das Album konnte nicht erstellt werden."
 
-#: wppa-functions.php:3758
+#: wppa-functions.php:3854
 #, fuzzy
 msgid "<b>ERROR: Illegal attempt to create an album.</b>"
 msgstr "<b>FEHLER: Ungültiger Versuch zu bewerten</b>"
 
-#: wppa-functions.php:3762
+#: wppa-functions.php:3858
 #, fuzzy
 msgid "Wrong captcha, please try again"
 msgstr "Versuche es erneut!"
 
-#: wppa-functions.php:3775
+#: wppa-functions.php:3871
 #, fuzzy, php-format
 msgid "Album #%s created"
 msgstr "- Das zuletzt erstellte Album -"
 
-#: wppa-functions.php:3780
+#: wppa-functions.php:3876
 #, fuzzy
 msgid "Could not create album"
 msgstr "Das Album konnte nicht erstellt werden."
 
-#: wppa-functions.php:3791
+#: wppa-functions.php:3887
 #, fuzzy
 msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
 msgstr "<b>FEHLER: Ungültiger Versuch eine Datei hochzuladen</b>"
 
-#: wppa-functions.php:3831
+#: wppa-functions.php:3927
 #, fuzzy
 msgid "Photo upload"
 msgstr "Fotos hochgeladen zu Album Nr"
 
-#: wppa-functions.php:3833
+#: wppa-functions.php:3929
 #, fuzzy
 msgid "Photo successfully uploaded."
 msgstr "--- Das zuletzt hochgeladenen Foto ---"
 
-#: wppa-functions.php:3833
+#: wppa-functions.php:3929
 #, fuzzy, php-format
 msgid "%s photos successfully uploaded."
 msgstr ""
 "Die Zeit ist abgelaufen. Beim hochgeladen der %s Fotos  in das Album Nr. %s ."
 
-#: wppa-functions.php:3834
+#: wppa-functions.php:3930
 #, fuzzy, php-format
 msgid "%s points added."
 msgstr "--- max %s der zuletzt hinzugefügten ---"
 
-#: wppa-functions.php:3838
+#: wppa-functions.php:3934
 #, fuzzy
 msgid "Upload failed"
 msgstr "Fehlgeschlagen!"
 
-#: wppa-functions.php:3841
+#: wppa-functions.php:3937
 #, fuzzy
 msgid "1 Upload failed"
 msgstr "Fehlgeschlagen!"
 
-#: wppa-functions.php:3841
+#: wppa-functions.php:3937
 #, fuzzy, php-format
 msgid "%s uploads failed."
 msgstr "Fehler beim setzen %s zu %s"
 
-#: wppa-functions.php:3877
+#: wppa-functions.php:3974
 #, fuzzy
 msgid "Error during upload"
 msgstr "Fehler beim Hochladen"
 
-#: wppa-functions.php:3882
+#: wppa-functions.php:3979
 #, fuzzy
 msgid "Uploaded file is not an image"
 msgstr "Hochgeladenen datei ist kein Bild"
 
-#: wppa-functions.php:3886
+#: wppa-functions.php:3983
 #, fuzzy, php-format
 msgid ""
 "Only gif, jpg and png image files are supported. Returned filetype = %d."
 msgstr "JPG Bildqualität"
 
-#: wppa-functions.php:3892
+#: wppa-functions.php:3989
 #, fuzzy, php-format
 msgid "Uploaded file is larger than the allowed maximum of %d x %d pixels."
 msgstr ""
 "Basierend auf Ihrem Server memory limit sollte man nicht Bildern größer als "
 "<strong>%d x %d (%2.1f MP) </strong> hochladen"
 
-#: wppa-functions.php:3898
+#: wppa-functions.php:3995
 #, fuzzy, php-format
 msgid "Uploaded file %s already exists in this album."
 msgstr "Fotos %s hochgeladen zu Album Nr. %s"
 
-#: wppa-functions.php:3906
+#: wppa-functions.php:4003
 #, fuzzy, php-format
 msgid "The image is too big. Max photo size: %d x %d (%2.1f MegaPixel)"
 msgstr "(max %d)"
 
-#: wppa-functions.php:3929
+#: wppa-functions.php:4026
 #, fuzzy
 msgid "Could not insert photo into db."
 msgstr "Konnte Foto nicht einfügen. query="
 
-#: wppa-functions.php:4000 wppa-upload.php:1420
+#: wppa-functions.php:4098 wppa-upload.php:1423
 #, fuzzy, php-format
 msgid "New photo uploaded: %s"
 msgstr ""
 "Gebe jedem neuen im Frontend hochgeladen Foto eine standardisierte "
 "Beschreibung."
 
-#: wppa-functions.php:4001 wppa-upload.php:1421
+#: wppa-functions.php:4099 wppa-upload.php:1424
 #, fuzzy, php-format
 msgid "User %s uploaded photo %s into album %s"
 msgstr "Foto %s kopiert zum Album %s (%s)"
 
-#: wppa-functions.php:4003 wppa-upload.php:1423
+#: wppa-functions.php:4101 wppa-upload.php:1426
 #, fuzzy
 msgid "This upload requires moderation"
 msgstr "Upload Moderation"
 
-#: wppa-functions.php:4007 wppa-upload.php:1427
+#: wppa-functions.php:4105 wppa-upload.php:1430
 msgid "Details:"
 msgstr ""
 
-#: wppa-functions.php:4008 wppa-upload.php:1428
+#: wppa-functions.php:4106 wppa-upload.php:1431
 #, fuzzy
 msgid "Manage photo"
 msgstr "Verwalte Fotos"
 
-#: wppa-functions.php:4150
+#: wppa-functions.php:4248
 #, fuzzy
 msgid "You can upload after"
 msgstr "bevor Du Deine Fotos hochladen kannst."
 
-#: wppa-functions.php:4181 wppa-functions.php:4192 wppa-links.php:1008
-#: wppa-non-admin.php:629
+#: wppa-functions.php:4278 wppa-functions.php:4289 wppa-links.php:1034
+#: wppa-non-admin.php:644
 #, fuzzy
 msgid "Download"
 msgstr "Popup Download Link"
 
-#: wppa-functions.php:4185 wppa-functions.php:4196
+#: wppa-functions.php:4282 wppa-functions.php:4293
 #, fuzzy
 msgid "Download:"
 msgstr "Popup Download Link"
 
-#: wppa-functions.php:4219
+#: wppa-functions.php:4316
 #, fuzzy
 msgid "Zoom in"
 msgstr "Zeigt Zoom in"
 
-#: wppa-items.php:214 wppa-thumbnails.php:1786
+#: wppa-items.php:226 wppa-thumbnails.php:1834
 #, fuzzy
 msgid "Gold medal"
 msgstr "Kultamitali palkinto!"
 
-#: wppa-items.php:214
+#: wppa-items.php:226
 msgid "Gold"
 msgstr "Kulta"
 
-#: wppa-items.php:215 wppa-thumbnails.php:1787
+#: wppa-items.php:227 wppa-thumbnails.php:1835
 #, fuzzy
 msgid "Silver medal"
 msgstr "Hopeamitali palkinto!"
 
-#: wppa-items.php:215
+#: wppa-items.php:227
 msgid "Silver"
 msgstr "Hopea"
 
-#: wppa-items.php:216 wppa-thumbnails.php:1788
+#: wppa-items.php:228 wppa-thumbnails.php:1836
 #, fuzzy
 msgid "Bronze medal"
 msgstr "Pronssia palkinnon!"
 
-#: wppa-items.php:216
+#: wppa-items.php:228
 msgid "Bronze"
 msgstr "Pronssi"
 
-#: wppa-items.php:262 wppa-items.php:416
+#: wppa-items.php:274 wppa-items.php:428
 #, fuzzy
 msgid "none"
 msgstr "--- tyhjä ---"
 
-#: wppa-items.php:292 wppa-items.php:427
+#: wppa-items.php:304 wppa-items.php:439
 #, fuzzy
 msgid "unknown"
 msgstr "unbekannt"
 
-#: wppa-items.php:362 wppa-items.php:383
+#: wppa-items.php:374 wppa-items.php:395
 #, fuzzy
 msgid "--- deleted ---"
 msgstr "--- gelöscht ---"
 
-#: wppa-items.php:372
+#: wppa-items.php:384
 #, fuzzy
 msgid "All Albums"
 msgstr "- alle Alben -"
@@ -1537,192 +1543,192 @@ msgstr "WPPA+ Die Zehn höchst bewertesten Fotos"
 msgid "View the most recent uploaded photos"
 msgstr "--- Die zuletzt hochgeladenen Fotos---"
 
-#: wppa-links.php:682
+#: wppa-links.php:705
 msgid "App"
 msgstr ""
 
-#: wppa-links.php:683
+#: wppa-links.php:706
 msgid "Mod"
 msgstr ""
 
-#: wppa-links.php:684
+#: wppa-links.php:707
 msgid "Del"
 msgstr ""
 
-#: wppa-links.php:688 wppa-links.php:705
+#: wppa-links.php:711 wppa-links.php:728
 #, fuzzy
 msgid "Are you sure you want to publish this photo?"
 msgstr "Möchtest Du dieses Foto wirklich verschieben?"
 
-#: wppa-links.php:699 wppa-links.php:716
+#: wppa-links.php:722 wppa-links.php:739
 #, fuzzy
 msgid "Approve"
 msgstr "Alle anstehende Genehmigen"
 
-#: wppa-links.php:700
+#: wppa-links.php:723
 #, fuzzy
 msgid "Moderate"
 msgstr "Moderiere Kommentare"
 
-#: wppa-links.php:717
+#: wppa-links.php:740
 #, fuzzy
 msgid "PhotoAdmin"
 msgstr "Kuva"
 
-#: wppa-links.php:718
+#: wppa-links.php:741
 #, fuzzy
 msgid "CommentAdmin"
 msgstr "Korkeimmat pisteet"
 
-#: wppa-links.php:722
+#: wppa-links.php:745
 #, fuzzy
 msgid "Are you sure you want to publish this comment?"
 msgstr "Möchtest Du diesen Kommentar wirklich löschen?"
 
-#: wppa-links.php:734
+#: wppa-links.php:757
 #, fuzzy
 msgid "Are you sure you want to remove this comment?"
 msgstr "Möchtest Du diesen Kommentar wirklich löschen?"
 
-#: wppa-links.php:748
+#: wppa-links.php:771
 #, php-format
 msgid "Scheduled for %s"
 msgstr ""
 
-#: wppa-links.php:949 wppa-links.php:952 wppa-slideshow.php:699
+#: wppa-links.php:975 wppa-links.php:978 wppa-slideshow.php:698
 #, fuzzy
 msgid "Previous"
 msgstr "Vorheriges Foto"
 
-#: wppa-links.php:959 wppa-links.php:962 wppa-non-admin.php:575
-#: wppa-slideshow.php:702
+#: wppa-links.php:985 wppa-links.php:988 wppa-non-admin.php:590
+#: wppa-slideshow.php:701
 #, fuzzy
 msgid "Next"
 msgstr "Nächstes"
 
-#: wppa-links.php:1008
+#: wppa-links.php:1034
 #, fuzzy
 msgid "Download album"
 msgstr "Popup Download Link"
 
-#: wppa-links.php:1145
+#: wppa-links.php:1171
 #, fuzzy
 msgid "View thumbnails"
 msgstr "Katso"
 
-#: wppa-non-admin.php:314
+#: wppa-non-admin.php:316
 msgid "Press f for fullscreen."
 msgstr ""
 
-#: wppa-non-admin.php:338
+#: wppa-non-admin.php:350
 msgid ""
 "Keys: f = next mode; escape = exit; p = previous, n = next, s = start/stop, "
 "d = dismiss this notice."
 msgstr ""
 
-#: wppa-non-admin.php:339
+#: wppa-non-admin.php:351
 msgid "Keys: f = next mode; escape = exit; d = dismiss this notice."
 msgstr ""
 
-#: wppa-non-admin.php:566 wppa-slideshow.php:232
+#: wppa-non-admin.php:581 wppa-slideshow.php:232
 msgid "Start"
 msgstr "Aloita"
 
-#: wppa-non-admin.php:567
+#: wppa-non-admin.php:582
 msgid "Stop"
 msgstr "Lopeta"
 
-#: wppa-non-admin.php:568 wppa-slideshow.php:231
+#: wppa-non-admin.php:583 wppa-slideshow.php:231
 msgid "Slower"
 msgstr "Hitaammin"
 
-#: wppa-non-admin.php:569 wppa-slideshow.php:233
+#: wppa-non-admin.php:584 wppa-slideshow.php:233
 msgid "Faster"
 msgstr "Nopeammin"
 
-#: wppa-non-admin.php:570
+#: wppa-non-admin.php:585
 msgid "Photo"
 msgstr "Kuva"
 
-#: wppa-non-admin.php:571
+#: wppa-non-admin.php:586
 msgid "of"
 msgstr ""
 
-#: wppa-non-admin.php:572
+#: wppa-non-admin.php:587
 msgid "Previous photo"
 msgstr "Edellinen kuva"
 
-#: wppa-non-admin.php:573
+#: wppa-non-admin.php:588
 msgid "Next photo"
 msgstr "Seuraava kuva"
 
-#: wppa-non-admin.php:574
+#: wppa-non-admin.php:589
 #, fuzzy
 msgid "Prev."
 msgstr "Vorheriges"
 
-#: wppa-non-admin.php:576 wppa-slideshow.php:540 wppa-slideshow.php:544
+#: wppa-non-admin.php:591 wppa-slideshow.php:540 wppa-slideshow.php:544
 #: wppa-slideshow.php:590
 msgid "Average&nbsp;rating"
 msgstr "Keskiarvo"
 
-#: wppa-non-admin.php:577 wppa-slideshow.php:565 wppa-slideshow.php:570
+#: wppa-non-admin.php:592 wppa-slideshow.php:565 wppa-slideshow.php:570
 #: wppa-slideshow.php:575
 msgid "My&nbsp;rating"
 msgstr "Oma&nbsp;arvosana"
 
-#: wppa-non-admin.php:578
+#: wppa-non-admin.php:593
 #, fuzzy
 msgid "Avg."
 msgstr "Der Raum zwischen avg und meine Bewertungssterne"
 
-#: wppa-non-admin.php:579
+#: wppa-non-admin.php:594
 msgid "Mine"
 msgstr ""
 
-#: wppa-non-admin.php:580
+#: wppa-non-admin.php:595
 #, fuzzy
 msgid "You marked this image as inappropriate."
 msgstr "Mitteilung über ein unangemessenen Bild"
 
-#: wppa-non-admin.php:582
+#: wppa-non-admin.php:597
 #, fuzzy
 msgid "No dislikes"
 msgstr "Zeigt die Anzahl der Abneigungen in der Bewertungs Zeile."
 
-#: wppa-non-admin.php:583
+#: wppa-non-admin.php:598
 #, fuzzy
 msgid "1 dislike"
 msgstr "Unerledigte Ablehnung"
 
-#: wppa-non-admin.php:584
+#: wppa-non-admin.php:599
 #, fuzzy
 msgid "dislikes"
 msgstr "Zeigt die Anzahl der Abneigungen in der Bewertungs Zeile."
 
-#: wppa-non-admin.php:585
+#: wppa-non-admin.php:600
 #, fuzzy
 msgid "including mine"
 msgstr ""
 "Exportiere Fotos von Album <span style=\"font-size:12px;\">(Einschließlich "
 "der Informationen des Albums)</span>:"
 
-#: wppa-non-admin.php:588
+#: wppa-non-admin.php:603
 #, fuzzy
 msgid "Please enter your name"
 msgstr "Bitte gibt deinen Namen an"
 
-#: wppa-non-admin.php:589
+#: wppa-non-admin.php:604
 #, fuzzy
 msgid "Please enter a valid email address"
 msgstr "Bitte gib eine gültige E-Mail Adress an"
 
-#: wppa-non-admin.php:590
+#: wppa-non-admin.php:605
 #, fuzzy
 msgid "Please enter a comment"
 msgstr "Bitte hinterlasse ein Kommentar"
 
-#: wppa-non-admin.php:624
+#: wppa-non-admin.php:639
 #, fuzzy
 msgid "Double click to start/stop slideshow running"
 msgstr "Doppelklick zum Starten/Stoppen der Slideshow"
@@ -1740,31 +1746,31 @@ msgstr ""
 msgid "QR Widget"
 msgstr ""
 
-#: wppa-settings-autosave.php:2664
+#: wppa-settings-autosave.php:2687
 msgid "Abort"
 msgstr ""
 
-#: wppa-settings-autosave.php:2664
+#: wppa-settings-autosave.php:2687
 msgid "Cancel"
 msgstr ""
 
-#: wppa-settings-autosave.php:2664
+#: wppa-settings-autosave.php:2687
 msgid "Close"
 msgstr ""
 
-#: wppa-settings-autosave.php:2664
+#: wppa-settings-autosave.php:2687
 msgid "Exit"
 msgstr ""
 
-#: wppa-settings-autosave.php:2664
+#: wppa-settings-autosave.php:2687
 msgid "Quit"
 msgstr ""
 
-#: wppa-setup.php:906
+#: wppa-setup.php:911
 msgid "Vote for me!"
 msgstr ""
 
-#: wppa-setup.php:907
+#: wppa-setup.php:912
 msgid "Voted for me"
 msgstr ""
 
@@ -1854,35 +1860,35 @@ msgstr ""
 msgid "My rating:"
 msgstr "Der Raum zwischen avg und meine Bewertungssterne"
 
-#: wppa-slideshow.php:698
+#: wppa-slideshow.php:697
 msgid "First"
 msgstr ""
 
-#: wppa-slideshow.php:703
+#: wppa-slideshow.php:702
 msgid "Last"
 msgstr ""
 
-#: wppa-slideshow.php:819
+#: wppa-slideshow.php:818
 #, fuzzy, php-format
 msgid "Photo %s of %s"
 msgstr "Foto %s gedreht %s"
 
-#: wppa-slideshow.php:850
+#: wppa-slideshow.php:849
 #, fuzzy
 msgid "Click to start/stop"
 msgstr "Klicke zum Starten/Stoppen"
 
-#: wppa-slideshow.php:862
+#: wppa-slideshow.php:861
 #, fuzzy
 msgid "- - - Comments box activated - - -"
 msgstr "- - - Kommentar Box aktiviert- - -"
 
-#: wppa-slideshow.php:883
+#: wppa-slideshow.php:882
 #, fuzzy
 msgid "- - - IPTC box activated - - -"
 msgstr "- - - Kommentar Box aktiviert- - -"
 
-#: wppa-slideshow.php:903
+#: wppa-slideshow.php:902
 #, fuzzy
 msgid "- - - EXIF box activated - - -"
 msgstr "- - - Kommentar Box aktiviert- - -"
@@ -1904,17 +1910,22 @@ msgstr ", jonka yläalbumina on"
 msgid "Thumbnail photos"
 msgstr "Miniaturbild Fotos"
 
-#: wppa-thumbnails.php:174 wppa-thumbnails.php:1026 wppa-topten-widget.php:109
+#: wppa-thumbnails.php:174 wppa-thumbnails.php:1058 wppa-topten-widget.php:109
 #, fuzzy
 msgid "View the top rated photos"
 msgstr "Betrachte die best bewertesten Fotos"
 
-#: wppa-thumbnails.php:623 wppa-thumbnails.php:1372
+#: wppa-thumbnails.php:634
+#, fuzzy
+msgid "Comments:"
+msgstr "Kommentare"
+
+#: wppa-thumbnails.php:644 wppa-thumbnails.php:1419
 #, fuzzy
 msgid "Views:"
 msgstr "Katso"
 
-#: wppa-thumbnails.php:944
+#: wppa-thumbnails.php:965
 #, php-format
 msgid "Missing thumbnail image #%s"
 msgstr ""
@@ -1955,24 +1966,24 @@ msgstr ""
 msgid "Photos uploaded by"
 msgstr "Fotos hochgeladen zu Album Nr"
 
-#: wppa-utils.php:263
+#: wppa-utils.php:259
 #, php-format
 msgid "Rating: %s"
 msgstr "Arvosana: %s"
 
-#: wppa-utils.php:819
+#: wppa-utils.php:860
 #, fuzzy, php-format
 msgid "The visitors email address is: <a href=\"mailto:%s\">%s</a>"
 msgstr ""
 "Foto %s wurde als unpassend markiert durch%s unterschiedliche Besucher."
 
-#: wppa-utils.php:825
+#: wppa-utils.php:866
 #, fuzzy, php-format
 msgid "The visitor says his email address is: <a href=\"mailto:%s\">%s</a>"
 msgstr ""
 "Wenn es heißt 'Foto ist gedreht \\\", ist das Foto gedreht. %s die Seite."
 
-#: wppa-utils.php:831
+#: wppa-utils.php:872
 #, fuzzy, php-format
 msgid ""
 "This message is automaticly generated at %s. It is useless to respond to it."
@@ -1983,6 +1994,12 @@ msgid ""
 "There is no filetype available for your browser, or your browser does not "
 "support html5 video"
 msgstr ""
+
+#, fuzzy
+#~ msgid ""
+#~ "There are %s photos found. Only the first %s will be shown. Please refine "
+#~ "your search criteria."
+#~ msgstr "Es wurde kein Album oder Foto mit Deinen Suchangaben gefunden."
 
 #~ msgid "Prev.&nbsp;page"
 #~ msgstr "Edel.&nbsp;sivu"

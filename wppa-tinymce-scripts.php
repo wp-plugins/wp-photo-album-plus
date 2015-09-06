@@ -1,52 +1,50 @@
 <?php
-/* wppa-tinymce.php
+/* wppa-tinymce-scripts.php
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 5.4.3
+* Version 6.2.10
 *
 */
 
 if ( ! defined( 'WPPA_ABSPATH' ) )
     die( "Can't load this file directly" );
- 
+
 class wppaGallery
 {
     function __construct() {
     add_action( 'admin_init', array( $this, 'action_admin_init' ) );
 	}
-	 
+
 	function action_admin_init() {
 		// only hook up these filters if we're in the admin panel, and the current user has permission
 		// to edit posts or pages
 		if ( current_user_can( 'edit_posts' ) || current_user_can( 'edit_pages' ) ) {
-//			if (!is_plugin_active('ultimate-tinymce/main.php')) {
-				add_filter( 'mce_buttons', array( $this, 'filter_mce_button' ) );
-//			}
-			add_filter( 'mce_external_plugins', array( $this, 'filter_mce_plugin' ) );	
+			add_filter( 'mce_buttons', array( $this, 'filter_mce_button' ) );
+			add_filter( 'mce_external_plugins', array( $this, 'filter_mce_plugin' ) );
 		}
 	}
-	 
+
 	function filter_mce_button( $buttons ) {
 		// add a separation before our button.
 		array_push( $buttons, '|', 'mygallery_button' );
 		return $buttons;
 	}
-	 
+
 	function filter_mce_plugin( $plugins ) {
 		// this plugin file will work the magic of our button
-		if ( wppa_switch( 'wppa_use_scripts_in_tinymce' ) ) {
-			$file = 'wppa-tinymce-scripts.js';
-		}
-		else {
-			$file = 'wppa-tinymce-shortcodes.js';
-		}
+//		if ( wppa_switch( 'wppa_use_scripts_in_tinymce' ) ) {
+			$file = 'js/wppa-tinymce-scripts.js';
+//		}
+//		else {
+//			$file = 'js/wppa-tinymce-shortcodes.js';
+//		}
 		$plugins['wppagallery'] = plugin_dir_url( __FILE__ ) . $file;
 		return $plugins;
 	}
- 
+
 }
- 
+
 $wppagallery = new wppaGallery();
 
 add_action('admin_head', 'wppa_inject_js');
@@ -76,7 +74,7 @@ function wppa_make_tinymce_dialog() {
 global $wpdb;
 global $wppa_opt;
 
-	$result = 
+	$result =
 	'<div id="wppagallery-form">'.
 		'<div style="height:158px; background-color:#eee; overflow:auto; margin-top:10px;" >'.
 			'<div id="wppagallery-album-preview" style="text-align:center;font-size:48px; line-height:21px; color:#fff;" class="wppagallery-album" ><br /><br /><br />'.
@@ -85,7 +83,7 @@ global $wppa_opt;
 			__('Photo Preview', 'wppa').'</div>'.
 		'</div>'.
 		'<table id="wppagallery-table" class="form-table">'.
-		
+
 			'<tr>'.
 				'<th><label for="wppagallery-type">'.__('Type of Gallery display:', 'wppa').'</label></th>'.
 				'<td>'.
@@ -104,14 +102,14 @@ global $wppa_opt;
 					'<small>'.__('Specify the type of gallery', 'wppa').'</small>'.
 				'</td>'.
 			'</tr>'.
-			
+
 			'<tr class="wppagallery-help" style="display:none;" >'.
 				'<th><label for="wppagallery-album" class="wppagallery-help" >'.__('Explanation:', 'wppa').'</label></th>'.
 				'<td>'.
 					__('Use this gallerytype to display all the top-level album covers.', 'wppa').
 				'</td>'.
 			'</tr>'.
-		
+
 			'<tr class="wppagallery-album" >'.
 				'<th><label for="wppagallery-album" class="wppagallery-album" >'.__('The Album to be used:', 'wppa').'</label></th>'.
 				'<td>'.
@@ -122,7 +120,7 @@ global $wppa_opt;
 							else foreach ( array_keys($albums) as $index ) $albums[$index]['name'] = __(stripslashes($albums[$index]['name']));
 							// Sort
 							$albums = wppa_array_sort($albums, 'name');
-							$result .= 
+							$result .=
 							// Please select
 							'<option value="0" disabled="disabled" selected="selected" >'.__('Please select an album', 'wppa').'</option>';
 							// All standard albums
@@ -221,7 +219,7 @@ global $wppa_opt;
 					'</small>'.
 				'</td>'.
 			'</tr>'.
-			
+
 			'<tr class="wppagallery-photo" style="display:none;" >'.
 				'<th><label for="wppagallery-photo" style="display:none;" class="wppagallery-photo" >'.__('The Photo to be used:', 'wppa').'</label></th>'.
 				'<td>'.
@@ -254,7 +252,7 @@ global $wppa_opt;
 					'</small>'.
 				'</td>'.
 			'</tr>'.
-			
+
 			'<tr class="wppagallery-tags" style="display:none;" >'.
 				'<th><label for="wppagallery-tags">'.__('The tags the photos should have:', 'wppa').'</label></th>'.
 				'<td>'.
@@ -264,9 +262,9 @@ global $wppa_opt;
 						if ( $tags ) foreach ( array_keys($tags) as $tag ) {
 							$result .= '<option value="'.$tag.'" >'.$tag.'</option>';
 						}
-						$result .= 					
+						$result .=
 					'</select>'.
-					
+
 					'<div><input type="checkbox" id="wppagallery-andor" />&nbsp;<small>'.__('If you want that the photos have all the selected tags, check this box. Leave it unchecked if the photo must have atleast only one of the selected tags', 'wppa').'</small></div>'.
 				'</td>'.
 			'</tr>'.
@@ -282,7 +280,7 @@ global $wppa_opt;
 						__('Leave this blank for default size', 'wppa').'</small>'.
 				'</td>'.
 			'</tr>'.
-			
+
 			'<tr>'.
 				'<th><label for="wppagallery-align">'.__('Horizontal alignment:', 'wppa').'</label></th>'.
 				'<td>'.

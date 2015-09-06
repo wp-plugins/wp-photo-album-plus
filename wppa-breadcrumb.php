@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for breadcrumbs
-* Version 6.2.2
+* Version 6.2.10
 *
 */
 
@@ -59,7 +59,7 @@ global $wppa_session;
 	wppa_dbg_msg( 'alb=' . $alb . ', albenum=' . $is_albenum, 'green' );
 	
 	$virtual = ( 
-		$wppa['is_topten'] || $wppa['is_lasten'] || $wppa['is_comten'] || 
+		$wppa['is_topten'] || $wppa['is_lasten'] || $wppa['is_comten'] || $wppa['src'] ||
 		$wppa['is_featen'] || $wppa['is_tag'] || $wppa['last_albums'] || $wppa['is_upldr'] || $wppa['supersearch'] || $wppa['calendar']
 		 );
 		
@@ -424,6 +424,8 @@ global $wppa_session;
 		// 'Go to thumbnail display' - icon
 		if ( $wppa['is_slide'] && ! $wppa['calendar'] ) {
 			if ( wppa_switch( 'wppa_bc_slide_thumblink' ) ) {
+//				$pg = ( ( wppa_opt('thumb_page_size' ) == wppa_opt( 'slideshow_pagesize' ) ) && wppa_get_curpage() != '1' ) ? '&wppa-page='.wppa_get_curpage() : '';
+//				$thumbhref .= $pg;
 				if ( $virtual ) {
 					if ( $thumbhref ) {
 						$thumbhref = wppa_trim_wppa_( $thumbhref );
