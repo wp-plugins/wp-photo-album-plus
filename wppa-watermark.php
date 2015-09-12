@@ -2,7 +2,7 @@
 /* wppa-watermark.php
 *
 * Functions used for the application of watermarks
-* version 6.1.0
+* version 6.3.0
 *
 */
 
@@ -517,7 +517,7 @@ function wppa_watermark_file_select( $default = false ) {
 	}
 	
 	// Produce the html
-	$result .= '<option value="--- none ---">'.__( '--- none ---', 'wppa' ).'</option>';
+	$result .= '<option value="--- none ---">'.__( '--- none ---' , 'wp-photo-album-plus' ).'</option>';
 	if ( $files ) foreach ( $files as $file ) {
 		$sel = $select == basename( $file ) ? 'selected="selected"' : '';
 		$result .= '<option value="'.basename( $file ).'" '.$sel.'>'.basename( $file ).'</option>';
@@ -525,13 +525,13 @@ function wppa_watermark_file_select( $default = false ) {
 	
 	// Text based watermarks
 	$sel = $select == '---name---' ? 'selected="selected"' : '';
-	$result .= '<option value="---name---" '.$sel.'>'.__( '--- text: name ---', 'wppa' ).'</option>';
+	$result .= '<option value="---name---" '.$sel.'>'.__( '--- text: name ---' , 'wp-photo-album-plus' ).'</option>';
 	$sel = $select == '---filename---' ? 'selected="selected"' : '';
-	$result .= '<option value="---filename---" '.$sel.'>'.__( '--- text: filename ---', 'wppa' ).'</option>';
+	$result .= '<option value="---filename---" '.$sel.'>'.__( '--- text: filename ---' , 'wp-photo-album-plus' ).'</option>';
 	$sel = $select == '---description---' ? 'selected="selected"' : '';
-	$result .= '<option value="---description---" '.$sel.'>'.__( '--- text: description ---', 'wppa' ).'</option>';
+	$result .= '<option value="---description---" '.$sel.'>'.__( '--- text: description ---' , 'wp-photo-album-plus' ).'</option>';
 	$sel = $select == '---predef---' ? 'selected="selected"' : '';
-	$result .= '<option value="---predef---" '.$sel.'>'.__( '--- text: pre-defined ---', 'wppa' ).'</option>';
+	$result .= '<option value="---predef---" '.$sel.'>'.__( '--- text: pre-defined ---' , 'wp-photo-album-plus' ).'</option>';
 	
 	return $result;
 }
@@ -541,9 +541,9 @@ function wppa_watermark_pos_select( $default = false ) {
 	// Init
 	$user = wppa_get_user();
 	$result = '';
-	$opt = array( 	__( 'top - left', 'wppa' ), __( 'top - center', 'wppa' ), __( 'top - right', 'wppa' ), 
-					__( 'center - left', 'wppa' ), __( 'center - center', 'wppa' ), __( 'center - right', 'wppa' ), 
-					__( 'bottom - left', 'wppa' ), __( 'bottom - center', 'wppa' ), __( 'bottom - right', 'wppa' ), );
+	$opt = array( 	__( 'top - left' , 'wp-photo-album-plus' ), __( 'top - center' , 'wp-photo-album-plus' ), __( 'top - right' , 'wp-photo-album-plus' ), 
+					__( 'center - left' , 'wp-photo-album-plus' ), __( 'center - center' , 'wp-photo-album-plus' ), __( 'center - right' , 'wp-photo-album-plus' ), 
+					__( 'bottom - left' , 'wp-photo-album-plus' ), __( 'bottom - center' , 'wp-photo-album-plus' ), __( 'bottom - right' , 'wp-photo-album-plus' ), );
 	$val = array( 	'toplft', 'topcen', 'toprht',
 					'cenlft', 'cencen', 'cenrht',
 					'botlft', 'botcen', 'botrht', );

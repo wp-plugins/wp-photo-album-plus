@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 6.2.5
+* version 6.3.0
 *
 */
 

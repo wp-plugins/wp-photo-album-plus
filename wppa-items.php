@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains functions to retrieve album and photo items
-* Version 6.2.10
+* Version 6.3.0
 *
 */
 
@@ -189,7 +189,7 @@ function wppa_get_photo_name( $id, $add_owner = false, $add_medal = false, $esc_
 	// Get data
 	$thumb = wppa_cache_thumb( $id );
 	if ( $show_name ) {
-		$result .= __( stripslashes( $thumb['name'] ) );
+		$result .= __( stripslashes( $thumb['name'] ) , 'wp-photo-album-plus');
 	}
 
 	// Add owner?
@@ -223,9 +223,9 @@ function wppa_get_photo_name( $id, $add_owner = false, $add_medal = false, $esc_
 	if ( $add_medal ) {
 		$color = wppa_opt( 'medal_color' );
 		$wppa_url = is_ssl() ? str_replace( 'http://', 'https://', WPPA_URL ) : WPPA_URL;	// Probably redundant... but it is not clear in to the codex if plugins_url() returns https
-		if ( $thumb['status'] == 'gold' ) $result .= '<img src="'.$wppa_url.'/images/medal_gold_'.$color.'.png" title="'.esc_attr(__a('Gold medal')).'" alt="'.__a('Gold').'" style="border:none; margin:0; padding:0; box-shadow:none; height:32px;" />';
-		if ( $thumb['status'] == 'silver' ) $result .= '<img src="'.$wppa_url.'/images/medal_silver_'.$color.'.png" title="'.esc_attr(__a('Silver medal')).'" alt="'.__a('Silver').'" style="border:none; margin:0; padding:0; box-shadow:none; height:32px;" />';
-		if ( $thumb['status'] == 'bronze' ) $result .= '<img src="'.$wppa_url.'/images/medal_bronze_'.$color.'.png" title="'.esc_attr(__a('Bronze medal')).'" alt="'.__a('Bronze').'" style="border:none; margin:0; padding:0; box-shadow:none; height:32px;" />';
+		if ( $thumb['status'] == 'gold' ) $result .= '<img src="'.$wppa_url.'/images/medal_gold_'.$color.'.png" title="'.esc_attr(__('Gold medal', 'wp-photo-album-plus')).'" alt="'.__('Gold', 'wp-photo-album-plus').'" style="border:none; margin:0; padding:0; box-shadow:none; height:32px;" />';
+		if ( $thumb['status'] == 'silver' ) $result .= '<img src="'.$wppa_url.'/images/medal_silver_'.$color.'.png" title="'.esc_attr(__('Silver medal', 'wp-photo-album-plus')).'" alt="'.__('Silver', 'wp-photo-album-plus').'" style="border:none; margin:0; padding:0; box-shadow:none; height:32px;" />';
+		if ( $thumb['status'] == 'bronze' ) $result .= '<img src="'.$wppa_url.'/images/medal_bronze_'.$color.'.png" title="'.esc_attr(__('Bronze medal', 'wp-photo-album-plus')).'" alt="'.__('Bronze', 'wp-photo-album-plus').'" style="border:none; margin:0; padding:0; box-shadow:none; height:32px;" />';
 	}
 
 	// To prevent recursive rendering of scripts or shortcodes:
@@ -253,7 +253,7 @@ function wppa_get_photo_desc( $id, $do_shortcodes = false, $do_geo = false ) {
 	$thumb = wppa_cache_thumb( $id );
 	$desc = $thumb['description'];			// Raw data
 	$desc = stripslashes( $desc );			// Unescape
-	$desc = __( $desc );					// qTranslate
+	$desc = __( $desc , 'wp-photo-album-plus');					// qTranslate
 
 	// To prevent recursive rendering of scripts or shortcodes:
 	$desc = str_replace( array( '%%wppa%%', '[wppa', '[/wppa]' ), array( '%-wppa-%', '{wppa', '{/wppa}' ), $desc );
@@ -270,8 +270,8 @@ function wppa_get_photo_desc( $id, $do_shortcodes = false, $do_geo = false ) {
 		$desc = str_replace( 'w#albumid', $thumb['album'], $desc );
 		$keywords = array('name', 'filename', 'owner', 'id', 'tags', 'views', 'album');
 		foreach ( $keywords as $keyword ) {
-			$replacement = __( trim( stripslashes( $thumb[$keyword] ) ) );
-			if ( $replacement == '' ) $replacement = '&lsaquo;'.__a( 'none', 'wppa' ).'&rsaquo;';
+			$replacement = __( trim( stripslashes( $thumb[$keyword] ) ) , 'wp-photo-album-plus');
+			if ( $replacement == '' ) $replacement = '&lsaquo;'.__( 'none' , 'wp-photo-album-plus').'&rsaquo;';
 			$desc = str_replace( 'w#'.$keyword, $replacement, $desc );
 		}
 		$desc = str_replace( 'w#url', wppa_get_lores_url( $id ), $desc );
@@ -301,7 +301,7 @@ function wppa_get_photo_desc( $id, $do_shortcodes = false, $do_geo = false ) {
 				$desc = str_replace( 'w#'.$timestamp, wppa_local_date( get_option( 'date_format', "F j, Y," ).' '.get_option( 'time_format', "g:i a" ), $thumb[$timestamp] ), $desc );
 			}
 			else {
-				$desc = str_replace( 'w#'.$timestamp, '&lsaquo;'.__a( 'unknown' ).'&rsaquo;', $desc );
+				$desc = str_replace( 'w#'.$timestamp, '&lsaquo;'.__( 'unknown' , 'wp-photo-album-plus').'&rsaquo;', $desc );
 			}
 		}
 
@@ -312,8 +312,8 @@ function wppa_get_photo_desc( $id, $do_shortcodes = false, $do_geo = false ) {
 			for ( $i = '0'; $i < '10'; $i++ ) {
 				if ( wppa_opt( 'custom_caption_'.$i ) ) {				// Field defined
 					if ( wppa_switch( 'custom_visible_'.$i ) ) {		// May be displayed
-						$desc = str_replace( 'w#cc'.$i, __( wppa_opt( 'custom_caption_'.$i ) ) . ':', $desc );	// Caption
-						$desc = str_replace( 'w#cd'.$i, __( stripslashes( $custom_data[$i] ) ), $desc );	// Data
+						$desc = str_replace( 'w#cc'.$i, __( wppa_opt( 'custom_caption_'.$i ) , 'wp-photo-album-plus') . ':', $desc );	// Caption
+						$desc = str_replace( 'w#cd'.$i, __( stripslashes( $custom_data[$i] ) , 'wp-photo-album-plus'), $desc );	// Data
 					}
 					else { 												// May not be displayed
 						$desc = str_replace( 'w#cc'.$i, '', $desc ); 	// Remove
@@ -359,19 +359,19 @@ function wppa_get_album_name( $id, $extended = false ) {
 
 	if ( $extended ) {
 		if ( $id == '0' ) {
-			$name = is_admin() ? __( '--- none ---', 'wppa' ) : __a( '--- none ---', 'wppa_theme' );
+			$name = is_admin() ? __( '--- none ---' , 'wp-photo-album-plus') : __( '--- none ---', 'wp-photo-album-plus');
 			return $name;
 		}
 		if ( $id == '-1' ) {
-			$name = is_admin() ? __( '--- separate ---', 'wppa' ) : __a( '--- separate ---', 'wppa_theme' );
+			$name = is_admin() ? __( '--- separate ---' , 'wp-photo-album-plus') : __( '--- separate ---', 'wp-photo-album-plus');
 			return $name;
 		}
 		if ( $id == '-2' ) {
-			$name = is_admin() ? __( '--- all ---', 'wppa' ) : __a( '--- all ---', 'wppa_theme' );
+			$name = is_admin() ? __( '--- all ---' , 'wp-photo-album-plus') : __( '--- all ---', 'wp-photo-album-plus');
 			return $name;
 		}
 		if ( $id == '-9' ) {
-			$name = is_admin() ? __( '--- deleted ---', 'wppa' ) : __a( '--- deleted ---', 'wppa_theme' );
+			$name = is_admin() ? __( '--- deleted ---' , 'wp-photo-album-plus') : __( '--- deleted ---', 'wp-photo-album-plus');
 			return $name;
 		}
 		if ( $extended == 'raw' ) {
@@ -381,7 +381,7 @@ function wppa_get_album_name( $id, $extended = false ) {
 	}
 	else {
 		if ( $id == '-2' ) {
-			$name = is_admin() ? __( 'All Albums', 'wppa' ) : __a( 'All Albums', 'wppa_theme' );
+			$name = is_admin() ? __( 'All Albums' , 'wp-photo-album-plus') : __( 'All Albums', 'wp-photo-album-plus');
 			return $name;
 		}
 	}
@@ -392,7 +392,7 @@ function wppa_get_album_name( $id, $extended = false ) {
 		return '';
 	}
     else {
-		if ( ! $album ) $name = is_admin() ? __( '--- deleted ---', 'wppa' ) : __a( '--- deleted ---', 'wppa_theme' );
+		if ( ! $album ) $name = is_admin() ? __( '--- deleted ---' , 'wp-photo-album-plus') : __( '--- deleted ---', 'wp-photo-album-plus');
 		else $name = __( stripslashes( $album['name'] ) );
     }
 
@@ -416,7 +416,7 @@ function wppa_get_album_desc( $id ) {
 	$desc = $album['description'];			// Raw data
 	if ( ! $desc ) return '';				// No content, need no filtering
 	$desc = stripslashes( $desc );			// Unescape
-	$desc = __( $desc );					// qTranslate
+	$desc = __( $desc , 'wp-photo-album-plus');					// qTranslate
 	$desc = wppa_html( $desc );				// Enable html
 	$desc = balanceTags( $desc, true );		// Balance tags
 
@@ -424,8 +424,8 @@ function wppa_get_album_desc( $id ) {
 		// Keywords
 		$keywords = array( 'name', 'owner', 'id', 'views' );
 		foreach ( $keywords as $keyword ) {
-			$replacement = __( trim( stripslashes( $album[$keyword] ) ) );
-			if ( $replacement == '' ) $replacement = '&lsaquo;'.__a( 'none', 'wppa' ).'&rsaquo;';
+			$replacement = __( trim( stripslashes( $album[$keyword] ) ) , 'wp-photo-album-plus');
+			if ( $replacement == '' ) $replacement = '&lsaquo;'.__( 'none' , 'wp-photo-album-plus').'&rsaquo;';
 			$desc = str_replace( 'w#'.$keyword, $replacement, $desc );
 		}
 
@@ -436,7 +436,7 @@ function wppa_get_album_desc( $id ) {
 				$desc = str_replace( 'w#'.$timestamp, wppa_local_date( get_option( 'date_format', "F j, Y," ).' '.get_option( 'time_format', "g:i a" ), $album['timestamp'] ), $desc );
 			}
 			else {
-				$desc = str_replace( 'w#'.$timestamp, '&lsaquo;'.__a('unknown').'&rsaquo;', $desc );
+				$desc = str_replace( 'w#'.$timestamp, '&lsaquo;'.__('unknown', 'wp-photo-album-plus').'&rsaquo;', $desc );
 			}
 		}
 	}

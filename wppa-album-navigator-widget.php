@@ -3,14 +3,14 @@
 * Package: wp-photo-album-plus
 *
 * display album names linking to content
-* Version 6.2.10
+* Version 6.3.0
 */
 
 class AlbumNavigatorWidget extends WP_Widget {
     /** constructor */
     function __construct() {
-		$widget_ops = array('classname' => 'wppa_album_navigator_widget', 'description' => __( 'WPPA+ Album navigator', 'wppa') );
-		parent::__construct('wppa_album_navigator_widget', __('Album navigator', 'wppa'), $widget_ops);
+		$widget_ops = array('classname' => 'wppa_album_navigator_widget', 'description' => __( 'WPPA+ Album navigator', 'wp-photo-album-plus') );
+		parent::__construct('wppa_album_navigator_widget', __('Album navigator', 'wp-photo-album-plus'), $widget_ops);
     }
 
 	/** @see WP_Widget::widget */
@@ -39,7 +39,7 @@ class AlbumNavigatorWidget extends WP_Widget {
 
 		$widget_title = apply_filters('widget_title', $instance['title']);
 
-		$page 	= wppa_get_the_landing_page('wppa_album_navigator_widget_linkpage', __a('Photo Albums'));
+		$page 	= wppa_get_the_landing_page('wppa_album_navigator_widget_linkpage', __('Photo Albums', 'wp-photo-album-plus'));
 		$parent = $instance['parent'];
 		$skip 	= $instance['skip'];
 
@@ -82,35 +82,35 @@ class AlbumNavigatorWidget extends WP_Widget {
 		//Defaults
 
 		$instance = wp_parse_args( (array) $instance, array(
-															'title' 	=> __('Photo Albums', 'wppa'),
+															'title' 	=> __('Photo Albums', 'wp-photo-album-plus'),
 															'parent' 	=> '0',
 															'skip' 		=> 'yes' ) );
  		$parent 		= $instance['parent'];
 		$skip 			= $instance['skip'];
 		$widget_title 	= $instance['title'];
 ?>
-		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $widget_title; ?>" /></p>
-		<p><label for="<?php echo $this->get_field_id('parent'); ?>"><?php _e('Album selection or Parent album:', 'wppa'); ?></label>
+		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wp-photo-album-plus'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $widget_title; ?>" /></p>
+		<p><label for="<?php echo $this->get_field_id('parent'); ?>"><?php _e('Album selection or Parent album:', 'wp-photo-album-plus'); ?></label>
 			<select class="widefat" id="<?php echo $this->get_field_id('parent'); ?>" name="<?php echo $this->get_field_name('parent'); ?>" >
 
-				<option value="all" <?php if ($parent == 'all') echo 'selected="selected"' ?>><?php _e('--- all albums ---', 'wppa') ?></option>
-				<option value="0"  <?php if ($parent == '0')  echo 'selected="selected"' ?>><?php _e('--- all generic albums ---', 'wppa') ?></option>
-				<option value="-1" <?php if ($parent == '-1') echo 'selected="selected"' ?>><?php _e('--- all separate albums ---', 'wppa') ?></option>
+				<option value="all" <?php if ($parent == 'all') echo 'selected="selected"' ?>><?php _e('--- all albums ---', 'wp-photo-album-plus') ?></option>
+				<option value="0"  <?php if ($parent == '0')  echo 'selected="selected"' ?>><?php _e('--- all generic albums ---', 'wp-photo-album-plus') ?></option>
+				<option value="-1" <?php if ($parent == '-1') echo 'selected="selected"' ?>><?php _e('--- all separate albums ---', 'wp-photo-album-plus') ?></option>
 				<?php $albs = $wpdb->get_results( "SELECT * FROM `".WPPA_ALBUMS."` ORDER BY `name`", ARRAY_A);
 				if ( $albs ) foreach( $albs as $alb ) {
 					echo '<option value="'.$alb['id'].'" ';
 					if ( $parent == $alb['id'] ) echo 'selected="selected" ';
 					if ( !wppa_has_children($alb['id']) ) echo 'disabled="disabled" ';
-					echo '>'.__(stripslashes($alb['name'])).'</option>';
+					echo '>'.__(stripslashes($alb['name']), 'wp-photo-album-plus').'</option>';
 				} ?>
 
 			</select>
 		</p>
 		<p>
-			<?php _e('Skip "empty" albums:', 'wppa'); ?>
+			<?php _e('Skip "empty" albums:', 'wp-photo-album-plus'); ?>
 			<select id="<?php echo $this->get_field_id('skip'); ?>" name="<?php echo $this->get_field_name('skip'); ?>">
-				<option value="no" <?php if ($skip == 'no') echo 'selected="selected"' ?>><?php _e('no.', 'wppa'); ?></option>
-				<option value="yes" <?php if ($skip == 'yes') echo 'selected="selected"' ?>><?php _e('yes.', 'wppa'); ?></option>
+				<option value="no" <?php if ($skip == 'no') echo 'selected="selected"' ?>><?php _e('no.', 'wp-photo-album-plus'); ?></option>
+				<option value="yes" <?php if ($skip == 'yes') echo 'selected="selected"' ?>><?php _e('yes.', 'wp-photo-album-plus'); ?></option>
 			</select>
 		</p>
 

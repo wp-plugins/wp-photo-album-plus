@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display a slideshow in the sidebar
-* Version 6.2.0
+* Version 6.3.0
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -14,8 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 class SlideshowWidget extends WP_Widget {
     /** constructor */
     function __construct() {
-		$widget_ops = array('classname' => 'slideshow_widget', 'description' => __( 'WPPA+ Sidebar Slideshow', 'wppa') );	//
-		parent::__construct('slideshow_widget', __('Sidebar Slideshow', 'wppa'), $widget_ops);															
+		$widget_ops = array('classname' => 'slideshow_widget', 'description' => __( 'WPPA+ Sidebar Slideshow', 'wp-photo-album-plus') );	//
+		parent::__construct('slideshow_widget', __('Sidebar Slideshow', 'wp-photo-album-plus'), $widget_ops);															
     }
 
 	/** @see WP_Widget::widget */
@@ -60,8 +60,8 @@ class SlideshowWidget extends WP_Widget {
 		$ponly 		= $instance['ponly'];
 		$linkurl 	= $instance['linkurl'];
 		$linktitle 	= $instance['linktitle'];
-		$supertext 	= wppa_qtrans($instance['supertext']);
-		$subtext 	= wppa_qtrans($instance['subtext']);
+		$supertext 	= __($instance['supertext']);
+		$subtext 	= __($instance['subtext']);
 		$valign 	= $instance['valign'];
 		$timeout	= $instance['timeout'] * 1000;
 		$film 		= $instance['film'];
@@ -70,14 +70,14 @@ class SlideshowWidget extends WP_Widget {
 		$numbar		= $instance['numbar'];		
 		$desc 		= $instance['desc'];
 		
-		$page = in_array( $wppa_opt['wppa_slideonly_widget_linktype'], $wppa['links_no_page'] ) ? '' : wppa_get_the_landing_page('wppa_slideonly_widget_linkpage', __a('Widget landing page') );
+		$page = in_array( $wppa_opt['wppa_slideonly_widget_linktype'], $wppa['links_no_page'] ) ? '' : wppa_get_the_landing_page('wppa_slideonly_widget_linkpage', __('Widget landing page', 'wp-photo-album-plus') );
 		
 		if (is_numeric($album)) {
 			echo $before_widget;
 				if ( !empty( $title ) ) { echo $before_title . $title . $after_title; }
 				if ( $linkurl != '' && $wppa_opt['wppa_slideonly_widget_linktype'] == 'widget' ) {
 					$wppa['in_widget_linkurl'] = $linkurl;
-					$wppa['in_widget_linktitle'] = wppa_qtrans($linktitle);
+					$wppa['in_widget_linktitle'] = __($linktitle);
 				}
 				if ($supertext != '') {
 					echo '<div style="padding-top:2px; padding-bottom:4px; text-align:center">'.$supertext.'</div>';
@@ -123,7 +123,7 @@ class SlideshowWidget extends WP_Widget {
 		else {
 			echo "\n" . $before_widget;
 			if ( !empty( $widget_title ) ) { echo $before_title . $widget_title . $after_title; }
-			echo __a('No album defined yet.', 'wppa_theme');
+			echo __('No album defined yet.', 'wp-photo-album-plus');
 			echo $after_widget;
 		}
     }
@@ -161,7 +161,7 @@ class SlideshowWidget extends WP_Widget {
 		global $wppa_opt;
 		//Defaults
 		$instance = wp_parse_args( (array) $instance,
-									array( 	'title' 	=> __( 'Sidebar Slideshow', 'wppa' ),
+									array( 	'title' 	=> __( 'Sidebar Slideshow' , 'wp-photo-album-plus'),
 											'album' 	=> '', 
 											'width' 	=> $wppa_opt['wppa_widget_width'], 
 											'height' 	=> round( $wppa_opt['wppa_widget_width'] * $wppa_opt['wppa_maxheight'] / $wppa_opt['wppa_fullsize'] ),
@@ -197,71 +197,71 @@ class SlideshowWidget extends WP_Widget {
 		$desc = $instance['desc'];
 		
 	?>
-		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
-		<p><label for="<?php echo $this->get_field_id('album'); ?>"><?php _e('Album:', 'wppa'); ?></label> <select class="widefat" id="<?php echo $this->get_field_id('album'); ?>" name="<?php echo $this->get_field_name('album'); ?>"><?php echo '<option value="-2">' . __('--- all ---', 'wppa') . '</option>'.wppa_album_select_a(array('selected' => $album, 'path' => wppa_switch('wppa_hier_albsel'))) ?></select></p>
-		<p><?php _e('Enter the width and optionally the height of the area wherein the slides will appear. If you specify a 0 for the height, it will be calculated. The value for the height will be ignored if you set the vertical alignment to \'fit\'.', 'wppa') ?></p>
-		<p><label for="<?php echo $this->get_field_id('width'); ?>"><?php _e('Width:', 'wppa'); ?></label> <input class="widefat" style="width:15%;" id="<?php echo $this->get_field_id('width'); ?>" name="<?php echo $this->get_field_name('width'); ?>" type="text" value="<?php echo $width; ?>" />&nbsp;<?php _e('pixels.', 'wppa') ?>
-		<label for="<?php echo $this->get_field_id('height'); ?>"><?php _e('Height:', 'wppa'); ?></label> <input class="widefat" style="width:15%;" id="<?php echo $this->get_field_id('height'); ?>" name="<?php echo $this->get_field_name('height'); ?>" type="text" value="<?php echo $height; ?>" />&nbsp;<?php _e('pixels.', 'wppa') ?></p>
+		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wp-photo-album-plus'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
+		<p><label for="<?php echo $this->get_field_id('album'); ?>"><?php _e('Album:', 'wp-photo-album-plus'); ?></label> <select class="widefat" id="<?php echo $this->get_field_id('album'); ?>" name="<?php echo $this->get_field_name('album'); ?>"><?php echo '<option value="-2">' . __('--- all ---', 'wp-photo-album-plus') . '</option>'.wppa_album_select_a(array('selected' => $album, 'path' => wppa_switch('wppa_hier_albsel'))) ?></select></p>
+		<p><?php _e('Enter the width and optionally the height of the area wherein the slides will appear. If you specify a 0 for the height, it will be calculated. The value for the height will be ignored if you set the vertical alignment to \'fit\'.', 'wp-photo-album-plus') ?></p>
+		<p><label for="<?php echo $this->get_field_id('width'); ?>"><?php _e('Width:', 'wp-photo-album-plus'); ?></label> <input class="widefat" style="width:15%;" id="<?php echo $this->get_field_id('width'); ?>" name="<?php echo $this->get_field_name('width'); ?>" type="text" value="<?php echo $width; ?>" />&nbsp;<?php _e('pixels.', 'wp-photo-album-plus') ?>
+		<label for="<?php echo $this->get_field_id('height'); ?>"><?php _e('Height:', 'wp-photo-album-plus'); ?></label> <input class="widefat" style="width:15%;" id="<?php echo $this->get_field_id('height'); ?>" name="<?php echo $this->get_field_name('height'); ?>" type="text" value="<?php echo $height; ?>" />&nbsp;<?php _e('pixels.', 'wp-photo-album-plus') ?></p>
 		<p>
-			<?php _e('Portrait only:', 'wppa'); ?>
+			<?php _e('Portrait only:', 'wp-photo-album-plus'); ?>
 			<select id="<?php echo $this->get_field_id('ponly'); ?>" name="<?php echo $this->get_field_name('ponly'); ?>">
-				<option value="no" <?php if ($ponly == 'no') echo 'selected="selected"' ?>><?php _e('no.', 'wppa'); ?></option>
-				<option value="yes" <?php if ($ponly == 'yes') echo 'selected="selected"' ?>><?php _e('yes.', 'wppa'); ?></option>
-			</select>&nbsp;<?php _e('Set to \'yes\' if there are only portrait images in the album and you want the photos to fill the full width of the widget.<br/>Set to \'no\' otherwise.', 'wppa') ?>
-			&nbsp;<?php _e('If set to \'yes\', Vertical alignment will be forced to \'fit\'.', 'wppa') ?>
+				<option value="no" <?php if ($ponly == 'no') echo 'selected="selected"' ?>><?php _e('no.', 'wp-photo-album-plus'); ?></option>
+				<option value="yes" <?php if ($ponly == 'yes') echo 'selected="selected"' ?>><?php _e('yes.', 'wp-photo-album-plus'); ?></option>
+			</select>&nbsp;<?php _e('Set to \'yes\' if there are only portrait images in the album and you want the photos to fill the full width of the widget.<br/>Set to \'no\' otherwise.', 'wp-photo-album-plus') ?>
+			&nbsp;<?php _e('If set to \'yes\', Vertical alignment will be forced to \'fit\'.', 'wp-photo-album-plus') ?>
 		</p>
 		<p>
-			<?php _e('Vertical alignment:', 'wppa'); ?>
+			<?php _e('Vertical alignment:', 'wp-photo-album-plus'); ?>
 			<select id="<?php echo $this->get_field_id('valign'); ?>" name="<?php echo $this->get_field_name('valign'); ?>">
-				<option value="top" <?php if ($valign == 'top') echo(' selected '); ?>><?php _e('top', 'wppa'); ?></option>
-				<option value="center" <?php if ($valign == 'center') echo(' selected '); ?>><?php _e('center', 'wppa'); ?></option>
-				<option value="bottom" <?php if ($valign == 'bottom') echo(' selected '); ?>><?php _e('bottom', 'wppa'); ?></option>
-				<option value="fit" <?php if ($valign == 'fit') echo(' selected '); ?>><?php _e('fit', 'wppa'); ?></option>	
-			</select><br/><?php _e('Set the desired vertical alignment method.', 'wppa'); ?>
+				<option value="top" <?php if ($valign == 'top') echo(' selected '); ?>><?php _e('top', 'wp-photo-album-plus'); ?></option>
+				<option value="center" <?php if ($valign == 'center') echo(' selected '); ?>><?php _e('center', 'wp-photo-album-plus'); ?></option>
+				<option value="bottom" <?php if ($valign == 'bottom') echo(' selected '); ?>><?php _e('bottom', 'wp-photo-album-plus'); ?></option>
+				<option value="fit" <?php if ($valign == 'fit') echo(' selected '); ?>><?php _e('fit', 'wp-photo-album-plus'); ?></option>	
+			</select><br/><?php _e('Set the desired vertical alignment method.', 'wp-photo-album-plus'); ?>
 		</p>
-		<p><label for="<?php echo $this->get_field_id('timeout'); ?>"><?php _e('Slideshow timeout:', 'wppa'); ?></label> <input class="widefat" style="width:15%;" id="<?php echo $this->get_field_id('timeout'); ?>" name="<?php echo $this->get_field_name('timeout'); ?>" type="text" value="<?php echo $timeout; ?>" />&nbsp;<?php _e('sec.', 'wppa'); ?></p>
-		<p><label for="<?php echo $this->get_field_id('linkurl'); ?>"><?php _e('Link to:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('linkurl'); ?>" name="<?php echo $this->get_field_name('linkurl'); ?>" type="text" value="<?php echo $linkurl; ?>" /></p>
+		<p><label for="<?php echo $this->get_field_id('timeout'); ?>"><?php _e('Slideshow timeout:', 'wp-photo-album-plus'); ?></label> <input class="widefat" style="width:15%;" id="<?php echo $this->get_field_id('timeout'); ?>" name="<?php echo $this->get_field_name('timeout'); ?>" type="text" value="<?php echo $timeout; ?>" />&nbsp;<?php _e('sec.', 'wp-photo-album-plus'); ?></p>
+		<p><label for="<?php echo $this->get_field_id('linkurl'); ?>"><?php _e('Link to:', 'wp-photo-album-plus'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('linkurl'); ?>" name="<?php echo $this->get_field_name('linkurl'); ?>" type="text" value="<?php echo $linkurl; ?>" /></p>
 
 		<p>
-			<?php _e('Show name:', 'wppa'); ?>
+			<?php _e('Show name:', 'wp-photo-album-plus'); ?>
 			<select id="<?php echo $this->get_field_id('name'); ?>" name="<?php echo $this->get_field_name('name'); ?>">
-				<option value="no" <?php if ($name == 'no') echo 'selected="selected"' ?>><?php _e('no.', 'wppa'); ?></option>
-				<option value="yes" <?php if ($name == 'yes') echo 'selected="selected"' ?>><?php _e('yes.', 'wppa'); ?></option>
+				<option value="no" <?php if ($name == 'no') echo 'selected="selected"' ?>><?php _e('no.', 'wp-photo-album-plus'); ?></option>
+				<option value="yes" <?php if ($name == 'yes') echo 'selected="selected"' ?>><?php _e('yes.', 'wp-photo-album-plus'); ?></option>
 			</select>
 		</p>
 		<p>
-			<?php _e('Show description:', 'wppa'); ?>
+			<?php _e('Show description:', 'wp-photo-album-plus'); ?>
 			<select id="<?php echo $this->get_field_id('desc'); ?>" name="<?php echo $this->get_field_name('desc'); ?>">
-				<option value="no" <?php if ($desc == 'no') echo 'selected="selected"' ?>><?php _e('no.', 'wppa'); ?></option>
-				<option value="yes" <?php if ($desc == 'yes') echo 'selected="selected"' ?>><?php _e('yes.', 'wppa'); ?></option>
+				<option value="no" <?php if ($desc == 'no') echo 'selected="selected"' ?>><?php _e('no.', 'wp-photo-album-plus'); ?></option>
+				<option value="yes" <?php if ($desc == 'yes') echo 'selected="selected"' ?>><?php _e('yes.', 'wp-photo-album-plus'); ?></option>
 			</select>
 		</p>
 		<p>
-			<?php _e('Show filmstrip:', 'wppa'); ?>
+			<?php _e('Show filmstrip:', 'wp-photo-album-plus'); ?>
 			<select id="<?php echo $this->get_field_id('film'); ?>" name="<?php echo $this->get_field_name('film'); ?>">
-				<option value="no" <?php if ($film == 'no') echo 'selected="selected"' ?>><?php _e('no.', 'wppa'); ?></option>
-				<option value="yes" <?php if ($film == 'yes') echo 'selected="selected"' ?>><?php _e('yes.', 'wppa'); ?></option>
+				<option value="no" <?php if ($film == 'no') echo 'selected="selected"' ?>><?php _e('no.', 'wp-photo-album-plus'); ?></option>
+				<option value="yes" <?php if ($film == 'yes') echo 'selected="selected"' ?>><?php _e('yes.', 'wp-photo-album-plus'); ?></option>
 			</select>
 		</p>
 		<p>
-			<?php _e('Show browsebar:', 'wppa'); ?>
+			<?php _e('Show browsebar:', 'wp-photo-album-plus'); ?>
 			<select id="<?php echo $this->get_field_id('browse'); ?>" name="<?php echo $this->get_field_name('browse'); ?>">
-				<option value="no" <?php if ($browse == 'no') echo 'selected="selected"' ?>><?php _e('no.', 'wppa'); ?></option>
-				<option value="yes" <?php if ($browse == 'yes') echo 'selected="selected"' ?>><?php _e('yes.', 'wppa'); ?></option>
+				<option value="no" <?php if ($browse == 'no') echo 'selected="selected"' ?>><?php _e('no.', 'wp-photo-album-plus'); ?></option>
+				<option value="yes" <?php if ($browse == 'yes') echo 'selected="selected"' ?>><?php _e('yes.', 'wp-photo-album-plus'); ?></option>
 			</select>
 		</p>
 		<p>
-			<?php _e('Show numbar:', 'wppa'); ?>
+			<?php _e('Show numbar:', 'wp-photo-album-plus'); ?>
 			<select id="<?php echo $this->get_field_id('numbar'); ?>" name="<?php echo $this->get_field_name('numbar'); ?>">
-				<option value="no" <?php if ($numbar == 'no') echo 'selected="selected"' ?>><?php _e('no.', 'wppa'); ?></option>
-				<option value="yes" <?php if ($numbar == 'yes') echo 'selected="selected"' ?>><?php _e('yes.', 'wppa'); ?></option>
+				<option value="no" <?php if ($numbar == 'no') echo 'selected="selected"' ?>><?php _e('no.', 'wp-photo-album-plus'); ?></option>
+				<option value="yes" <?php if ($numbar == 'yes') echo 'selected="selected"' ?>><?php _e('yes.', 'wp-photo-album-plus'); ?></option>
 			</select>
 		</p>
 
-		<p><span style="color:blue"><small><?php _e('The following text fields support qTranslate', 'wppa') ?></small></span></p>
-		<p><label for="<?php echo $this->get_field_id('linktitle'); ?>"><?php _e('Tooltip text:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('linktitle'); ?>" name="<?php echo $this->get_field_name('linktitle'); ?>" type="text" value="<?php echo $linktitle; ?>" /></p>
-		<p><label for="<?php echo $this->get_field_id('supertext'); ?>"><?php _e('Text above photos:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('supertext'); ?>" name="<?php echo $this->get_field_name('supertext'); ?>" type="text" value="<?php echo $supertext; ?>" /></p>
-		<p><label for="<?php echo $this->get_field_id('subtext'); ?>"><?php _e('Text below photos:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('subtext'); ?>" name="<?php echo $this->get_field_name('subtext'); ?>" type="text" value="<?php echo $subtext; ?>" /></p>
+		<p><span style="color:blue"><small><?php _e('The following text fields support qTranslate', 'wp-photo-album-plus') ?></small></span></p>
+		<p><label for="<?php echo $this->get_field_id('linktitle'); ?>"><?php _e('Tooltip text:', 'wp-photo-album-plus'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('linktitle'); ?>" name="<?php echo $this->get_field_name('linktitle'); ?>" type="text" value="<?php echo $linktitle; ?>" /></p>
+		<p><label for="<?php echo $this->get_field_id('supertext'); ?>"><?php _e('Text above photos:', 'wp-photo-album-plus'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('supertext'); ?>" name="<?php echo $this->get_field_name('supertext'); ?>" type="text" value="<?php echo $supertext; ?>" /></p>
+		<p><label for="<?php echo $this->get_field_id('subtext'); ?>"><?php _e('Text below photos:', 'wp-photo-album-plus'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('subtext'); ?>" name="<?php echo $this->get_field_name('subtext'); ?>" type="text" value="<?php echo $subtext; ?>" /></p>
 		
 <?php
     }

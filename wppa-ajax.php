@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 6.2.12
+* version 6.3.0
 *
 */
 
@@ -153,10 +153,10 @@ global $wppa_session;
 			echo '	<div style="padding-bottom:4px;height:24px;" >
 						<span style="color:#777;" >
 							<i>'.
-								__a( 'All modifications are instantly updated on the server. The <b style="color:#070" >Remark</b> field keeps you informed on the actions taken at the background.' ).
+								__( 'All modifications are instantly updated on the server. The <b style="color:#070" >Remark</b> field keeps you informed on the actions taken at the background.' , 'wp-photo-album-plus').
 							'</i>
 						</span>
-						<input id="wppa-fe-exit" type="button" style="float:right;color:red;font-weight:bold;" onclick="window.opener.location.reload( true );window.close();" value="'.__a( 'Exit & Refresh' ).'" />
+						<input id="wppa-fe-exit" type="button" style="float:right;color:red;font-weight:bold;" onclick="window.opener.location.reload( true );window.close();" value="'.__( 'Exit & Refresh' , 'wp-photo-album-plus').'" />
 						<div id="wppa-fe-count" style="float:right;" ></div>
 					</div><div style="clear:both;"></div>';
 			wppa_album_photos( '', $photo );
@@ -168,7 +168,7 @@ global $wppa_session;
 			$mocc 	= $_REQUEST['moccur'];
 			$nonce 	= $_REQUEST['wppa-nonce'];
 			if ( ! wp_verify_nonce( $nonce, 'wppa-nonce-'.$mocc ) ) {
-				_e( 'Security check failure', 'wppa' );
+				_e( 'Security check failure' , 'wp-photo-album-plus');
 				exit;
 			}
 
@@ -202,7 +202,7 @@ global $wppa_session;
 			$iret = '0';
 
 			if ( ! current_user_can( 'wppa_moderate' ) && ! current_user_can( 'wppa_comments' ) ) {
-				echo __( 'You do not have the rights to moderate photos this way', 'wppa' );
+				_e( 'You do not have the rights to moderate photos this way' , 'wp-photo-album-plus');
 				exit;
 			}
 
@@ -222,14 +222,14 @@ global $wppa_session;
 			else {
 				if ( isset( $_REQUEST['photo-id'] ) ) {
 					if ( current_user_can( 'wppa_moderate' ) ) {
-						echo sprintf( __( 'Failed to update stutus of photo %s', 'wppa' ), $_REQUEST['photo-id'] )."\n".__( 'Please refresh the page', 'wppa' );
+						echo sprintf( __( 'Failed to update stutus of photo %s' , 'wp-photo-album-plus'), $_REQUEST['photo-id'] )."\n".__( 'Please refresh the page' , 'wp-photo-album-plus');
 					}
 					else {
-						echo __( 'Security check failure', 'wppa' );
+						_e( 'Security check failure' , 'wp-photo-album-plus');
 					}
 				}
 				if ( isset( $_REQUEST['comment-id'] ) ) {
-					echo sprintf( __( 'Failed to update stutus of comment %s', 'wppa' ), $_REQUEST['comment-id'] )."\n".__( 'Please refresh the page', 'wppa' );
+					echo sprintf( __( 'Failed to update stutus of comment %s' , 'wp-photo-album-plus'), $_REQUEST['comment-id'] )."\n".__( 'Please refresh the page' , 'wp-photo-album-plus');
 				}
 			}
 			exit;
@@ -238,36 +238,36 @@ global $wppa_session;
 			if ( isset( $_REQUEST['photo-id'] ) ) {	// Remove photo
 				if ( ( wppa_user_is( 'administrator' ) ) || ( current_user_can( 'wppa_moderate' ) ) || ( wppa_get_user() == wppa_get_photo_owner( $_REQUEST['photo-id'] ) && wppa_switch( 'wppa_upload_edit' ) ) ) { // Frontend delete?
 					wppa_delete_photo( $_REQUEST['photo-id'] );
-					echo 'OK||'.__( 'Photo removed', 'wppa' );
+					echo 'OK||'.__( 'Photo removed' , 'wp-photo-album-plus');
 					exit;
 				}
 			}
 			if ( ! current_user_can( 'wppa_moderate' ) && ! current_user_can( 'wppa_comments' ) ) {
-				echo __( 'You do not have the rights to moderate photos this way', 'wppa' );
+				_e( 'You do not have the rights to moderate photos this way' , 'wp-photo-album-plus');
 				exit;
 			}
 			if ( isset( $_REQUEST['photo-id'] ) ) {	// Remove photo
 				if ( ! current_user_can( 'wppa_moderate' ) ) {
-					echo __( 'Security check failure', 'wppa' );
+					_e( 'Security check failure' , 'wp-photo-album-plus');
 					exit;
 				}
 				wppa_delete_photo( $_REQUEST['photo-id'] );
-				echo 'OK||'.__( 'Photo removed', 'wppa' );
+				echo 'OK||'.__( 'Photo removed' , 'wp-photo-album-plus');
 				exit;
 			}
 			if ( isset( $_REQUEST['comment-id'] ) ) {	// Remove comment
 				$iret = $wpdb->query( $wpdb->prepare( "DELETE FROM `".WPPA_COMMENTS."` WHERE `id`= %s", $_REQUEST['comment-id'] ) );
-				if ( $iret ) echo 'OK||'.__( 'Comment removed', 'wppa' );
-				else echo __( 'Could not remove comment', 'wppa' );
+				if ( $iret ) echo 'OK||'.__( 'Comment removed' , 'wp-photo-album-plus');
+				else _e( 'Could not remove comment' , 'wp-photo-album-plus');
 				exit;
 			}
-			echo __( 'Unexpected error', 'wppa' );
+			_e( 'Unexpected error' , 'wp-photo-album-plus');
 			exit;
 
 		case 'downloadalbum':
 			// Feature enabled?
 			if ( ! wppa_switch( 'wppa_allow_download_album' ) ) {
-				echo '||ER||'.__( 'This feature is not enabled on this website', 'wppa' );
+				echo '||ER||'.__( 'This feature is not enabled on this website' , 'wp-photo-album-plus');
 				exit;
 			}
 
@@ -279,7 +279,7 @@ global $wppa_session;
 
 			$photos = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND ( ( ".$status." ) OR owner = %s ) ".wppa_get_photo_order( $alb ), $alb, wppa_get_user() ), ARRAY_A );
 			if ( ! $photos ) {
-				echo '||ER||'.__( 'The album is empty', 'wppa' );
+				echo '||ER||'.__( 'The album is empty' , 'wp-photo-album-plus');
 				exit;
 			}
 
@@ -288,7 +288,7 @@ global $wppa_session;
 
 			// Open zipfile
 			if ( ! class_exists( 'ZipArchive' ) ) {
-				echo '||ER||'.__( 'Unable to create zip archive', 'wppa' );
+				echo '||ER||'.__( 'Unable to create zip archive' , 'wp-photo-album-plus');
 				exit;
 			}
 			$zipfilename = wppa_get_album_name( $alb );
@@ -300,7 +300,7 @@ global $wppa_session;
 			$wppa_zip = new ZipArchive;
 			$iret = $wppa_zip->open( $zipfilepath, 1 );
 			if ( $iret !== true ) {
-				echo '||ER||'.sprintf( __( 'Unable to create zip archive. code = %s', 'wppa' ), $iret );
+				echo '||ER||'.sprintf( __( 'Unable to create zip archive. code = %s' , 'wp-photo-album-plus'), $iret );
 				exit;
 			}
 
@@ -328,7 +328,7 @@ global $wppa_session;
 			// A zip is created
 			$desturl = WPPA_UPLOAD_URL.'/temp/'.$zipfilename;
 			echo $desturl.'||OK||';
-			if ( $zipcount != count( $photos ) ) echo sprintf( __( 'Only %s out of %s photos could be added to the zipfile', 'wppa' ), $zipcount, count( $photos ) );
+			if ( $zipcount != count( $photos ) ) echo sprintf( __( 'Only %s out of %s photos could be added to the zipfile' , 'wp-photo-album-plus'), $zipcount, count( $photos ) );
 			exit;
 			break;
 
@@ -357,7 +357,7 @@ global $wppa_session;
 				$type = wppa_opt( 'wppa_art_monkey_popup_link' );
 			}
 			else {
-				echo '||7||'.__( 'Unknown source of request', 'wppa' );
+				echo '||7||'.__( 'Unknown source of request' , 'wp-photo-album-plus');
 				exit;
 			}
 
@@ -370,12 +370,12 @@ global $wppa_session;
 					$name = $data['filename'];
 				}
 				else {
-					$name = __( $data['name'] );
+					$name = __( $data['name'] , 'wp-photo-album-plus');
 				}
 				$name = wppa_sanitize_file_name( $name ); 				// Remove illegal chars
 				$name = preg_replace( '/\.[^.]*$/', '', $name );	// Remove file extension
 				if ( strlen( $name ) == '0' ) {
-					echo '||1||'.__( 'Empty filename', 'wppa' );
+					echo '||1||'.__( 'Empty filename' , 'wp-photo-album-plus');
 					exit;
 				}
 
@@ -402,7 +402,7 @@ global $wppa_session;
 				$tempdir 	= WPPA_UPLOAD_PATH.'/temp';
 				if ( ! is_dir( $tempdir ) ) @ mkdir( $tempdir );
 				if ( ! is_dir( $tempdir ) ) {
-					echo '||2||'.__( 'Unable to create tempdir', 'wppa' );
+					echo '||2||'.__( 'Unable to create tempdir' , 'wp-photo-album-plus');
 					exit;
 				}
 
@@ -416,7 +416,7 @@ global $wppa_session;
 				}
 				elseif ( $type == 'zip' ) {
 					if ( ! class_exists( 'ZipArchive' ) ) {
-						echo '||8||'.__( 'Unable to create zip archive', 'wppa' );
+						echo '||8||'.__( 'Unable to create zip archive' , 'wp-photo-album-plus');
 						exit;
 					}
 					$ext = 'zip';
@@ -426,7 +426,7 @@ global $wppa_session;
 					$wppa_zip->close();
 				}
 				else {
-					echo '||6||'.__( 'Unknown type', 'wppa' );
+					echo '||6||'.__( 'Unknown type' , 'wp-photo-album-plus');
 					exit;
 				}
 
@@ -435,7 +435,7 @@ global $wppa_session;
 				exit;
 			}
 			else {
-				echo '||9||'.__( 'The photo does no longer exist', 'wppa' );
+				echo '||9||'.__( 'The photo does no longer exist' , 'wp-photo-album-plus');
 				exit;
 			}
 			exit;
@@ -453,7 +453,7 @@ global $wppa_session;
 				wppa_bump_viewcount( 'photo', $_REQUEST['wppa-photo'] );
 			}
 			else {
-				_e( 'Security check failure', 'wppa' );
+				_e( 'Security check failure' , 'wp-photo-album-plus');
 			}
 			exit;
 			break;
@@ -467,11 +467,11 @@ global $wppa_session;
 			$nonce  = $_REQUEST['wppa-nonce'];
 
 			// Make errortext
-			$errtxt = __( 'An error occurred while processing you rating request.', 'wppa' );
-			$errtxt .= "\n".__( 'Maybe you opened the page too long ago to recognize you.', 'wppa' );
-			$errtxt .= "\n".__( 'You may refresh the page and try again.', 'wppa' );
-			$wartxt = __( 'Althoug an error occurred while processing your rating, your vote has been registered.', 'wppa' );
-			$wartxt .= "\n".__( 'However, this may not be reflected in the current pageview', 'wppa' );
+			$errtxt = __( 'An error occurred while processing you rating request.' , 'wp-photo-album-plus');
+			$errtxt .= "\n".__( 'Maybe you opened the page too long ago to recognize you.' , 'wp-photo-album-plus');
+			$errtxt .= "\n".__( 'You may refresh the page and try again.' , 'wp-photo-album-plus');
+			$wartxt = __( 'Althoug an error occurred while processing your rating, your vote has been registered.' , 'wp-photo-album-plus');
+			$wartxt .= "\n".__( 'However, this may not be reflected in the current pageview' , 'wp-photo-album-plus');
 
 			// Check on validity
 			if ( ! wp_verify_nonce( $nonce, 'wppa-check' ) ) {
@@ -493,7 +493,7 @@ global $wppa_session;
 
 			// Get other data
 			if ( ! $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $photo ) ) ) {
-				echo '0||999||'.__( 'Photo has been removed.', 'wppa' );
+				echo '0||999||'.__( 'Photo has been removed.' , 'wp-photo-album-plus');
 				exit;
 			}
 			$user     = wppa_get_user();
@@ -502,7 +502,7 @@ global $wppa_session;
 
 			// Rate own photo?
 			if ( wppa_get_photo_item( $photo, 'owner' ) == $user && ! wppa_switch( 'wppa_allow_owner_votes' ) ) {
-				echo '0||900||'.__( 'Sorry, you can not rate your own photos', 'wppa' );
+				echo '0||900||'.__( 'Sorry, you can not rate your own photos' , 'wp-photo-album-plus');
 				exit;
 			}
 
@@ -514,7 +514,7 @@ global $wppa_session;
 
 			if ( $pending ) {
 				if ( ! $hascommented ) {
-					echo '0||900||'.__( 'Please enter a comment.', 'wppa' );
+					echo '0||900||'.__( 'Please enter a comment.' , 'wp-photo-album-plus');
 					exit;
 				}
 				else {
@@ -539,7 +539,7 @@ global $wppa_session;
 								( $mylast['value'] > '0' && $rating == '-1' )										// I did a rating, can not change into dislike
 							 )
 						 ) {
-				echo '0||109||'.__( 'Security check failure.', 'wppa' );
+				echo '0||109||'.__( 'Security check failure.' , 'wp-photo-album-plus');
 				exit;
 			}
 			// Case 1: value = -1 this is a legal dislike vote
@@ -551,7 +551,7 @@ global $wppa_session;
 					exit;															// Fail on storing vote
 				}
 				// Add points
-				wppa_add_credit_points( wppa_opt( 'wppa_cp_points_rating' ), __a( 'Photo rated' ), $photo, $rating );
+				wppa_add_credit_points( wppa_opt( 'wppa_cp_points_rating' ), __( 'Photo rated' , 'wp-photo-album-plus'), $photo, $rating );
 				wppa_dislike_check( $photo );	// Check for email to be sent every .. dislikes
 				if ( ! is_file( wppa_get_thumb_path( $photo ) ) ) {	// Photo is removed
 					 echo $occur.'||'.$photo.'||'.$index.'||-1||-1|0||'.wppa_opt( 'wppa_dislike_delete' );
@@ -567,7 +567,7 @@ global $wppa_session;
 					exit;															// Fail on storing vote
 				}
 				// Add points
-				wppa_add_credit_points( wppa_opt( 'wppa_cp_points_rating' ), __a( 'Photo rated' ), $photo, $rating );
+				wppa_add_credit_points( wppa_opt( 'wppa_cp_points_rating' ), __( 'Photo rated' , 'wp-photo-album-plus'), $photo, $rating );
 			}
 			// Case 3: I will change my previously given vote
 			elseif ( wppa_switch( 'wppa_rating_change' ) ) {					// Votechanging is allowed
@@ -586,7 +586,7 @@ global $wppa_session;
 				}
 			}
 			else { 																	// Should never get here....
-				echo '0||110||'.__( 'Unexpected error', 'wppa' );
+				echo '0||110||'.__( 'Unexpected error' , 'wp-photo-album-plus');
 				exit;
 			}
 
@@ -666,7 +666,7 @@ global $wppa_session;
 			wppa_clear_cache();
 
 			if ( wppa_switch( 'wppa_vote_needs_comment' ) && ! $hascommented ) {
-				$message = __( "Please explain your vote in a comment.\nYour vote will be discarded if you don't.\n\nAfter completing your comment,\nyou can refresh the page to see\nyour vote became effective.", 'wppa' );
+				$message = __( "Please explain your vote in a comment.\nYour vote will be discarded if you don't.\n\nAfter completing your comment,\nyou can refresh the page to see\nyour vote became effective." , 'wp-photo-album-plus');
 			}
 			else {
 				$message = '';
@@ -710,17 +710,17 @@ global $wppa_session;
 
 			// Check validity
 			if ( ! wp_verify_nonce( $nonce, 'wppa_nonce_'.$photo ) ) {
-				echo '||0||'.__( 'You do not have the rights to delete a photo', 'wppa' );
+				echo '||0||'.__( 'You do not have the rights to delete a photo' , 'wp-photo-album-plus');
 				exit;																// Nonce check failed
 			}
 			if ( ! is_numeric( $photo ) ) {
-				echo '||0||'.__( 'Security check failure', 'wppa' );
+				echo '||0||'.__( 'Security check failure' , 'wp-photo-album-plus');
 				exit;																// Nonce check failed
 			}
 			$album = $wpdb->get_var( $wpdb->prepare( 'SELECT `album` FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $photo ) );
 			wppa_delete_photo( $photo );
 			wppa_clear_cache();
-			echo '||1||<span style="color:red" >'.sprintf( __( 'Photo %s has been deleted', 'wppa' ), $photo ).'</span>';
+			echo '||1||<span style="color:red" >'.sprintf( __( 'Photo %s has been deleted' , 'wp-photo-album-plus'), $photo ).'</span>';
 			echo '||';
 			$a = wppa_allow_uploads( $album );
 			if ( ! $a ) echo 'full';
@@ -736,7 +736,7 @@ global $wppa_session;
 
 			// Check validity
 			if ( ! wp_verify_nonce( $nonce, 'wppa_nonce_'.$album ) ) {
-				echo '||0||'.__( 'You do not have the rights to update album information', 'wppa' ).$nonce;
+				echo '||0||'.__( 'You do not have the rights to update album information' , 'wp-photo-album-plus').$nonce;
 				exit;																// Nonce check failed
 			}
 
@@ -748,13 +748,13 @@ global $wppa_session;
 						$iret2 = $wpdb->query( $wpdb->prepare( 'UPDATE `'.WPPA_PHOTOS.'` SET `mean_rating` = %s WHERE `id` = %s', '', $photo['id'] ) );
 					}
 					if ( $photos && $iret1 !== false && $iret2 !== false ) {
-						echo '||97||'.__( '<b>Ratings cleared</b>', 'wppa' ).'||'.__( 'No ratings for this photo.', 'wppa' );
+						echo '||97||'.__( '<b>Ratings cleared</b>' , 'wp-photo-album-plus').'||'.__( 'No ratings for this photo.' , 'wp-photo-album-plus');
 					}
 					elseif ( $photos ) {
-						echo '||1||'.__( 'An error occurred while clearing ratings', 'wppa' );
+						echo '||1||'.__( 'An error occurred while clearing ratings' , 'wp-photo-album-plus');
 					}
 					else {
-						echo '||97||'.__( '<b>No photos in this album</b>', 'wppa' ).'||'.__( 'No ratings for this photo.', 'wppa' );
+						echo '||97||'.__( '<b>No photos in this album</b>' , 'wp-photo-album-plus').'||'.__( 'No ratings for this photo.' , 'wp-photo-album-plus');
 					}
 					exit;
 					break;
@@ -769,13 +769,13 @@ global $wppa_session;
 						wppa_index_update( 'photo', $photo['id'] );
 					}
 					if ( $photos && $iret !== false ) {
-						echo '||97||'.__( '<b>Tags set to defaults</b> (reload)', 'wppa' );
+						echo '||97||'.__( '<b>Tags set to defaults</b> (reload)' , 'wp-photo-album-plus');
 					}
 					elseif ( $photos ) {
-						echo '||1||'.__( 'An error occurred while setting tags', 'wppa' );
+						echo '||1||'.__( 'An error occurred while setting tags' , 'wp-photo-album-plus');
 					}
 					else {
-						echo '||97||'.__( '<b>No photos in this album</b>', 'wppa' );
+						echo '||97||'.__( '<b>No photos in this album</b>' , 'wp-photo-album-plus');
 					}
 					wppa_clear_taglist();
 					exit;
@@ -791,13 +791,13 @@ global $wppa_session;
 						wppa_index_update( 'photo', $photo['id'] );
 					}
 					if ( $photos && $iret !== false ) {
-						echo '||97||'.__( '<b>Tags added width defaults</b> (reload)', 'wppa' );
+						echo '||97||'.__( '<b>Tags added width defaults</b> (reload)' , 'wp-photo-album-plus');
 					}
 					elseif ( $photos ) {
-						echo '||1||'.__( 'An error occurred while adding tags', 'wppa' );
+						echo '||1||'.__( 'An error occurred while adding tags' , 'wp-photo-album-plus');
 					}
 					else {
-						echo '||97||'.__( '<b>No photos in this album</b>', 'wppa' );
+						echo '||97||'.__( '<b>No photos in this album</b>' , 'wp-photo-album-plus');
 					}
 					wppa_clear_taglist();
 					exit;
@@ -806,81 +806,81 @@ global $wppa_session;
 					$value = trim( strip_tags( $value ) );
 					if ( ! wppa_sanitize_file_name( $value ) ) {	// Empty album name is not allowed
 						$value = 'Album-#'.$album;
-						echo '||5||' . sprintf( __( 'Album name may not be empty.<br />Reset to <b>%s</b>', 'wppa' ), $value );
+						echo '||5||' . sprintf( __( 'Album name may not be empty.<br />Reset to <b>%s</b>' , 'wp-photo-album-plus'), $value );
 					}
-					$itemname = __( 'Name', 'wppa' );
+					$itemname = __( 'Name' , 'wp-photo-album-plus');
 					break;
 				case 'description':
-					$itemname = __( 'Description', 'wppa' );
+					$itemname = __( 'Description' , 'wp-photo-album-plus');
 					if ( wppa_switch( 'wppa_check_balance' ) ) {
 						$value = str_replace( array( '<br/>','<br>' ), '<br />', $value );
 						if ( balanceTags( $value, true ) != $value ) {
-							echo '||3||'.__( 'Unbalanced tags in album description!', 'wppa' );
+							echo '||3||'.__( 'Unbalanced tags in album description!' , 'wp-photo-album-plus');
 							exit;
 						}
 					}
 					$value = trim( $value );
 					break;
 				case 'a_order':
-					$itemname = __( 'Album order #', 'wppa' );
+					$itemname = __( 'Album order #' , 'wp-photo-album-plus');
 					break;
 				case 'main_photo':
-					$itemname = __( 'Cover photo', 'wppa' );
+					$itemname = __( 'Cover photo' , 'wp-photo-album-plus');
 					break;
 				case 'a_parent':
-					$itemname = __( 'Parent album', 'wppa' );
+					$itemname = __( 'Parent album' , 'wp-photo-album-plus');
 					wppa_flush_treecounts( $album );	// Myself and my parents
 					wppa_flush_treecounts( $value );	// My new parent
 					break;
 				case 'p_order_by':
-					$itemname = __( 'Photo order', 'wppa' );
+					$itemname = __( 'Photo order' , 'wp-photo-album-plus');
 					break;
 				case 'alt_thumbsize':
-					$itemname = __( 'Use Alt thumbsize', 'wppa' );
+					$itemname = __( 'Use Alt thumbsize' , 'wp-photo-album-plus');
 					break;
 				case 'cover_type':
-					$itemname = __( 'Cover Type', 'wppa' );
+					$itemname = __( 'Cover Type' , 'wp-photo-album-plus');
 					break;
 				case 'cover_linktype':
-					$itemname = __( 'Link type', 'wppa' );
+					$itemname = __( 'Link type' , 'wp-photo-album-plus');
 					break;
 				case 'cover_linkpage':
-					$itemname = __( 'Link to', 'wppa' );
+					$itemname = __( 'Link to' , 'wp-photo-album-plus');
 					break;
 				case 'owner':
-					$itemname = __( 'Owner', 'wppa' );
+					$itemname = __( 'Owner' , 'wp-photo-album-plus');
 					if ( $value != '--- public ---' && ! get_user_by( 'login', $value ) ) {
-						echo '||4||'.sprintf( __( 'User %s does not exist', 'wppa' ), $value );
+						echo '||4||'.sprintf( __( 'User %s does not exist' , 'wp-photo-album-plus'), $value );
 						exit;
 					}
 					break;
 				case 'upload_limit_count':
-					wppa_ajax_check_range( $value, false, '0', false, __( 'Upload limit count', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '0', false, __( 'Upload limit count' , 'wp-photo-album-plus') );
 					if ( $wppa['error'] ) exit;
 					$oldval = $wpdb->get_var( $wpdb->prepare( 'SELECT `upload_limit` FROM '.WPPA_ALBUMS.' WHERE `id` = %s', $album ) );
 					$temp = explode( '/', $oldval );
 					$value = $value.'/'.$temp[1];
 					$item = 'upload_limit';
-					$itemname = __( 'Upload limit count', 'wppa' );
+					$itemname = __( 'Upload limit count' , 'wp-photo-album-plus');
 					break;
 				case 'upload_limit_time':
 					$oldval = $wpdb->get_var( $wpdb->prepare( 'SELECT `upload_limit` FROM '.WPPA_ALBUMS.' WHERE `id` = %s', $album ) );
 					$temp = explode( '/', $oldval );
 					$value = $temp[0].'/'.$value;
 					$item = 'upload_limit';
-					$itemname = __( 'Upload limit time', 'wppa' );
+					$itemname = __( 'Upload limit time' , 'wp-photo-album-plus');
 					break;
 				case 'default_tags':
 					$value = wppa_sanitize_tags( $value, false, true );
-					$itemname = __( 'Default tags', 'wppa' );
+					$itemname = __( 'Default tags' , 'wp-photo-album-plus');
 					break;
 				case 'cats':
 					$value = wppa_sanitize_cats( $value );
 					wppa_clear_catlist();
-					$itemname = __( 'Categories', 'wppa' );
+					$itemname = __( 'Categories' , 'wp-photo-album-plus');
 					break;
 				case 'suba_order_by':
-					$itemname = __( 'Sub albums sort order', 'wppa' );
+					$itemname = __( 'Sub albums sort order' , 'wp-photo-album-plus');
 					break;
 
 				case 'year':
@@ -888,7 +888,7 @@ global $wppa_session;
 				case 'day':
 				case 'hour':
 				case 'min':
-					$itemname = __( 'Schedule date/time', 'wppa' );
+					$itemname = __( 'Schedule date/time' , 'wp-photo-album-plus');
 					$scheduledtm = $wpdb->get_var( $wpdb->prepare( "SELECT `scheduledtm` FROM`".WPPA_ALBUMS."` WHERE `id` = %s", $album ) );
 					if ( ! $scheduledtm ) {
 						$scheduledtm = wppa_get_default_scheduledtm();
@@ -901,7 +901,7 @@ global $wppa_session;
 					if ( $item == 'min' ) 	$temp[4] = $value;
 					$scheduledtm = implode( ',', $temp );
 					wppa_update_album( array( 'id' => $album, 'scheduledtm' => $scheduledtm ) );
-					echo '||0||'.sprintf( __( '<b>%s</b> of album %s updated', 'wppa' ), $itemname, $album );
+					echo '||0||'.sprintf( __( '<b>%s</b> of album %s updated' , 'wp-photo-album-plus'), $itemname, $album );
 					exit;
 					break;
 
@@ -909,7 +909,7 @@ global $wppa_session;
 					$scheduledtm = $wpdb->get_var( $wpdb->prepare( "SELECT `scheduledtm` FROM `".WPPA_ALBUMS."` WHERE `id` = %s", $album ) );
 					if ( $scheduledtm ) {
 						$iret = $wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `status` = 'scheduled', `scheduledtm` = %s WHERE `album` = %s", $scheduledtm, $album ) );
-						echo '||0||'.__( 'All photos set to scheduled per date', 'wppa' ).' ( '.$iret.' ) '.wppa_format_scheduledtm( $scheduledtm );
+						echo '||0||'.__( 'All photos set to scheduled per date' , 'wp-photo-album-plus').' ( '.$iret.' ) '.wppa_format_scheduledtm( $scheduledtm );
 					}
 					exit;
 					break;
@@ -927,7 +927,7 @@ global $wppa_session;
 				if ( $item == 'name' ) {
 					wppa_create_pl_htaccess();
 				}
-				echo '||0||'.sprintf( __( '<b>%s</b> of album %s updated', 'wppa' ), $itemname, $album );
+				echo '||0||'.sprintf( __( '<b>%s</b> of album %s updated' , 'wp-photo-album-plus'), $itemname, $album );
 				if ( $item == 'upload_limit' ) {
 					echo '||';
 					$a = wppa_allow_uploads( $album );
@@ -936,8 +936,8 @@ global $wppa_session;
 				}
 			}
 			else {
-				echo '||2||'.sprintf( __( 'An error occurred while trying to update <b>%s</b> of album %s', 'wppa' ), $itemname, $album );
-				echo '<br>'.__( 'Press CTRL+F5 and try again.', 'wppa' );
+				echo '||2||'.sprintf( __( 'An error occurred while trying to update <b>%s</b> of album %s' , 'wp-photo-album-plus'), $itemname, $album );
+				echo '<br>'.__( 'Press CTRL+F5 and try again.' , 'wp-photo-album-plus');
 			}
 			wppa_clear_cache();
 			exit;
@@ -951,7 +951,7 @@ global $wppa_session;
 
 			// Check validity
 			if ( ! wp_verify_nonce( $nonce, 'wppa_nonce_'.$photo ) ) {
-				echo '||0||'.__( 'You do not have the rights to update comment status', 'wppa' ).$nonce;
+				echo '||0||'.__( 'You do not have the rights to update comment status' , 'wp-photo-album-plus').$nonce;
 				exit;																// Nonce check failed
 			}
 
@@ -960,10 +960,10 @@ global $wppa_session;
 			if ( wppa_switch( 'wppa_search_comments' ) ) wppa_index_update( 'photo', $photo );
 
 			if ( $iret !== false ) {
-				echo '||0||'.sprintf( __( 'Status of comment #%s updated', 'wppa' ), $comid );
+				echo '||0||'.sprintf( __( 'Status of comment #%s updated' , 'wp-photo-album-plus'), $comid );
 			}
 			else {
-				echo '||1||'.sprintf( __( 'Error updating status comment #%s', 'wppa' ), $comid );
+				echo '||1||'.sprintf( __( 'Error updating status comment #%s' , 'wp-photo-album-plus'), $comid );
 			}
 			exit;
 			break;
@@ -974,7 +974,7 @@ global $wppa_session;
 
 			// Check validity
 			if ( ! wp_verify_nonce( $nonce, 'wppa_nonce_'.$photo ) ) {
-				echo '||1||'.__( 'You do not have the rights to change photos', 'wppa' );
+				echo '||1||'.__( 'You do not have the rights to change photos' , 'wp-photo-album-plus');
 				exit;																// Nonce check failed
 			}
 
@@ -983,11 +983,11 @@ global $wppa_session;
 				if ( wppa_switch( 'wppa_watermark_thumbs' ) ) {
 					wppa_create_thumbnail( $photo );	// create new thumb
 				}
-				echo '||0||'.__( 'Watermark applied', 'wppa' );
+				echo '||0||'.__( 'Watermark applied' , 'wp-photo-album-plus');
 				exit;
 			}
 			else {
-				echo '||1||'.__( 'An error occured while trying to apply a watermark', 'wppa' );
+				echo '||1||'.__( 'An error occured while trying to apply a watermark' , 'wp-photo-album-plus');
 				exit;
 			}
 
@@ -1000,13 +1000,13 @@ global $wppa_session;
 
 			// Check validity
 			if ( ! wp_verify_nonce( $nonce, 'wppa_nonce_'.$photo ) ) {
-				echo '||0||'.__( 'You do not have the rights to update photo information', 'wppa' );
+				echo '||0||'.__( 'You do not have the rights to update photo information' , 'wp-photo-album-plus');
 				exit;																// Nonce check failed
 			}
 
 			if ( substr( $item, 0, 20 ) == 'wppa_watermark_file_' || substr( $item, 0, 19 ) == 'wppa_watermark_pos_' ) {
 				wppa_update_option( $item, $value );
-				echo '||0||'.sprintf( __( '%s updated to %s.', 'wppa' ), $item, $value );
+				echo '||0||'.sprintf( __( '%s updated to %s.' , 'wp-photo-album-plus'), $item, $value );
 				exit;
 			}
 
@@ -1056,17 +1056,17 @@ global $wppa_session;
 							if ( ! $err && $temp['5'] > '59' ) 			$err = '23';	// Sec > 59
 						}
 						if ( $err ) {
-							echo '||1||'.sprintf(__( 'Format error %s. Must be yyyy:mm:dd hh:mm:ss', 'wppa' ), $err );
+							echo '||1||'.sprintf(__( 'Format error %s. Must be yyyy:mm:dd hh:mm:ss' , 'wp-photo-album-plus'), $err );
 						}
 						else {
 							wppa_update_photo( array( 'id' => $photo, 'exifdtm' => $value ) );
-							echo '||0||'.__( 'Exif date/time updated', 'wppa' );
+							echo '||0||'.__( 'Exif date/time updated' , 'wp-photo-album-plus');
 						}
 						exit;
 					break;
 				case 'lat':
 					if ( ! is_numeric( $value ) || $value < '-90.0' || $value > '90.0' ) {
-						echo '||1||'.__( 'Enter a value > -90 and < 90', 'wppa' );
+						echo '||1||'.__( 'Enter a value > -90 and < 90' , 'wp-photo-album-plus');
 						exit;
 					}
 					$photodata = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM '.WPPA_PHOTOS.' WHERE `id` = %s', $photo ), ARRAY_A );
@@ -1074,15 +1074,15 @@ global $wppa_session;
 					$geo = explode( '/', $geo );
 					$geo = wppa_format_geo( $value, $geo['3'] );
 					$iret = $wpdb->query( $wpdb->prepare( 'UPDATE `'.WPPA_PHOTOS.'` SET `location` = %s WHERE `id` = %s', $geo, $photo ) );
-					if ( $iret ) echo '||0||'.__( 'Lattitude updated', 'wppa' );
+					if ( $iret ) echo '||0||'.__( 'Lattitude updated' , 'wp-photo-album-plus');
 					else {
-						echo '||1||'.__( 'Could not update lattitude', 'wppa' );
+						echo '||1||'.__( 'Could not update lattitude' , 'wp-photo-album-plus');
 					}
 					exit;
 					break;
 				case 'lon':
 					if ( ! is_numeric( $value ) || $value < '-180.0' || $value > '180.0' ) {
-						echo '||1||'.__( 'Enter a value > -180 and < 180', 'wppa' );
+						echo '||1||'.__( 'Enter a value > -180 and < 180' , 'wp-photo-album-plus');
 						exit;
 					}
 					$photodata = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM '.WPPA_PHOTOS.' WHERE `id` = %s', $photo ), ARRAY_A );
@@ -1090,9 +1090,9 @@ global $wppa_session;
 					$geo = explode( '/', $geo );
 					$geo = wppa_format_geo( $geo['2'], $value );
 					$iret = $wpdb->query( $wpdb->prepare( 'UPDATE `'.WPPA_PHOTOS.'` SET `location` = %s WHERE `id` = %s', $geo, $photo ) );
-					if ( $iret ) echo '||0||'.__( 'Longitude updated', 'wppa' );
+					if ( $iret ) echo '||0||'.__( 'Longitude updated' , 'wp-photo-album-plus');
 					else {
-						echo '||1||'.__( 'Could not update longitude', 'wppa' );
+						echo '||1||'.__( 'Could not update longitude' , 'wp-photo-album-plus');
 					}
 					exit;
 					break;
@@ -1100,19 +1100,19 @@ global $wppa_session;
 					if ( wppa_remake_files( '', $photo ) ) {
 						wppa_bump_photo_rev();
 						wppa_bump_thumb_rev();
-						echo '||0||'.__( 'Photo files remade', 'wppa' );
+						echo '||0||'.__( 'Photo files remade' , 'wp-photo-album-plus');
 					}
 					else {
-						echo '||2||'.__( 'Could not remake files', 'wppa' );
+						echo '||2||'.__( 'Could not remake files' , 'wp-photo-album-plus');
 					}
 					exit;
 					break;
 				case 'remakethumb':
 					if ( wppa_create_thumbnail( $photo ) ) {
-						echo '||0||'.__( 'Thumbnail remade', 'wppa' );
+						echo '||0||'.__( 'Thumbnail remade' , 'wp-photo-album-plus');
 					}
 					else {
-						echo '||0||'.__( 'Could not remake thumbnail', 'wppa' );
+						echo '||0||'.__( 'Could not remake thumbnail' , 'wp-photo-album-plus');
 					}
 					exit;
 					break;
@@ -1122,15 +1122,15 @@ global $wppa_session;
 					switch ( $item ) {
 						case 'rotleft':
 							$angle = '90';
-							$dir = __( 'left', 'wppa' );
+							$dir = __( 'left' , 'wp-photo-album-plus');
 							break;
 						case 'rot180':
 							$angle = '180';
-							$dir = __( '180&deg;', 'wppa' );
+							$dir = __( '180&deg;' , 'wp-photo-album-plus');
 							break;
 						case 'rotright':
 							$angle = '270';
-							$dir = __( 'right', 'wppa' );
+							$dir = __( 'right' , 'wp-photo-album-plus');
 							break;
 					}
 					$wppa['error'] = wppa_rotate( $photo, $angle );
@@ -1138,10 +1138,10 @@ global $wppa_session;
 						wppa_update_modified( $photo );
 						wppa_bump_photo_rev();
 						wppa_bump_thumb_rev();
-						echo '||0||'.sprintf( __( 'Photo %s rotated %s', 'wppa' ), $photo, $dir );
+						echo '||0||'.sprintf( __( 'Photo %s rotated %s' , 'wp-photo-album-plus'), $photo, $dir );
 					}
 					else {
-						echo '||'.$wppa['error'].'||'.sprintf( __( 'An error occurred while trying to rotate photo %s', 'wppa' ), $photo );
+						echo '||'.$wppa['error'].'||'.sprintf( __( 'An error occurred while trying to rotate photo %s' , 'wp-photo-album-plus'), $photo );
 					}
 					exit;
 					break;
@@ -1151,7 +1151,7 @@ global $wppa_session;
 					if ( wppa_switch( 'wppa_void_dups' ) ) {	// Check for already exists
 						$exists = wppa_file_is_in_album( $photodata['filename'], $value );
 						if ( $exists ) {	// Already exists
-							echo '||3||' . sprintf ( __( 'A photo with filename %s already exists in album %s.', 'wppa' ), $photodata['filename'], $value );
+							echo '||3||' . sprintf ( __( 'A photo with filename %s already exists in album %s.' , 'wp-photo-album-plus'), $photodata['filename'], $value );
 							exit;
 							break;
 						}
@@ -1161,10 +1161,10 @@ global $wppa_session;
 					$iret = $wpdb->query( $wpdb->prepare( 'UPDATE '.WPPA_PHOTOS.' SET `album` = %s WHERE `id` = %s', $value, $photo ) );
 					if ( $iret !== false ) {
 						wppa_move_source( $photodata['filename'], $photodata['album'], $value );
-						echo '||99||'.sprintf( __( 'Photo %s has been moved to album %s (%s)', 'wppa' ), $photo, wppa_get_album_name( $value ), $value );
+						echo '||99||'.sprintf( __( 'Photo %s has been moved to album %s (%s)' , 'wp-photo-album-plus'), $photo, wppa_get_album_name( $value ), $value );
 					}
 					else {
-						echo '||3||'.sprintf( __( 'An error occurred while trying to move photo %s', 'wppa' ), $photo );
+						echo '||3||'.sprintf( __( 'An error occurred while trying to move photo %s' , 'wp-photo-album-plus'), $photo );
 					}
 					exit;
 					break;
@@ -1174,7 +1174,7 @@ global $wppa_session;
 					if ( wppa_switch( 'wppa_void_dups' ) ) {	// Check for already exists
 						$exists = wppa_file_is_in_album( $photodata['filename'], $value );
 						if ( $exists ) {	// Already exists
-							echo '||4||' . sprintf ( __( 'A photo with filename %s already exists in album %s.', 'wppa' ), $photodata['filename'], $value );
+							echo '||4||' . sprintf ( __( 'A photo with filename %s already exists in album %s.' , 'wp-photo-album-plus'), $photodata['filename'], $value );
 							exit;
 							break;
 						}
@@ -1182,11 +1182,11 @@ global $wppa_session;
 					$wppa['error'] = wppa_copy_photo( $photo, $value );
 					wppa_flush_treecounts( $value );				// New album
 					if ( ! $wppa['error'] ) {
-						echo '||0||'.sprintf( __( 'Photo %s copied to album %s (%s)', 'wppa' ), $photo, wppa_get_album_name( $value ), $value );
+						echo '||0||'.sprintf( __( 'Photo %s copied to album %s (%s)' , 'wp-photo-album-plus'), $photo, wppa_get_album_name( $value ), $value );
 					}
 					else {
-						echo '||4||'.sprintf( __( 'An error occurred while trying to copy photo %s', 'wppa' ), $photo );
-						echo '<br>'.__( 'Press CTRL+F5 and try again.', 'wppa' );
+						echo '||4||'.sprintf( __( 'An error occurred while trying to copy photo %s' , 'wp-photo-album-plus'), $photo );
+						echo '<br>'.__( 'Press CTRL+F5 and try again.' , 'wp-photo-album-plus');
 					}
 					exit;
 					break;
@@ -1208,67 +1208,67 @@ global $wppa_session;
 					switch ( $item ) {
 						case 'name':
 							$value = strip_tags( $value );
-							$itemname = __( 'Name', 'wppa' );
+							$itemname = __( 'Name' , 'wp-photo-album-plus');
 							break;
 						case 'description':
-							$itemname = __( 'Description', 'wppa' );
+							$itemname = __( 'Description' , 'wp-photo-album-plus');
 							if ( wppa_switch( 'wppa_check_balance' ) ) {
 								$value = str_replace( array( '<br/>','<br>' ), '<br />', $value );
 								if ( balanceTags( $value, true ) != $value ) {
-									echo '||3||'.__( 'Unbalanced tags in photo description!', 'wppa' );
+									echo '||3||'.__( 'Unbalanced tags in photo description!' , 'wp-photo-album-plus');
 									exit;
 								}
 							}
 							break;
 						case 'p_order':
-							$itemname = __( 'Photo order #', 'wppa' );
+							$itemname = __( 'Photo order #' , 'wp-photo-album-plus');
 							break;
 						case 'owner':
 							$usr = get_user_by( 'login', $value );
 							if ( ! $usr ) {
-								echo '||4||' . sprintf( __( 'User %s does not exists', 'wppa' ), $value );
+								echo '||4||' . sprintf( __( 'User %s does not exists' , 'wp-photo-album-plus'), $value );
 								exit;
 							}
 							$value = $usr->user_login;	// Correct possible case mismatch
 							wppa_flush_upldr_cache( 'photoid', $photo ); 		// Current owner
 							wppa_flush_upldr_cache( 'username', $value );		// New owner
-							$itemname = __( 'Owner', 'wppa' );
+							$itemname = __( 'Owner' , 'wp-photo-album-plus');
 							break;
 						case 'linkurl':
-							$itemname = __( 'Link url', 'wppa' );
+							$itemname = __( 'Link url' , 'wp-photo-album-plus');
 							break;
 						case 'linktitle':
-							$itemname = __( 'Link title', 'wppa' );
+							$itemname = __( 'Link title' , 'wp-photo-album-plus');
 							break;
 						case 'linktarget':
-							$itemname = __( 'Link target', 'wppa' );
+							$itemname = __( 'Link target' , 'wp-photo-album-plus');
 							break;
 						case 'tags':
 							$value = wppa_sanitize_tags( $value, false, true );
 							$value = wppa_sanitize_tags( wppa_filter_iptc( wppa_filter_exif( $value, $photo ), $photo ) );
 							wppa_clear_taglist();
-							$itemname = __( 'Photo Tags', 'wppa' );
+							$itemname = __( 'Photo Tags' , 'wp-photo-album-plus');
 							break;
 						case 'status':
 							wppa_clear_taglist();
 							wppa_flush_upldr_cache( 'photoid', $photo );
-							$itemname = __( 'Status', 'wppa' );
+							$itemname = __( 'Status' , 'wp-photo-album-plus');
 							break;
 						case 'alt':
-							$itemname = __( 'HTML Alt', 'wppa' );
+							$itemname = __( 'HTML Alt' , 'wp-photo-album-plus');
 							$value = strip_tags( stripslashes( $value ) );
 							break;
 						case 'videox':
-							$itemname = __( 'Video width', 'wppa' );
+							$itemname = __( 'Video width' , 'wp-photo-album-plus');
 							if ( ! wppa_is_int( $value ) || $value < '0' ) {
-								echo '||3||'.__( 'Please enter an integer value >= 0', 'wppa' );
+								echo '||3||'.__( 'Please enter an integer value >= 0' , 'wp-photo-album-plus');
 								exit;
 							}
 							break;
 						case 'videoy':
-							$itemname = __( 'Video height', 'wppa' );
+							$itemname = __( 'Video height' , 'wp-photo-album-plus');
 							if ( ! wppa_is_int( $value ) || $value < '0' ) {
-								echo '||3||'.__( 'Please enter an integer value >= 0', 'wppa' );
+								echo '||3||'.__( 'Please enter an integer value >= 0' , 'wp-photo-album-plus');
 								exit;
 							}
 							break;
@@ -1283,15 +1283,15 @@ global $wppa_session;
 					if ( $iret !== false ) {
 						wppa_update_modified( $photo );
 						if ( wppa_is_video( $photo ) ) {
-							echo '||0||'.sprintf( __( '<b>%s</b> of video %s updated', 'wppa' ), $itemname, $photo );
+							echo '||0||'.sprintf( __( '<b>%s</b> of video %s updated' , 'wp-photo-album-plus'), $itemname, $photo );
 						}
 						else {
-							echo '||0||'.sprintf( __( '<b>%s</b> of photo %s updated', 'wppa' ), $itemname, $photo );
+							echo '||0||'.sprintf( __( '<b>%s</b> of photo %s updated' , 'wp-photo-album-plus'), $itemname, $photo );
 						}
 					}
 					else {
-						echo '||2||'.sprintf( __( 'An error occurred while trying to update <b>%s</b> of photo %s', 'wppa' ), $itemname, $photo );
-						echo '<br>'.__( 'Press CTRL+F5 and try again.', 'wppa' );
+						echo '||2||'.sprintf( __( 'An error occurred while trying to update <b>%s</b> of photo %s' , 'wp-photo-album-plus'), $itemname, $photo );
+						echo '<br>'.__( 'Press CTRL+F5 and try again.' , 'wp-photo-album-plus');
 						exit;
 					}
 					break;
@@ -1301,7 +1301,7 @@ global $wppa_session;
 				case 'day':
 				case 'hour':
 				case 'min':
-					$itemname = __( 'Schedule date/time', 'wppa' );
+					$itemname = __( 'Schedule date/time' , 'wp-photo-album-plus');
 					$scheduledtm = $wpdb->get_var( $wpdb->prepare( "SELECT `scheduledtm` FROM`".WPPA_PHOTOS."` WHERE `id` = %s", $photo ) );
 					if ( ! $scheduledtm ) {
 						$scheduledtm = wppa_get_default_scheduledtm();
@@ -1317,10 +1317,10 @@ global $wppa_session;
 					wppa_flush_treecounts( $wpdb->get_var( $wpdb->prepare( "SELECT `album` FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $photo ) ) );
 					wppa_flush_upldr_cache( 'photoid', $photo );
 					if ( wppa_is_video( $photo ) ) {
-						echo '||0||'.sprintf( __( '<b>%s</b> of video %s updated', 'wppa' ), $itemname, $photo );
+						echo '||0||'.sprintf( __( '<b>%s</b> of video %s updated' , 'wp-photo-album-plus'), $itemname, $photo );
 					}
 					else {
-						echo '||0||'.sprintf( __( '<b>%s</b> of photo %s updated', 'wppa' ), $itemname, $photo );
+						echo '||0||'.sprintf( __( '<b>%s</b> of photo %s updated' , 'wp-photo-album-plus'), $itemname, $photo );
 					}
 					break;
 
@@ -1346,14 +1346,14 @@ global $wppa_session;
 					$custom = serialize( $custom_data );
 					wppa_update_photo( array( 'id' => $photo, 'custom' => $custom ) );
 					wppa_index_update( 'photo', $photo );
-					echo '||0||'.sprintf( __( '<b>Custom field %s</b> of photo %s updated', 'wppa' ), wppa_opt( 'custom_caption_'.$index ), $photo );
+					echo '||0||'.sprintf( __( '<b>Custom field %s</b> of photo %s updated' , 'wp-photo-album-plus'), wppa_opt( 'custom_caption_'.$index ), $photo );
 					break;
 
 				case 'file':
 
 					// Check on upload error
 					if ( $_FILES['photo']['error'] ) {
-						echo '||'.$_FILES['photo']['error'].'||'.__( '<b>Error during upload.</b>', 'wppa');
+						echo '||'.$_FILES['photo']['error'].'||'.__( '<b>Error during upload.</b>', 'wp-photo-album-plus');
 						exit;
 					}
 
@@ -1378,12 +1378,12 @@ global $wppa_session;
 													) );
 
 						// Report success
-						echo '||0||'.__( 'Photo files updated.', 'wppa' );
+						echo '||0||'.__( 'Photo files updated.' , 'wp-photo-album-plus');
 					}
 					else {
 
 						// Report fail
-						echo '||1||'.__( 'Could not update files.', 'wppa' );
+						echo '||1||'.__( 'Could not update files.' , 'wp-photo-album-plus');
 					}
 					exit;
 					break;
@@ -1400,7 +1400,7 @@ global $wppa_session;
 			// Verify that we are legally here
 			$nonce  = $_REQUEST['wppa-nonce'];
 			if ( ! wp_verify_nonce( $nonce, 'wppa-nonce' ) ) {
-				echo '||1||'.__( 'You do not have the rights to update settings', 'wppa' );
+				echo '||1||'.__( 'You do not have the rights to update settings' , 'wp-photo-album-plus');
 				exit;																// Nonce check failed
 			}
 
@@ -1481,12 +1481,12 @@ global $wppa_session;
 				$setting = explode( '-', $option );
 				if ( $value == 'yes' ) {
 					$wp_roles->add_cap( $setting[2], $setting[1] );
-					echo '||0||'.__( 'Capability granted', 'wppa' ).'||';
+					echo '||0||'.__( 'Capability granted' , 'wp-photo-album-plus').'||';
 					exit;
 				}
 				elseif ( $value == 'no' ) {
 					$wp_roles->remove_cap( $setting[2], $setting[1] );
-					echo '||0||'.__( 'Capability withdrawn', 'wppa' ).'||';
+					echo '||0||'.__( 'Capability withdrawn' , 'wp-photo-album-plus').'||';
 					exit;
 				}
 				else {
@@ -1497,160 +1497,160 @@ global $wppa_session;
 			else switch ( $option ) {
 
 				case 'wppa_colwidth': //	 ??	  fixed   low	high	title
-					wppa_ajax_check_range( $value, 'auto', '100', false, __( 'Column width.', 'wppa' ) );
+					wppa_ajax_check_range( $value, 'auto', '100', false, __( 'Column width.' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_initial_colwidth':
-					wppa_ajax_check_range( $value, false, '100', false, __( 'Initial width.', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '100', false, __( 'Initial width.' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_fullsize':
-					wppa_ajax_check_range( $value, false, '100', false, __( 'Full size.', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '100', false, __( 'Full size.' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_maxheight':
-					wppa_ajax_check_range( $value, false, '100', false, __( 'Max height.', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '100', false, __( 'Max height.' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_thumbsize':
-					wppa_ajax_check_range( $value, false, '50', false, __( 'Thumbnail size.', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '50', false, __( 'Thumbnail size.' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_tf_width':
-					wppa_ajax_check_range( $value, false, '50', false, __( 'Thumbnail frame width', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '50', false, __( 'Thumbnail frame width' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_tf_height':
-					wppa_ajax_check_range( $value, false, '50',false,  __( 'Thumbnail frame height', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '50',false,  __( 'Thumbnail frame height' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_tn_margin':
-					wppa_ajax_check_range( $value, false, '0', false, __( 'Thumbnail Spacing', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '0', false, __( 'Thumbnail Spacing' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_min_thumbs':
-					wppa_ajax_check_range( $value, false, '0', false, __( 'Photocount treshold.', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '0', false, __( 'Photocount treshold.' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_thumb_page_size':
-					wppa_ajax_check_range( $value, false, '0', false, __( 'Thumb page size.', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '0', false, __( 'Thumb page size.' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_smallsize':
-					wppa_ajax_check_range( $value, false, '50', false, __( 'Cover photo size.', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '50', false, __( 'Cover photo size.' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_album_page_size':
-					wppa_ajax_check_range( $value, false, '0', false, __( 'Album page size.', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '0', false, __( 'Album page size.' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_topten_count':
-					wppa_ajax_check_range( $value, false, '2', false, __( 'Number of TopTen photos', 'wppa' ), '40' );
+					wppa_ajax_check_range( $value, false, '2', false, __( 'Number of TopTen photos' , 'wp-photo-album-plus'), '40' );
 					break;
 				case 'wppa_topten_size':
-					wppa_ajax_check_range( $value, false, '32', false, __( 'Widget image thumbnail size', 'wppa' ), wppa_get_minisize() );
+					wppa_ajax_check_range( $value, false, '32', false, __( 'Widget image thumbnail size' , 'wp-photo-album-plus'), wppa_get_minisize() );
 					break;
 				case 'wppa_max_cover_width':
-					wppa_ajax_check_range( $value, false, '150', false, __( 'Max Cover width', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '150', false, __( 'Max Cover width' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_text_frame_height':
-					wppa_ajax_check_range( $value, false, '0', false, __( 'Minimal description height', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '0', false, __( 'Minimal description height' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_cover_minheight':
-					wppa_ajax_check_range( $value, false, '0', false, __( 'Minimal cover height', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '0', false, __( 'Minimal cover height' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_head_and_text_frame_height':
-					wppa_ajax_check_range( $value, false, '0', false, __( 'Minimal text frame height', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '0', false, __( 'Minimal text frame height' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_bwidth':
-					wppa_ajax_check_range( $value, '', '0', false, __( 'Border width', 'wppa' ) );
+					wppa_ajax_check_range( $value, '', '0', false, __( 'Border width' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_bradius':
-					wppa_ajax_check_range( $value, '', '0', false, __( 'Border radius', 'wppa' ) );
+					wppa_ajax_check_range( $value, '', '0', false, __( 'Border radius' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_box_spacing':
-					wppa_ajax_check_range( $value, '', '-20', '100', __( 'Box spacing', 'wppa' ) );
+					wppa_ajax_check_range( $value, '', '-20', '100', __( 'Box spacing' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_popupsize':
 					$floor = wppa_opt( 'wppa_thumbsize' );
 					$temp  = wppa_opt( 'wppa_smallsize' );
 					if ( $temp > $floor ) $floor = $temp;
-					wppa_ajax_check_range( $value, false, $floor, wppa_opt( 'wppa_fullsize' ), __( 'Popup size', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, $floor, wppa_opt( 'wppa_fullsize' ), __( 'Popup size' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_fullimage_border_width':
-					wppa_ajax_check_range( $value, '', '0', false, __( 'Fullsize border width', 'wppa' ) );
+					wppa_ajax_check_range( $value, '', '0', false, __( 'Fullsize border width' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_lightbox_bordersize':
-					wppa_ajax_check_range( $value, false, '0', false, __( 'Lightbox Bordersize', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '0', false, __( 'Lightbox Bordersize' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_comment_count':
-					wppa_ajax_check_range( $value, false, '2', '40', __( 'Number of Comment widget entries', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '2', '40', __( 'Number of Comment widget entries' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_comment_size':
-					wppa_ajax_check_range( $value, false, '32', wppa_get_minisize(), __( 'Comment Widget image thumbnail size', 'wppa' ), wppa_get_minisize() );
+					wppa_ajax_check_range( $value, false, '32', wppa_get_minisize(), __( 'Comment Widget image thumbnail size' , 'wp-photo-album-plus'), wppa_get_minisize() );
 					break;
 				case 'wppa_thumb_opacity':
-					wppa_ajax_check_range( $value, false, '0', '100', __( 'Opacity.', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '0', '100', __( 'Opacity.' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_cover_opacity':
-					wppa_ajax_check_range( $value, false, '0', '100', __( 'Opacity.', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '0', '100', __( 'Opacity.' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_star_opacity':
-					wppa_ajax_check_range( $value, false, '0', '50', __( 'Opacity.', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '0', '50', __( 'Opacity.' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_filter_priority':
-					wppa_ajax_check_range( $value, false, '10', false, __( 'Filter priority', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '10', false, __( 'Filter priority' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_gravatar_size':
-					wppa_ajax_check_range( $value, false, '10', '256', __( 'Avatar size', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '10', '256', __( 'Avatar size' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_watermark_opacity':
-					wppa_ajax_check_range( $value, false, '0', '100', __( 'Watermark opacity', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '0', '100', __( 'Watermark opacity' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_watermark_opacity_text':
-					wppa_ajax_check_range( $value, false, '0', '100', __( 'Watermark opacity', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '0', '100', __( 'Watermark opacity' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_ovl_txt_lines':
-					wppa_ajax_check_range( $value, 'auto', '0', '24', __( 'Number of text lines', 'wppa' ) );
+					wppa_ajax_check_range( $value, 'auto', '0', '24', __( 'Number of text lines' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_ovl_opacity':
-					wppa_ajax_check_range( $value, false, '0', '100', __( 'Overlay opacity', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '0', '100', __( 'Overlay opacity' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_upload_limit_count':
-					wppa_ajax_check_range( $value, false, '0', false, __( 'Upload limit', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '0', false, __( 'Upload limit' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_dislike_mail_every':
-					wppa_ajax_check_range( $value, false, '0', false, __( 'Notify inappropriate', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '0', false, __( 'Notify inappropriate' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_dislike_set_pending':
-					wppa_ajax_check_range( $value, false, '0', false, __( 'Dislike pending', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '0', false, __( 'Dislike pending' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_dislike_delete':
-					wppa_ajax_check_range( $value, false, '0', false, __( 'Dislike delete', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '0', false, __( 'Dislike delete' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_max_execution_time':
-					wppa_ajax_check_range( $value, false, '0', '900', __( 'Max execution time', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '0', '900', __( 'Max execution time' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_cp_points_comment':
 				case 'wppa_cp_points_rating':
 				case 'wppa_cp_points_upload':
-					wppa_ajax_check_range( $value, false, '0', false, __( 'Cube Points points', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '0', false, __( 'Cube Points points' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_jpeg_quality':
-					wppa_ajax_check_range( $value, false, '20', '100', __( 'JPG Image quality', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '20', '100', __( 'JPG Image quality' , 'wp-photo-album-plus') );
 					if ( wppa_cdn( 'admin' ) == 'cloudinary' && ! $wppa['out'] ) {
 						wppa_delete_derived_from_cloudinary();
 					}
 					break;
 				case 'wppa_imgfact_count':
-					wppa_ajax_check_range( $value, false, '2', '24', __( 'Number of coverphotos', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '2', '24', __( 'Number of coverphotos' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_dislike_value':
-					wppa_ajax_check_range( $value, false, '-10', '0', __( 'Dislike value', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '-10', '0', __( 'Dislike value' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_slideshow_pagesize':
-					wppa_ajax_check_range( $value, false, '0', false, __( 'Slideshow pagesize', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '0', false, __( 'Slideshow pagesize' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_pagelinks_max':
-					wppa_ajax_check_range( $value, false, '0', false, __( 'Max Pagelinks', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '0', false, __( 'Max Pagelinks' , 'wp-photo-album-plus') );
 					break;
 				case 'wppa_rating_clear':
 					$iret1 = $wpdb->query( 'TRUNCATE TABLE '.WPPA_RATING );
 					$iret2 = $wpdb->query( 'UPDATE '.WPPA_PHOTOS.' SET mean_rating="0", rating_count="0" WHERE id > -1' );
 					if ( $iret1 !== false && $iret2 !== false ) {
 						delete_option( 'wppa_'.WPPA_RATING.'_lastkey' );
-						$title = __( 'Ratings cleared', 'wppa' );
+						$title = __( 'Ratings cleared' , 'wp-photo-album-plus');
 					}
 					else {
-						$title = __( 'Could not clear ratings', 'wppa' );
+						$title = __( 'Could not clear ratings' , 'wp-photo-album-plus');
 						$alert = $title;
 						$wppa['error'] = '1';
 					}
@@ -1659,10 +1659,10 @@ global $wppa_session;
 					$iret = $wpdb->query( "UPDATE `".WPPA_PHOTOS."` SET `views` = '0'" ) &&
 							$wpdb->query( "UPDATE `".WPPA_ALBUMS."` SET `views` = '0'" );
 					if ( $iret !== false ) {
-						$title = __( 'Viewcounts cleared', 'wppa' );
+						$title = __( 'Viewcounts cleared' , 'wp-photo-album-plus');
 					}
 					else {
-						$title = __( 'Could not clear viewcounts', 'wppa' );
+						$title = __( 'Could not clear viewcounts' , 'wp-photo-album-plus');
 						$alert = $title;
 						$wppa['error'] = '1';
 					}
@@ -1672,12 +1672,12 @@ global $wppa_session;
 					$iret = $wpdb->query( 'TRUNCATE TABLE '.WPPA_IPTC );
 					if ( $iret !== false ) {
 						delete_option( 'wppa_'.WPPA_IPTC.'_lastkey' );
-						$title = __( 'IPTC data cleared', 'wppa' );
-						$alert = __( 'Refresh this page to clear table X', 'wppa' );
+						$title = __( 'IPTC data cleared' , 'wp-photo-album-plus');
+						$alert = __( 'Refresh this page to clear table X' , 'wp-photo-album-plus');
 						update_option( 'wppa_index_need_remake', 'yes' );
 					}
 					else {
-						$title = __( 'Could not clear IPTC data', 'wppa' );
+						$title = __( 'Could not clear IPTC data' , 'wp-photo-album-plus');
 						$alert = $title;
 						$wppa['error'] = '1';
 					}
@@ -1687,12 +1687,12 @@ global $wppa_session;
 					$iret = $wpdb->query( 'TRUNCATE TABLE '.WPPA_EXIF );
 					if ( $iret !== false ) {
 						delete_option( 'wppa_'.WPPA_EXIF.'_lastkey' );
-						$title = __( 'EXIF data cleared', 'wppa' );
-						$alert = __( 'Refresh this page to clear table XI', 'wppa' );
+						$title = __( 'EXIF data cleared' , 'wp-photo-album-plus');
+						$alert = __( 'Refresh this page to clear table XI' , 'wp-photo-album-plus');
 						update_option( 'wppa_index_need_remake', 'yes' );
 					}
 					else {
-						$title = __( 'Could not clear EXIF data', 'wppa' );
+						$title = __( 'Could not clear EXIF data' , 'wp-photo-album-plus');
 						$alert = $title;
 						$wppa['error'] = '1';
 					}
@@ -1700,7 +1700,7 @@ global $wppa_session;
 
 				case 'wppa_recup':
 					$result = wppa_recuperate_iptc_exif();
-					echo '||0||'.__( 'Recuperation performed', 'wppa' ).'||'.$result;
+					echo '||0||'.__( 'Recuperation performed' , 'wp-photo-album-plus').'||'.$result;
 					exit;
 					break;
 
@@ -1715,7 +1715,7 @@ global $wppa_session;
 						}
 					}
 					if ( ! $wppa['error'] ) $old_minisize--;	// Trigger regen message
-					else $alert = __( 'Illegal format. Please enter a 6 digit hexadecimal color value. Example: #77bbff', 'wppa' );
+					else $alert = __( 'Illegal format. Please enter a 6 digit hexadecimal color value. Example: #77bbff' , 'wp-photo-album-plus');
 					break;
 
 				case 'wppa_thumb_aspect':
@@ -1741,8 +1741,8 @@ global $wppa_session;
 					}
 
 					update_option ( 'wppa_rerate_status', 'Required' );
-					$alert .= __( 'You just changed a setting that requires the recalculation of ratings.', 'wppa' );
-					$alert .= ' '.__( 'Please run the appropriate action in Table VIII.', 'wppa' );
+					$alert .= __( 'You just changed a setting that requires the recalculation of ratings.' , 'wp-photo-album-plus');
+					$alert .= ' '.__( 'Please run the appropriate action in Table VIII.' , 'wp-photo-album-plus');
 
 					wppa_update_option( $option, $value );
 					$wppa['error'] = '0';
@@ -1750,7 +1750,7 @@ global $wppa_session;
 
 				case 'wppa_newphoto_description':
 					if ( wppa_switch( 'wppa_check_balance' ) && balanceTags( $value, true ) != $value ) {
-						$alert = __( 'Unbalanced tags in photo description!', 'wppa' );
+						$alert = __( 'Unbalanced tags in photo description!' , 'wp-photo-album-plus');
 						$wppa['error'] = '1';
 					}
 					else {
@@ -1766,7 +1766,7 @@ global $wppa_session;
 					if ( ! is_dir( $dir ) ) @ mkdir( $dir );
 					if ( ! is_dir( $dir ) || ! is_writable( $dir ) ) {
 						$wppa['error'] = '1';
-						$alert = sprintf( __( 'Unable to create or write to %s', 'wppa' ), $dir );
+						$alert = sprintf( __( 'Unable to create or write to %s' , 'wp-photo-album-plus'), $dir );
 					}
 					break;
 
@@ -1775,14 +1775,14 @@ global $wppa_session;
 					$value = rtrim( $value, '/' );
 					if ( strpos( $value.'/', WPPA_UPLOAD_PATH.'/' ) !== false ) {
 						$wppa['error'] = '1';
-						$alert = sprintf( __( 'Source can not be inside the wppa folder.', 'wppa' ) );
+						$alert = sprintf( __( 'Source can not be inside the wppa folder.' , 'wp-photo-album-plus') );
 					}
 					else {
 						$dir = $value;
 						if ( ! is_dir( $dir ) ) @ mkdir( $dir );
 						if ( ! is_dir( $dir ) || ! is_writable( $dir ) ) {
 							$wppa['error'] = '1';
-							$alert = sprintf( __( 'Unable to create or write to %s', 'wppa' ), $dir );
+							$alert = sprintf( __( 'Unable to create or write to %s' , 'wp-photo-album-plus'), $dir );
 						}
 						else {
 							@ rmdir( $olddir ); 	// try to remove when empty
@@ -1792,14 +1792,14 @@ global $wppa_session;
 
 				case 'wppa_newpag_content':
 					if ( strpos( $value, 'w#album' ) === false ) {
-						$alert = __( 'The content must contain w#album', 'wppa' );
+						$alert = __( 'The content must contain w#album' , 'wp-photo-album-plus');
 						$wppa['error'] = '1';
 					}
 					break;
 
 				case 'wppa_gpx_shortcode':
 					if ( strpos( $value, 'w#lat' ) === false || strpos( $value, 'w#lon' ) === false ) {
-						$alert = __( 'The content must contain w#lat and w#lon', 'wppa' );
+						$alert = __( 'The content must contain w#lat and w#lon' , 'wp-photo-album-plus');
 						$wppa['error'] = '1';
 					}
 					break;
@@ -1841,13 +1841,13 @@ global $wppa_session;
 						wppa_update_option( 'wppa_grant_an_album', 'yes' );
 						$grantparent = wppa_opt( 'wppa_grant_parent' );
 						if ( ! wppa_album_exists( $grantparent ) ) {
-							$id = wppa_create_album_entry( array( 'name' => __( 'Members', 'wppa' ), 'description' => __( 'Parent of the member albums', 'wppa' ), 'a_parent' => '-1', 'upload_limit' => '0/0' ) );
+							$id = wppa_create_album_entry( array( 'name' => __( 'Members' , 'wp-photo-album-plus'), 'description' => __( 'Parent of the member albums' , 'wp-photo-album-plus'), 'a_parent' => '-1', 'upload_limit' => '0/0' ) );
 							if ( $id ) {
 								wppa_index_add( 'album', $id );
 								wppa_update_option( 'wppa_grant_parent', $id );
 							}
 							$my_post = array(
-								'post_title'    => __( 'Members', 'wppa' ),
+								'post_title'    => __( 'Members' , 'wp-photo-album-plus'),
 								'post_content'  => '[wppa type="content" album="'.$id.'"][/wppa]',
 								'post_status'   => 'publish',
 								'post_type'	  	=> 'page'
@@ -1942,6 +1942,7 @@ global $wppa_session;
 							wppa_update_option( 'wppa_custom_on', 'yes' );
 						}
 						wppa_update_option( 'wppa_fotomoto_on', 'yes' );
+						wppa_update_option( 'wppa_custom_on', 'yes' );
 					}
 					break;
 
@@ -1984,10 +1985,10 @@ global $wppa_session;
 							$black_listed_users[] = $value;
 							update_option( 'wppa_black_listed_users', $black_listed_users );
 						}
-						$alert = esc_js( sprintf( __( 'User %s has been blacklisted.', 'wppa' ), $value ) );
+						$alert = esc_js( sprintf( __( 'User %s has been blacklisted.' , 'wp-photo-album-plus'), $value ) );
 					}
 					else {
-						$alert = esc_js( sprintf( __( 'User %s does not exist.', 'wppa' ), $value ) );
+						$alert = esc_js( sprintf( __( 'User %s does not exist.' , 'wp-photo-album-plus'), $value ) );
 					}
 					$value = '';
 					break;
@@ -2010,11 +2011,11 @@ global $wppa_session;
 						if ( strpos( $custom_content, 'w#fotomoto' ) === false ) {
 							$custom_content = 'w#fotomoto '.$custom_content;
 							wppa_update_option( 'wppa_custom_content', $custom_content );
-							$alert = __( 'The content of the Custom box has been changed to display the Fotomoto toolbar.', 'wppa' ).' ';
+							$alert = __( 'The content of the Custom box has been changed to display the Fotomoto toolbar.' , 'wp-photo-album-plus').' ';
 						}
 						if ( ! wppa_switch( 'wppa_custom_on' ) ) {
 							wppa_update_option( 'wppa_custom_on', 'yes' );
-							$alert .= __( 'The display of the custom box has been enabled', 'wppa' );
+							$alert .= __( 'The display of the custom box has been enabled' , 'wp-photo-album-plus');
 						}
 					}
 					break;
@@ -2025,11 +2026,11 @@ global $wppa_session;
 						if ( strpos( $custom_content, 'w#location' ) === false ) {
 							$custom_content = $custom_content.' w#location';
 							wppa_update_option( 'wppa_custom_content', $custom_content );
-							$alert = __( 'The content of the Custom box has been changed to display maps.', 'wppa' ).' ';
+							$alert = __( 'The content of the Custom box has been changed to display maps.' , 'wp-photo-album-plus').' ';
 						}
 						if ( ! wppa_switch( 'wppa_custom_on' ) ) {
 							wppa_update_option( 'wppa_custom_on', 'yes' );
-							$alert .= __( 'The display of the custom box has been enabled', 'wppa' );
+							$alert .= __( 'The display of the custom box has been enabled' , 'wp-photo-album-plus');
 						}
 					}
 					break;
@@ -2055,7 +2056,7 @@ global $wppa_session;
 					$value = trim( $value, ' /' );
 					if ( ! $value ) {
 						$wppa['error'] = '714';
-						$wppa['out'] = __('This value can not be empty', 'wppa');
+						$wppa['out'] = __('This value can not be empty', 'wp-photo-album-plus');
 					}
 					else {
 						wppa_create_pl_htaccess( $value );
@@ -2087,12 +2088,12 @@ global $wppa_session;
 			}
 
 			if ( $wppa['error'] ) {
-				if ( ! $title ) $title = sprintf( __( 'Failed to set %s to %s', 'wppa' ), $option, $value );
+				if ( ! $title ) $title = sprintf( __( 'Failed to set %s to %s' , 'wp-photo-album-plus'), $option, $value );
 				if ( ! $alert ) $alert .= $wppa['out'];
 			}
 			else {
 				wppa_update_option( $option, $value );
-				if ( ! $title ) $title = sprintf( __( 'Setting %s updated to %s', 'wppa' ), $option, $value );
+				if ( ! $title ) $title = sprintf( __( 'Setting %s updated to %s' , 'wp-photo-album-plus'), $option, $value );
 			}
 
 			// Something to do after changing the setting?
@@ -2107,8 +2108,8 @@ global $wppa_session;
 			$new_minisize = wppa_get_minisize();
 			if ( $old_minisize != $new_minisize ) {
 				update_option ( 'wppa_regen_thumbs_status', 'Required' );
-				$alert .= __( 'You just changed a setting that requires the regeneration of thumbnails.', 'wppa' );
-				$alert .= ' '.__( 'Please run the appropriate action in Table VIII.', 'wppa' );
+				$alert .= __( 'You just changed a setting that requires the regeneration of thumbnails.' , 'wp-photo-album-plus');
+				$alert .= ' '.__( 'Please run the appropriate action in Table VIII.' , 'wp-photo-album-plus');
 			}
 
 			// Produce the response text
@@ -2162,7 +2163,7 @@ global $wppa_session;
 		case 'destroyalbum':
 			$album = isset( $_GET['album'] ) ? $_GET['album'] : '0';
 			if ( ! $album ) {
-				_e('Missing album id', 'wppa');
+				_e('Missing album id', 'wp-photo-album-plus');
 				exit;
 			}
 			$nonce = isset( $_GET['nonce'] ) ? $_GET['nonce'] : '';
@@ -2182,7 +2183,7 @@ global $wppa_session;
 			}
 			if ( wppa_is_user_blacklisted() ) $may = false;
 			if ( ! $imay ) {
-				_e('You do not have the rights to delete this album', 'wppa');
+				_e('You do not have the rights to delete this album', 'wp-photo-album-plus');
 				exit;
 			}
 
@@ -2221,17 +2222,17 @@ global $wppa;
 
 	// Compose error message
 	if ( $low !== false && $high === false ) {	// Only Minimum given
-		$wppa['out'] .= __( 'Please supply a numeric value greater than or equal to', 'wppa' ) . ' ' . $low . ' ' . __( 'for', 'wppa' ) . ' ' . $title;
+		$wppa['out'] .= __( 'Please supply a numeric value greater than or equal to' , 'wp-photo-album-plus') . ' ' . $low . ' ' . __( 'for' , 'wp-photo-album-plus') . ' ' . $title;
 		if ( $fixed !== false ) {
-			if ( $fixed ) $wppa['out'] .= '. ' . __( 'You may also enter:', 'wppa' ) . ' ' . $fixed;
-			else $wppa['out'] .= '. ' . __( 'You may also leave/set this blank', 'wppa' );
+			if ( $fixed ) $wppa['out'] .= '. ' . __( 'You may also enter:' , 'wp-photo-album-plus') . ' ' . $fixed;
+			else $wppa['out'] .= '. ' . __( 'You may also leave/set this blank' , 'wp-photo-album-plus');
 		}
 	}
 	else {	// Also Maximum given
-		$wppa['out'] .= __( 'Please supply a numeric value greater than or equal to', 'wppa' ) . ' ' . $low . ' ' . __( 'and less than or equal to', 'wppa' ) . ' ' . $high . ' ' . __( 'for', 'wppa' ) . ' ' . $title;
+		$wppa['out'] .= __( 'Please supply a numeric value greater than or equal to' , 'wp-photo-album-plus') . ' ' . $low . ' ' . __( 'and less than or equal to' , 'wp-photo-album-plus') . ' ' . $high . ' ' . __( 'for' , 'wp-photo-album-plus') . ' ' . $title;
 		if ( $fixed !== false ) {
-			if ( $fixed ) $wppa['out'] .= '. ' . __( 'You may also enter:', 'wppa' ) . ' ' . $fixed;
-			else $wppa['out'] .= '. ' . __( 'You may also leave/set this blank', 'wppa' );
+			if ( $fixed ) $wppa['out'] .= '. ' . __( 'You may also enter:' , 'wp-photo-album-plus') . ' ' . $fixed;
+			else $wppa['out'] .= '. ' . __( 'You may also leave/set this blank' , 'wp-photo-album-plus');
 		}
 	}
 }

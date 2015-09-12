@@ -3,7 +3,7 @@
 /* Package: wp-photo-album-plus
 /*
 /* Various style computation routines
-/* Version 6.2.8
+/* Version 6.3.0
 /*
 */
 

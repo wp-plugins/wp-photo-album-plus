@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains photo source file management routines
-* Version 6.1.0
+* Version 6.3.0
 *
 */
  

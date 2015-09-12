@@ -3,15 +3,15 @@
 * Package: wp-photo-album-plus
 *
 * display the search widget
-* Version 6.2.0
+* Version 6.3.0
 *
 */
 
 class SearchPhotos extends WP_Widget {
     /** constructor */
     function __construct() {
-		$widget_ops = array('classname' => 'wppa_search_photos', 'description' => __( 'WPPA+ Search Photos', 'wppa') );	//
-		parent::__construct('wppa_search_photos', __('Search Photos', 'wppa'), $widget_ops);															//
+		$widget_ops = array('classname' => 'wppa_search_photos', 'description' => __( 'WPPA+ Search Photos', 'wp-photo-album-plus') );	//
+		parent::__construct('wppa_search_photos', __('Search Photos', 'wp-photo-album-plus'), $widget_ops);															//
     }
 
 	/** @see WP_Widget::widget */
@@ -32,7 +32,7 @@ class SearchPhotos extends WP_Widget {
 
         extract( $args );
 
-		$instance = wp_parse_args( (array) $instance, array( 'title' => __('Search Photos', 'wppa'), 'label' => '', 'root' => false, 'sub' => false ) );
+		$instance = wp_parse_args( (array) $instance, array( 'title' => __('Search Photos', 'wp-photo-album-plus'), 'label' => '', 'root' => false, 'sub' => false ) );
         
  		$widget_title = apply_filters('widget_title', $instance['title']);
 
@@ -60,7 +60,7 @@ class SearchPhotos extends WP_Widget {
     /** @see WP_Widget::form */
     function form($instance) {				
 		//Defaults
-		$instance = wp_parse_args( (array) $instance, array( 'title' => __('Search Photos', 'wppa'), 'label' => '', 'root' => false, 'sub' => false ) );
+		$instance = wp_parse_args( (array) $instance, array( 'title' => __('Search Photos', 'wp-photo-album-plus'), 'label' => '', 'root' => false, 'sub' => false ) );
 		$title = $instance['title'];
 		$label = $instance['label'];
 		$root  = $instance['root'];
@@ -68,27 +68,27 @@ class SearchPhotos extends WP_Widget {
 	?>
 		<p>
 			<label for="<?php echo $this->get_field_id('title'); ?>">
-				<?php _e('Title:', 'wppa'); ?>
+				<?php _e('Title:', 'wp-photo-album-plus'); ?>
 			</label>
 			<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id('label'); ?>">
-				<?php _e('Text:', 'wppa');  ?>
+				<?php _e('Text:', 'wp-photo-album-plus');  ?>
 			</label>
 			<input class="widefat" id="<?php echo $this->get_field_id('label'); ?>" name="<?php echo $this->get_field_name('label'); ?>" type="text" value="<?php echo esc_attr($label) ?>" />
 		</p>
-		<small><?php _e('Enter optional text that will appear before the input box. This may contain HTML so you can change font size and color.', 'wppa'); ?></small>
+		<small><?php _e('Enter optional text that will appear before the input box. This may contain HTML so you can change font size and color.', 'wp-photo-album-plus'); ?></small>
 		<p>
 			<input type="checkbox" <?php if ( $root ) echo 'checked="checked"' ?> id="<?php echo $this->get_field_id('root'); ?>" name="<?php echo $this->get_field_name('root'); ?>" />
 			<label for="<?php echo $this->get_field_id('root'); ?>">
-				<?php _e('Enable rootsearch', 'wppa'); ?>
+				<?php _e('Enable rootsearch', 'wp-photo-album-plus'); ?>
 			</label>
 		</p>
 		<p>
 			<input type="checkbox" <?php if ( $sub ) echo 'checked="checked"' ?> id="<?php echo $this->get_field_id('sub'); ?>" name="<?php echo $this->get_field_name('sub'); ?>" />
 			<label for="<?php echo $this->get_field_id('sub'); ?>">
-				<?php _e('Enable subsearch', 'wppa'); ?>
+				<?php _e('Enable subsearch', 'wp-photo-album-plus'); ?>
 			</label>
 		</p>
 <?php

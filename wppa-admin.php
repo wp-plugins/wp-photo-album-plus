@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains the admin menu and startups the admin pages
-* Version 6.2.10
+* Version 6.3.0
 *
 */
 
@@ -51,22 +51,22 @@ function wppa_add_admin() {
 	$icon_url = WPPA_URL . '/images/camera16.png';
 
 	// 				page_title        menu_title                                      capability    menu_slug          function      icon_url    position
-	add_menu_page( 'WP Photo Album', __('Photo&thinsp;Albums', 'wppa').$tot_pending, 'wppa_admin', 'wppa_admin_menu', 'wppa_admin', $icon_url ); //,'10' );
+	add_menu_page( 'WP Photo Album', __('Photo&thinsp;Albums', 'wp-photo-album-plus').$tot_pending, 'wppa_admin', 'wppa_admin_menu', 'wppa_admin', $icon_url ); //,'10' );
 
 	//                 parent_slug        page_title                             menu_title                             capability            menu_slug               function
-	add_submenu_page( 'wppa_admin_menu',  __('Album Admin', 'wppa'),			 __('Album Admin', 'wppa').$upl_pending,'wppa_admin',        'wppa_admin_menu',      'wppa_admin' );
-    add_submenu_page( 'wppa_admin_menu',  __('Upload Photos', 'wppa'),           __('Upload Photos', 'wppa'),          'wppa_upload',        'wppa_upload_photos',   'wppa_page_upload' );
+	add_submenu_page( 'wppa_admin_menu',  __('Album Admin', 'wp-photo-album-plus'),			 __('Album Admin', 'wp-photo-album-plus').$upl_pending,'wppa_admin',        'wppa_admin_menu',      'wppa_admin' );
+    add_submenu_page( 'wppa_admin_menu',  __('Upload Photos', 'wp-photo-album-plus'),           __('Upload Photos', 'wp-photo-album-plus'),          'wppa_upload',        'wppa_upload_photos',   'wppa_page_upload' );
 	// Uploader without album admin rights, but when the upload_edit switch set, may edit his own photos
 	if ( ! current_user_can('wppa_admin') && wppa_switch('wppa_upload_edit') ) {
-		add_submenu_page( 'wppa_admin_menu',  __('Edit Photos', 'wppa'), 		 __('Edit Photos', 'wppa'), 		   'wppa_upload', 		 'wppa_edit_photo', 	 'wppa_edit_photo' );
+		add_submenu_page( 'wppa_admin_menu',  __('Edit Photos', 'wp-photo-album-plus'), 		 __('Edit Photos', 'wp-photo-album-plus'), 		   'wppa_upload', 		 'wppa_edit_photo', 	 'wppa_edit_photo' );
 	}
-	add_submenu_page( 'wppa_admin_menu',  __('Import Photos', 'wppa'),           __('Import Photos', 'wppa'),          'wppa_import',        'wppa_import_photos',   'wppa_page_import' );
-	add_submenu_page( 'wppa_admin_menu',  __('Moderate Photos', 'wppa'),		 __('Moderate Photos', 'wppa').$tot_pending, 'wppa_moderate', 	 'wppa_moderate_photos', 'wppa_page_moderate' );
-	add_submenu_page( 'wppa_admin_menu',  __('Export Photos', 'wppa'),           __('Export Photos', 'wppa'),          'wppa_export',     	 'wppa_export_photos',   'wppa_page_export' );
-    add_submenu_page( 'wppa_admin_menu',  __('Settings', 'wppa'),                __('Settings', 'wppa'),               'wppa_settings',      'wppa_options',         'wppa_page_options' );
-	add_submenu_page( 'wppa_admin_menu',  __('Photo of the day Widget', 'wppa'), __('Photo of the day', 'wppa'),       'wppa_potd', 		 'wppa_photo_of_the_day', 'wppa_sidebar_page_options' );
-	add_submenu_page( 'wppa_admin_menu',  __('Manage comments', 'wppa'),         __('Comments', 'wppa').$com_pending,  'wppa_comments',      'wppa_manage_comments', 'wppa_comment_admin' );
-    add_submenu_page( 'wppa_admin_menu',  __('Help &amp; Info', 'wppa'),         __('Help &amp; Info', 'wppa'),        'wppa_help',          'wppa_help',            'wppa_page_help' );
+	add_submenu_page( 'wppa_admin_menu',  __('Import Photos', 'wp-photo-album-plus'),           __('Import Photos', 'wp-photo-album-plus'),          'wppa_import',        'wppa_import_photos',   'wppa_page_import' );
+	add_submenu_page( 'wppa_admin_menu',  __('Moderate Photos', 'wp-photo-album-plus'),		 __('Moderate Photos', 'wp-photo-album-plus').$tot_pending, 'wppa_moderate', 	 'wppa_moderate_photos', 'wppa_page_moderate' );
+	add_submenu_page( 'wppa_admin_menu',  __('Export Photos', 'wp-photo-album-plus'),           __('Export Photos', 'wp-photo-album-plus'),          'wppa_export',     	 'wppa_export_photos',   'wppa_page_export' );
+    add_submenu_page( 'wppa_admin_menu',  __('Settings', 'wp-photo-album-plus'),                __('Settings', 'wp-photo-album-plus'),               'wppa_settings',      'wppa_options',         'wppa_page_options' );
+	add_submenu_page( 'wppa_admin_menu',  __('Photo of the day Widget', 'wp-photo-album-plus'), __('Photo of the day', 'wp-photo-album-plus'),       'wppa_potd', 		 'wppa_photo_of_the_day', 'wppa_sidebar_page_options' );
+	add_submenu_page( 'wppa_admin_menu',  __('Manage comments', 'wp-photo-album-plus'),         __('Comments', 'wp-photo-album-plus').$com_pending,  'wppa_comments',      'wppa_manage_comments', 'wppa_comment_admin' );
+    add_submenu_page( 'wppa_admin_menu',  __('Help &amp; Info', 'wp-photo-album-plus'),         __('Help &amp; Info', 'wp-photo-album-plus'),        'wppa_help',          'wppa_help',            'wppa_page_help' );
 }
 
 /* ADMIN STYLES */
@@ -106,22 +106,22 @@ function wppa_admin() {
 }
 // Upload admin page
 function wppa_page_upload() {
-	if ( wppa_is_user_blacklisted() ) wp_die(__( 'Uploading is temporary diabled for you', 'wppa' ) );
+	if ( wppa_is_user_blacklisted() ) wp_die(__( 'Uploading is temporary diabled for you' , 'wp-photo-album-plus') );
 	require_once 'wppa-upload.php';
 	_wppa_page_upload();
 }
 // Edit photo(s)
 function wppa_edit_photo() {
-	if ( wppa_is_user_blacklisted() ) wp_die(__( 'Editing is temporary diabled for you', 'wppa' ) );
+	if ( wppa_is_user_blacklisted() ) wp_die(__( 'Editing is temporary diabled for you' , 'wp-photo-album-plus') );
 	require_once 'wppa-photo-admin-autosave.php';
 	wppa_publish_scheduled();
 	_wppa_edit_photo();
 }
 // Import admin page
 function wppa_page_import() {
-	if ( wppa_is_user_blacklisted() ) wp_die(__( 'Importing is temporary diabled for you', 'wppa' ) );
+	if ( wppa_is_user_blacklisted() ) wp_die(__( 'Importing is temporary diabled for you' , 'wp-photo-album-plus') );
 	require_once 'wppa-upload.php';
-	echo '<script type="text/javascript">/* <![CDATA[ */wppa_import = "'.__('Import', 'wppa').'"; wppa_update = "'.__('Update', 'wppa').'";/* ]]> */</script>';
+	echo '<script type="text/javascript">/* <![CDATA[ */wppa_import = "'.__('Import', 'wp-photo-album-plus').'"; wppa_update = "'.__('Update', 'wp-photo-album-plus').'";/* ]]> */</script>';
 	_wppa_page_import();
 }
 // Moderate admin page

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the featured photos
-* Version 6.2.10
+* Version 6.3.0
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -11,8 +11,8 @@ if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 class FeaTenWidget extends WP_Widget {
     /** constructor */
     function __construct() {
-		$widget_ops = array('classname' => 'wppa_featen_widget', 'description' => __( 'WPPA+ Featured Photos', 'wppa') );
-		parent::__construct('wppa_featen_widget', __('Featured Photos', 'wppa'), $widget_ops);
+		$widget_ops = array('classname' => 'wppa_featen_widget', 'description' => __( 'WPPA+ Featured Photos', 'wp-photo-album-plus') );
+		parent::__construct('wppa_featen_widget', __('Featured Photos', 'wp-photo-album-plus'), $widget_ops);
     }
 
 	/** @see WP_Widget::widget */
@@ -34,7 +34,7 @@ class FeaTenWidget extends WP_Widget {
 		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'album' => '' ) );
 
  		$widget_title = apply_filters('widget_title', $instance['title'] );
-		$page = in_array( $wppa_opt['wppa_featen_widget_linktype'], $wppa['links_no_page'] ) ? '' : wppa_get_the_landing_page('wppa_featen_widget_linkpage', __a('Featured photos'));
+		$page = in_array( $wppa_opt['wppa_featen_widget_linktype'], $wppa['links_no_page'] ) ? '' : wppa_get_the_landing_page('wppa_featen_widget_linkpage', __('Featured photos', 'wp-photo-album-plus'));
 
 		$max  = $wppa_opt['wppa_featen_count'];
 
@@ -71,7 +71,7 @@ class FeaTenWidget extends WP_Widget {
 
 			if ($image) {
 				$no_album = !$album;
-				if ($no_album) $tit = __a('View the featured photos', 'wppa_theme'); else $tit = esc_attr(wppa_qtrans(stripslashes($image['description'])));
+				if ($no_album) $tit = __('View the featured photos', 'wp-photo-album-plus'); else $tit = esc_attr(__(stripslashes($image['description'])));
 				$link       = wppa_get_imglnk_a('featen', $image['id'], '', $tit, '', $no_album);
 				$file       = wppa_get_thumb_path($image['id']);
 				$imgstyle_a = wppa_get_imgstyle_a( $image['id'], $file, $maxw, 'center', 'ttthumb' );
@@ -93,7 +93,7 @@ class FeaTenWidget extends WP_Widget {
 
 			}
 			else {	// No image
-				$widget_content .= __a('Photo not found.', 'wppa_theme');
+				$widget_content .= __('Photo not found.', 'wp-photo-album-plus');
 			}
 
 			$widget_content .= "\n".'</div>';
@@ -125,15 +125,15 @@ class FeaTenWidget extends WP_Widget {
     function form($instance) {
 		global $wppa_opt;
 		//Defaults
-		$instance = wp_parse_args( (array) $instance, array( 'title' => __('Featured Photos', 'wppa'), 'album' => '0') );
+		$instance = wp_parse_args( (array) $instance, array( 'title' => __('Featured Photos', 'wp-photo-album-plus'), 'album' => '0') );
  		$widget_title = apply_filters('widget_title', $instance['title']);
 
 		$album = $instance['album'];
 ?>
-		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label>
+		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wp-photo-album-plus'); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $widget_title; ?>" />
 		</p>
-		<p><label for="<?php echo $this->get_field_id('album'); ?>"><?php _e('Album:', 'wppa'); ?></label>
+		<p><label for="<?php echo $this->get_field_id('album'); ?>"><?php _e('Album:', 'wp-photo-album-plus'); ?></label>
 			<select class="widefat" id="<?php echo $this->get_field_id('album'); ?>" name="<?php echo $this->get_field_name('album'); ?>" >
 
 				<?php echo wppa_album_select_a(array('selected' => $album, 'addall' => true, 'path' => wppa_switch('wppa_hier_albsel'))) //('', $album, true, '', '', true); ?>
@@ -141,7 +141,7 @@ class FeaTenWidget extends WP_Widget {
 			</select>
 		</p>
 
-		<p><?php _e('You can set the sizes in this widget in the <b>Photo Albums -> Settings</b> admin page.', 'wppa'); ?></p>
+		<p><?php _e('You can set the sizes in this widget in the <b>Photo Albums -> Settings</b> admin page.', 'wp-photo-album-plus'); ?></p>
 <?php
     }
 

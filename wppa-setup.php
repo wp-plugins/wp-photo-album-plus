@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 6.2.12
+* Version 6.3.0
 *
 */
 
@@ -334,7 +334,7 @@ global $silent;
 			if ( $wppa_revno >= '5422' ) {												// The rev where we fix it
 				if ( get_option( 'wppa_rating_on', 'no' ) == 'yes' ) { 					// Only if rating used
 					if ( get_option( 'wppa_ajax_non_admin', 'yes' ) == 'no' ) { 		// Only if backend ajax
-						update_option( 'wppa_rerate_status', __('Required', 'wppa') ); 	// Make sure they see the message
+						update_option( 'wppa_rerate_status', __('Required', 'wp-photo-album-plus') ); 	// Make sure they see the message
 					}
 				}
 			}
@@ -410,9 +410,9 @@ global $silent;
 		}
 	}
 	if ( $key ) {
-		$msg = '<center>' . __('IMPORTANT UPGRADE NOTICE', 'wppa') . '</center><br/>';
-		if ($key == '1' || $key == '3') $msg .= '<br/>' . __('Please CHECK your customized WPPA-STYLE.CSS file against the newly supplied one. You may wish to add or modify some attributes. Be aware of the fact that most settings can now be set in the admin settings page.', 'wppa');
-		if ($key == '2' || $key == '3') $msg .= '<br/>' . __('Please REPLACE your customized WPPA-THEME.PHP file by the newly supplied one, or just remove it from your theme directory. You may modify it later if you wish. Your current customized version is NOT compatible with this version of the plugin software.', 'wppa');
+		$msg = '<center>' . __('IMPORTANT UPGRADE NOTICE', 'wp-photo-album-plus') . '</center><br/>';
+		if ($key == '1' || $key == '3') $msg .= '<br/>' . __('Please CHECK your customized WPPA-STYLE.CSS file against the newly supplied one. You may wish to add or modify some attributes. Be aware of the fact that most settings can now be set in the admin settings page.', 'wp-photo-album-plus');
+		if ($key == '2' || $key == '3') $msg .= '<br/>' . __('Please REPLACE your customized WPPA-THEME.PHP file by the newly supplied one, or just remove it from your theme directory. You may modify it later if you wish. Your current customized version is NOT compatible with this version of the plugin software.', 'wp-photo-album-plus');
 		wppa_ok_message($msg);
 	}
 
@@ -438,15 +438,15 @@ global $silent;
 		wppa_update_option('wppa_revision', $wppa_revno);
 		if ( WPPA_DEBUG ) {
 			if ( is_multisite() ) {
-				wppa_ok_message(sprintf(__('WPPA+ successfully updated in multi site mode to db version %s.', 'wppa'), $wppa_revno));
+				wppa_ok_message(sprintf(__('WPPA+ successfully updated in multi site mode to db version %s.', 'wp-photo-album-plus'), $wppa_revno));
 			}
 			else {
-				wppa_ok_message(sprintf(__('WPPA+ successfully updated in single site mode to db version %s.', 'wppa'), $wppa_revno));
+				wppa_ok_message(sprintf(__('WPPA+ successfully updated in single site mode to db version %s.', 'wp-photo-album-plus'), $wppa_revno));
 			}
 		}
 	}
 	else {
-		if ( WPPA_DEBUG ) wppa_error_message(__('An error occurred during update', 'wppa'));
+		if ( WPPA_DEBUG ) wppa_error_message(__('An error occurred during update', 'wp-photo-album-plus'));
 	}
 }
 function wppa_setup_query($query) {
@@ -741,7 +741,7 @@ Hide Camera info
 						'wppa_user_upload_login'		=> 'yes',
 						'wppa_ajax_upload'				=> 'yes',
 						'wppa_copyright_on'				=> 'yes',		// 19
-						'wppa_copyright_notice'			=> __('<span style="color:red" >Warning: Do not upload copyrighted material!</span>', 'wppa'),	// 20
+						'wppa_copyright_notice'			=> __('<span style="color:red" >Warning: Do not upload copyrighted material!</span>', 'wp-photo-album-plus'),	// 20
 						'wppa_watermark_user'			=> 'no',
 						'wppa_name_user' 				=> 'yes',
 						'wppa_apply_newphoto_desc_user'	=> 'no',
@@ -750,18 +750,18 @@ Hide Camera info
 						'wppa_fe_upload_tags' 			=> 'no',
 						'wppa_up_tagselbox_on_1' 		=> 'yes',		// 18
 						'wppa_up_tagselbox_multi_1' 	=> 'yes',
-						'wppa_up_tagselbox_title_1' 	=> __( 'Select tags:', 'wppa' ),
+						'wppa_up_tagselbox_title_1' 	=> __( 'Select tags:' , 'wp-photo-album-plus'),
 						'wppa_up_tagselbox_content_1' 	=> '',
 						'wppa_up_tagselbox_on_2' 		=> 'no',
 						'wppa_up_tagselbox_multi_2' 	=> 'yes',
-						'wppa_up_tagselbox_title_2' 	=> __( 'Select tags:', 'wppa' ),
+						'wppa_up_tagselbox_title_2' 	=> __( 'Select tags:' , 'wp-photo-album-plus'),
 						'wppa_up_tagselbox_content_2' 	=> '',
 						'wppa_up_tagselbox_on_3' 		=> 'no',
 						'wppa_up_tagselbox_multi_3' 	=> 'yes',
-						'wppa_up_tagselbox_title_3' 	=> __( 'Select tags:', 'wppa' ),
+						'wppa_up_tagselbox_title_3' 	=> __( 'Select tags:' , 'wp-photo-album-plus'),
 						'wppa_up_tagselbox_content_3' 	=> '',
 						'wppa_up_tag_input_on' 			=> 'yes',
-						'wppa_up_tag_input_title' 		=> __( 'Enter new tags:', 'wppa' ),
+						'wppa_up_tag_input_title' 		=> __( 'Enter new tags:' , 'wp-photo-album-plus'),
 						'wppa_up_tag_preview' 			=> 'yes',
 
 						// J Custom datafields
@@ -908,8 +908,8 @@ Hide Camera info
 						'wppa_dislike_value'			=> '-5',
 						'wppa_next_on_callback'			=> 'no',
 						'wppa_star_opacity'				=> '20',
-						'wppa_vote_button_text'			=> __a('Vote for me!'),
-						'wppa_voted_button_text'		=> __a('Voted for me'),
+						'wppa_vote_button_text'			=> __('Vote for me!', 'wp-photo-album-plus'),
+						'wppa_voted_button_text'		=> __('Voted for me', 'wp-photo-album-plus'),
 						'wppa_vote_thumb'				=> 'no',
 						'wppa_medal_bronze_when'		=> '5',
 						'wppa_medal_silver_when'		=> '10',
@@ -1327,9 +1327,9 @@ Hide Camera info
 						'wppa_fotomoto_min_width' 				=> '400',
 
 						// Photo of the day widget
-						'wppa_widgettitle'			=> __('Photo of the day', 'wppa'),
-						'wppa_widget_linkurl'		=> __('Type your custom url here', 'wppa'),
-						'wppa_widget_linktitle' 	=> __('Type the title here', 'wppa'),
+						'wppa_widgettitle'			=> __('Photo of the day', 'wp-photo-album-plus'),
+						'wppa_widget_linkurl'		=> __('Type your custom url here', 'wp-photo-album-plus'),
+						'wppa_widget_linktitle' 	=> __('Type the title here', 'wp-photo-album-plus'),
 						'wppa_widget_subtitle'		=> 'none',
 						'wppa_widget_album'			=> '0',
 						'wppa_widget_photo'			=> '',
@@ -1338,15 +1338,16 @@ Hide Camera info
 						'wppa_widget_period'		=> '168',
 						'wppa_widget_width'			=> '200',
 						'wppa_potd_widget_width' 	=> '200',
+						'wppa_widget_status_filter'	=> 'none',
 
 						// Topten widget
-						'wppa_toptenwidgettitle'	=> __('Top Ten Photos', 'wppa'),
+						'wppa_toptenwidgettitle'	=> __('Top Ten Photos', 'wp-photo-album-plus'),
 
 						// Thumbnail widget
-						'wppa_thumbnailwidgettitle'	=> __('Thumbnail Photos', 'wppa'),
+						'wppa_thumbnailwidgettitle'	=> __('Thumbnail Photos', 'wp-photo-album-plus'),
 
 						// Search widget
-						'wppa_searchwidgettitle'	=> __('Search photos', 'wppa'),
+						'wppa_searchwidgettitle'	=> __('Search photos', 'wp-photo-album-plus'),
 
 						// Comment admin
 						'wppa_comadmin_show' 		=> 'all',
@@ -1389,11 +1390,11 @@ function wppa_check_dirs() {
 		if ( ! is_dir($dir) ) {
 			wppa_mktree($dir);
 			if ( ! is_dir($dir) ) {
-				wppa_error_message(__('The uploads directory does not exist, please do a regular WP upload first.', 'wppa').'<br/>'.$dir);
+				wppa_error_message(__('The uploads directory does not exist, please do a regular WP upload first.', 'wp-photo-album-plus').'<br/>'.$dir);
 				return false;
 			}
 			else {
-				if ( WPPA_DEBUG ) wppa_ok_message(__('Successfully created uploads directory.', 'wppa').'<br/>'.$dir);
+				if ( WPPA_DEBUG ) wppa_ok_message(__('Successfully created uploads directory.', 'wp-photo-album-plus').'<br/>'.$dir);
 			}
 		}
 		@ chmod($dir, 0755);
@@ -1404,11 +1405,11 @@ function wppa_check_dirs() {
 	if ( ! is_dir($dir) ) {
 		wppa_mktree($dir);
 		if ( ! is_dir($dir) ) {
-			wppa_error_message(__('Could not create the wppa directory.', 'wppa').wppa_credirmsg($dir));
+			wppa_error_message(__('Could not create the wppa directory.', 'wp-photo-album-plus').wppa_credirmsg($dir));
 			return false;
 		}
 		else {
-			if ( WPPA_DEBUG ) wppa_ok_message(__('Successfully created wppa directory.', 'wppa').'<br/>'.$dir);
+			if ( WPPA_DEBUG ) wppa_ok_message(__('Successfully created wppa directory.', 'wp-photo-album-plus').'<br/>'.$dir);
 		}
 	}
 	@ chmod($dir, 0755);
@@ -1418,11 +1419,11 @@ function wppa_check_dirs() {
 	if ( ! is_dir($dir) ) {
 		wppa_mktree($dir);
 		if ( ! is_dir($dir) ) {
-			wppa_error_message(__('Could not create the wppa thumbs directory.', 'wppa').wppa_credirmsg($dir));
+			wppa_error_message(__('Could not create the wppa thumbs directory.', 'wp-photo-album-plus').wppa_credirmsg($dir));
 			return false;
 		}
 		else {
-			if ( WPPA_DEBUG ) wppa_ok_message(__('Successfully created wppa thumbs directory.', 'wppa').'<br/>'.$dir);
+			if ( WPPA_DEBUG ) wppa_ok_message(__('Successfully created wppa thumbs directory.', 'wp-photo-album-plus').'<br/>'.$dir);
 		}
 	}
 	@ chmod($dir, 0755);
@@ -1432,11 +1433,11 @@ function wppa_check_dirs() {
 	if ( ! is_dir($dir) ) {
 		wppa_mktree($dir);
 		if ( ! is_dir($dir) ) {
-			wppa_error_message(__('Could not create the wppa watermarks directory.', 'wppa').wppa_credirmsg($dir));
+			wppa_error_message(__('Could not create the wppa watermarks directory.', 'wp-photo-album-plus').wppa_credirmsg($dir));
 			return false;
 		}
 		else {
-			if ( WPPA_DEBUG ) wppa_ok_message(__('Successfully created wppa watermarks directory.', 'wppa').'<br/>'.$dir);
+			if ( WPPA_DEBUG ) wppa_ok_message(__('Successfully created wppa watermarks directory.', 'wp-photo-album-plus').'<br/>'.$dir);
 		}
 	}
 	@ chmod($dir, 0755);
@@ -1446,11 +1447,11 @@ function wppa_check_dirs() {
 	if ( ! is_dir($dir) ) {
 		wppa_mktree($dir);
 		if ( ! is_dir($dir) ) {
-			wppa_error_message(__('Could not create the wppa fonts directory.', 'wppa').wppa_credirmsg($dir));
+			wppa_error_message(__('Could not create the wppa fonts directory.', 'wp-photo-album-plus').wppa_credirmsg($dir));
 			return false;
 		}
 		else {
-			if ( WPPA_DEBUG ) wppa_ok_message(__('Successfully created wppa fonts directory.', 'wppa').'<br/>'.$dir);
+			if ( WPPA_DEBUG ) wppa_ok_message(__('Successfully created wppa fonts directory.', 'wp-photo-album-plus').'<br/>'.$dir);
 		}
 	}
 	@ chmod($dir, 0755);
@@ -1462,11 +1463,11 @@ function wppa_check_dirs() {
 		if ( ! is_dir($dir) ) {
 			wppa_mktree($dir);
 			if ( ! is_dir($dir) ) {
-				wppa_error_message(__('Unable to create depot directory.', 'wppa').wppa_credirmsg($dir));
+				wppa_error_message(__('Unable to create depot directory.', 'wp-photo-album-plus').wppa_credirmsg($dir));
 				return false;
 			}
 			else {
-				if ( WPPA_DEBUG ) wppa_ok_message(__('Successfully created wppa depot directory.', 'wppa').'<br/>'.$dir);
+				if ( WPPA_DEBUG ) wppa_ok_message(__('Successfully created wppa depot directory.', 'wp-photo-album-plus').'<br/>'.$dir);
 			}
 		}
 		@ chmod($dir, 0755);
@@ -1477,11 +1478,11 @@ function wppa_check_dirs() {
 	if ( ! is_dir($dir) ) {
 		wppa_mktree($dir);
 		if ( ! is_dir($dir) ) {
-			wppa_error_message(__('Unable to create user depot directory', 'wppa').wppa_credirmsg($dir));
+			wppa_error_message(__('Unable to create user depot directory', 'wp-photo-album-plus').wppa_credirmsg($dir));
 			return false;
 		}
 		else {
-			if ( WPPA_DEBUG ) wppa_ok_message(__('Successfully created wppa user depot directory.', 'wppa').'<br/>'.$dir);
+			if ( WPPA_DEBUG ) wppa_ok_message(__('Successfully created wppa user depot directory.', 'wp-photo-album-plus').'<br/>'.$dir);
 		}
 	}
 	@ chmod($dir, 0755);
@@ -1491,11 +1492,11 @@ function wppa_check_dirs() {
 	if ( ! is_dir($dir) ) {
 		wppa_mktree($dir);
 		if ( ! is_dir($dir) ) {
-			wppa_error_message(__('Unable to create temp directory', 'wppa').wppa_credirmsg($dir));
+			wppa_error_message(__('Unable to create temp directory', 'wp-photo-album-plus').wppa_credirmsg($dir));
 			return false;
 		}
 		else {
-			if ( WPPA_DEBUG ) wppa_ok_message(__('Successfully created temp directory.', 'wppa').'<br/>'.$dir);
+			if ( WPPA_DEBUG ) wppa_ok_message(__('Successfully created temp directory.', 'wp-photo-album-plus').'<br/>'.$dir);
 		}
 	}
 	@ chmod($dir, 0755);
@@ -1503,6 +1504,6 @@ function wppa_check_dirs() {
 	return true;
 }
 function wppa_credirmsg($dir) {
-	$msg = ' '.sprintf(__('Ask your administrator to give you more rights, or create <b>%s</b> manually using an FTP program.', 'wppa'), $dir);
+	$msg = ' '.sprintf(__('Ask your administrator to give you more rights, or create <b>%s</b> manually using an FTP program.', 'wp-photo-album-plus'), $dir);
 	return $msg;
 }

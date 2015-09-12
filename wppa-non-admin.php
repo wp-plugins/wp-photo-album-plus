@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 6.2.10
+* Version 6.3.0
 *
 */
 
@@ -217,11 +217,11 @@ global $wppa_opt;
 					);
 
 	$js_depts = array ( array( 'jquery', 'jquery-form', 'wppa-utils' ),
-						array( 'jquery', 'wppa' ),
-						array( 'jquery', 'wppa' ),
-						array( 'jquery', 'wppa' ),
-						array( 'jquery', 'wppa' ),
-						array( 'jquery', 'wppa' ),
+						array( 'jquery' ),
+						array( 'jquery' ),
+						array( 'jquery' ),
+						array( 'jquery' ),
+						array( 'jquery' ),
 						array( 'jquery' ),
 					);
 
@@ -313,7 +313,7 @@ global $wppa_session;
 	if ( wppa_switch( 'ovl_show_legenda' ) && ! wppa( 'is_mobile' ) ) {
 		echo '
 		<div id="wppa-ovl-legenda-1" onmouseover="jQuery(this).css(\'visibility\',\'visible\');" onmouseout="jQuery(this).css(\'visibility\',\'hidden\');" style="position:absolute; left:0; top:0; background-color:'.wppa_opt( 'wppa_ovl_theme' ).';color:'.$txtcol.'; visibility:visible;" >
-			'.__a( 'Press f for fullscreen.' ).'
+			'.__( 'Press f for fullscreen.' , 'wp-photo-album-plus').'
 		</div>';
 	}
 	echo '
@@ -333,7 +333,7 @@ global $wppa_session;
 	<img id="wppa-overlay-sp" alt="spinner" style="position:fixed; top:200px; left:200px; z-index:100100; opacity:1; visibility:hidden; box-shadow:none;" src="'.wppa_get_imgdir().'loading.gif" />
 	<script type="text/javascript">jQuery("#wppa-overlay-bg").css({height:window.innerHeight});
 		wppaOvlTxtHeight = "'.$ovlh.'";
-		wppaOvlCloseTxt = "'.__(wppa_opt( 'wppa_ovl_close_txt' )).'";
+		wppaOvlCloseTxt = "'.__(wppa_opt( 'wppa_ovl_close_txt' ), 'wp-photo-album-plus').'";
 		wppaOvlOpacity = '.(wppa_opt( 'wppa_ovl_opacity' )/100).';
 		wppaOvlOnclickType = "'.wppa_opt( 'wppa_ovl_onclick' ).'";
 		wppaOvlTheme = "'.wppa_opt( 'wppa_ovl_theme' ).'";
@@ -347,8 +347,8 @@ global $wppa_session;
 		'.( wppa_opt( 'wppa_fontcolor_lightbox' ) ? 'wppaOvlFontColor = "'.wppa_opt( 'wppa_fontcolor_lightbox' ).'"' : '').'
 		'.( wppa_opt( 'wppa_fontweight_lightbox' ) ? 'wppaOvlFontWeight = "'.wppa_opt( 'wppa_fontweight_lightbox' ).'"' : '').'
 		'.( wppa_opt( 'wppa_fontsize_lightbox' ) ? 'wppaOvlLineHeight = "'.(wppa_opt( 'wppa_fontsize_lightbox' ) + '2').'"' : '').'
-		wppaOvlFullLegenda = "'.__a('Keys: f = next mode; escape = exit; p = previous, n = next, s = start/stop, d = dismiss this notice.').'";
-		wppaOvlFullLegendaSingle = "'.__a('Keys: f = next mode; escape = exit; d = dismiss this notice.').'";
+		wppaOvlFullLegenda = "'.__('Keys: f = next mode; escape = exit; p = previous, n = next, s = start/stop, d = dismiss this notice.', 'wp-photo-album-plus').'";
+		wppaOvlFullLegendaSingle = "'.__('Keys: f = next mode; escape = exit; d = dismiss this notice.', 'wp-photo-album-plus').'";
 		wppaOvlVideoStart = '.( wppa_switch( 'ovl_video_start' ) ? 'true' : 'false' ).';
 		wppaOvlAudioStart = '.( wppa_switch( 'ovl_audio_start' ) ? 'true' : 'false' ).';
 		wppaOvlShowLegenda = '.( wppa_switch( 'ovl_show_legenda' ) && ! wppa( 'is_mobile' ) ? 'true' : 'false' ).';
@@ -391,6 +391,8 @@ global $wppa_session;
 add_action('wp_footer', 'wppa_fbc_setup', 100);
 
 function wppa_fbc_setup() {
+global $wppa_locale;
+
 	if ( wppa_switch( 'wppa_load_facebook_sdk' ) &&  			// Facebook sdk requested
 		( 	wppa_switch( 'wppa_share_on' ) ||
 			wppa_switch( 'wppa_share_on_widget' ) ||
@@ -401,8 +403,6 @@ function wppa_fbc_setup() {
 			wppa_switch( 'wppa_facebook_like' ) ||
 			wppa_switch( 'wppa_facebook_comments' ) )			// But is it used by wppa?
 	) {
-		$wppa_lang = get_locale();
-		if ( ! $wppa_lang ) $wppa_lang = 'en_US';
 		?>
 		<!-- Facebook Comments for WPPA+ -->
 		<div id="fb-root"></div>
@@ -410,7 +410,7 @@ function wppa_fbc_setup() {
 		  var js, fjs = d.getElementsByTagName(s)[0];
 		  if (d.getElementById(id)) return;
 		  js = d.createElement(s); js.id = id;
-		  js.src = "//connect.facebook.net/<?php echo $wppa_lang; ?>/all.js#xfbml=1";
+		  js.src = "//connect.facebook.net/<?php echo $wppa_locale; ?>/all.js#xfbml=1";
 		  fjs.parentNode.insertBefore(js, fjs);
 		}(document, 'script', 'facebook-jssdk'));
 		</script>
@@ -577,32 +577,32 @@ global $wppa_init_js_data;
 	wppaSlideShowTimeOut = '.wppa_opt( 'wppa_slideshow_timeout' ).';
 	wppaPreambule = '.wppa_get_preambule().';
 	wppaFilmShowGlue = '.( wppa_switch('wppa_film_show_glue') ? 'true' : 'false' ).';
-	wppaSlideShow = "'.__a('Slideshow').'";
-	wppaStart = "'.__a('Start').'";
-	wppaStop = "'.__a('Stop').'";
-	wppaSlower = "'.__a('Slower').'";
-	wppaFaster = "'.__a('Faster').'";
-	wppaPhoto = "'.__a('Photo').'";
-	wppaOf = "'.__a('of').'";
-	wppaPreviousPhoto = "'.__a('Previous photo').'";
-	wppaNextPhoto = "'.__a('Next photo').'";
-	wppaPrevP = "'.__a('Prev.').'";
-	wppaNextP = "'.__a('Next').'";
-	wppaAvgRating = "'.__a('Average&nbsp;rating').'";
-	wppaMyRating = "'.__a('My&nbsp;rating').'";
-	wppaAvgRat = "'.__a('Avg.').'";
-	wppaMyRat = "'.__a('Mine').'";
-	wppaDislikeMsg = "'.__a('You marked this image as inappropriate.').'";
+	wppaSlideShow = "'.__('Slideshow', 'wp-photo-album-plus').'";
+	wppaStart = "'.__('Start', 'wp-photo-album-plus').'";
+	wppaStop = "'.__('Stop', 'wp-photo-album-plus').'";
+	wppaSlower = "'.__('Slower', 'wp-photo-album-plus').'";
+	wppaFaster = "'.__('Faster', 'wp-photo-album-plus').'";
+	wppaPhoto = "'.__('Photo', 'wp-photo-album-plus').'";
+	wppaOf = "'.__('of', 'wp-photo-album-plus').'";
+	wppaPreviousPhoto = "'.__('Previous photo', 'wp-photo-album-plus').'";
+	wppaNextPhoto = "'.__('Next photo', 'wp-photo-album-plus').'";
+	wppaPrevP = "'.__('Prev.', 'wp-photo-album-plus').'";
+	wppaNextP = "'.__('Next', 'wp-photo-album-plus').'";
+	wppaAvgRating = "'.__('Average&nbsp;rating', 'wp-photo-album-plus').'";
+	wppaMyRating = "'.__('My&nbsp;rating', 'wp-photo-album-plus').'";
+	wppaAvgRat = "'.__('Avg.', 'wp-photo-album-plus').'";
+	wppaMyRat = "'.__('Mine', 'wp-photo-album-plus').'";
+	wppaDislikeMsg = "'.__('You marked this image as inappropriate.', 'wp-photo-album-plus').'";
 	wppaShowDislikeCount = '.( wppa_switch('wppa_dislike_show_count') ? 'true' : 'false' ).';
-	wppaNoDislikes = "'.__a('No dislikes').'";
-	wppa1Dislike = "'.__a('1 dislike').'";
-	wppaDislikes = "'.__a('dislikes').'";
-	wppaIncludingMine = "'.__a('including mine').'";
+	wppaNoDislikes = "'.__('No dislikes', 'wp-photo-album-plus').'";
+	wppa1Dislike = "'.__('1 dislike', 'wp-photo-album-plus').'";
+	wppaDislikes = "'.__('dislikes', 'wp-photo-album-plus').'";
+	wppaIncludingMine = "'.__('including mine', 'wp-photo-album-plus').'";
 	wppaMiniTreshold = '.( wppa_opt( 'wppa_mini_treshold' ) ? wppa_opt( 'wppa_mini_treshold' ) : '0' ).';
 	wppaRatingOnce = '.( wppa_switch('wppa_rating_change') || wppa_switch('wppa_rating_multi') ? 'false' : 'true' ).';
-	wppaPleaseName = "'.__a('Please enter your name').'";
-	wppaPleaseEmail = "'.__a('Please enter a valid email address').'";
-	wppaPleaseComment = "'.__a('Please enter a comment').'";
+	wppaPleaseName = "'.__('Please enter your name', 'wp-photo-album-plus').'";
+	wppaPleaseEmail = "'.__('Please enter a valid email address', 'wp-photo-album-plus').'";
+	wppaPleaseComment = "'.__('Please enter a comment', 'wp-photo-album-plus').'";
 	wppaHideWhenEmpty = '.( wppa_switch('wppa_hide_when_empty') ? 'true' : 'false' ).';
 	wppaBGcolorNumbar = "'.wppa_opt( 'wppa_bgcolor_numbar' ).'";
 	wppaBcolorNumbar = "'.wppa_opt( 'wppa_bcolor_numbar' ).'";
@@ -636,12 +636,12 @@ global $wppa_init_js_data;
 	wppaArtMonkyLink = "'.wppa_opt( 'wppa_art_monkey_link' ).'";
 	wppaAutoOpenComments = '.( wppa_switch('wppa_auto_open_comments') ? 'true' : 'false' ).';
 	wppaUpdateAddressLine = '.( wppa_switch('wppa_update_addressline') ? 'true' : 'false' ).';
-	wppaFilmThumbTitle = "'.( wppa_opt( 'wppa_film_linktype' ) == 'lightbox' ? wppa_zoom_in( false ) : __a('Double click to start/stop slideshow running') ).'";
-	wppaVoteForMe = "'.__(wppa_opt( 'wppa_vote_button_text' )).'";
-	wppaVotedForMe = "'.__(wppa_opt( 'wppa_voted_button_text' )).'";
+	wppaFilmThumbTitle = "'.( wppa_opt( 'wppa_film_linktype' ) == 'lightbox' ? wppa_zoom_in( false ) : __('Double click to start/stop slideshow running', 'wp-photo-album-plus') ).'";
+	wppaVoteForMe = "'.__(wppa_opt( 'wppa_vote_button_text' ), 'wp-photo-album-plus').'";
+	wppaVotedForMe = "'.__(wppa_opt( 'wppa_voted_button_text' ), 'wp-photo-album-plus').'";
 	wppaSlideSwipe = '.( wppa_switch('wppa_slide_swipe') ? 'true' : 'false' ).';
 	wppaMaxCoverWidth = '.wppa_opt( 'wppa_max_cover_width' ).';
-	wppaDownLoad = "'.__a('Download').'";
+	wppaDownLoad = "'.__('Download', 'wp-photo-album-plus').'";
 	wppaSlideToFullpopup = '.( wppa_opt( 'wppa_slideshow_linktype' ) == 'fullpopup' ? 'true' : 'false' ).';
 	wppaComAltSize = '.wppa_opt( 'wppa_comten_alt_thumbsize' ).';
 	wppaBumpViewCount = '.( wppa_switch('wppa_track_viewcounts') ? 'true' : 'false' ).';

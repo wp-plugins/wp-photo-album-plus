@@ -3,15 +3,15 @@
 * Package: wp-photo-album-plus
 *
 * ask the album / display you want
-* Version 6.2.0
+* Version 6.3.0
 */
 
 
 class SuperView extends WP_Widget {
     /** constructor */
     function __construct() {
-		$widget_ops = array('classname' => 'wppa_super_view', 'description' => __( 'WPPA+ Selectable display', 'xxx') );	//
-		parent::__construct('wppa_super_view', __('Super View Photos', 'wppa'), $widget_ops);															//
+		$widget_ops = array('classname' => 'wppa_super_view', 'description' => __( 'WPPA+ Selectable display', 'wp-photo-album-plus') );	//
+		parent::__construct('wppa_super_view', __('Super View Photos', 'wp-photo-album-plus'), $widget_ops);															//
     }
 
 	/** @see WP_Widget::widget */
@@ -63,7 +63,7 @@ class SuperView extends WP_Widget {
     /** @see WP_Widget::form */
     function form($instance) {				
 		//Defaults
-		$instance = wp_parse_args( (array) $instance, array( 	'title' => __( 'Super View Photos', 'wppa' ), 
+		$instance = wp_parse_args( (array) $instance, array( 	'title' => __( 'Super View Photos' , 'wp-photo-album-plus'), 
 																'root' 	=> '0',
 																'sort'	=> true
 															) );
@@ -72,19 +72,19 @@ class SuperView extends WP_Widget {
 		$sort 	= $instance['sort'];
 	?>
 		<p>
-			<label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> 
+			<label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wp-photo-album-plus'); ?></label> 
 			<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id('root'); ?>"><?php _e('Enable (sub)albums of:', 'wppa'); ?></label>
+			<label for="<?php echo $this->get_field_id('root'); ?>"><?php _e('Enable (sub)albums of:', 'wp-photo-album-plus'); ?></label>
 			<select class="widefat" id="<?php echo $this->get_field_id('root'); ?>" name="<?php echo $this->get_field_name('root'); ?>" >
 				<?php echo wppa_album_select_a( array( 'selected' => $root, 'addall' => true, 'addseparate' => true, 'addgeneric' => true, 'path' => true ) ) ?>
 			</select>
 		</p>
-			<label for="<?php echo $this->get_field_id('sort'); ?>"><?php _e('Sort alphabeticly:', 'wppa'); ?></label>
+			<label for="<?php echo $this->get_field_id('sort'); ?>"><?php _e('Sort alphabeticly:', 'wp-photo-album-plus'); ?></label>
 			<select class="widefat" id="<?php echo $this->get_field_id('sort'); ?>" name="<?php echo $this->get_field_name('sort'); ?>" >
-				<option value="0" ><?php _e('no, use album sort method', 'wppa') ?></option>
-				<option value="1" <?php if ( $sort ) echo 'selected="selected"' ?> ><?php _e('yes', 'wppa') ?></option>
+				<option value="0" ><?php _e('no, use album sort method', 'wp-photo-album-plus') ?></option>
+				<option value="1" <?php if ( $sort ) echo 'selected="selected"' ?> ><?php _e('yes', 'wp-photo-album-plus') ?></option>
 			</select>
 		<p>
 		</p>

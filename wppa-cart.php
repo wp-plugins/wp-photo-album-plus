@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains the interface to SCABN
-* Version 6.2.10
+* Version 6.3.0
 *
 */
 
@@ -23,7 +23,7 @@ global $wppa;
 		'name'  		=> wppa_get_photo_name($thumb['id']),
 		'price' 		=> 0.01,
 		'qty_field' 	=> '',
-		'b_title'		=> __a('Buy now'),
+		'b_title'		=> __('Buy now', 'wp-photo-album-plus'),
 		'options'		=> '',
 		'options_name' 	=> '',
 		'qty_field' 	=> '',
@@ -87,11 +87,11 @@ global $wppa;
 		$output .= '
 			</select>';
 	} else {
-		$output .= sprintf(__a('Unit Price: %s each'), $currency.number_format($price,2)).' ';
+		$output .= sprintf(__('Unit Price: %s each', 'wp-photo-album-plus'), $currency.number_format($price,2)).' ';
 	}
 
 	if ( $qty_field ) {
-		$output .= __a('Qty:').' <input type="text" style="max-width:50px; margin:0;" class="item_qty" value="1" size="2" name="item_qty" />';
+		$output .= __('Qty:', 'wp-photo-album-plus').' <input type="text" style="max-width:50px; margin:0;" class="item_qty" value="1" size="2" name="item_qty" />';
 	} else {
 		$output .= '<input type="hidden" class="item_qty" value="1" size="2" name="item_qty" />';
 	}

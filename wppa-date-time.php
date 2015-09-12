@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * date and time related functions
-* Version 5.4.0
+* Version 6.3.0
 *
 */
 
@@ -82,7 +82,7 @@ function wppa_get_date_time_select_html( $type, $id, $selectable = true ) {
 		wppa_error_message('Uniplemented type: '.$type.' in wppa_get_date_time_select_html()');
 	}
 	
-	$opt_months = array( '1' => __('Jan', 'wppa'), '2' => __('Feb', 'wppa'), '3' => __('Mar', 'wppa'), '4' => __('Apr', 'wppa'), '5' => __('May', 'wppa'), '6' => __('Jun', 'wppa'), '7' => __('Jul', 'wppa'), '8' =>__('Aug', 'wppa'), '9' => __('Sep', 'wppa'), '10' => __('Oct', 'wppa'), '11' => __('Nov', 'wppa'), '12' => __('Dec', 'wppa') );
+	$opt_months = array( '1' => __('Jan', 'wp-photo-album-plus'), '2' => __('Feb', 'wp-photo-album-plus'), '3' => __('Mar', 'wp-photo-album-plus'), '4' => __('Apr', 'wp-photo-album-plus'), '5' => __('May', 'wp-photo-album-plus'), '6' => __('Jun', 'wp-photo-album-plus'), '7' => __('Jul', 'wp-photo-album-plus'), '8' =>__('Aug', 'wp-photo-album-plus'), '9' => __('Sep', 'wp-photo-album-plus'), '10' => __('Oct', 'wp-photo-album-plus'), '11' => __('Nov', 'wp-photo-album-plus'), '12' => __('Dec', 'wp-photo-album-plus') );
 	$val_months = array( '1' => '01', '2' => '02', '3' => '03', '4' => '04', '5' => '05', '6' => '06', '7' => '07', '8' => '08', '9' => '09', '10' => '10', '11' => '11', '12' =>'12' );
 	$opt_years 	= array( '2014', '2015', '2016', '2017', '2018', '2019', '2020' );
 	$val_years 	= $opt_years;
@@ -193,7 +193,7 @@ function wppa_get_default_scheduledtm() {
 
 function wppa_format_scheduledtm( $sdtm ) {
 
-	$opt_months = array( '0' => '', '1' => __('Jan', 'wppa'), '2' => __('Feb', 'wppa'), '3' => __('Mar', 'wppa'), '4' => __('Apr', 'wppa'), '5' => __('May', 'wppa'), '6' => __('Jun', 'wppa'), '7' => __('Jul', 'wppa'), '8' =>__('Aug', 'wppa'), '9' => __('Sep', 'wppa'), '10' => __('Oct', 'wppa'), '11' => __('Nov', 'wppa'), '12' => __('Dec', 'wppa') );
+	$opt_months = array( '0' => '', '1' => __('Jan', 'wp-photo-album-plus'), '2' => __('Feb', 'wp-photo-album-plus'), '3' => __('Mar', 'wp-photo-album-plus'), '4' => __('Apr', 'wp-photo-album-plus'), '5' => __('May', 'wp-photo-album-plus'), '6' => __('Jun', 'wp-photo-album-plus'), '7' => __('Jul', 'wp-photo-album-plus'), '8' =>__('Aug', 'wp-photo-album-plus'), '9' => __('Sep', 'wp-photo-album-plus'), '10' => __('Oct', 'wp-photo-album-plus'), '11' => __('Nov', 'wp-photo-album-plus'), '12' => __('Dec', 'wp-photo-album-plus') );
 
 	$temp = explode( ',', $sdtm );
 	$cur_day 	= $temp[2];

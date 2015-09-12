@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * exif and iptc common functions
-* version 6.2.14
+* version 6.3.0
 *
 * 
 */
@@ -60,14 +60,14 @@ static $iptclabels;
 			// convert 2#XXX to 2#LXXX to indicate the label
 			$t = substr( $tag, 0, 2 ) . 'L' . substr( $tag, 2 );
 			$tag = $t;
-			$temp = str_replace( $tag, __a( $iptclabel['description'] ), $temp );
+			$temp = str_replace( $tag, __( $iptclabel['description'] , 'wp-photo-album-plus'), $temp );
 		}
 	}
 	
 	// Remove untranslated
 	$pos = strpos($temp, '2#');
 	while ( $pos !== false ) {
-		$tmp = substr($temp, 0, $pos).__a('n.a.').substr($temp, $pos+5);
+		$tmp = substr($temp, 0, $pos).__('n.a.', 'wp-photo-album-plus').substr($temp, $pos+5);
 		$temp = $tmp;
 		$pos = strpos($temp, '2#');
 	}
@@ -126,14 +126,14 @@ static $exiflabels;
 			$t = substr( $tag, 0, 2 ) . 'L' . substr( $tag, 2 );
 			$tag = $t;
 			
-			$temp = str_replace( $tag, __a( $exiflabel['description'] ), $temp );
+			$temp = str_replace( $tag, __( $exiflabel['description'] , 'wp-photo-album-plus'), $temp );
 		}
 	}
 
 	// Remove untranslated
 	$pos = strpos($temp, 'E#');
 	while ( $pos !== false ) {
-		$tmp = substr($temp, 0, $pos).__a('n.a.').substr($temp, $pos+6);
+		$tmp = substr($temp, 0, $pos).__('n.a.', 'wp-photo-album-plus').substr($temp, $pos+6);
 		$temp = $tmp;
 		$pos = strpos($temp, 'E#');
 	}
@@ -211,16 +211,16 @@ E#8822		Exposure program			Must be formatted according to table
 */
 		case 'E#8822':
 			switch ($data) {
-				case '0': $result = __a('Not Defined'); break;
-				case '1': $result = __a('Manual'); break;
-				case '2': $result = __a('Program AE'); break;
-				case '3': $result = __a('Aperture-priority AE'); break;
-				case '4': $result = __a('Shutter speed priority AE'); break;
-				case '5': $result = __a('Creative (Slow speed)'); break;
-				case '6': $result = __a('Action (High speed)'); break;
-				case '7': $result = __a('Portrait'); break;
-				case '8': $result = __a('Landscape'); break;
-				case '9': $result = __a('Bulb'); break;
+				case '0': $result = __('Not Defined', 'wp-photo-album-plus'); break;
+				case '1': $result = __('Manual', 'wp-photo-album-plus'); break;
+				case '2': $result = __('Program AE', 'wp-photo-album-plus'); break;
+				case '3': $result = __('Aperture-priority AE', 'wp-photo-album-plus'); break;
+				case '4': $result = __('Shutter speed priority AE', 'wp-photo-album-plus'); break;
+				case '5': $result = __('Creative (Slow speed)', 'wp-photo-album-plus'); break;
+				case '6': $result = __('Action (High speed)', 'wp-photo-album-plus'); break;
+				case '7': $result = __('Portrait', 'wp-photo-album-plus'); break;
+				case '8': $result = __('Landscape', 'wp-photo-album-plus'); break;
+				case '9': $result = __('Bulb', 'wp-photo-album-plus'); break;
 			}
 			break;
 /* 
@@ -242,13 +242,13 @@ E#9207		Metering mode				Must be formatted according to table
 */
 		case 'E#9207':
 			switch ($data) {
-				case '1': $result = __a('Average'); break;
-				case '2': $result = __a('Center-weighted average'); break;
-				case '3': $result = __a('Spot'); break;
-				case '4': $result = __a('Multi-spot'); break;
-				case '5': $result = __a('Multi-segment'); break;
-				case '6': $result = __a('Partial'); break;
-				case '255': $result = __a('Other'); break;
+				case '1': $result = __('Average', 'wp-photo-album-plus'); break;
+				case '2': $result = __('Center-weighted average', 'wp-photo-album-plus'); break;
+				case '3': $result = __('Spot', 'wp-photo-album-plus'); break;
+				case '4': $result = __('Multi-spot', 'wp-photo-album-plus'); break;
+				case '5': $result = __('Multi-segment', 'wp-photo-album-plus'); break;
+				case '6': $result = __('Partial', 'wp-photo-album-plus'); break;
+				case '255': $result = __('Other', 'wp-photo-album-plus'); break;
 			}
 			break;
 /*
@@ -284,59 +284,59 @@ E#9209		Flash						Must be formatted according to table
 		case 'E#9209':
 			switch ($data) {
 				case '0x0':
-				case '0': $result = __a('No Flash'); break;
+				case '0': $result = __('No Flash', 'wp-photo-album-plus'); break;
 				case '0x1':
-				case '1': $result = __a('Fired'); break;
+				case '1': $result = __('Fired', 'wp-photo-album-plus'); break;
 				case '0x5':
-				case '5': $result = __a('Fired, Return not detected'); break;
+				case '5': $result = __('Fired, Return not detected', 'wp-photo-album-plus'); break;
 				case '0x7':
-				case '7': $result = __a('Fired, Return detected'); break;
+				case '7': $result = __('Fired, Return detected', 'wp-photo-album-plus'); break;
 				case '0x8':
-				case '8': $result = __a('On, Did not fire'); break;
+				case '8': $result = __('On, Did not fire', 'wp-photo-album-plus'); break;
 				case '0x9':
-				case '9': $result = __a('On, Fired'); break;
+				case '9': $result = __('On, Fired', 'wp-photo-album-plus'); break;
 				case '0xd':
-				case '13': $result = __a('On, Return not detected'); break;
+				case '13': $result = __('On, Return not detected', 'wp-photo-album-plus'); break;
 				case '0xf':
-				case '15': $result = __a('On, Return detected'); break;
+				case '15': $result = __('On, Return detected', 'wp-photo-album-plus'); break;
 				case '0x10':
-				case '16': $result = __a('Off, Did not fire'); break;
+				case '16': $result = __('Off, Did not fire', 'wp-photo-album-plus'); break;
 				case '0x14':
-				case '20': $result = __a('Off, Did not fire, Return not detected'); break;
+				case '20': $result = __('Off, Did not fire, Return not detected', 'wp-photo-album-plus'); break;
 				case '0x18':
-				case '24': $result = __a('Auto, Did not fire'); break;
+				case '24': $result = __('Auto, Did not fire', 'wp-photo-album-plus'); break;
 				case '0x19':
-				case '25': $result = __a('Auto, Fired'); break;
+				case '25': $result = __('Auto, Fired', 'wp-photo-album-plus'); break;
 				case '0x1d':
-				case '29': $result = __a('Auto, Fired, Return not detected'); break;
+				case '29': $result = __('Auto, Fired, Return not detected', 'wp-photo-album-plus'); break;
 				case '0x1f':
-				case '31': $result = __a('Auto, Fired, Return detected'); break;
+				case '31': $result = __('Auto, Fired, Return detected', 'wp-photo-album-plus'); break;
 				case '0x20':
-				case '32': $result = __a('No flash function'); break;
+				case '32': $result = __('No flash function', 'wp-photo-album-plus'); break;
 				case '0x30':
-				case '48': $result = __a('Off, No flash function'); break;
+				case '48': $result = __('Off, No flash function', 'wp-photo-album-plus'); break;
 				case '0x41':
-				case '65': $result = __a('Fired, Red-eye reduction'); break;
+				case '65': $result = __('Fired, Red-eye reduction', 'wp-photo-album-plus'); break;
 				case '0x45':
-				case '69': $result = __a('Fired, Red-eye reduction, Return not detected'); break;
+				case '69': $result = __('Fired, Red-eye reduction, Return not detected', 'wp-photo-album-plus'); break;
 				case '0x47':
-				case '71': $result = __a('Fired, Red-eye reduction, Return detected'); break;
+				case '71': $result = __('Fired, Red-eye reduction, Return detected', 'wp-photo-album-plus'); break;
 				case '0x49':
-				case '73': $result = __a('On, Red-eye reduction'); break;
+				case '73': $result = __('On, Red-eye reduction', 'wp-photo-album-plus'); break;
 				case '0x4d':
-				case '77': $result = __a('Red-eye reduction, Return not detected'); break;
+				case '77': $result = __('Red-eye reduction, Return not detected', 'wp-photo-album-plus'); break;
 				case '0x4f':
-				case '79': $result = __a('On, Red-eye reduction, Return detected'); break;
+				case '79': $result = __('On, Red-eye reduction, Return detected', 'wp-photo-album-plus'); break;
 				case '0x50':
-				case '80': $result = __a('Off, Red-eye reduction'); break;
+				case '80': $result = __('Off, Red-eye reduction', 'wp-photo-album-plus'); break;
 				case '0x58':
-				case '88': $result = __a('Auto, Did not fire, Red-eye reduction'); break;
+				case '88': $result = __('Auto, Did not fire, Red-eye reduction', 'wp-photo-album-plus'); break;
 				case '0x59':
-				case '89': $result = __a('Auto, Fired, Red-eye reduction'); break;
+				case '89': $result = __('Auto, Fired, Red-eye reduction', 'wp-photo-album-plus'); break;
 				case '0x5d':
-				case '93': $result = __a('Auto, Fired, Red-eye reduction, Return not detected'); break;
+				case '93': $result = __('Auto, Fired, Red-eye reduction, Return not detected', 'wp-photo-album-plus'); break;
 				case '0x5f':
-				case '95': $result = __a('Auto, Fired, Red-eye reduction, Return detected'); break;
+				case '95': $result = __('Auto, Fired, Red-eye reduction, Return detected', 'wp-photo-album-plus'); break;
 			}
 			break;
 			

@@ -3,7 +3,7 @@
 // Contains frontend ajax modules
 // Dependancies: wppa.js and default wp jQuery library
 // 
-var wppaJsAjaxVersion = '6.2.10';
+var wppaJsAjaxVersion = '6.3.0';
 
 var wppaRenderAdd = false;
 var wppaWaitForCounter = 0;
@@ -51,11 +51,18 @@ function wppaDoAjaxRender( mocc, ajaxurl, newurl, add, waitfor ) {
 											wppaHis++;
 
 											try {
-												history.pushState( {page: wppaHis, occur: mocc, type: 'html', html: result}, "---", newurl );
-												wppaConsoleLog( 'Ajax rendering: History stack updated' );
+												history.pushState( {page: wppaHis, occur: mocc, type: 'html', html: result}, "", newurl );
+												wppaConsoleLog( 'Ajax rendering: History stack pushed', 'force' );
+												
 											}
 											catch( err ) {
-												wppaConsoleLog( 'Ajax rendering: Failed to update history stack' );
+												try {
+													history.replaceState( {page: wppaHis, occur: mocc, type: 'html'}, "", newurl );
+													wppaConsoleLog( 'Ajax rendering: History stack updated', 'force' );
+												}
+												catch( err ) {
+													wppaConsoleLog( 'Ajax rendering: History stack update failed', 'force' );
+												}
 											}
 											
 											if ( wppaFirstOccur == 0 ) wppaFirstOccur = mocc;

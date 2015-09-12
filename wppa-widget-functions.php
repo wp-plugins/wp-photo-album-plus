@@ -2,7 +2,7 @@
 /* wppa-widget-functions.php
 /* Package: wp-photo-album-plus
 /*
-/* Version 6.2.10
+/* Version 6.3.0
 /*
 */
 
@@ -11,65 +11,81 @@ function wppa_get_widgetphotos( $alb, $option = '' ) {
 global $wpdb;
 
 	$photos = false;
+	$query = '';
 
+	// Compile status clause
+	switch( wppa_opt( 'widget_status_filter' ) ) {
+		case 'publish':
+			$statusclause = " `status` = 'publish' ";
+			break;
+		case 'featured':
+			$statusclause = " `status` = 'featured' ";
+			break;
+		case 'gold':
+			$statusclause = " `status` = 'gold' ";
+			break;
+		case 'silver':
+			$statusclause = " `status` = 'silver' ";
+			break;
+		case 'bronze':
+			$statusclause = " `status` = 'bronze' ";
+			break;
+		case 'anymedal':
+			$statusclause = " `status` IN ( 'gold', 'silver', 'bronze' ) ";
+			break;
+		default:
+			$statusclause = " `status` <> 'scheduled' ";
+			if ( ! is_user_logged_in() ) {
+				$statusclause .= " AND `status` <> `private` "; 
+			}
+	}
+	
 	// Is it a single album?
 	if ( is_numeric( $alb ) ) {
-		$query = $wpdb->prepare( "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `album` = %s " . $option, $alb );
-		$photos = $wpdb->get_results( $query, ARRAY_A );
-		wppa_dbg_q( 'Q-WidP1' );
-		wppa_cache_photo( 'add', $photos );
+		$query = $wpdb->prepare( "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `album` = %s " . " AND " . $statusclause . $option, $alb );
 	}
 
 	// Is it an enumeration of album ids?
 	elseif ( strchr( $alb, ',' ) ) {
-		$albs = explode( ',', $alb );
-		$query = "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `album` = '0' ";
-		foreach ( $albs as $a ) if ( is_numeric( $a ) ) {
-				$query .= "OR `album` = '" . $a . "' ";
+		$alb = trim( $alb, ',' );
+		
+		// Test for numeric only ( security test )
+		$t = str_replace( ',', '', $alb);
+		if ( is_numeric( $t ) ) {
+			$query = 	"SELECT * FROM `" . WPPA_PHOTOS . "` " .
+							"WHERE `album` IN ( " . $alb . " ) " .
+							"AND " . $statusclause . $option;
 		}
-		$query .= $option;
-		$photos = $wpdb->get_results( $query, ARRAY_A );
-		wppa_dbg_q( 'Q-WidP2' );
-		wppa_cache_photo( 'add', $photos );
 	}
 
 	// Is it ALL?
 	elseif ( $alb == 'all' ) {
-		$query = "SELECT * FROM `" . WPPA_PHOTOS . "` " . $option;
-		$photos = $wpdb->get_results( $query, ARRAY_A );
-		wppa_dbg_q( 'Q-WidP3' );
-		wppa_cache_photo( 'add', $photos );
+		$query = "SELECT * FROM `" . WPPA_PHOTOS . "` " . " WHERE " . $statusclause . $option;
 	}
 
 	// Is it SEP?
 	elseif ( $alb == 'sep' ) {
 		$albs = $wpdb->get_results( "SELECT `id`, `a_parent` FROM `" . WPPA_ALBUMS . "`", ARRAY_A );
-		$query = "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `album` = '0' ";
+		$query = "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE ( `album` = '0' ";
 		$first = true;
 		foreach ( $albs as $a ) {
 			if ( $a['a_parent'] == '-1' ) {
 				$query .= "OR `album` = '" . $a['id'] . "' ";
 			}
 		}
-		$query .= $option;
-		$photos = $wpdb->get_results( $query, ARRAY_A );
-		wppa_dbg_q( 'Q-WidP4' );
-		wppa_cache_photo( 'add', $photos );
+		$query .= ") AND " . $statusclause . $option;
 	}
 
 	// Is it ALL-SEP?
 	elseif ( $alb == 'all-sep' ) {
 		$albs = $wpdb->get_results( "SELECT `id`, `a_parent` FROM `" . WPPA_ALBUMS . "`", ARRAY_A );
-		$query = "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `album` = '0' ";
+		$query = "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE ( `album` = '0' ";
 		foreach ( $albs as $a ) {
 			if ( $a['a_parent'] != '-1' ) {
 				$query .= "OR `album` = '" . $a['id'] . "' ";
 			}
 		}
-		$option;
-		$photos = $wpdb->get_results( $query, ARRAY_A );
-		wppa_dbg_q( 'Q-WidP5' );
-		wppa_cache_photo( 'add', $photos );
+		$query .= ") AND " . $statusclause . $option;
 	}
 
 	// Is it Topten?
@@ -92,20 +108,23 @@ global $wpdb;
 				break;
 		}
 
+		// It is assumed that status is ok for top rated photos
 		$query = "SELECT * FROM `" . WPPA_PHOTOS . "` ORDER BY " . $sortby . " LIMIT " . wppa_opt( 'wppa_topten_count' );
-		$photos = $wpdb->get_results( $query, ARRAY_A );
-		wppa_dbg_q( 'Q-WidP6' );
-		wppa_cache_photo( 'add', $photos );
+		$query .= $option;
 	}
 
-	// Is is Featured?
-	elseif ( $alb == 'featured' ) {
-		$query = "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `status` = 'featured' " . $option;
+	// Do the query
+	if ( $query ) {
 		$photos = $wpdb->get_results( $query, ARRAY_A );
-		wppa_dbg_q( 'Q-WidP7' );
+		wppa_dbg_q( 'Q-Potd' );
+		wppa_dbg_msg( 'Potd query: '.$query );
 		wppa_cache_photo( 'add', $photos );
 	}
+	else {
+		$photos = array();
+	}
 
+	// Ready
 	return $photos;
 }
 
@@ -126,10 +145,10 @@ function wppa_walbum_select( $sel = '' ) {
 	elseif ( $sel == 'sep' ) $type = 4;		// Separate only
 	elseif ( $sel == 'all-sep' ) $type = 5;	// All minus separate
 	elseif ( $sel == 'topten' ) $type = 6;	// Topten
-	elseif ( $sel == 'featured' ) $type = 7;	// Featured
+
 	else $type = 0;							// Nothing yet
 
-    $result = '<option value="" >' . __( '- select (another) album or a set -', 'wppa' ) . '</option>';
+    $result = '<option value="" >' . __( '- select (another) album or a set -' , 'wp-photo-album-plus' ) . '</option>';
 
 	foreach ( $albums as $album ) {
 		switch ( $type ) {
@@ -151,9 +170,7 @@ function wppa_walbum_select( $sel = '' ) {
 			case 6:
 				$dis = false;
 				break;
-			case 7:
-				$dis = false;
-				break;
+
 			default:
 				$dis = false;
 		}
@@ -163,19 +180,17 @@ function wppa_walbum_select( $sel = '' ) {
 			if ( $album['id'] < '1000' ) $result .= '&nbsp;';
 			if ( $album['id'] < '100' ) $result .= '&nbsp;';
 			if ( $album['id'] < '10' ) $result .= '&nbsp;';
-			$result .= wppa_qtrans( stripslashes( $album['name'] ) ) . '</option>';
+			$result .= __( stripslashes( $album['name'] ) ) . '</option>';
 	}
 	$sel = $type == 3 ? 'selected="selected"' : '';
-	$result .= '<option value="all" ' . $sel . ' >' . __( '- all albums -', 'wppa' ) . '</option>';
+	$result .= '<option value="all" ' . $sel . ' >' . __( '- all albums -' , 'wp-photo-album-plus' ) . '</option>';
 	$sel = $type == 4 ? 'selected="selected"' : '';
-	$result .= '<option value="sep" ' . $sel . ' >' . __( '- all -separate- albums -', 'wppa' ) . '</option>';
+	$result .= '<option value="sep" ' . $sel . ' >' . __( '- all -separate- albums -' , 'wp-photo-album-plus' ) . '</option>';
 	$sel = $type == 5 ? 'selected="selected"' : '';
-	$result .= '<option value="all-sep" ' . $sel . ' >' . __( '- all albums except -separate-', 'wppa' ) . '</option>';
+	$result .= '<option value="all-sep" ' . $sel . ' >' . __( '- all albums except -separate-' , 'wp-photo-album-plus' ) . '</option>';
 	$sel = $type == 6 ? 'selected="selected"' : '';
-	$result .= '<option value="topten" ' . $sel . ' >' . __( '- top rated photos -', 'wppa' ) . '</option>';
-	$sel = $type == 7 ? 'selected="selected"' : '';
-	$result .= '<option value="featured" ' . $sel . ' >' . __( '- featured photos -', 'wppa' ) . '</option>';
-	$result .= '<option value="clr" >' . __( '- start over -', 'wppa' ) . '</option>';
+	$result .= '<option value="topten" ' . $sel . ' >' . __( '- top rated photos -' , 'wp-photo-album-plus' ) . '</option>';
+	$result .= '<option value="clr" >' . __( '- start over -' , 'wp-photo-album-plus' ) . '</option>';
 	return $result;
 }
 

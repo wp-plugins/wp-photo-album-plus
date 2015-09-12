@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 6.2.10
+* version 6.3.0
 *
 */
 
@@ -166,8 +166,6 @@ global $wppa_defaults;
 		$wppa['debug'] = $key;
 	}
 
-	wppa_load_language();
-
 	// Delete obsolete spam
 	$spammaxage = wppa_opt( 'wppa_spam_maxage' );
 	if ( $spammaxage != 'none' ) {
@@ -188,10 +186,10 @@ global $wppa_defaults;
 			if ( ! $albs ) {	// make an album for this user
 				$name = $user;
 				if ( is_admin() ) {
-					$desc = __( 'Default photo album for', 'wppa' ).' '.$user;
+					$desc = __( 'Default photo album for' , 'wp-photo-album-plus').' '.$user;
 				}
 				else {
-					$desc = __a( 'Default photo album for' ).' '.$user;
+					$desc = __( 'Default photo album for' , 'wp-photo-album-plus').' '.$user;
 				}
 				$parent = wppa_opt( 'wppa_grant_parent' );
 				$id = wppa_create_album_entry( array ( 'name' => $name, 'description' => $desc, 'a_parent' => $parent ) );
@@ -250,54 +248,6 @@ static $randseed_modified;
 	}
 
 	return $randseed;
-}
-
-function wppa_load_language() {
-global $wppa_lang;
-global $q_config;
-global $wppa;
-global $wppa_locale;
-global $wppa_admin_langs_root;
-
-	if ( $wppa_locale ) return; // Done already
-
-	// Admin language files may be in separate plugin
-	if ( ! $wppa_admin_langs_root ) {
-		$wppa_admin_langs_root = WPPA_NAME.'/langs/';
-	}
-
-	// See if qTranslate present and actve
-	if ( wppa_qtrans_enabled() ) {
-		// Lang in arg?
-		if ( isset( $_REQUEST['lang'] ) ) {
-			$wppa_lang = $_REQUEST['lang'];
-		}
-		// no. use q_configs lang
-		else {
-			$wppa_lang = isset( $q_config['language'] ) ? $q_config['language'] : '';
-		}
-		// Find locale from lang
-		if ( $wppa_lang ) {
-			$wppa_locale = isset( $q_config['locale'][$wppa_lang] ) ? $q_config['locale'][$wppa_lang] : '';
-		}
-	}
-	// If still not known, get locale from wp-config
-	if ( ! $wppa_locale ) {
-		$wppa_locale = get_locale();
-		$wppa_lang = substr( $wppa_locale, 0, 2 );
-	}
-
-	// Load the language file(s)
-	if ( $wppa_locale ) {
-
-		// Load admin domain?
-		if ( is_admin() ) {
-			load_plugin_textdomain( 'wppa', false, $wppa_admin_langs_root );
-		}
-
-		// Load frontend domain always, i.e. also when frontend ajax
-		load_plugin_textdomain( 'wppa_theme', false, WPPA_NAME.'/langs/' );
-	}
 }
 
 function wppa_phpinfo( $key = -1 ) {
@@ -537,20 +487,6 @@ function wppa_qtrans_enabled() {
 	return ( function_exists( 'qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage' ) );
 }
 
-// qtrans hook for multi language support of content
-function wppa_qtrans( $output, $lang = '' ) {
-	if ( $lang == '' ) {
-		$output = __( $output );
-//		if ( function_exists( 'qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage' ) ) {
-//			$output = qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage( $output );
-//		}
-	} else {
-		if ( function_exists( 'qtrans_use' ) ) {
-			$output = qtrans_use( $lang, $output, false );
-		}
-	}
-	return $output;
-}
 
 function wppa_dbg_msg( $txt='', $color = 'blue', $force = false, $return = false ) {
 global $wppa;
@@ -585,73 +521,73 @@ function wppa_get_time_since( $oldtime ) {
 		$newtime = time();
 		$diff = $newtime - $oldtime;
 		if ( $diff < 60 ) {
-			if ( $diff == 1 ) return __( '1 second', 'wppa' );
-			else return $diff.' '.__( 'seconds', 'wppa' );
+			if ( $diff == 1 ) return __( '1 second' , 'wp-photo-album-plus');
+			else return $diff.' '.__( 'seconds' , 'wp-photo-album-plus');
 		}
 		$diff = floor( $diff / 60 );
 		if ( $diff < 60 ) {
-			if ( $diff == 1 ) return __( '1 minute', 'wppa' );
-			else return $diff.' '.__( 'minutes', 'wppa' );
+			if ( $diff == 1 ) return __( '1 minute' , 'wp-photo-album-plus');
+			else return $diff.' '.__( 'minutes' , 'wp-photo-album-plus');
 		}
 		$diff = floor( $diff / 60 );
 		if ( $diff < 24 ) {
-			if ( $diff == 1 ) return __( '1 hour', 'wppa' );
-			else return $diff.' '.__( 'hours', 'wppa' );
+			if ( $diff == 1 ) return __( '1 hour' , 'wp-photo-album-plus');
+			else return $diff.' '.__( 'hours' , 'wp-photo-album-plus');
 		}
 		$diff = floor( $diff / 24 );
 		if ( $diff < 7 ) {
-			if ( $diff == 1 ) return __( '1 day', 'wppa' );
-			else return $diff.' '.__( 'days', 'wppa' );
+			if ( $diff == 1 ) return __( '1 day' , 'wp-photo-album-plus');
+			else return $diff.' '.__( 'days' , 'wp-photo-album-plus');
 		}
 		elseif ( $diff < 31 ) {
 			$t = floor( $diff / 7 );
-			if ( $t == 1 ) return __( '1 week', 'wppa' );
-			else return $t.' '.__( 'weeks', 'wppa' );
+			if ( $t == 1 ) return __( '1 week' , 'wp-photo-album-plus');
+			else return $t.' '.__( 'weeks' , 'wp-photo-album-plus');
 		}
 		$diff = floor( $diff / 30.4375 );
 		if ( $diff < 12 ) {
-			if ( $diff == 1 ) return __( '1 month', 'wppa' );
-			else return $diff.' '.__( 'months', 'wppa' );
+			if ( $diff == 1 ) return __( '1 month' , 'wp-photo-album-plus');
+			else return $diff.' '.__( 'months' , 'wp-photo-album-plus');
 		}
 		$diff = floor( $diff / 12 );
-		if ( $diff == 1 ) return __( '1 year', 'wppa' );
-		else return $diff.' '.__( 'years', 'wppa' );
+		if ( $diff == 1 ) return __( '1 year' , 'wp-photo-album-plus');
+		else return $diff.' '.__( 'years' , 'wp-photo-album-plus');
 	}
 	else {	// theme version
 		$newtime = time();
 		$diff = $newtime - $oldtime;
 		if ( $diff < 60 ) {
-			if ( $diff == 1 ) return __a( '1 second', 'wppa_theme' );
-			else return $diff.' '.__a( 'seconds', 'wppa_theme' );
+			if ( $diff == 1 ) return __( '1 second', 'wp-photo-album-plus');
+			else return $diff.' '.__( 'seconds', 'wp-photo-album-plus');
 		}
 		$diff = floor( $diff / 60 );
 		if ( $diff < 60 ) {
-			if ( $diff == 1 ) return __a( '1 minute', 'wppa_theme' );
-			else return $diff.' '.__a( 'minutes', 'wppa_theme' );
+			if ( $diff == 1 ) return __( '1 minute', 'wp-photo-album-plus');
+			else return $diff.' '.__( 'minutes', 'wp-photo-album-plus');
 		}
 		$diff = floor( $diff / 60 );
 		if ( $diff < 24 ) {
-			if ( $diff == 1 ) return __a( '1 hour', 'wppa_theme' );
-			else return $diff.' '.__a( 'hours', 'wppa_theme' );
+			if ( $diff == 1 ) return __( '1 hour', 'wp-photo-album-plus');
+			else return $diff.' '.__( 'hours', 'wp-photo-album-plus');
 		}
 		$diff = floor( $diff / 24 );
 		if ( $diff < 7 ) {
-			if ( $diff == 1 ) return __a( '1 day', 'wppa_theme' );
-			else return $diff.' '.__a( 'days', 'wppa_theme' );
+			if ( $diff == 1 ) return __( '1 day', 'wp-photo-album-plus');
+			else return $diff.' '.__( 'days', 'wp-photo-album-plus');
 		}
 		elseif ( $diff < 31 ) {
 			$t = floor( $diff / 7 );
-			if ( $t == 1 ) return __a( '1 week', 'wppa_theme' );
-			else return $t.' '.__a( 'weeks', 'wppa_theme' );
+			if ( $t == 1 ) return __( '1 week', 'wp-photo-album-plus');
+			else return $t.' '.__( 'weeks', 'wp-photo-album-plus');
 		}
 		$diff = floor( $diff / 30.4375 );
 		if ( $diff < 12 ) {
-			if ( $diff == 1 ) return __a( '1 month', 'wppa_theme' );
-			else return $diff.' '.__a( 'months', 'wppa_theme' );
+			if ( $diff == 1 ) return __( '1 month', 'wp-photo-album-plus');
+			else return $diff.' '.__( 'months', 'wp-photo-album-plus');
 		}
 		$diff = floor( $diff / 12 );
-		if ( $diff == 1 ) return __a( '1 year', 'wppa_theme' );
-		else return $diff.' '.__a( 'years', 'wppa_theme' );
+		if ( $diff == 1 ) return __( '1 year', 'wp-photo-album-plus');
+		else return $diff.' '.__( 'years', 'wp-photo-album-plus');
 	}
 }
 
@@ -862,8 +798,8 @@ global $wpdb;
 			wppa_create_thumbnail( $id );
 		}
 		else {
-			if ( is_admin() ) wppa_error_message( __( 'ERROR: Resized or copied image could not be created.', 'wppa' ) );
-			else wppa_alert( __( 'ERROR: Resized or copied image could not be created.', 'wppa_theme' ) );
+			if ( is_admin() ) wppa_error_message( __( 'ERROR: Resized or copied image could not be created.' , 'wp-photo-album-plus') );
+			else wppa_alert( __( 'ERROR: Resized or copied image could not be created.', 'wp-photo-album-plus') );
 			return false;
 		}
 
@@ -905,8 +841,8 @@ global $wpdb;
 		return true;
 	}
 	else {
-		if ( is_admin() ) wppa_error_message( sprintf( __( 'ERROR: File %s is not a valid picture file.', 'wppa' ), $file ) );
-		else wppa_alert( sprintf( __( 'ERROR: File %s is not a valid picture file.', 'wppa_theme' ), $file ) );
+		if ( is_admin() ) wppa_error_message( sprintf( __( 'ERROR: File %s is not a valid picture file.' , 'wp-photo-album-plus'), $file ) );
+		else wppa_alert( sprintf( __( 'ERROR: File %s is not a valid picture file.', 'wp-photo-album-plus'), $file ) );
 		return false;
 	}
 }
@@ -1706,7 +1642,7 @@ function wppa_check_memory_limit( $verbose = true, $x = '0', $y = '0' ) {
 		$maxx = sqrt( $maxpixels / 12 ) * 4;
 		$maxy = sqrt( $maxpixels / 12 ) * 3;
 		if ( $verbose ) {		// Make it a string
-			$result = '<br />'.sprintf(  __( 'Based on your server memory limit you should not upload images larger then <strong>%d x %d (%2.1f MP)</strong>', 'wppa' ), $maxx, $maxy, $maxpixels / ( 1024 * 1024 ) );
+			$result = '<br />'.sprintf(  __( 'Based on your server memory limit you should not upload images larger then <strong>%d x %d (%2.1f MP)</strong>' , 'wp-photo-album-plus'), $maxx, $maxy, $maxpixels / ( 1024 * 1024 ) );
 		}
 		else {					// Or an array
 			$result['maxx'] = $maxx;
@@ -1969,7 +1905,7 @@ global $wpdb;
 		}
 		// Or just translate
 		else foreach ( array_keys( $albums ) as $index ) {
-			$albums[$index]['name'] = __( stripslashes( $albums[$index]['name'] ) );
+			$albums[$index]['name'] = __( stripslashes( $albums[$index]['name'] ) , 'wp-photo-album-plus');
 		}
 		// Sort
 		if ( $args['sort'] ) $albums = wppa_array_sort( $albums, 'name' );
@@ -1981,25 +1917,25 @@ global $wpdb;
 	$selected = $args['selected'] == '0' ? ' selected="selected"' : '';
 	if ( $args['addpleaseselect'] ) $result .=
 		'<option value="0" disabled="disabled" '.$selected.' >' .
-			( is_admin() ? __( '- select an album -', 'wppa' ) : __a( '- select an album -' ) ) .
+			__( '- select an album -' , 'wp-photo-album-plus' ) .
 		'</option>';
 
 	$selected = $args['selected'] == '0' ? ' selected="selected"' : '';
 	if ( $args['addnone'] ) $result .=
 		'<option value="0"'.$selected.' >' .
-			( is_admin() ? __( '--- none ---', 'wppa' ) : __a( '--- none ---' ) ) .
+			__( '--- none ---' , 'wp-photo-album-plus' ) .
 		'</option>';
 
 	$selected = $args['selected'] == '0' ? ' selected="selected"' : '';
 	if ( $args['addall'] ) $result .=
 		'<option value="0"'.$selected.' >' .
-			( is_admin() ? __( '--- all ---', 'wppa' ) : __a( '--- all ---' ) ) .
+			__( '--- all ---' , 'wp-photo-album-plus' ) .
 		'</option>';
 
 	$selected = $args['selected'] == '-2' ? ' selected="selected"' : '';
 	if ( $args['addall'] ) $result .=
 		'<option value="-2"'.$selected.' >' .
-			( is_admin() ? __( '--- generic ---', 'wppa' ) : __a( '--- generic ---' ) ) .
+			__( '--- generic ---' , 'wp-photo-album-plus' ) .
 		'</option>';
 
 	$selected = $args['selected'] == '0' ? ' selected="selected"' : '';
@@ -2010,13 +1946,13 @@ global $wpdb;
 	$selected = $args['selected'] == '-99' ? ' selected="selected"' : '';
 	if ( $args['addmultiple'] ) $result .=
 		'<option value="-99"'.$selected.' >' .
-			( is_admin() ? __( '--- multiple see below ---', 'wppa' ) : __a( '--- multiple see below ---' ) ) .
+			__( '--- multiple see below ---' , 'wp-photo-album-plus' ) .
 		'</option>';
 
 	$selected = $args['selected'] == '0' ? ' selected="selected"' : '';
 	if ( $args['addselbox'] ) $result .=
 		'<option value="0"'.$selected.' >' .
-			( is_admin() ? __( '--- a selection box ---', 'wppa' ) : __a( '--- a selection box ---' ) ) .
+			__( '--- a selection box ---' , 'wp-photo-album-plus' ) .
 		'</option>';
 
 	if ( $albums ) foreach ( $albums as $album ) {
@@ -2050,7 +1986,7 @@ global $wpdb;
 	$selected = $args['selected'] == '-1' ? ' selected="selected"' : '';
 	if ( $args['addseparate'] ) $result .=
 		'<option value="-1"' . $selected . '>' .
-			( is_admin() ? __( '--- separate ---', 'wppa' ) : __a( '--- separate ---' ) ) .
+			__( '--- separate ---' , 'wp-photo-album-plus' ) .
 		'</option>';
 
 	return $result;
@@ -2148,7 +2084,7 @@ global $user_ID;
 
 	// myCred
 	if ( function_exists( 'mycred_add' ) ) {
-		$entry = $reason . ( $id ? ', '.__('Photo id =', 'wppa').' '.$id : '' ) . ( $value ? ', '.__('Value =', 'wppa').' '.$value : '' );
+		$entry = $reason . ( $id ? ', '.__('Photo id =', 'wp-photo-album-plus').' '.$id : '' ) . ( $value ? ', '.__('Value =', 'wp-photo-album-plus').' '.$value : '' );
 		$bret = mycred_add( str_replace( ' ', '_', $reason ), $user_ID, $amount, $entry, '', '', '' ); // $ref_id, $data, $type );
 	}
 

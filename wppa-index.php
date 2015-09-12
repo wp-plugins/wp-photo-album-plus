@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all indexing functions
-* version 6.1.0
+* version 6.3.0
 *
 * 
 */
@@ -15,12 +15,6 @@ global $acount;
 global $pcount;
 global $wppa;
 
-/*
-	if ( ! wppa_switch('wppa_indexed_search') ) {
-		update_option('wppa_index_need_remake', 'yes');
-		return;
-	}
-*/	
 	if ( $type == 'album' ) {
 	
 		$album = wppa_cache_album($id);

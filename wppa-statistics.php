@@ -4,7 +4,7 @@
 *
 * Functions for counts etc
 * Common use front and admin
-* Version 6.1.16
+* Version 6.3.0
 *
 */
 
@@ -20,16 +20,16 @@ function wppa_get_statistics() {
 
 	$count = wppa_get_total_album_count();
 	$y_id = wppa_get_youngest_album_id();
-	$y_name = __(wppa_get_album_name($y_id));
+	$y_name = __(wppa_get_album_name($y_id), 'wp-photo-album-plus');
 	$p_id = wppa_get_parentalbumid($y_id);
-	$p_name = __(wppa_get_album_name($p_id));
+	$p_name = __(wppa_get_album_name($p_id), 'wp-photo-album-plus');
 	
 	$result = '<div class="wppa-box wppa-nav" style="text-align: center; '.__wcs('wppa-box').__wcs('wppa-nav').'">';
-	$result .= __a('There are').' '.$count.' '.__a('photo albums. The last album added is').' ';
+	$result .= __('There are', 'wp-photo-album-plus').' '.$count.' '.__('photo albums. The last album added is', 'wp-photo-album-plus').' ';
 	$result .= '<a href="'.wppa_get_permalink().'wppa-album='.$y_id.'&amp;wppa-cover=0&amp;wppa-occur=1">'.$y_name.'</a>';
 
 	if ($p_id > '0') {
-		$result .= __a(', a subalbum of').' '; 
+		$result .= __(', a subalbum of', 'wp-photo-album-plus').' '; 
 		$result .= '<a href="'.wppa_get_permalink().'wppa-album='.$p_id.'&amp;wppa-cover=0&amp;wppa-occur=1">'.$p_name.'</a>';
 	}
 	

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level wpdb routines that add new records
-* Version 6.1.16
+* Version 6.3.0
 *
 */
 
@@ -326,7 +326,7 @@ global $wpdb;
 
 	$args = wp_parse_args( (array) $args, array ( 
 					'id' 				=> '0',
-					'name' 				=> __('New Album', 'wppa'),
+					'name' 				=> __( 'New Album', 'wp-photo-album-plus' ),
 					'description' 		=> '',
 					'a_order' 			=> '0',
 					'main_photo' 		=> wppa_opt( 'wppa_main_photo' ),

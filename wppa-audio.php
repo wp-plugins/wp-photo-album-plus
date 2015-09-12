@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all audio routines
-* Version 6.1.0
+* Version 6.3.0
 *
 */
  
@@ -181,7 +181,7 @@ function wppa_get_audio_body( $id, $for_lb = false, $w = '0', $h = '0' ) {
 		$mime = str_replace( 'mp3', 'mpeg', 'audio/'.$ext );
 		$result = '<source src="'.$source.'.'.$ext.'" type="'.$mime.'">';
 	}
-	$result .= __a('There is no filetype available for your browser, or your browser does not support html5 audio', 'wppa');
+	$result .= __('There is no filetype available for your browser, or your browser does not support html5 audio', 'wp-photo-album-plus');
 	
 	return $result;
 }

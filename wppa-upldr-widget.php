@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display a list of users linking to their photos
-* Version 6.2.0
+* Version 6.3.0
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -11,8 +11,8 @@ if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 class UpldrWidget extends WP_Widget {
     /** constructor */
     function __construct() {
-		$widget_ops = array('classname' => 'wppa_upldr_widget', 'description' => __( 'WPPA+ Uploader Photos', 'wppa') );
-		parent::__construct('wppa_upldr_widget', __('Uploader Photos', 'wppa'), $widget_ops);
+		$widget_ops = array('classname' => 'wppa_upldr_widget', 'description' => __( 'WPPA+ Uploader Photos', 'wp-photo-album-plus') );
+		parent::__construct('wppa_upldr_widget', __('Uploader Photos', 'wp-photo-album-plus'), $widget_ops);
     }
 
 	/** @see WP_Widget::widget */
@@ -40,7 +40,7 @@ class UpldrWidget extends WP_Widget {
 														'parent' 	=> ''
 														) );
  		$widget_title 	= apply_filters('widget_title', $instance['title'] );
-		$page 			= in_array( 'album', $wppa['links_no_page'] ) ? '' : wppa_get_the_landing_page('wppa_upldr_widget_linkpage', __a('User uploaded photos'));
+		$page 			= in_array( 'album', $wppa['links_no_page'] ) ? '' : wppa_get_the_landing_page('wppa_upldr_widget_linkpage', __('User uploaded photos', 'wp-photo-album-plus'));
 		$ignorelist		= explode(',', $instance['ignore']);
 		$upldrcache 	= wppa_get_upldr_cache();
 		$needupdate 	= false;
@@ -88,7 +88,7 @@ class UpldrWidget extends WP_Widget {
 		}
 		else {
 			$widget_content = 
-				__a( 'There are too many registered users in the system for this widget' );
+				__( 'There are too many registered users in the system for this widget' , 'wp-photo-album-plus');
 			echo "\n" . $before_widget;
 			if ( !empty( $widget_title ) ) { echo $before_title . $widget_title . $after_title; }
 			echo $widget_content . $after_widget;
@@ -122,14 +122,14 @@ class UpldrWidget extends WP_Widget {
 		if ( $myline ) {
 			$user = $myline;
 			$widget_content .= '<tr class="wppa-user" >
-									<td style="padding: 0 3px;" ><a href="'.wppa_get_upldr_link($user['login']).$a.'" title="'.__a('Photos uploaded by').' '.$user['name'].'" ><b>'.$user['name'].'</b></a></td>
+									<td style="padding: 0 3px;" ><a href="'.wppa_get_upldr_link($user['login']).$a.'" title="'.__('Photos uploaded by', 'wp-photo-album-plus').' '.$user['name'].'" ><b>'.$user['name'].'</b></a></td>
 									<td style="padding: 0 3px;" ><b>'.$user['count'].'</b></td>
 									<td style="padding: 0 3px;" ><b>'.wppa_get_time_since($user['date']).'</b></td>
 								</tr>';
 		}
 		foreach ( $workarr as $user ) {
 			$widget_content .= '<tr class="wppa-user" >
-									<td style="padding: 0 3px;" ><a href="'.wppa_get_upldr_link($user['login']).$a.'" title="'.__a('Photos uploaded by').' '.$user['name'].'" >'.$user['name'].'</a></td>
+									<td style="padding: 0 3px;" ><a href="'.wppa_get_upldr_link($user['login']).$a.'" title="'.__('Photos uploaded by', 'wp-photo-album-plus').' '.$user['name'].'" >'.$user['name'].'</a></td>
 									<td style="padding: 0 3px;" >'.$user['count'].'</td>
 									<td style="padding: 0 3px;" >'.wppa_get_time_since($user['date']).'</td>
 								</tr>';
@@ -164,7 +164,7 @@ class UpldrWidget extends WP_Widget {
 		
 		//Defaults
 		$instance 		= wp_parse_args( (array) $instance, array( 
-														'title' 	=> __('User Photos', 'wppa'),
+														'title' 	=> __('User Photos', 'wp-photo-album-plus'),
 														'sortby' 	=> 'name',
 														'ignore' 	=> 'admin',
 														'parent' 	=> ''
@@ -172,24 +172,24 @@ class UpldrWidget extends WP_Widget {
  		$widget_title 	= apply_filters('widget_title', $instance['title']);
 
 ?>
-		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> 
+		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wp-photo-album-plus'); ?></label> 
 			<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $widget_title; ?>" />
 		</p>
 
-		<p><label for="<?php echo $this->get_field_id('sortby'); ?>"><?php _e('Sort by:', 'wppa'); ?></label>
+		<p><label for="<?php echo $this->get_field_id('sortby'); ?>"><?php _e('Sort by:', 'wp-photo-album-plus'); ?></label>
 			<select class="widefat" id="<?php echo $this->get_field_id('sortby'); ?>" name="<?php echo $this->get_field_name('sortby'); ?>" >
-				<option value="name" <?php if ($instance['sortby'] == 'name') echo 'selected="selected"' ?>><?php _e('Display name', 'wppa') ?></option>
-				<option value="count" <?php if ($instance['sortby'] == 'count') echo 'selected="selected"' ?>><?php _e('Number of photos', 'wppa') ?></option>
-				<option value="date" <?php if ($instance['sortby'] == 'date') echo 'selected="selected"' ?>><?php _e('Most recent photo', 'wppa') ?></option>
+				<option value="name" <?php if ($instance['sortby'] == 'name') echo 'selected="selected"' ?>><?php _e('Display name', 'wp-photo-album-plus') ?></option>
+				<option value="count" <?php if ($instance['sortby'] == 'count') echo 'selected="selected"' ?>><?php _e('Number of photos', 'wp-photo-album-plus') ?></option>
+				<option value="date" <?php if ($instance['sortby'] == 'date') echo 'selected="selected"' ?>><?php _e('Most recent photo', 'wp-photo-album-plus') ?></option>
 			</select>
 		</p>
 		
-		<p><label for="<?php echo $this->get_field_id('ignore'); ?>"><?php _e('Ignore:', 'wppa'); ?></label>
+		<p><label for="<?php echo $this->get_field_id('ignore'); ?>"><?php _e('Ignore:', 'wp-photo-album-plus'); ?></label>
 			<input class="widefat" id=<?php echo $this->get_field_id('ignore'); ?>" name="<?php echo $this->get_field_name('ignore'); ?>" value="<?php echo $instance['ignore'] ?>" />
-			<small><?php _e('Enter loginnames seperated by commas', 'wppa') ?></small>
+			<small><?php _e('Enter loginnames seperated by commas', 'wp-photo-album-plus') ?></small>
 		</p>
 		
-		<p><label for="<?php echo $this->get_field_id('parent'); ?>"><?php _e('Look only in albums (including sub-albums):', 'wppa'); ?></label>
+		<p><label for="<?php echo $this->get_field_id('parent'); ?>"><?php _e('Look only in albums (including sub-albums):', 'wp-photo-album-plus'); ?></label>
 			<input type="hidden" id="<?php echo $this->get_field_id('parent'); ?>" name="<?php echo $this->get_field_name('parent'); ?>" value="<?php echo $instance['parent'] ?>" />
 			<?php if ( $instance['parent'] ) echo '<br/><small>( '.$instance['parent'].' )</small>' ?>
 			<select class="widefat" multiple="multiple" onchange="wppaGetSelEnumToId( 'parentalbums-<?php echo $this->get_widget_id() ?>', '<?php echo $this->get_field_id('parent') ?>' )" id="<?php echo $this->get_field_id('parent-list'); ?>" name="<?php echo $this->get_field_name('parent-list'); ?>" >
@@ -200,13 +200,13 @@ class UpldrWidget extends WP_Widget {
 					$albums = wppa_add_paths( $albums );
 				}
 				else {
-					foreach ( array_keys( $albums ) as $index ) $albums[$index]['name'] = __( stripslashes( $albums[$index]['name'] ) );
+					foreach ( array_keys( $albums ) as $index ) $albums[$index]['name'] = __( stripslashes( $albums[$index]['name'] ) , 'wp-photo-album-plus');
 				}
 				$albums = wppa_array_sort( $albums, 'name' );
 
 				// Please select
 				$sel = $instance['parent'] ? '' : 'selected="selected" ';
-				echo '<option class="parentalbums-'.$this->get_widget_id().'" value="" '.$sel.'>-- '.__('All albums', 'wppa').' --</option>';
+				echo '<option class="parentalbums-'.$this->get_widget_id().'" value="" '.$sel.'>-- '.__('All albums', 'wp-photo-album-plus').' --</option>';
 
 				// Find the albums currently selected
 				$selalbs = explode( '.', wppa_expand_enum( $instance['parent'] ) );
@@ -215,7 +215,7 @@ class UpldrWidget extends WP_Widget {
 				foreach ( $albums as $album ) {
 					$s = in_array( $album['id'], $selalbs );
 					$sel = $s ? 'selected="selected" ' : '';
-					echo '<option class="parentalbums-'.$this->get_widget_id().'" value="' . $album['id'] . '" '.$sel.'>'.stripslashes( __( $album['name'] ) ) . ' (' . $album['id'] . ')</option>';
+					echo '<option class="parentalbums-'.$this->get_widget_id().'" value="' . $album['id'] . '" '.$sel.'>'.stripslashes( __( $album['name'] , 'wp-photo-album-plus') ) . ' (' . $album['id'] . ')</option>';
 				}
 			?>
 			</select>

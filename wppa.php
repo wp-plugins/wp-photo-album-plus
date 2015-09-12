@@ -1,11 +1,13 @@
 <?php
 /*
-Plugin Name: WP Photo Album Plus
-Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 6.2.14
-Author: J.N. Breetvelt a.k.a. OpaJaap
-Author URI: http://wppa.opajaap.nl/
-Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
+ * Plugin Name: WP Photo Album Plus
+ * Description: Easily manage and display your photo albums and slideshows within your WordPress site.
+ * Version: 6.3.0
+ * Author: J.N. Breetvelt a.k.a. OpaJaap
+ * Author URI: http://wppa.opajaap.nl/
+ * Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
+ * Text Domain: wp-photo-album-plus
+ * Domain Path: /languages
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -24,12 +26,12 @@ global $wpdb;
 /* when new options are added and when the wppa_setup() routine
 /* must be called right after update for any other reason.
 */
-global $wppa_revno; 		$wppa_revno = '6214';
+global $wppa_revno; 		$wppa_revno = '6300';
 
 /* This is the api interface version number
 /* It is incremented at any code change.
 */
-global $wppa_api_version; 	$wppa_api_version = '6-2-14-000';
+global $wppa_api_version; 	$wppa_api_version = '6-3-00-000';
 
 /* start timers */
 global $wppa_starttime; $wppa_starttime = microtime(true);
@@ -116,6 +118,22 @@ else {
 		);												// /.../wp-content
 }
 
+// Load language
+add_action( 'plugins_loaded', 'wppa_load_plugin_textdomain' );
+
+function wppa_load_plugin_textdomain() {
+global $wppa_lang;
+global $wppa_locale;
+
+    $bret = load_plugin_textdomain( 'wp-photo-album-plus', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
+
+	$wppa_locale = get_locale() ? get_locale() : 'en_US';
+	$wppa_lang = substr( $wppa_locale, 0, 2 );
+//	echo 'Bret='.$bret.', '.basename( dirname( __FILE__ ) ) . '/languages/ ';
+//	echo get_locale();
+}
+
+// Init
 add_action( 'init', 'wppa_init', '7' );
 
 function wppa_init() {
@@ -333,19 +351,19 @@ global $wppa;
 	if ( WPPA_MULTISITE_BLOGSDIR ) return;
 	if ( WPPA_MULTISITE_INDIVIDUAL ) return;
 
-	$errtxt = __('</strong><h3>WP Photo ALbum Plus Error message</h3>This is a multi site installation. One of the following 3 lines must be entered in wp-config.php:', 'wppa');
-	$errtxt .= __('<br /><br /><b>define( \'WPPA_MULTISITE_INDIVIDUAL\', true );</b> <small>// Multisite WP 3.5 or later with every site its own albums and photos</small>', 'wppa');
-	$errtxt .= __('<br /><b>define( \'WPPA_MULTISITE_BLOGSDIR\', true );</b> <small>// Multisite prior to WP 3.5 with every site its own albums and photos</small>', 'wppa');
-	$errtxt .= __('<br /><b>define( \'WPPA_MULTISITE_GLOBAL\', true );</b> <small>// Multisite with one common set of albums and photos</small>', 'wppa');
-	$errtxt .= __('<br /><br />For more information see: <a href="https://wordpress.org/plugins/wp-photo-album-plus/faq/">the faq</a>', 'wppa');
-	$errtxt .= __('<br /><br /><em>If you upload photos, they will be placed in the wrong location and will not be visible for visitors!</em><strong>', 'wppa');
+	$errtxt = __('</strong><h3>WP Photo ALbum Plus Error message</h3>This is a multi site installation. One of the following 3 lines must be entered in wp-config.php:', 'wp-photo-album-plus');
+	$errtxt .= __('<br /><br /><b>define( \'WPPA_MULTISITE_INDIVIDUAL\', true );</b> <small>// Multisite WP 3.5 or later with every site its own albums and photos</small>', 'wp-photo-album-plus');
+	$errtxt .= __('<br /><b>define( \'WPPA_MULTISITE_BLOGSDIR\', true );</b> <small>// Multisite prior to WP 3.5 with every site its own albums and photos</small>', 'wp-photo-album-plus');
+	$errtxt .= __('<br /><b>define( \'WPPA_MULTISITE_GLOBAL\', true );</b> <small>// Multisite with one common set of albums and photos</small>', 'wp-photo-album-plus');
+	$errtxt .= __('<br /><br />For more information see: <a href="https://wordpress.org/plugins/wp-photo-album-plus/faq/">the faq</a>', 'wp-photo-album-plus');
+	$errtxt .= __('<br /><br /><em>If you upload photos, they will be placed in the wrong location and will not be visible for visitors!</em><strong>', 'wp-photo-album-plus');
 
 	wppa_error_message( $errtxt );
 }
 
 /* Check for pending maintenance procs */
-if ( get_option( 'wppa_remake_index_photos_status', '' ) == __('Required', 'wppa') ||
-	 get_option( 'wppa_rerate_status', '' ) == __('Required', 'wppa') ||
+if ( get_option( 'wppa_remake_index_photos_status', '' ) == __('Required', 'wp-photo-album-plus') ||
+	 get_option( 'wppa_rerate_status', '' ) == __('Required', 'wp-photo-album-plus') ||
 	 get_option( 'wppa_index_need_remake', 'no') == 'yes' ) {
 		add_action('admin_notices', 'wppa_maintenance_messages');
 }
@@ -355,15 +373,15 @@ function wppa_maintenance_messages() {
 	}
 
 	if ( /* wppa_switch( 'wppa_indexed_search' ) && */ get_option( 'wppa_remake_index_photos_status' ) || get_option( 'wppa_index_need_remake', 'no') == 'yes' ) {
-		wppa_error_message( __('</strong>The photo index table needs to be rebuilt. Please run <b>Photo Albums -> Settings</b> admin page <b>Table VIII-A9</b><strong>', 'wppa' ) );
+		wppa_error_message( __('</strong>The photo index table needs to be rebuilt. Please run <b>Photo Albums -> Settings</b> admin page <b>Table VIII-A9</b><strong>' , 'wp-photo-album-plus') );
 		update_option( 'wppa_remake_index_photos_status', 'required' );
 	}
 	if ( /* wppa_switch( 'wppa_indexed_search' ) && */ get_option( 'wppa_remake_index_albums_status' ) || get_option( 'wppa_index_need_remake', 'no') == 'yes' ) {
-		wppa_error_message( __('</strong>The album index table needs to be rebuilt. Please run <b>Photo Albums -> Settings</b> admin page <b>Table VIII-A8</b><strong>', 'wppa' ) );
+		wppa_error_message( __('</strong>The album index table needs to be rebuilt. Please run <b>Photo Albums -> Settings</b> admin page <b>Table VIII-A8</b><strong>' , 'wp-photo-album-plus') );
 		update_option( 'wppa_remake_index_albums_status', 'required' );
 	}
 	if ( wppa_switch( 'wppa_rating_on' ) && get_option( 'wppa_rerate_status' ) ) {
-		wppa_error_message( __('</strong>The avarage ratings need to be recalculated. Please run <b>Photo Albums -> Settings</b> admin page <b>Table VIII-A5</b><strong>', 'wppa' ) );
+		wppa_error_message( __('</strong>The avarage ratings need to be recalculated. Please run <b>Photo Albums -> Settings</b> admin page <b>Table VIII-A5</b><strong>' , 'wp-photo-album-plus') );
 	}
 }
 
@@ -383,7 +401,7 @@ global $wpdb;
 	}
 }
 function wppa_tag_message() {
-	wppa_error_message( __('</strong>The tags system needs to be converted. Please run <b>Photo Albums -> Settings</b> admin page <b>Table VIII-B16</b><strong>', 'wppa' ) );
+	wppa_error_message( __('</strong>The tags system needs to be converted. Please run <b>Photo Albums -> Settings</b> admin page <b>Table VIII-B16</b><strong>' , 'wp-photo-album-plus') );
 }
 // Check if cats system needs conversion
 add_action( 'admin_init', 'wppa_check_cat_system' );
@@ -401,5 +419,5 @@ global $wpdb;
 	}
 }
 function wppa_cat_message() {
-	wppa_error_message( __('</strong>The cats system needs to be converted. Please run <b>Photo Albums -> Settings</b> admin page <b>Table VIII-B17</b><strong>', 'wppa' ) );
+	wppa_error_message( __('</strong>The cats system needs to be converted. Please run <b>Photo Albums -> Settings</b> admin page <b>Table VIII-B17</b><strong>' , 'wp-photo-album-plus') );
 }

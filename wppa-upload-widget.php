@@ -6,14 +6,14 @@
 *
 * A wppa widget to upload photos
 *
-* Version 6.2.9
+* Version 6.3.0
 */
 
 class WppaUploadWidget extends WP_Widget {
 
 	function __construct() {
-		$widget_ops = array('classname' => 'wppa_upload_widget', 'description' => __('WPPA+ Upload photos widget', 'wppa'));
-		parent::__construct('wppa_upload_widget', __('WPPA+ Upload', 'wppa'), $widget_ops);
+		$widget_ops = array('classname' => 'wppa_upload_widget', 'description' => __('WPPA+ Upload photos widget', 'wp-photo-album-plus'));
+		parent::__construct('wppa_upload_widget', __('WPPA+ Upload', 'wp-photo-album-plus'), $widget_ops);
 	}
 
 	function widget( $args, $instance ) {
@@ -72,13 +72,13 @@ class WppaUploadWidget extends WP_Widget {
 
 	function form( $instance ) {
 		global $wppa_opt;
-		$instance = wp_parse_args( (array) $instance, array( 'title' => __('Upload Photos', 'wppa'), 'album' => '0' ) );
+		$instance = wp_parse_args( (array) $instance, array( 'title' => __('Upload Photos', 'wp-photo-album-plus'), 'album' => '0' ) );
 		$title = $instance['title'];
 		$album = $instance['album'];
 ?>
-		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label>
+		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wp-photo-album-plus'); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" /></p>
-		<p><label for="<?php echo $this->get_field_id('album'); ?>"><?php _e('Album:', 'wppa'); ?></label>
+		<p><label for="<?php echo $this->get_field_id('album'); ?>"><?php _e('Album:', 'wp-photo-album-plus'); ?></label>
 		<select class="widefat" id="<?php echo $this->get_field_id('album'); ?>" name="<?php echo $this->get_field_name('album'); ?>" >
 			<?php echo wppa_album_select_a(array('path' => wppa_switch('wppa_hier_albsel'), 'selected' => $album, 'addselbox' => true)) ?>
 		</select>

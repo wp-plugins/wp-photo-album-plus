@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 6.2.10
+* Version 6.3.0
 *
 */
 
@@ -702,47 +702,47 @@ function wppa_moderate_links( $type, $id, $comid = '' ) {
 	if ( current_user_can('wppa_moderate') || ( current_user_can('wppa_comments') && $type == 'comment' ) ) {
 		switch ( $type ) {
 			case 'thumb':
-				$app = __a('App');
-				$mod = __a('Mod');
-				$del = __a('Del');
+				$app = __('App', 'wp-photo-album-plus');
+				$mod = __('Mod', 'wp-photo-album-plus');
+				$del = __('Del', 'wp-photo-album-plus');
 
 				$result = '
 				<div style="clear:both;"></div>
-				<a class="wppa-approve-'.$id.'" style="font-weight:bold; color:green; cursor:pointer;" onclick="if ( confirm(\''.__a('Are you sure you want to publish this photo?').'\') ) wppaAjaxApprovePhoto(\''.$id.'\')">
+				<a class="wppa-approve-'.$id.'" style="font-weight:bold; color:green; cursor:pointer;" onclick="if ( confirm(\''.__('Are you sure you want to publish this photo?', 'wp-photo-album-plus').'\') ) wppaAjaxApprovePhoto(\''.$id.'\')">
 					'.$app.
 				'</a>
 				<a class="wppa-approve-'.$id.'" style="font-weight:bold; color:blue; cursor:pointer;" onclick="document.location=\''.get_admin_url().'admin.php?page=wppa_moderate_photos&amp;photo='.$id.'\'" >
 					'.$mod.
 				'</a>
-				<a class="wppa-approve-'.$id.'" style="font-weight:bold; color:red; cursor:pointer;" onclick="if ( confirm(\''.__a('Are you sure you want to remove this photo?').'\') ) wppaAjaxRemovePhoto(\''.$id.'\', true)">
+				<a class="wppa-approve-'.$id.'" style="font-weight:bold; color:red; cursor:pointer;" onclick="if ( confirm(\''.__('Are you sure you want to remove this photo?', 'wp-photo-album-plus').'\') ) wppaAjaxRemovePhoto(\''.$id.'\', true)">
 					'.$del.
 				'</a><br class="wppa-approve-'.$id.'" />';
 				break;
 			case 'slide':
-				$app = __a('Approve');
-				$mod = __a('Moderate');
-				$del = __a('Delete');
+				$app = __('Approve', 'wp-photo-album-plus');
+				$mod = __('Moderate', 'wp-photo-album-plus');
+				$del = __('Delete', 'wp-photo-album-plus');
 
 				$result = '
 				<div style="clear:both;"></div>
-				<a class="wppa-approve-'.$id.'" style="font-weight:bold; color:green; cursor:pointer;" onclick="if ( confirm(\''.__a('Are you sure you want to publish this photo?').'\') ) wppaAjaxApprovePhoto(\''.$id.'\')">
+				<a class="wppa-approve-'.$id.'" style="font-weight:bold; color:green; cursor:pointer;" onclick="if ( confirm(\''.__('Are you sure you want to publish this photo?', 'wp-photo-album-plus').'\') ) wppaAjaxApprovePhoto(\''.$id.'\')">
 					'.$app.
 				'</a>
 				<a class="wppa-approve-'.$id.'" style="font-weight:bold; color:blue; cursor:pointer;" onclick="document.location=\''.get_admin_url().'admin.php?page=wppa_moderate_photos&amp;photo='.$id.'\'" >
 					'.$mod.
 				'</a>
-				<a class="wppa-approve-'.$id.'" style="font-weight:bold; color:red; cursor:pointer;" onclick="if ( confirm(\''.__a('Are you sure you want to remove this photo?').'\') ) wppaAjaxRemovePhoto(\''.$id.'\', true)">
+				<a class="wppa-approve-'.$id.'" style="font-weight:bold; color:red; cursor:pointer;" onclick="if ( confirm(\''.__('Are you sure you want to remove this photo?', 'wp-photo-album-plus').'\') ) wppaAjaxRemovePhoto(\''.$id.'\', true)">
 					'.$del.
 				'</a><br class="wppa-approve-'.$id.'" />';
 				break;
 			case 'comment':
-				$app = __a('Approve');
-				$mod1 = __a('PhotoAdmin');
-				$mod2 = __a('CommentAdmin');
-				$del = __a('Delete');
+				$app = __('Approve', 'wp-photo-album-plus');
+				$mod1 = __('PhotoAdmin', 'wp-photo-album-plus');
+				$mod2 = __('CommentAdmin', 'wp-photo-album-plus');
+				$del = __('Delete', 'wp-photo-album-plus');
 				$result = '
 				<br class="wppa-approve-'.$comid.'" />
-				<a class="wppa-approve-'.$comid.'" style="font-weight:bold; color:green; cursor:pointer;" onclick="if ( confirm(\''.__a('Are you sure you want to publish this comment?').'\') ) wppaAjaxApproveComment(\''.$comid.'\')">
+				<a class="wppa-approve-'.$comid.'" style="font-weight:bold; color:green; cursor:pointer;" onclick="if ( confirm(\''.__('Are you sure you want to publish this comment?', 'wp-photo-album-plus').'\') ) wppaAjaxApproveComment(\''.$comid.'\')">
 					'.$app.
 				'</a>';
 				if ( current_user_can('wppa_moderate') ) $result .= '
@@ -754,7 +754,7 @@ function wppa_moderate_links( $type, $id, $comid = '' ) {
 					'.$mod2.
 				'</a>';
 				$result .= '
-				<a class="wppa-approve-'.$comid.'" style="font-weight:bold; color:red; cursor:pointer;" onclick="if ( confirm(\''.__a('Are you sure you want to remove this comment?').'\') ) wppaAjaxRemoveComment(\''.$comid.'\', true)">
+				<a class="wppa-approve-'.$comid.'" style="font-weight:bold; color:red; cursor:pointer;" onclick="if ( confirm(\''.__('Are you sure you want to remove this comment?', 'wp-photo-album-plus').'\') ) wppaAjaxRemoveComment(\''.$comid.'\', true)">
 					'.$del.
 				'</a><br class="wppa-approve-'.$comid.'" />';
 				break;
@@ -765,10 +765,10 @@ function wppa_moderate_links( $type, $id, $comid = '' ) {
 	}
 	else {
 		if ( $type == 'comment' || $thumb['status'] != 'scheduled' ) {
-			$result = '<div style="clear:both; color:red">'.__a('Awaiting moderation').'</div>';
+			$result = '<div style="clear:both; color:red">'.__('Awaiting moderation', 'wp-photo-album-plus').'</div>';
 		}
 		else {
-			$result = '<div style="clear:both; color:red">'.sprintf( __a( 'Scheduled for %s' ), wppa_format_scheduledtm( $thumb['scheduledtm'] ) ).'</div>';
+			$result = '<div style="clear:both; color:red">'.sprintf( __( 'Scheduled for %s' , 'wp-photo-album-plus'), wppa_format_scheduledtm( $thumb['scheduledtm'] ) ).'</div>';
 		}
 	}
 	return $result;
@@ -972,20 +972,20 @@ function wppa_page_links( $npages = '1', $curpage = '1', $slide = false ) {
 		wppa_out( '<div style="float:left; text-align:left; '.$vis.'">' );
 			wppa_out( '<span class="wppa-arrow" style="'.__wcs('wppa-arrow').'cursor: default;">&laquo;&nbsp;</span>' );
 			if ( wppa_switch('wppa_allow_ajax') ) {
-				wppa_out( '<a style="cursor:pointer;" onclick="wppaDoAjaxRender('.wppa( 'mocc' ).', \''.$ajax_url.'&amp;wppa-page='.($curpage - 1).'\', \''.wppa_convert_to_pretty($link_url.'&amp;wppa-page='.($curpage - 1)).'\')" >'.__a('Previous').'</a>' );
+				wppa_out( '<a style="cursor:pointer;" onclick="wppaDoAjaxRender('.wppa( 'mocc' ).', \''.$ajax_url.'&amp;wppa-page='.($curpage - 1).'\', \''.wppa_convert_to_pretty($link_url.'&amp;wppa-page='.($curpage - 1)).'\')" >'.__('Previous', 'wp-photo-album-plus').'</a>' );
 			}
 			else {
-				wppa_out( wppa_nltab().'<a style="cursor:pointer;" href="'.$link_url.'&amp;wppa-page='.($curpage - 1).'" >'.__a('Previous').'</a>' );
+				wppa_out( '<a style="cursor:pointer;" href="'.$link_url.'&amp;wppa-page='.($curpage - 1).'" >'.__('Previous', 'wp-photo-album-plus').'</a>' );
 			}
 		wppa_out( '</div><!-- #prev-page -->' );
 
 		$vis = $curpage == $npages ? 'visibility: hidden;' : '';
 		wppa_out( '<div style="float:right; text-align:right; '.$vis.'">' );
 			if ( wppa_switch('wppa_allow_ajax') ) {
-				wppa_out( '<a style="cursor:pointer;" onclick="wppaDoAjaxRender('.wppa( 'mocc' ).', \''.$ajax_url.'&amp;wppa-page='.($curpage + 1).'\', \''.wppa_convert_to_pretty($link_url.'&amp;wppa-page='.($curpage + 1)).'\')" >'.__a('Next').'</a>' );
+				wppa_out( '<a style="cursor:pointer;" onclick="wppaDoAjaxRender('.wppa( 'mocc' ).', \''.$ajax_url.'&amp;wppa-page='.($curpage + 1).'\', \''.wppa_convert_to_pretty($link_url.'&amp;wppa-page='.($curpage + 1)).'\')" >'.__('Next', 'wp-photo-album-plus').'</a>' );
 			}
 			else {
-				wppa_out( '<a style="cursor:pointer;" href="'.$link_url.'&amp;wppa-page='.($curpage + 1).'" >'.__a('Next').'</a>' );
+				wppa_out( '<a style="cursor:pointer;" href="'.$link_url.'&amp;wppa-page='.($curpage + 1).'" >'.__('Next', 'wp-photo-album-plus').'</a>' );
 			}
 			wppa_out( '<span class="wppa-arrow" style="'.__wcs('wppa-arrow').'cursor: default;">&nbsp;&raquo;</span>' );
 		wppa_out( '</div><!-- #next-page -->' );
@@ -1031,7 +1031,7 @@ function wppa_album_download_link( $albumid ) {
 	if ( ! wppa_switch( 'wppa_allow_download_album' ) ) return;	// Not enabled
 
 	wppa_out( '<div style="clear:both;" ></div>' );
-	wppa_out( '<a onclick="wppaAjaxDownloadAlbum('.wppa( 'mocc' ).', '.$albumid.' );" style="cursor:pointer;" title="'.__a('Download').'">'.__a('Download album').'</a>' );
+	wppa_out( '<a onclick="wppaAjaxDownloadAlbum('.wppa( 'mocc' ).', '.$albumid.' );" style="cursor:pointer;" title="'.__('Download', 'wp-photo-album-plus').'">'.__('Download album', 'wp-photo-album-plus').'</a>' );
 	wppa_out( '<img id="dwnspin-'.wppa( 'mocc' ).'-'.$albumid.'" src="'.wppa_get_imgdir().'wpspin.gif" style="margin-left:6px; display:none;" alt="spin" />' );
 }
 
@@ -1066,7 +1066,7 @@ global $wpdb;
 			if ( $thumb['linkurl'] ) {
 				// Use it. It superceeds other settings
 				$result['url'] = esc_attr( $thumb['linkurl'] );
-				$result['title'] = esc_attr( wppa_qtrans( stripslashes( $thumb['linktitle'] ) ) );
+				$result['title'] = esc_attr( __( stripslashes( $thumb['linktitle'] ) ) );
 				$result['is_url'] = true;
 				$result['is_lightbox'] = false;
 				$result['onclick'] = '';
@@ -1168,7 +1168,7 @@ global $wpdb;
 			}
 			if ( $type == 'thumbs' ) {
 				$result['url'] = wppa_get_ss_to_tn_link( $page, $id );
-				$result['title'] = __a('View thumbnails');
+				$result['title'] = __('View thumbnails', 'wp-photo-album-plus');
 				$result['is_url'] = true;
 				$result['is_lightbox'] = false;
 				if ( wppa_switch( 'wppa_slideshow_blank' ) ) $result['target'] = '_blank';
@@ -1223,7 +1223,7 @@ global $wpdb;
 	}
 	else $photo_desc = '';
 
-	$title = __( $photo_name );
+	$title = __( $photo_name , 'wp-photo-album-plus');
 
 	$result['onclick'] = '';	// Init
 	switch ( $type ) {
@@ -1402,7 +1402,7 @@ global $wpdb;
 			break;
 		case 'fullpopup':
 			if ( $is_video ) { 		// A video can not be printed or downloaded
-				$result['url'] = esc_attr( 'alert( "' . esc_js( __a( 'A video can not be printed or downloaded' ) ) . '" )' );
+				$result['url'] = esc_attr( 'alert( "' . esc_js( __( 'A video can not be printed or downloaded' , 'wp-photo-album-plus') ) . '" )' );
 			}
 			else {
 				$wid = wppa_get_photox( $id );

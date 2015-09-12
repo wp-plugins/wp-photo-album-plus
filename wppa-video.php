@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all video routines
-* Version 6.1.10
+* Version 6.3.0
 *
 */
 
@@ -186,7 +186,7 @@ function wppa_get_video_body( $id, $for_lb = false, $w = '0', $h = '0' ) {
 		$mime = str_replace( 'ogv', 'ogg', 'video/'.$ext );
 		$result = '<source src="'.$source.'.'.$ext.'" type="'.$mime.'">';
 	}
-	$result .= __a('There is no filetype available for your browser, or your browser does not support html5 video', 'wppa');
+	$result .= __( 'There is no filetype available for your browser, or your browser does not support html5 video', 'wp-photo-album-plus' );
 
 	return $result;
 }

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 6.2.12
+* Version 6.3.0
 *
 */
 
@@ -11,11 +11,6 @@ if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
 global $wppa_supported_photo_extensions;
 $wppa_supported_photo_extensions = array( 'jpg', 'jpeg', 'png', 'gif' );
-
-// __a() is a function like __(), but specificly for front-end language support
-function __a( $txt, $dom = 'wppa_theme' ) {
-	return __( $txt, $dom );
-}
 
 // Get url in wppa dir
 function wppa_url( $arg ) {
@@ -256,7 +251,7 @@ global $wppa_opt;
 		$j = $i + '1';
 		$val = sprintf('%'.$j.'.'.$i.'f', $rating);
 		if ($opt == 'nolabel') $result = $val;
-		else $result = sprintf(__a('Rating: %s', 'wppa_theme'), $val);
+		else $result = sprintf(__('Rating: %s', 'wp-photo-album-plus'), $val);
 	}
 	else $result = '';
 	return $result;
@@ -358,7 +353,7 @@ global $wppa;
 function wppa_add_paths($albums) {
 	if ( is_array($albums) ) foreach ( array_keys($albums) as $index ) {
 		$tempid = $albums[$index]['id'];
-		$albums[$index]['name'] = __(stripslashes($albums[$index]['name']));	// Translate name
+		$albums[$index]['name'] = __(stripslashes($albums[$index]['name']), 'wp-photo-album-plus');	// Translate name
 		while ( $tempid > '0' ) {
 			$tempid = wppa_get_parentalbumid($tempid);
 			if ( $tempid > '0' ) {
@@ -375,11 +370,11 @@ global $wpdb;
 
 	if ( is_array($pages) ) foreach ( array_keys($pages) as $index ) {
 		$tempid = $pages[$index]['ID'];
-		$pages[$index]['post_title'] = __(stripslashes($pages[$index]['post_title']));
+		$pages[$index]['post_title'] = __(stripslashes($pages[$index]['post_title']), 'wp-photo-album-plus');
 		while ( $tempid > '0') {
 			$tempid = $wpdb->get_var($wpdb->prepare("SELECT `post_parent` FROM `" . $wpdb->posts . "` WHERE `ID` = %s", $tempid));
 			if ( $tempid > '0' ) {
-				$pages[$index]['post_title'] = __(stripslashes($wpdb->get_var($wpdb->prepare("SELECT `post_title` FROM `" . $wpdb->posts . "` WHERE `ID` = %s", $tempid)))).' > '.$pages[$index]['post_title'];
+				$pages[$index]['post_title'] = __(stripslashes($wpdb->get_var($wpdb->prepare("SELECT `post_title` FROM `" . $wpdb->posts . "` WHERE `ID` = %s", $tempid))), 'wp-photo-album-plus').' > '.$pages[$index]['post_title'];
 			}
 			else $tempid = '0';
 		}
@@ -776,9 +771,9 @@ global $wpdb;
 	if ( $wppa_opt['wppa_dislike_mail_every'] > '0') {		// Feature enabled?
 		if ( $count % $wppa_opt['wppa_dislike_mail_every'] == '0' ) {	// Mail the admin
 			$to        = get_bloginfo('admin_email');
-			$subj 	   = __('Notification of inappropriate image', 'wppa');
-			$cont['0'] = sprintf(__('Photo %s has been marked as inappropriate by %s different visitors.', 'wppa'), $photo, $count);
-			$cont['1'] = '<a href="'.get_admin_url().'admin.php?page=wppa_admin_menu&tab=pmod&photo='.$photo.'" >'.__('Manage photo', 'wppa').'</a>';
+			$subj 	   = __('Notification of inappropriate image', 'wp-photo-album-plus');
+			$cont['0'] = sprintf(__('Photo %s has been marked as inappropriate by %s different visitors.', 'wp-photo-album-plus'), $photo, $count);
+			$cont['1'] = '<a href="'.get_admin_url().'admin.php?page=wppa_admin_menu&tab=pmod&photo='.$photo.'" >'.__('Manage photo', 'wp-photo-album-plus').'</a>';
 			wppa_send_mail($to, $subj, $cont, $photo);
 		}
 	}
@@ -787,10 +782,10 @@ global $wpdb;
 		if ( $count == $wppa_opt['wppa_dislike_set_pending'] ) {
 			$wpdb->query($wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `status` = 'pending' WHERE `id` = %s", $photo ));
 			$to        = get_bloginfo('admin_email');
-			$subj 	   = __('Notification of inappropriate image', 'wppa');
-			$cont['0'] = sprintf(__('Photo %s has been marked as inappropriate by %s different visitors.', 'wppa'), $photo, $count);
-			$cont['0'] .= "\n".__('The status has been changed to \'pending\'.', 'wppa');
-			$cont['1'] = '<a href="'.get_admin_url().'admin.php?page=wppa_admin_menu&tab=pmod&photo='.$photo.'" >'.__('Manage photo', 'wppa').'</a>';
+			$subj 	   = __('Notification of inappropriate image', 'wp-photo-album-plus');
+			$cont['0'] = sprintf(__('Photo %s has been marked as inappropriate by %s different visitors.', 'wp-photo-album-plus'), $photo, $count);
+			$cont['0'] .= "\n".__('The status has been changed to \'pending\'.', 'wp-photo-album-plus');
+			$cont['1'] = '<a href="'.get_admin_url().'admin.php?page=wppa_admin_menu&tab=pmod&photo='.$photo.'" >'.__('Manage photo', 'wp-photo-album-plus').'</a>';
 			wppa_send_mail($to, $subj, $cont, $photo);
 		}
 	}
@@ -798,10 +793,10 @@ global $wpdb;
 	if ( $wppa_opt['wppa_dislike_delete'] > '0') {			// Feature enabled?
 		if ( $count == $wppa_opt['wppa_dislike_delete'] ) {
 			$to        = get_bloginfo('admin_email');
-			$subj 	   = __('Notification of inappropriate image', 'wppa');
-			$cont['0'] = sprintf(__('Photo %s has been marked as inappropriate by %s different visitors.', 'wppa'), $photo, $count);
-			$cont['0'] .= "\n".__('It has been deleted.', 'wppa');
-			$cont['1'] = '';//<a href="'.get_admin_url().'admin.php?page=wppa_admin_menu&tab=pmod&photo='.$photo.'" >'.__('Manage photo', 'wppa').'</a>';
+			$subj 	   = __('Notification of inappropriate image', 'wp-photo-album-plus');
+			$cont['0'] = sprintf(__('Photo %s has been marked as inappropriate by %s different visitors.', 'wp-photo-album-plus'), $photo, $count);
+			$cont['0'] .= "\n".__('It has been deleted.', 'wp-photo-album-plus');
+			$cont['1'] = '';//<a href="'.get_admin_url().'admin.php?page=wppa_admin_menu&tab=pmod&photo='.$photo.'" >'.__('Manage photo').'</a>';
 			wppa_send_mail($to, $subj, $cont, $photo);
 			wppa_delete_photo($photo);
 		}
@@ -857,19 +852,19 @@ function wppa_send_mail($to, $subj, $cont, $photo, $email = '') {
 				global $current_user;
 				get_currentuserinfo();
 				$e = $current_user->user_email;
-				$eml = sprintf(__a('The visitors email address is: <a href="mailto:%s">%s</a>'), $e, $e);
+				$eml = sprintf(__('The visitors email address is: <a href="mailto:%s">%s</a>', 'wp-photo-album-plus'), $e, $e);
 				$message .= '
 			<p>'.$eml.'</p>';
 			}
 			elseif ( $email ) {
 				$e = $email;
-				$eml = sprintf(__a('The visitor says his email address is: <a href="mailto:%s">%s</a>'), $e, $e);
+				$eml = sprintf(__('The visitor says his email address is: <a href="mailto:%s">%s</a>', 'wp-photo-album-plus'), $e, $e);
 				$message .= '
 			<p>'.$eml.'</p>';
 			}
 		}
 		$message .= '
-		<p><small>'.sprintf(__a('This message is automaticly generated at %s. It is useless to respond to it.'), '<a href="'.home_url().'" >'.home_url().'</a>').'</small></p>';
+		<p><small>'.sprintf(__('This message is automaticly generated at %s. It is useless to respond to it.', 'wp-photo-album-plus'), '<a href="'.home_url().'" >'.home_url().'</a>').'</small></p>';
 		$message .= '
 	</body>
 </html>';
@@ -1066,14 +1061,14 @@ global $wppa_opt;
 	if ( $count ) {
 		if ( is_admin() ) {
 			if ( wppa_switch('wppa_auto_continue') ) {
-				wppa_warning_message(sprintf(__('Time out after processing %s items.', 'wppa'), $count));
+				wppa_warning_message(sprintf(__('Time out after processing %s items.', 'wp-photo-album-plus'), $count));
 			}
 			else {
-				wppa_error_message(sprintf(__('Time out after processing %s items. Please restart this operation', 'wppa'), $count));
+				wppa_error_message(sprintf(__('Time out after processing %s items. Please restart this operation', 'wp-photo-album-plus'), $count));
 			}
 		}
 		else {
-			wppa_alert(sprintf(__('Time out after processing %s items. Please restart this operation', 'wppa_theme'), $count));
+			wppa_alert(sprintf(__('Time out after processing %s items. Please restart this operation', 'wp-photo-album-plus'), $count));
 		}
 	}
 	return true;
@@ -1477,7 +1472,7 @@ function wppa_stx_err($msg) {
 
 function wppa_get_og_desc( $id ) {
 
-	$result = 	sprintf( __a('See this image on %s'), str_replace( '&amp;', __a( 'and' ), get_bloginfo( 'name' ) ) ) .
+	$result = 	sprintf( __('See this image on %s', 'wp-photo-album-plus'), str_replace( '&amp;', __( 'and' , 'wp-photo-album-plus'), get_bloginfo( 'name' ) ) ) .
 				': ' .
 				strip_shortcodes( wppa_strip_tags( wppa_html( wppa_get_photo_desc( $id ) ), 'all' ) );
 
@@ -2246,53 +2241,53 @@ static $wppa_void_keywords;
 	if ( ! $id ) return '';
 
 	if ( empty ( $wppa_void_keywords ) ) {
-		$wppa_void_keywords	= array( 	__a('Not Defined'),
-										__a('Manual'),
-										__a('Program AE'),
-										__a('Aperture-priority AE'),
-										__a('Shutter speed priority AE'),
-										__a('Creative (Slow speed)'),
-										__a('Action (High speed)'),
-										__a('Portrait'),
-										__a('Landscape'),
-										__a('Bulb'),
-										__a('Average'),
-										__a('Center-weighted average'),
-										__a('Spot'),
-										__a('Multi-spot'),
-										__a('Multi-segment'),
-										__a('Partial'),
-										__a('Other'),
-										__a('No Flash'),
-										__a('Fired'),
-										__a('Fired, Return not detected'),
-										__a('Fired, Return detected'),
-										__a('On, Did not fire'),
-										__a('On, Fired'),
-										__a('On, Return not detected'),
-										__a('On, Return detected'),
-										__a('Off, Did not fire'),
-										__a('Off, Did not fire, Return not detected'),
-										__a('Auto, Did not fire'),
-										__a('Auto, Fired'),
-										__a('Auto, Fired, Return not detected'),
-										__a('Auto, Fired, Return detected'),
-										__a('No flash function'),
-										__a('Off, No flash function'),
-										__a('Fired, Red-eye reduction'),
-										__a('Fired, Red-eye reduction, Return not detected'),
-										__a('Fired, Red-eye reduction, Return detected'),
-										__a('On, Red-eye reduction'),
-										__a('Red-eye reduction, Return not detected'),
-										__a('On, Red-eye reduction, Return detected'),
-										__a('Off, Red-eye reduction'),
-										__a('Auto, Did not fire, Red-eye reduction'),
-										__a('Auto, Fired, Red-eye reduction'),
-										__a('Auto, Fired, Red-eye reduction, Return not detected'),
-										__a('Auto, Fired, Red-eye reduction, Return detected'),
+		$wppa_void_keywords	= array( 	__('Not Defined', 'wp-photo-album-plus'),
+										__('Manual', 'wp-photo-album-plus'),
+										__('Program AE', 'wp-photo-album-plus'),
+										__('Aperture-priority AE', 'wp-photo-album-plus'),
+										__('Shutter speed priority AE', 'wp-photo-album-plus'),
+										__('Creative (Slow speed)', 'wp-photo-album-plus'),
+										__('Action (High speed)', 'wp-photo-album-plus'),
+										__('Portrait', 'wp-photo-album-plus'),
+										__('Landscape', 'wp-photo-album-plus'),
+										__('Bulb', 'wp-photo-album-plus'),
+										__('Average', 'wp-photo-album-plus'),
+										__('Center-weighted average', 'wp-photo-album-plus'),
+										__('Spot', 'wp-photo-album-plus'),
+										__('Multi-spot', 'wp-photo-album-plus'),
+										__('Multi-segment', 'wp-photo-album-plus'),
+										__('Partial', 'wp-photo-album-plus'),
+										__('Other', 'wp-photo-album-plus'),
+										__('No Flash', 'wp-photo-album-plus'),
+										__('Fired', 'wp-photo-album-plus'),
+										__('Fired, Return not detected', 'wp-photo-album-plus'),
+										__('Fired, Return detected', 'wp-photo-album-plus'),
+										__('On, Did not fire', 'wp-photo-album-plus'),
+										__('On, Fired', 'wp-photo-album-plus'),
+										__('On, Return not detected', 'wp-photo-album-plus'),
+										__('On, Return detected', 'wp-photo-album-plus'),
+										__('Off, Did not fire', 'wp-photo-album-plus'),
+										__('Off, Did not fire, Return not detected', 'wp-photo-album-plus'),
+										__('Auto, Did not fire', 'wp-photo-album-plus'),
+										__('Auto, Fired', 'wp-photo-album-plus'),
+										__('Auto, Fired, Return not detected', 'wp-photo-album-plus'),
+										__('Auto, Fired, Return detected', 'wp-photo-album-plus'),
+										__('No flash function', 'wp-photo-album-plus'),
+										__('Off, No flash function', 'wp-photo-album-plus'),
+										__('Fired, Red-eye reduction', 'wp-photo-album-plus'),
+										__('Fired, Red-eye reduction, Return not detected', 'wp-photo-album-plus'),
+										__('Fired, Red-eye reduction, Return detected', 'wp-photo-album-plus'),
+										__('On, Red-eye reduction', 'wp-photo-album-plus'),
+										__('Red-eye reduction, Return not detected', 'wp-photo-album-plus'),
+										__('On, Red-eye reduction, Return detected', 'wp-photo-album-plus'),
+										__('Off, Red-eye reduction', 'wp-photo-album-plus'),
+										__('Auto, Did not fire, Red-eye reduction', 'wp-photo-album-plus'),
+										__('Auto, Fired, Red-eye reduction', 'wp-photo-album-plus'),
+										__('Auto, Fired, Red-eye reduction, Return not detected', 'wp-photo-album-plus'),
+										__('Auto, Fired, Red-eye reduction, Return detected', 'wp-photo-album-plus'),
 										'album', 'albums', 'content', 'http',
 										'source', 'wp', 'uploads', 'thumbs',
-										'wp-content', 'wppa', 'wppa-source',
+										'wp-content', 'wppa-source',
 										'border', 'important', 'label', 'padding',
 										'segment', 'shutter', 'style', 'table',
 										'times', 'value', 'views', 'wppa-label',

@@ -5,7 +5,7 @@
 * Various funcions to display a thumbnail image
 * Contains all possible frontend thumbnail types
 *
-* Version 6.2.10
+* Version 6.3.0
 *
 */
 
@@ -118,14 +118,14 @@ global $wpdb;
 	}
 
 	// Open Com alt wrapper
-	if ( $com_alt ) $result .= "\n".'<div><!-- com alt wrapper -->';
+	if ( $com_alt ) $result .= '<div>';
 
 	// Open the thumbframe
-	$result .= "\n".'<div' .
-						' id="thumbnail_frame_'.$id.'_'.wppa( 'mocc' ).'"' .
-						' class="'.$class.'"' .
-						' style="'.$framestyle.'"' .
-					' >';
+	$result .= 	'<div' .
+					' id="thumbnail_frame_'.$id.'_'.wppa( 'mocc' ).'"' .
+					' class="'.$class.'"' .
+					' style="'.$framestyle.'"' .
+				' >';
 
 	// Open the image container
 	$imgcontheight = $com_alt ? $imgheight : max( $imgwidth,$imgheight );
@@ -140,7 +140,7 @@ global $wpdb;
 						'width:'.$framewidth.'px;' .
 						( $com_alt ? 'float:left;' : '' ) .
 						'overflow:hidden;"' .
-				'><!-- image container -->';
+				'>';
 
 	// The medals if at the top
 	$medalsize = $com_alt ? 'S' : 'M';
@@ -171,7 +171,7 @@ global $wpdb;
 	// Get the image link
 	if ( wppa( 'is_topten' ) ) {
 		$no_album = ! wppa( 'start_album' );
-		if ( $no_album ) $tit = __a( 'View the top rated photos' ); else $tit = esc_attr( wppa_qtrans( stripslashes( $thumb['description'] ) ) );
+		if ( $no_album ) $tit = __( 'View the top rated photos' , 'wp-photo-album-plus'); else $tit = esc_attr( __( stripslashes( $thumb['description'] ) ) );
 		$link = wppa_get_imglnk_a( 'thumb', $id, '', $tit, '', $no_album );
 	}
 	else $link = wppa_get_imglnk_a( 'thumb', $id ); // voor parent uplr
@@ -456,7 +456,7 @@ global $wpdb;
 	$result .= wppa_get_medal_html_a( array( 'id' => $id, 'size' => $medalsize, 'where' => 'bot' ) );
 
 	// Close the image container
-	$result .= '</div><!-- image container -->';
+	$result .= '</div>';
 /*
 	// The audio when popup
 	if ( wppa_switch( 'use_thumb_popup' ) && wppa_switch( 'thumb_audio' ) && wppa_has_audio( $id ) && ! $com_alt ) {
@@ -490,7 +490,7 @@ global $wpdb;
 									'margin:0;float:left;'.
 									'"'.
 								'>' .
-									$com['user'] . ' ' . __a( 'wrote' ) . ' ' . wppa_get_time_since( $com['timestamp'] ) . ':' .
+									$com['user'] . ' ' . __( 'wrote' , 'wp-photo-album-plus') . ' ' . wppa_get_time_since( $com['timestamp'] ) . ':' .
 							'</h6>'.
 							'<p' .
 								' style="' .
@@ -523,12 +523,12 @@ global $wpdb;
 							'position:absolute;' .
 							$margtop .
 							'overflow:hidden;' .
-						'" ><!-- subtext container -->';
+						'" >';
 
 		// Single button voting system
 		if ( wppa_opt( 'rating_max' ) == '1' && wppa_switch( 'vote_thumb' ) ) {
 			$mylast  = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM `'.WPPA_RATING.'` WHERE `photo` = %s AND `user` = %s ORDER BY `id` DESC LIMIT 1', $id, wppa_get_user() ), ARRAY_A );
-			$buttext = $mylast ? __( wppa_opt( 'voted_button_text' ) ) : __( wppa_opt( 'vote_button_text' ) );
+			$buttext = $mylast ? __( wppa_opt( 'voted_button_text' ) , 'wp-photo-album-plus') : __( wppa_opt( 'vote_button_text' ) , 'wp-photo-album-plus');
 			$result .= 	'<input' .
 							' id="wppa-vote-button-' . wppa( 'mocc' ) . '-' . $id . '"' .
 							' class="wppa-vote-button-thumb"' .
@@ -559,7 +559,7 @@ global $wpdb;
 								' href="' . wppa_get_album_url( $thumb['album'] ) . '"' .
 								' >' .
 								'<span class="wppa-tnpar" >(</span>' .
-									stripslashes( __( wppa_get_album_name( $thumb['album'] ) ) ) .
+									stripslashes( __( wppa_get_album_name( $thumb['album'] ) , 'wp-photo-album-plus') ) .
 								'<span class="wppa-tnpar" >)</span>' .
 							'</a>' .
 						'</div>';
@@ -584,16 +584,16 @@ global $wpdb;
 								' >' .
 								'<a' .
 									' style="color:red;cursor:pointer;"' .
-									' onclick="'.esc_attr( 'if ( confirm( "'.__a( 'Are you sure you want to remove this photo?' ).'" ) ) wppaAjaxRemovePhoto( '.wppa( 'mocc' ).', '.$id.', false ); return false;' ).'"' .
+									' onclick="'.esc_attr( 'if ( confirm( "'.__( 'Are you sure you want to remove this photo?' , 'wp-photo-album-plus').'" ) ) wppaAjaxRemovePhoto( '.wppa( 'mocc' ).', '.$id.', false ); return false;' ).'"' .
 									' >' .
-									__a( 'Delete' ) .
+									__( 'Delete' , 'wp-photo-album-plus') .
 								'</a>' .
 									'&nbsp;' .
 								'<a' .
 									' style="color:green;cursor:pointer;"' .
 									' onclick="wppaEditPhoto( '.wppa( 'mocc' ).', '.$id.' ); return false;"' .
 									' >' .
-									__a( 'Edit' ) .
+									__( 'Edit' , 'wp-photo-album-plus') .
 								'</a>' .
 							'</div>';
 			}
@@ -631,7 +631,7 @@ global $wpdb;
 				$result .= 	'<div' .
 								' class="wppa-thumb-text"' .
 								' style="'.__wcs( 'wppa-thumb-text' ).'"' .
-								' >' . __a( 'Comments:' ) . ' ' . $comcount .
+								' >' . __( 'Comments:' , 'wp-photo-album-plus') . ' ' . $comcount .
 							'</div>';
 			}
 		}
@@ -641,19 +641,19 @@ global $wpdb;
 			$result .= 	'<div' .
 							' class="wppa-thumb-text"' .
 							' style="clear:both;'.__wcs( 'wppa-thumb-text' ).'"' .
-							' >' . __a( 'Views:' ) . ' ' . $thumb['views'] .
+							' >' . __( 'Views:' , 'wp-photo-album-plus') . ' ' . $thumb['views'] .
 						'</div>';
 		}
 
 		// Close the subtext container
-		$result .= 	'</div><!-- subtext container -->';
+		$result .= 	'</div>';
 
 	} // if ! $com_alt
 
 	// Close the thumbframe
-	$result .= '</div><!-- #thumbnail_frame_'.$id.'_'.wppa( 'mocc' ).' -->';
+	$result .= '</div>';
 
-	if ( $com_alt ) $result .= '</div><!-- com alt wrapper -->';
+	if ( $com_alt ) $result .= '</div>';
 
 	return $result;
 }
@@ -766,7 +766,7 @@ global $thlinkmsggiven;
 			$result .= wppa_the_thumbascoverphoto( $id, $src, $photo_left, $link, $imgattr_a, $events );
 		}
 
-	$result .= 	'</div><!-- thumb-' . $id . '-' . wppa( 'mocc' ) . ' -->';
+	$result .= 	'</div>';
 
 	// Toggle alt/even
 	wppa_toggle_alt();
@@ -962,7 +962,7 @@ global $wpdb;
 							'float:left;' .
 							'"' .
 						' >' .
-						sprintf( __a( 'Missing thumbnail image #%s' ), $id ) .
+						sprintf( __( 'Missing thumbnail image #%s' , 'wp-photo-album-plus'), $id ) .
 					'</div>';
 		return $result;
 	}
@@ -1055,7 +1055,7 @@ global $wpdb;
 	// Get the image link
 	if ( wppa( 'is_topten' ) ) {
 		$no_album = !wppa( 'start_album' );
-		if ( $no_album ) $tit = __a( 'View the top rated photos' ); else $tit = esc_attr( wppa_qtrans( stripslashes( $thumb['description'] ) ) );
+		if ( $no_album ) $tit = __( 'View the top rated photos' , 'wp-photo-album-plus'); else $tit = esc_attr( __( stripslashes( $thumb['description'] ) ) );
 		$link = wppa_get_imglnk_a( 'thumb', $id, '', $tit, '', $no_album );
 	}
 	else $link = wppa_get_imglnk_a( 'thumb', $id ); // voor parent uplr
@@ -1386,7 +1386,7 @@ global $wpdb;
 	$result .= wppa_get_medal_html_a( array( 'id' => $id, 'size' => 'M', 'where' => 'bot' ) );
 
 	// Close the thumbframe
-	$result .= '</div><!-- #thumbnail_frame_masonry_'.$id.'_'.wppa( 'mocc' ).' -->';
+	$result .= '</div>';
 
 	return $result;
 }
@@ -1416,7 +1416,7 @@ function wppa_get_masonry_title( $id ) {
 
 	// Viewcount
 	if ( wppa_switch( 'thumb_text_viewcount' ) ) {
-		$result .= __a( 'Views:' ).' '.$thumb['views'];
+		$result .= __( 'Views:' , 'wp-photo-album-plus').' '.$thumb['views'];
 	}
 
 	$result = strip_tags( rtrim( $result, "\n" ) );
@@ -1675,7 +1675,7 @@ function wppa_do_filmthumb( $id, $idx, $do_for_feed = false, $glue = false ) {
 	else {
 		$events .= ' onclick="wppaGotoKeepState( '.wppa( 'mocc' ).', '.$idx.' )"';
 		$events .= ' ondblclick="wppaStartStop( '.wppa( 'mocc' ).', -1 )"';
-//		$title = esc_attr( __a( 'Double click to start/stop slideshow running' ) );
+//		$title = esc_attr( __( 'Double click to start/stop slideshow running' ) );
 	}
 
 	if ( is_feed() ) {
@@ -1754,7 +1754,7 @@ function wppa_do_filmthumb( $id, $idx, $do_for_feed = false, $glue = false ) {
 			$result .= '</a>';
 		}
 
-		$result .= '</div>'; //<!-- #thumbnail_frame_'.$thumb['id'].'_'.wppa( 'mocc' ).' -->';
+		$result .= '</div>';
 	}
 
 	wppa_out( $result );
@@ -1831,9 +1831,9 @@ function wppa_get_medal_html_a( $args ) {
 		'XL' 	=> '0'
 		);
 	$titles = array(
-		'gold' 		=> __a('Gold medal'),
-		'silver' 	=> __a('Silver medal'),
-		'bronze' 	=> __a('Bronze medal'),
+		'gold' 		=> __('Gold medal', 'wp-photo-album-plus'),
+		'silver' 	=> __('Silver medal', 'wp-photo-album-plus'),
+		'bronze' 	=> __('Bronze medal', 'wp-photo-album-plus'),
 		);
 	$size 	= $sizes[$args['size']];
 	$nsize 	= $nsizes[$args['size']];
@@ -1872,8 +1872,8 @@ function wppa_get_medal_html_a( $args ) {
 	if ( $new ) {
 		$result .= 	'<img' .
 						' src="' . WPPA_URL . '/images/new.png"' .
-						' title="' . esc_attr( __a('New') ) . '"' .
-						' alt="' . esc_attr( __a('New') ) . '"' .
+						' title="' . esc_attr( __('New', 'wp-photo-album-plus') ) . '"' .
+						' alt="' . esc_attr( __('New', 'wp-photo-album-plus') ) . '"' .
 						' class="wppa-thumbnew"' .
 						' style="' . $lstyle .
 							'top:' . $ntop . 'px;' .

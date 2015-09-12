@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the export functions
-* Version 5.0.15
+* Version 6.3.0
 *
 */
 
@@ -29,12 +29,12 @@ global $wpdb;
 			<br />
 		</div>
 
-		<h2><?php _e('Export Photos', 'wppa'); ?></h2><br />
+		<h2><?php _e('Export Photos', 'wp-photo-album-plus'); ?></h2><br />
 
 		<form action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_export_photos')) ?>" method="post">
 			<?php wp_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
-			<?php echo(sprintf(__('Photos will be exported to: <b>%s</b>.', 'wppa'), WPPA_DEPOT)) ?>
-			<h2><?php _e('Export photos from album <span style="font-size:12px;">(Including Album information)</span>:', 'wppa'); ?></h2>
+			<?php echo(sprintf(__('Photos will be exported to: <b>%s</b>.', 'wp-photo-album-plus'), WPPA_DEPOT)) ?>
+			<h2><?php _e('Export photos from album <span style="font-size:12px;">(Including Album information)</span>:', 'wp-photo-album-plus'); ?></h2>
 			<?php $albums = $wpdb->get_results( "SELECT * FROM `" . WPPA_ALBUMS . "` " . wppa_get_album_order(), ARRAY_A);
 			$high = '0'; ?>
 			
@@ -45,7 +45,7 @@ global $wpdb;
 				<tr>
 					<?php $ct = 0;
 					foreach($albums as $album) {
-						$line = '&nbsp;'.$album['id'].':&nbsp;'.wppa_qtrans(stripslashes($album['name']));
+						$line = '&nbsp;'.$album['id'].':&nbsp;'.__(stripslashes($album['name']));
 						if ($album['id'] > $high) $high = $album['id']; ?>
 						<td>
 							<input type="checkbox" name="album-<?php echo($album['id']) ?>" />&nbsp;<?php echo($line) ?>
@@ -63,7 +63,7 @@ global $wpdb;
 			</table>
 			<input type="hidden" name="high" value="<?php echo($high) ?>" />
 			<p>
-				<input type="submit" class="button-primary" name="wppa-export-submit" value="<?php _e('Export', 'wppa'); ?>" />
+				<input type="submit" class="button-primary" name="wppa-export-submit" value="<?php _e('Export', 'wp-photo-album-plus'); ?>" />
 			</p>
 		</form>
 	</div>
@@ -78,7 +78,7 @@ global $wppa_temp_idx;
 
 	$wppa_temp_idx = 0;
 
-	_e('Exporting...<br/>', 'wppa');
+	_e('Exporting...<br/>', 'wp-photo-album-plus');
 	if ( PHP_VERSION_ID >= 50207 && class_exists('ZipArchive') ) {
 		echo('Opening zip output file...');
 		$wppa_zip = new ZipArchive;
@@ -87,16 +87,16 @@ global $wppa_temp_idx;
 		update_option('wppa_last_zip', $zipid);
 		$zipfile = WPPA_DEPOT_PATH.'/wppa-'.$zipid.'.zip';
 		if ($wppa_zip->open($zipfile, 1) === TRUE) {
-			_e('ok, <br/>Filling', 'wppa'); echo(' '.basename($zipfile));
+			_e('ok, <br/>Filling', 'wp-photo-album-plus'); echo(' '.basename($zipfile));
 		} else {
-			_e('failed<br/>', 'wppa');
+			_e('failed<br/>', 'wp-photo-album-plus');
 			$wppa_zip = false;
 		}
 	}
 	else {
 		$wppa_zip = false;
-		if ( PHP_VERSION_ID < 50207 ) wppa_warning_message(__('Can export albums and photos, but cannot make a zipfile. Your php version is < 5.2.7.', 'wppa'));
-		if ( ! class_exists('ZipArchive') ) wppa_warning_message(__('Can export albums and photos, but cannot make a zipfile. Your php version does not support ZipArchive.', 'wppa'));
+		if ( PHP_VERSION_ID < 50207 ) wppa_warning_message(__('Can export albums and photos, but cannot make a zipfile. Your php version is < 5.2.7.', 'wp-photo-album-plus'));
+		if ( ! class_exists('ZipArchive') ) wppa_warning_message(__('Can export albums and photos, but cannot make a zipfile. Your php version does not support ZipArchive.', 'wp-photo-album-plus'));
 	}
 		
 	if (isset($_POST['high'])) $high = $_POST['high']; else $high = 0;
@@ -106,7 +106,7 @@ global $wppa_temp_idx;
 		$cnt = 0;
 		while ($id <= $high) {
 			if (isset($_POST['album-'.$id])) {
-				_e('<br/>Processing album', 'wppa'); echo(' '.$id.'....');
+				_e('<br/>Processing album', 'wp-photo-album-plus'); echo(' '.$id.'....');
 				wppa_write_album_file_by_id($id);
 				$photos = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM ' . WPPA_PHOTOS . ' WHERE album = %s', $id), 'ARRAY_A' );
 				$cnt = 0;
@@ -126,19 +126,19 @@ global $wppa_temp_idx;
 					}
 					else $cnt++;
 				} 
-				_e('done.', 'wppa'); echo(' '.$cnt.' '); _e('photos processed.', 'wppa');
+				_e('done.', 'wp-photo-album-plus'); echo(' '.$cnt.' '); _e('photos processed.', 'wp-photo-album-plus');
 			}
 			$id++;			
 		}
-		_e('<br/>Done export albums.', 'wppa');
+		_e('<br/>Done export albums.', 'wp-photo-album-plus');
 	}
 	else {
-		_e('Nothing to export', 'wppa');
+		_e('Nothing to export', 'wp-photo-album-plus');
 	}
 	
 	if ($wppa_zip) {
-		_e('<br/>Closing zip.', 'wppa');
-		_e('<br/>Deleting temp files.', 'wppa');
+		_e('<br/>Closing zip.', 'wp-photo-album-plus');
+		_e('<br/>Deleting temp files.', 'wp-photo-album-plus');
 		$wppa_zip->close();
 		// Now the zip is closed we can destroy all tempfiles we created here
 		if (is_array($wppa_temp)) {
@@ -147,7 +147,7 @@ global $wppa_temp_idx;
 			}
 		}
 	}
-	_e('<br/>Done!', 'wppa');
+	_e('<br/>Done!', 'wp-photo-album-plus');
 }
 
 function wppa_write_album_file_by_id($id) {
@@ -193,7 +193,7 @@ global $wppa_temp_idx;
 			}
 			else $err = true;
 			if ($err) {
-				wppa_error_message(sprintf(__('Cannot write to file %s.', 'wppa'),$fname));
+				wppa_error_message(sprintf(__('Cannot write to file %s.', 'wp-photo-album-plus'),$fname));
 				fclose($file);
 				return false;
 			}
@@ -207,12 +207,12 @@ global $wppa_temp_idx;
 			}
 		}
 		else {
-			wppa_error_message(__('Could not open album output file.', 'wppa'));
+			wppa_error_message(__('Could not open album output file.', 'wp-photo-album-plus'));
 			return false;
 		}
 	}
 	else {
-		wppa_error_message(__('Could not read album data.'), 'wppa');
+		wppa_error_message(__('Could not read album data.', 'wp-photo-album-plus'));
 		return false;
 	}
 	return true;
@@ -262,7 +262,7 @@ global $wppa_temp_idx;
 			}
 			else $err = true;
 			if ($err) {
-				wppa_error_message(sprintf(__('Cannot write to file %s.', 'wppa'),$fname));
+				wppa_error_message(sprintf(__('Cannot write to file %s.', 'wp-photo-album-plus'),$fname));
 				fclose($file);
 				return false;
 			}
@@ -276,12 +276,12 @@ global $wppa_temp_idx;
 			}
 		}
 		else {
-			wppa_error_message(__('Could not open photo output file.', 'wppa'));
+			wppa_error_message(__('Could not open photo output file.', 'wp-photo-album-plus'));
 			return false;
 		}
 	}
 	else {
-		wppa_error_message(__('Could not read photo data.'), 'wppa');
+		wppa_error_message(__('Could not read photo data.', 'wp-photo-album-plus'));
 		return false;
 	}
 	return true;

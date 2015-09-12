@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains (not yet, but in the future maybe) all the maintenance routines
-* Version 6.2.10
+* Version 6.3.0
 *
 */
 
@@ -58,7 +58,7 @@ global $wppa_supported_audio_extensions;
 		foreach ( array_keys( $all_slugs ) as $key ) {
 			if ( $all_slugs[$key] != $slug ) {
 				if ( get_option( $all_slugs[$key].'_togo', '0') ) { 	// Process running
-					return __('You can run only one maintenance procedure at a time', 'wppa').'||'.$slug.'||'.__('Error', 'wppa').'||'.''.'||'.'';
+					return __('You can run only one maintenance procedure at a time', 'wp-photo-album-plus').'||'.$slug.'||'.__('Error', 'wp-photo-album-plus').'||'.''.'||'.'';
 				}
 			}
 		}
@@ -115,7 +115,7 @@ global $wppa_supported_audio_extensions;
 				$album_exists = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM`".WPPA_ALBUMS."` WHERE `id` = %s", $orphan_album ) );
 				if ( ! $album_exists ) $orphan_album = false;
 				if ( ! $orphan_album ) {
-					$orphan_album = wppa_create_album_entry( array( 'name' => __('Orphan photos', 'wppa'), 'a_parent' => '-1', 'description' => __('This album contains refound lost photos', 'wppa') ) );
+					$orphan_album = wppa_create_album_entry( array( 'name' => __('Orphan photos', 'wp-photo-album-plus'), 'a_parent' => '-1', 'description' => __('This album contains refound lost photos', 'wp-photo-album-plus') ) );
 					update_option( 'wppa_orphan_album', $orphan_album );
 				}
 				break;
@@ -642,7 +642,7 @@ global $wppa_supported_audio_extensions;
 			case 'wppa_apply_new_photodesc_all':
 			case 'wppa_append_to_photodesc':
 			case 'wppa_remove_from_photodesc':
-				update_option( 'wppa_remake_index_photos_status', __('Required', 'wppa') );
+				update_option( 'wppa_remake_index_photos_status', __('Required', 'wp-photo-album-plus') );
 				break;
 			case 'wppa_regen_thumbs':
 				wppa_bump_thumb_rev();
@@ -715,7 +715,7 @@ global $wpdb;
 				</table>';
 			}
 			else {
-				$result .= __('There are no index items.', 'wppa');
+				$result .= __('There are no index items.', 'wp-photo-album-plus');
 			}
 			$result .= '
 				</div><div style="clear:both;"></div>';
@@ -729,7 +729,7 @@ global $wpdb;
 				<div style="float:left; clear:both; width:100%; overflow:auto; word-wrap:none; background-color:#f1f1f1; border:1px solid #ddd;" >';
 
 			if ( ! $file = @ fopen( $filename, 'r' ) ) {
-				$result .= __('There are no error log messages', 'wppa');
+				$result .= __('There are no error log messages', 'wp-photo-album-plus');
 			}
 			else {
 				$size = filesize( $filename );
@@ -802,7 +802,7 @@ global $wpdb;
 				</table>';
 			}
 			else {
-				$result .= __('There are no ratings', 'wppa');
+				$result .= __('There are no ratings', 'wp-photo-album-plus');
 			}
 			$result .= '
 				</div><div style="clear:both;"></div>';
@@ -863,7 +863,7 @@ global $wpdb;
 				</table>';
 			}
 			else {
-				$result .= __('There are no active sessions', 'wppa');
+				$result .= __('There are no active sessions', 'wp-photo-album-plus');
 			}
 			$result .= '
 				</div><div style="clear:both;"></div>';

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the widget
-* Version 6.2.0
+* Version 6.3.0
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -11,8 +11,8 @@ if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 class PhotoOfTheDay extends WP_Widget {
     /** constructor */
     function __construct() {
-		$widget_ops = array('classname' => 'wppa_widget', 'description' => __( 'WPPA+ Photo Of The Day', 'wppa') );	//
-		parent::__construct('wppa_widget', __('Photo Of The Day', 'wppa'), $widget_ops);															//
+		$widget_ops = array('classname' => 'wppa_widget', 'description' => __( 'WPPA+ Photo Of The Day', 'wp-photo-album-plus') );	//
+		parent::__construct('wppa_widget', __('Photo Of The Day', 'wp-photo-album-plus'), $widget_ops);															//
     }
 
 	/** @see WP_Widget::widget */
@@ -58,7 +58,7 @@ class PhotoOfTheDay extends WP_Widget {
 			$usethumb	= wppa_use_thumb_file( $id, wppa_opt( 'wppa_widget_width' ), '0' );
 			$imgurl 	= wppa_fix_poster_ext( $usethumb ? wppa_get_thumb_url( $id, '', $w, $h ) : wppa_get_photo_url( $id, '', $w, $h ), $id );
 			$name 		= wppa_get_photo_name( $id );
-			$page 		= in_array( wppa_opt( 'wppa_widget_linktype' ), $wppa['links_no_page'] ) ? '' : wppa_get_the_landing_page( 'wppa_widget_linkpage', __a('Photo of the day') );
+			$page 		= in_array( wppa_opt( 'wppa_widget_linktype' ), $wppa['links_no_page'] ) ? '' : wppa_get_the_landing_page( 'wppa_widget_linkpage', __('Photo of the day', 'wp-photo-album-plus') );
 			$link 		= wppa_get_imglnk_a( 'potdwidget' , $id );
 			$is_video 	= wppa_is_video( $id );
 			$has_audio 	= wppa_has_audio( $id );
@@ -88,7 +88,7 @@ class PhotoOfTheDay extends WP_Widget {
 			}
 			else {
 				$cursor = ' cursor:default;';
-				$title = esc_attr(stripslashes(__($image['name'])));
+				$title = esc_attr(stripslashes(__($image['name'], 'wp-photo-album-plus')));
 			}
 
 			// The medal if on top
@@ -131,7 +131,7 @@ class PhotoOfTheDay extends WP_Widget {
 
 		} 
 		else {	// No image
-			$widget_content .= __a('Photo not found.', 'wppa_theme');
+			$widget_content .= __('Photo not found.', 'wp-photo-album-plus');
 		}
 		$widget_content .= "\n".'</div>';
 		
@@ -154,7 +154,7 @@ class PhotoOfTheDay extends WP_Widget {
 					$owner = $image['owner'];
 					$user = get_user_by('login', $owner);
 					$owner = $user->display_name;
-					$widget_content .= "\n".'<div class="wppa-widget-text wppa-potd-text" style="'.$align.'">'.__a('By:').' ' . $owner . '</div>';
+					$widget_content .= "\n".'<div class="wppa-widget-text wppa-potd-text" style="'.$align.'">'.__('By:', 'wp-photo-album-plus').' ' . $owner . '</div>';
 				}
 		}
 
@@ -182,8 +182,8 @@ class PhotoOfTheDay extends WP_Widget {
 		$instance = wp_parse_args( (array) $instance, array( 'title' => wppa_opt('wppa_widgettitle') ) );
 		$widget_title = $instance['title']; 
 		?>
-			<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $widget_title; ?>" /></p>
-			<p><?php _e('You can set the content and the sizes in this widget in the <b>Photo Albums -> Sidebar Widget</b> admin page.', 'wppa'); ?></p>
+			<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wp-photo-album-plus'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $widget_title; ?>" /></p>
+			<p><?php _e('You can set the content and the sizes in this widget in the <b>Photo Albums -> Sidebar Widget</b> admin page.', 'wp-photo-album-plus'); ?></p>
 		<?php
     }
 

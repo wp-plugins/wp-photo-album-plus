@@ -3,15 +3,15 @@
 * Package: wp-photo-album-plus
 *
 * display qr code
-* Version 6.2.0
+* Version 6.3.0
 */
 
 
 class wppaQRWidget extends WP_Widget {
     /** constructor */
     function __construct() {
-		$widget_ops = array('classname' => 'qr_widget', 'description' => __( 'WPPA+ QR Widget', 'wppa' ) );	//
-		parent::__construct('qr_widget', __('QR Widget', 'wppa'), $widget_ops);															//
+		$widget_ops = array('classname' => 'qr_widget', 'description' => __( 'WPPA+ QR Widget' , 'wp-photo-album-plus') );	//
+		parent::__construct('qr_widget', __('QR Widget', 'wp-photo-album-plus'), $widget_ops);															//
     }
 
 	/** @see WP_Widget::widget */
@@ -30,14 +30,14 @@ class wppaQRWidget extends WP_Widget {
 
 		extract( $args );
         
- 		$title 			= apply_filters('widget_title', empty( $instance['title'] ) ? __a( 'QR Widget' ) : $instance['title']);
+ 		$title 			= apply_filters('widget_title', empty( $instance['title'] ) ? __( 'QR Widget' , 'wp-photo-album-plus') : $instance['title']);
 		$qrsrc 			= 'http://api.qrserver.com/v1/create-qr-code/' .
 							'?data=' . site_url() .
 							'&amp;size='.$wppa_opt['wppa_qr_size'].'x'.$wppa_opt['wppa_qr_size'] .
 							'&amp;color='.trim($wppa_opt['wppa_qr_color'], '#') .
 							'&amp;bgcolor='.trim($wppa_opt['wppa_qr_bgcolor']);
 		$widget_content = '
-		<div style="text-align:center;" ><img id="wppa-qr-img" src="' . $qrsrc . '" title="" alt="' . __a('QR code') . '" /></div>
+		<div style="text-align:center;" ><img id="wppa-qr-img" src="' . $qrsrc . '" title="" alt="' . __('QR code', 'wp-photo-album-plus') . '" /></div>
 		<div style="clear:both" ></div>';
 		
 		$widget_content .= '
@@ -86,8 +86,8 @@ class wppaQRWidget extends WP_Widget {
 		$instance = wp_parse_args( (array) $instance, array( 'sortby' => 'post_title', 'title' => '') );
 		$title = esc_attr( $instance['title'] );
 	?>
-		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'xxx'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
-		<p><?php _e('You can set the sizes and colors in this widget in the <b>Photo Albums -> Settings</b> admin page.', 'wppa'); ?></p>
+		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'xxx', 'wp-photo-album-plus'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
+		<p><?php _e('You can set the sizes and colors in this widget in the <b>Photo Albums -> Settings</b> admin page.', 'wp-photo-album-plus'); ?></p>
 
 <?php
     }

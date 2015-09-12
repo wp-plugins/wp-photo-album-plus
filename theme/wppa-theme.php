@@ -320,13 +320,13 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 		// Empty results?
 		if ( ! $didsome && ! $wanted_empty ) {
 			if ( wppa( 'photos_only' ) ) {
-				wppa_out( wppa_errorbox( __a( 'No photos found matching your search criteria.', 'wppa_theme' ) ) );
+				wppa_out( wppa_errorbox( __( 'No photos found matching your search criteria.', 'wppa_theme' , 'wp-photo-album-plus') ) );
 			}
 			elseif ( wppa( 'albums_only' ) ) {
-				wppa_out( wppa_errorbox( __a( 'No albums found matching your search criteria.', 'wppa_theme' ) ) );
+				wppa_out( wppa_errorbox( __( 'No albums found matching your search criteria.', 'wppa_theme' , 'wp-photo-album-plus') ) );
 			}
 			else {
-				wppa_out( wppa_errorbox( __a( 'No albums or photos found matching your search criteria.', 'wppa_theme' ) ) );
+				wppa_out( wppa_errorbox( __( 'No albums or photos found matching your search criteria.', 'wppa_theme' , 'wp-photo-album-plus') ) );
 			}
 		}
 	} // wppa_page( 'albums' )
@@ -339,7 +339,7 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 			wppa_run_slidecontainer( 'slideshow' );									// Fill in the photo array and display it.
 		}
 		else {
-			wppa_out( wppa_errorbox( __a( 'No photos found matching your search criteria.', 'wppa_theme' ) ) );
+			wppa_out( wppa_errorbox( __( 'No photos found matching your search criteria.', 'wppa_theme' , 'wp-photo-album-plus') ) );
 		}
 	} // wppa_page( 'slide' )
 	

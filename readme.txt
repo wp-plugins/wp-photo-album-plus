@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, gallery, slideshow, video, audio, lightbox, iptc, exif, cloudinary, fotomoto
-Version: 6.2.14
+Version: 6.3.0
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -189,12 +189,23 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
-= 6.2.14 =
+= 6.3.0 =
 
 = Bug Fixes =
 
-* In shortcode: album="#cat,Category" stopped working. Fixed.
-* In shortcode: album="#upldr" ( without album spec ) now also works.
+* When history.pushState fails, history.replaceState is attempted. This ensures updating the browser address line properly when Table IV-A7 is ticked.
+* Files with uppercase extensions can be imported.
+
+= New Features = 
+
+* Status filter on potd admin page.
+
+= Other Changes =
+
+* Changed the language system to comply with the wp standards for WordPress.org to manage translations for this plugin.
+These changes imply that the separate plugin wppa-admin-language-pack no longer works; 
+but the translations will become automaticly updated ( on the wp update page ) in the near future.
+* Improved compatibility with qTranslate-x.
 
 = 6.2.12 =
 

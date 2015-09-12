@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 6.2.1
+* version 6.3.0
 *
 */
 
@@ -25,11 +25,11 @@ global $wppa;
 		// Close file
 		fclose( $file );
 		if ( ! $wppa_bu_err ) {
-			wppa_ok_message( __( 'Settings successfully backed up', 'wppa' ) );
+			wppa_ok_message( __( 'Settings successfully backed up' , 'wp-photo-album-plus') );
 			return true;
 		}
 	}
-	wppa_error_message( __( 'Unable to backup settings', 'wppa' ) );
+	wppa_error_message( __( 'Unable to backup settings' , 'wp-photo-album-plus') );
 	return false;
 }
 
@@ -38,7 +38,7 @@ global $wppa_bu_err;
 	$value = str_replace( "\n", "\\n", $value );
 	if ( fwrite( $file, $key.":".$value."\n" ) === false ) {
 		if ( $wppa_bu_err !== true ) {
-			wppa_error_message( __( 'Error writing to settings backup file', 'wppa' ) );
+			wppa_error_message( __( 'Error writing to settings backup file' , 'wp-photo-album-plus') );
 			$wppa_bu_err = true;
 		}	
 	}
@@ -100,7 +100,7 @@ global $wppa;
 		return true;
 	}
 	else {
-		wppa_error_message( __( 'Settings file not found', 'wppa' ) );
+		wppa_error_message( __( 'Settings file not found' , 'wp-photo-album-plus') );
 		return false;
 	}
 }
@@ -203,11 +203,11 @@ function wppa_ok_message( $msg, $fixed = false, $id = '' ) {
 function wppa_check_numeric( $value, $minval, $target, $maxval = '' ) {
 	if ( $maxval == '' ) {
 		if ( is_numeric( $value ) && $value >= $minval ) return true;
-		wppa_error_message( __( 'Please supply a numeric value greater than or equal to', 'wppa' ) . ' ' . $minval . ' ' . __( 'for', 'wppa' ) . ' ' . $target );
+		wppa_error_message( __( 'Please supply a numeric value greater than or equal to' , 'wp-photo-album-plus') . ' ' . $minval . ' ' . __( 'for' , 'wp-photo-album-plus') . ' ' . $target );
 	}
 	else {
 		if ( is_numeric( $value ) && $value >= $minval && $value <= $maxval ) return true;
-		wppa_error_message( __( 'Please supply a numeric value greater than or equal to', 'wppa' ) . ' ' . $minval . ' ' . __( 'and less than or equal to', 'wppa' ) . ' ' . $maxval . ' ' . __( 'for', 'wppa' ) . ' ' . $target );
+		wppa_error_message( __( 'Please supply a numeric value greater than or equal to' , 'wp-photo-album-plus') . ' ' . $minval . ' ' . __( 'and less than or equal to' , 'wp-photo-album-plus') . ' ' . $maxval . ' ' . __( 'for' , 'wp-photo-album-plus') . ' ' . $target );
 	}
 	return false;
 }
@@ -222,7 +222,7 @@ function wppa_user_select( $select = '' ) {
 	$iam = $select == '' ? wppa_get_user() : $select;
 	$users = wppa_get_users();
 	$sel = $select == '--- public ---' ? 'selected="selected"' : '';
-	$result .= '<option value="--- public ---" '.$sel.'>'.__( '--- public ---', 'wppa' ).'</option>';
+	$result .= '<option value="--- public ---" '.$sel.'>'.__( '--- public ---' , 'wp-photo-album-plus').'</option>';
 	foreach ( $users as $usr ) {
 		if ( $usr['user_login'] == $iam ) $sel = 'selected="selected"';
 		else $sel = '';
@@ -436,9 +436,9 @@ function wppa_walktree( $relroot, $source, $allowwppa = false, $subdirsonly = fa
 
 	if ( ! $subdirsonly ) {
 		if ( $relroot == $source ) $sel=' selected="selected"'; else $sel = ' ';
-		$display  = str_replace( WPPA_DEPOT, __( '--- My depot --- ', 'wppa' ), $relroot );
+		$display  = str_replace( WPPA_DEPOT, __( '--- My depot --- ' , 'wp-photo-album-plus'), $relroot );
 		$ngg_opts = get_option( 'ngg_options', false );
-		if ( $ngg_opts ) $display = str_replace( $ngg_opts['gallerypath'], __( '--- Ngg Galleries --- ', 'wppa' ), $display );
+		if ( $ngg_opts ) $display = str_replace( $ngg_opts['gallerypath'], __( '--- Ngg Galleries --- ' , 'wp-photo-album-plus'), $display );
 		echo( '<option value="'.$relroot.'"'.$sel.'>'.$display.'</option>' );
 	}
 	
@@ -481,7 +481,7 @@ global $wppa_supported_audio_extensions;
 			$ext = strtolower( substr( strrchr( $file, "." ), 1 ) );
 			if ( !in_array( $ext, $allowed_types ) ) {
 				unlink( $file );
-				wppa_error_message( sprintf( __( 'File %s is of an unsupported filetype and has been removed.', 'wppa' ), basename( wppa_sanitize_file_name( $file ) ) ) );
+				wppa_error_message( sprintf( __( 'File %s is of an unsupported filetype and has been removed.' , 'wp-photo-album-plus'), basename( wppa_sanitize_file_name( $file ) ) ) );
 				$count++;
 			}
 		}
@@ -581,7 +581,7 @@ global $wpdb;
 		// Test existence of table
 		$ext = wppa_table_exists( $tn[$idx] );
 		if ( ! $ext ) {
-			if ( $verbose ) wppa_error_message( __( 'Unexpected error:', 'wppa' ).' '.__( 'Missing database table:', 'wppa' ).' '.$tn[$idx], 'red', 'force' );
+			if ( $verbose ) wppa_error_message( __( 'Unexpected error:' , 'wp-photo-album-plus').' '.__( 'Missing database table:' , 'wp-photo-album-plus').' '.$tn[$idx], 'red', 'force' );
 			$any_error = true;
 		}
 		// Test columns
@@ -620,21 +620,21 @@ global $wpdb;
 		}
 		
 		if ( ! file_exists( $dn[$idx] ) ) {	// Test again
-			if ( $verbose ) wppa_error_message( __( 'Unexpected error:', 'wppa' ).' '.__( 'Missing directory:', 'wppa' ).' '.$dn[$idx], 'red', 'force' );
+			if ( $verbose ) wppa_error_message( __( 'Unexpected error:' , 'wp-photo-album-plus').' '.__( 'Missing directory:' , 'wp-photo-album-plus').' '.$dn[$idx], 'red', 'force' );
 			$any_error = true;
 		}
 		elseif ( ! is_writable( $dn[$idx] ) ) {
-			if ( $verbose ) wppa_error_message( __( 'Unexpected error:', 'wppa' ).' '.__( 'Directory is not writable:', 'wppa' ).' '.$dn[$idx], 'red', 'force' );
+			if ( $verbose ) wppa_error_message( __( 'Unexpected error:' , 'wp-photo-album-plus').' '.__( 'Directory is not writable:' , 'wp-photo-album-plus').' '.$dn[$idx], 'red', 'force' );
 			$any_error = true;
 		}
 		elseif ( ! is_readable( $dn[$idx] ) ) {
-			if ( $verbose ) wppa_error_message( __( 'Unexpected error:', 'wppa' ).' '.__( 'Directory is not readable:', 'wppa' ).' '.$dn[$idx], 'red', 'force' );
+			if ( $verbose ) wppa_error_message( __( 'Unexpected error:' , 'wp-photo-album-plus').' '.__( 'Directory is not readable:' , 'wp-photo-album-plus').' '.$dn[$idx], 'red', 'force' );
 			$any_error = true;
 		}
 		$idx++;
 	}
 	if ( $any_error ) {
-		if ( $verbose ) wppa_error_message( __( 'Please de-activate and re-activate the plugin. If this problem persists, ask your administrator.', 'wppa' ), 'red', 'force' );
+		if ( $verbose ) wppa_error_message( __( 'Please de-activate and re-activate the plugin. If this problem persists, ask your administrator.' , 'wp-photo-album-plus'), 'red', 'force' );
 	}
 	
 	return ! $any_error;	// True = no error
@@ -653,7 +653,7 @@ function wppa_admin_page_links( $curpage, $pagesize, $count, $link, $extra = '' 
 
 	if ( $npages > '1' ) {
 		if ( $curpage != '1' ) {
-			?><a href="<?php echo( $prevurl ) ?>"><?php _e( 'Prev page', 'wppa' ) ?></a><?php
+			?><a href="<?php echo( $prevurl ) ?>"><?php _e( 'Prev page' , 'wp-photo-album-plus') ?></a><?php
 		}
 		$i = '1';
 		while ( $i <= $npages ) {
@@ -666,7 +666,7 @@ function wppa_admin_page_links( $curpage, $pagesize, $count, $link, $extra = '' 
 			$i++;
 		}
 		if ( $curpage != $npages ) {
-			?> <a href="<?php echo( $nexturl ) ?>"><?php _e( 'Next page', 'wppa' ) ?></a><?php
+			?> <a href="<?php echo( $nexturl ) ?>"><?php _e( 'Next page' , 'wp-photo-album-plus') ?></a><?php
 		}
 	}
 }
@@ -711,7 +711,7 @@ global $wpdb;
 global $allphotos;
 
 	if ( $xname == '' ) $name = basename( $file );
-	else $name = __( $xname );
+	else $name = __( $xname , 'wp-photo-album-plus');
 	
 	// Find photo entries that apply to the supplied filename
 	$query = $wpdb->prepare( 
@@ -769,10 +769,10 @@ global $wppa;
 	
 	if ( ! wppa_allow_uploads( $alb ) ) {
 		if ( is_admin() && ! $wppa['ajax'] ) {
-			wppa_error_message( sprintf( __( 'Album %s is full', 'wppa' ), wppa_get_album_name( $alb ) ) );
+			wppa_error_message( sprintf( __( 'Album %s is full' , 'wp-photo-album-plus'), wppa_get_album_name( $alb ) ) );
 		}
 		else {
-			wppa_alert( sprintf( __( 'Album %s is full', 'wppa' ), wppa_get_album_name( $alb ) ) );
+			wppa_alert( sprintf( __( 'Album %s is full' , 'wp-photo-album-plus'), wppa_get_album_name( $alb ) ) );
 		}
 		return false;
 	}
@@ -790,10 +790,10 @@ global $wppa;
 			if ( $exists ) {
 				if ( isset( $_POST['del-after-p'] ) ) {
 					unlink( $file );
-					$msg = __( 'Photo %s already exists in album number %s. Removed from depot.', 'wppa' );
+					$msg = __( 'Photo %s already exists in album number %s. Removed from depot.' , 'wp-photo-album-plus');
 				}
 				else {
-					$msg = __( 'Photo %s already exists in album number %s.', 'wppa' );
+					$msg = __( 'Photo %s already exists in album number %s.' , 'wp-photo-album-plus');
 				}
 				wppa_warning_message( sprintf( $msg, $name, $alb ) );
 				
@@ -823,19 +823,19 @@ global $wppa;
 		
 		if ( $img_size ) { 
 			if ( wppa_check_memory_limit( '', $img_size['0'], $img_size['1'] ) === false ) { 
-				wppa_error_message( sprintf( __( 'ERROR: Attempt to upload a photo that is too large to process (%s).', 'wppa' ), $name ).wppa_check_memory_limit() );
-				$wppa['ajax_import_files_error'] = __( 'Too big', 'wppa' );
+				wppa_error_message( sprintf( __( 'ERROR: Attempt to upload a photo that is too large to process (%s).' , 'wp-photo-album-plus'), $name ).wppa_check_memory_limit() );
+				$wppa['ajax_import_files_error'] = __( 'Too big' , 'wp-photo-album-plus');
 				return false;
 			}
 			if ( ! $warning_given_small && ( $img_size['0'] < wppa_get_minisize() && $img_size['1'] < wppa_get_minisize() ) ) {
-				wppa_warning_message( __( 'WARNING: You are uploading photos that are too small. Photos must be larger than the thumbnail size and larger than the coverphotosize.', 'wppa' ) );
-				$wppa['ajax_import_files_error'] = __( 'Too small', 'wppa' );
+				wppa_warning_message( __( 'WARNING: You are uploading photos that are too small. Photos must be larger than the thumbnail size and larger than the coverphotosize.' , 'wp-photo-album-plus') );
+				$wppa['ajax_import_files_error'] = __( 'Too small' , 'wp-photo-album-plus');
 				$warning_given_small = true;
 			}
 		}
 		else {
-			wppa_error_message( __( 'ERROR: Unable to retrieve image size of', 'wppa' ).' '.$name.' '.__( 'Are you sure it is a photo?', 'wppa' ) );
-			$wppa['ajax_import_files_error'] = __( 'No imagesize', 'wppa' );
+			wppa_error_message( __( 'ERROR: Unable to retrieve image size of' , 'wp-photo-album-plus').' '.$name.' '.__( 'Are you sure it is a photo?' , 'wp-photo-album-plus') );
+			$wppa['ajax_import_files_error'] = __( 'No imagesize' , 'wp-photo-album-plus');
 			return false;
 		}
 		// Get ext based on mimetype, regardless of ext
@@ -844,7 +844,7 @@ global $wppa;
 			case 2: $ext = 'jpg'; break;
 			case 3: $ext = 'png'; break;
 			default:
-				wppa_error_message( __( 'Unsupported mime type encountered:', 'wppa' ).' '.$img_size[2].'.' );
+				wppa_error_message( __( 'Unsupported mime type encountered:' , 'wp-photo-album-plus').' '.$img_size[2].'.' );
 				return false;
 		}
 		// Get an id if not yet there
@@ -861,11 +861,11 @@ global $wppa;
 		$owner = wppa_get_user();
 		// Validate album
 		if ( !is_numeric( $alb ) || $alb < '1' ) {
-			wppa_error_message( __( 'Album not known while trying to add a photo', 'wppa' ) );
+			wppa_error_message( __( 'Album not known while trying to add a photo' , 'wp-photo-album-plus') );
 			return false;
 		}
 		if ( !wppa_have_access( $alb ) ) {
-			wppa_error_message( sprintf( __( 'Album %s does not exist or is not accessable while trying to add a photo', 'wppa' ), $alb ) );
+			wppa_error_message( sprintf( __( 'Album %s does not exist or is not accessable while trying to add a photo' , 'wp-photo-album-plus'), $alb ) );
 			return false;
 		}
 		$status = ( wppa_switch( 'wppa_upload_moderate' ) && ! current_user_can( 'wppa_admin' ) ) ? 'pending' : 'publish';
@@ -884,7 +884,7 @@ global $wppa;
 												'filename' => $filename 
 											 ) );
 		if ( ! $id ) {
-			wppa_error_message( __( 'Could not insert photo.', 'wppa' ) );
+			wppa_error_message( __( 'Could not insert photo.' , 'wp-photo-album-plus') );
 		}
 		else {	// Save the source
 			wppa_save_source( $file, $filename, $alb );
@@ -919,7 +919,7 @@ global $wppa;
 		}
 	}
 	else {
-		wppa_error_message( __( 'ERROR: Unknown file or album.', 'wppa' ) );
+		wppa_error_message( __( 'ERROR: Unknown file or album.' , 'wp-photo-album-plus') );
 		return false;
 	}
 }
